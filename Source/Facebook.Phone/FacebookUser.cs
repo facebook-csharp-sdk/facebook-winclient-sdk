@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Facebook.Phone
+namespace Facebook.Apps
 {
     public class FacebookUser
     {

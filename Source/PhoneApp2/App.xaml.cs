@@ -6,14 +6,15 @@ using System.Windows.Markup;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using PhoneApp1.Resources;
+using PhoneApp2.Resources;
+using Facebook.Apps;
 
-namespace PhoneApp1
+namespace PhoneApp2
 {
     public partial class App : Application
     {
 
-        public static Facebook.Apps.FacebookAppClient FacebookPhoneClient;
+        public static FacebookAppClient FacebookAppClient;
 
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
@@ -58,7 +59,7 @@ namespace PhoneApp1
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
-            FacebookPhoneClient = new Facebook.Apps.FacebookAppClient("427365490674294");
+            FacebookAppClient = new FacebookAppClient("427365490674294");
 
         }
 

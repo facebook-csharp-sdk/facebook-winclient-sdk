@@ -7,19 +7,16 @@ using System.Windows.Controls;
 using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using PhoneApp1.Resources;
+using PhoneApp2.Resources;
 
-namespace PhoneApp1
+namespace PhoneApp2
 {
     public partial class MainPage : PhoneApplicationPage
     {
-        
-
         // Constructor
         public MainPage()
         {
             InitializeComponent();
-            this.Loaded += MainPage_Loaded;
 
             // Sample code to localize the ApplicationBar
             //BuildLocalizedApplicationBar();
@@ -38,7 +35,7 @@ namespace PhoneApp1
                 string message;
                 try
                 {
-                    user = await App.FacebookPhoneClient.LoginAsync();
+                    user = await App.FacebookAppClient.LoginAsync();
                     message = "You are now logged in";
                 }
                 catch (InvalidOperationException)

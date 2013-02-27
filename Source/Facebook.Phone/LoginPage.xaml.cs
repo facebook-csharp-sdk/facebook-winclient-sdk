@@ -8,13 +8,13 @@ using System.Windows.Navigation;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
-namespace Facebook.Phone
+namespace Facebook.Apps
 {
     public partial class LoginPage : PhoneApplicationPage
     {
         private string responseData = "";
         private uint responseErrorDetail = 0;
-        private PhoneAuthenticationStatus responseStatus = PhoneAuthenticationStatus.UserCancel;
+        private WebAuthenticationStatus responseStatus = WebAuthenticationStatus.UserCancel;
 
         // We need to keep this state to make sure we do the right thing even during
         // normal phone navigation actions (such as going to start screen and back).
@@ -45,7 +45,7 @@ namespace Facebook.Phone
 
             // Make sure that there is an authentication operation in progress.
             // If not, we'll navigate back to the previous page.
-            if (!PhoneWebAuthenticationBroker.AuthenticationInProgress)
+            if (!WebAuthenticationBroker.AuthenticationInProgress)
             {
                 this.NavigationService.GoBack();
             }
@@ -56,7 +56,7 @@ namespace Facebook.Phone
                 authenticationFinished = false;
 
                 // Point the browser control to the authentication start page.
-                browserControl.Source = PhoneWebAuthenticationBroker.StartUri;
+                browserControl.Source = WebAuthenticationBroker.StartUri;
             }
         }
 
@@ -73,12 +73,12 @@ namespace Facebook.Phone
             // finished, then we need to inform the authentication broker of the results.
             // We don't want to stop the operation prematurely, such as when navigating to
             // the start screen.
-            if (PhoneWebAuthenticationBroker.AuthenticationInProgress && authenticationFinished)
+            if (WebAuthenticationBroker.AuthenticationInProgress && authenticationFinished)
             {
                 authenticationStarted = false;
                 authenticationFinished = false;
 
-                PhoneWebAuthenticationBroker.OnAuthenticationFinished(responseData, responseStatus, responseErrorDetail);
+                WebAuthenticationBroker.OnAuthenticationFinished(responseData, responseStatus, responseErrorDetail);
             }
         }
 
@@ -90,7 +90,7 @@ namespace Facebook.Phone
         void LoginPage_BackKeyPress(object sender, System.ComponentModel.CancelEventArgs e)
         {
             responseData = "";
-            responseStatus = PhoneAuthenticationStatus.UserCancel;
+            responseStatus = WebAuthenticationStatus.UserCancel;
 
             authenticationFinished = true;
         }
@@ -101,10 +101,10 @@ namespace Facebook.Phone
         /// </summary>
         private void BrowserControl_Navigating(object sender, NavigatingEventArgs e)
         {
-            if (e.Uri == PhoneWebAuthenticationBroker.EndUri)
+            if (e.Uri == WebAuthenticationBroker.EndUri)
             {
                 responseData = e.Uri.ToString();
-                responseStatus = PhoneAuthenticationStatus.Success;
+                responseStatus = WebAuthenticationStatus.Success;
 
                 authenticationFinished = true;
 
@@ -131,7 +131,7 @@ namespace Facebook.Phone
                 // No error information available.
                 responseErrorDetail = 0;
             }
-            responseStatus = PhoneAuthenticationStatus.ErrorHttp;
+            responseStatus = WebAuthenticationStatus.ErrorHttp;
 
             authenticationFinished = true;
             e.Handled = true;

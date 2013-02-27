@@ -14,12 +14,20 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Threading;
 
-namespace Facebook.Phone
+namespace Facebook.Apps
 {
     /// <summary>
-    /// This class mimics the functionality provided by WebAuthenticationStatus  available in Win8.
+    /// This class mimics the functionality provided by WebAuthenticationOptions available in Win8.
     /// </summary>
-    internal enum PhoneAuthenticationStatus
+    internal enum WebAuthenticationOptions
+    {
+        None = 0,
+    }
+
+    /// <summary>
+    /// This class mimics the functionality provided by WebAuthenticationStatus available in Win8.
+    /// </summary>
+    internal enum WebAuthenticationStatus
     {
         Success = 0,
 
@@ -31,15 +39,15 @@ namespace Facebook.Phone
     /// <summary>
     /// This class mimics the functionality provided by WebAuthenticationResult available in Win8.
     /// </summary>
-    internal sealed class PhoneAuthenticationResponse
+    internal sealed class WebAuthenticationResult
     {
         public string ResponseData { get; private set; }
 
-        public PhoneAuthenticationStatus ResponseStatus { get; private set; }
+        public WebAuthenticationStatus ResponseStatus { get; private set; }
 
         public uint ResponseErrorDetail { get; private set; }
 
-        public PhoneAuthenticationResponse(string data, PhoneAuthenticationStatus status, uint error)
+        public WebAuthenticationResult(string data, WebAuthenticationStatus status, uint error)
         {
             ResponseData = data;
             ResponseStatus = status;
@@ -50,11 +58,11 @@ namespace Facebook.Phone
     /// <summary>
     /// This class mimics the functionality provided by WebAuthenticationBroker available in Win8.
     /// </summary>
-    internal sealed class PhoneWebAuthenticationBroker
+    internal sealed class WebAuthenticationBroker
     {
         private static string responseData = "";
         private static uint responseErrorDetail = 0;
-        private static PhoneAuthenticationStatus responseStatus = PhoneAuthenticationStatus.UserCancel;
+        private static WebAuthenticationStatus responseStatus = WebAuthenticationStatus.UserCancel;
         private static AutoResetEvent authenticateFinishedEvent = new AutoResetEvent(false);
 
         static public bool AuthenticationInProgress { get; private set; }
@@ -64,8 +72,13 @@ namespace Facebook.Phone
         /// <summary>
         /// Mimics the WebAuthenticationBroker's AuthenticateAsync method.
         /// </summary>
-        public static Task<PhoneAuthenticationResponse> AuthenticateAsync(Uri startUri, Uri endUri)
+        public static Task<WebAuthenticationResult> AuthenticateAsync(WebAuthenticationOptions options, Uri startUri, Uri endUri)
         {
+            if (options != WebAuthenticationOptions.None)
+            {
+                throw new NotImplementedException("This method does not support authentication options other than 'None'.");
+            }
+
             PhoneApplicationFrame rootFrame = Application.Current.RootVisual as PhoneApplicationFrame;
 
             if (rootFrame == null)
@@ -73,29 +86,29 @@ namespace Facebook.Phone
                 throw new InvalidOperationException();
             }
 
-            PhoneWebAuthenticationBroker.StartUri = startUri;
-            PhoneWebAuthenticationBroker.EndUri = endUri;
-            PhoneWebAuthenticationBroker.AuthenticationInProgress = true;
+            WebAuthenticationBroker.StartUri = startUri;
+            WebAuthenticationBroker.EndUri = endUri;
+            WebAuthenticationBroker.AuthenticationInProgress = true;
 
             // Navigate to the login page.
             rootFrame.Navigate(new Uri("/Facebook.Phone;component/loginpage.xaml", UriKind.Relative));
 
-            Task<PhoneAuthenticationResponse> task = Task<PhoneAuthenticationResponse>.Factory.StartNew(() =>
+            Task<WebAuthenticationResult> task = Task<WebAuthenticationResult>.Factory.StartNew(() =>
             {
                 authenticateFinishedEvent.WaitOne();
-                return new PhoneAuthenticationResponse(responseData, responseStatus, responseErrorDetail);
+                return new WebAuthenticationResult(responseData, responseStatus, responseErrorDetail);
             });
 
             return task;
         }
 
-        public static void OnAuthenticationFinished(string data, PhoneAuthenticationStatus status, uint error)
+        public static void OnAuthenticationFinished(string data, WebAuthenticationStatus status, uint error)
         {
-            PhoneWebAuthenticationBroker.responseData = data;
-            PhoneWebAuthenticationBroker.responseStatus = status;
-            PhoneWebAuthenticationBroker.responseErrorDetail = error;
+            WebAuthenticationBroker.responseData = data;
+            WebAuthenticationBroker.responseStatus = status;
+            WebAuthenticationBroker.responseErrorDetail = error;
 
-            PhoneWebAuthenticationBroker.AuthenticationInProgress = false;
+            WebAuthenticationBroker.AuthenticationInProgress = false;
 
             // Signal the waiting task that the authentication operation has finished.
             authenticateFinishedEvent.Set();
