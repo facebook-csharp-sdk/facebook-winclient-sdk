@@ -1,1 +1,1 @@
-# Facebook C# SDK for Windows Phone
+# Facebook SDK for Windows Phone & Windows 8

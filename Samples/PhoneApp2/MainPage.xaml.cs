@@ -27,15 +27,15 @@ namespace PhoneApp2
             await Authenticate();
         }
 
-        private Facebook.Apps.FacebookUser user;
+        private Facebook.Apps.FacebookSession session;
         private async System.Threading.Tasks.Task Authenticate()
         {
-            while (user == null)
+            while (session == null)
             {
                 string message;
                 try
                 {
-                    user = await App.FacebookAppClient.LoginAsync();
+                    session = await App.FacebookSessionClient.LoginAsync();
                     message = "You are now logged in";
                 }
                 catch (InvalidOperationException)

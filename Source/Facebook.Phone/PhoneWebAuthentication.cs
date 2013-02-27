@@ -21,7 +21,8 @@ namespace Facebook.Apps
     /// </summary>
     internal enum WebAuthenticationOptions
     {
-        None = 0,
+        None,
+        SilentMode
     }
 
     /// <summary>

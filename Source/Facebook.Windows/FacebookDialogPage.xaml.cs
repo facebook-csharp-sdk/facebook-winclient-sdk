@@ -14,42 +14,16 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace App1
+namespace Facebook.Apps
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class FacebookDialogPage : Page
     {
-        public MainPage()
+        public FacebookDialogPage()
         {
             this.InitializeComponent();
-            this.Loaded += MainPage_Loaded;
-        }
-
-        async void MainPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            await Authenticate();
-        }
-
-        private Facebook.Apps.FacebookSession sesion;
-        private async System.Threading.Tasks.Task Authenticate()
-        {
-            while (sesion == null)
-            {
-                string message;
-                try
-                {
-                    sesion = await App.FacebookSessionClient.LoginAsync();
-                    message = "You are now logged in";
-                }
-                catch (InvalidOperationException)
-                {
-                    message = "You must log in. Login Required";
-                }
-
-                //MessageBox.Show(message);
-            }
         }
 
         /// <summary>
