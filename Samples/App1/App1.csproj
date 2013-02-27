@@ -136,7 +136,7 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Facebook.Windows\Facebook.Windows.csproj">
+    <ProjectReference Include="..\..\Source\Facebook.Windows\Facebook.Windows.csproj">
       <Project>{f7ffe744-7cc4-42c5-bf7b-a0f11ecf9722}</Project>
       <Name>Facebook.Windows</Name>
     </ProjectReference>
