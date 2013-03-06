@@ -37,7 +37,7 @@ namespace PhoneApp2
                 string message;
                 try
                 {
-                    session = await App.FacebookSessionClient.LoginAsync();
+                    session = await App.FacebookSessionClient.LoginAsync("email,publish_checkins");
                     message = "You are now logged in";
                 }
                 catch (InvalidOperationException)

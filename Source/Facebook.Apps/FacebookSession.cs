@@ -29,6 +29,7 @@ namespace Facebook.Apps
     {
 
         public string AccessToken { get; set; }
+        public DateTime Expires { get; set; }
 
     }
 }

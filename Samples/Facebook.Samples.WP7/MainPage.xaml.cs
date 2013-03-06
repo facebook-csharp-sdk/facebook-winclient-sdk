@@ -35,7 +35,7 @@ namespace Facebook.Samples.WP7
                 string message;
                 try
                 {
-                    session = await App.FacebookSessionClient.LoginAsync();
+                    session = await App.FacebookSessionClient.LoginAsync("publish_checkins,manage_notifications");
                     message = "You are now logged in";
                 }
                 catch (InvalidOperationException)

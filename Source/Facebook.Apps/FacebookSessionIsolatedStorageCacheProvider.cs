@@ -64,7 +64,7 @@ namespace Facebook.Apps
             var json = SimpleJson.SerializeObject(data);
 
             var store = IsolatedStorageFile.GetUserStoreForApplication();
-            using (var stream = store.OpenFile(fileName, FileMode.CreateNew))
+            using (var stream = store.OpenFile(fileName, FileMode.Create))
             using (var writer = new StreamWriter(stream))
             {
                 await writer.WriteAsync(json);

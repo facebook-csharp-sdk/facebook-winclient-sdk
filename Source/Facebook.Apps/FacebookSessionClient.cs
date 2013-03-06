@@ -67,7 +67,8 @@ namespace Facebook.Apps
                     var authResult = await PromptOAuthDialog(permissions, WebAuthenticationOptions.None);
                     session = new FacebookSession
                     {
-                        AccessToken = authResult.AccessToken
+                        AccessToken = authResult.AccessToken,
+                        Expires = authResult.Expires,
                     };
                 }
                 else
@@ -142,7 +143,7 @@ namespace Facebook.Apps
 #if WINDOWS_PHONE
             parameters["display"] = "touch";
 #else
-            parameters["display"] = "touch";
+            parameters["display"] = "popup";
 #endif
 
             // add the 'scope' only if we have extendedPermissions.

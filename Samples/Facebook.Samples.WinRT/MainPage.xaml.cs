@@ -40,7 +40,7 @@ namespace App1
                 string message;
                 try
                 {
-                    sesion = await App.FacebookSessionClient.LoginAsync("read_stream,create_event,publish_checkins");
+                    sesion = await App.FacebookSessionClient.LoginAsync("email,publish_checkins");
                     message = "You are now logged in";
                 }
                 catch (InvalidOperationException)
