@@ -111,7 +111,7 @@ namespace('nuget', function () {
 
         task('nuget', ['Dist/NuGet', 'build'], function () {
             nuget.pack({
-                nuspec: 'Build/NuGet/Facebook/Facebook.nuspec',
+                nuspec: 'Build/NuGet/Facebook.Client/Facebook.Client.nuspec',
                 version: config.fileVersion,
                 outputDirectory: 'Dist/NuGet'
             })
@@ -120,7 +120,7 @@ namespace('nuget', function () {
 
         task('symbolsource', ['Dist/SymbolSource', 'build'], function () {
             nuget.pack({
-                nuspec: 'Build/SymbolSource/Facebook/Facebook.nuspec',
+                nuspec: 'Build/SymbolSource/Facebook.Client/Facebook.Client.nuspec',
                 version: config.fileVersion,
                 outputDirectory: 'Dist/SymbolSource'
             })
@@ -136,7 +136,7 @@ namespace('nuget', function () {
         task('nuget', function(apiKey) {
             nuget.push({
                 apiKey: apiKey,
-                package: path.join(config.rootPath, 'Dist/NuGet/Facebook.' + config.fileVersion + '.nupkg')
+                package: path.join(config.rootPath, 'Dist/NuGet/Facebook.Client.' + config.fileVersion + '.nupkg')
             })
         }, { async: true })
 
@@ -144,7 +144,7 @@ namespace('nuget', function () {
         task('symbolsource', function(apiKey) {
             nuget.push({
                 apiKey: apiKey,
-                package: path.join(config.rootPath, 'Dist/SymbolSource/Facebook.' + config.fileVersion + '.nupkg'),
+                package: path.join(config.rootPath, 'Dist/SymbolSource/Facebook.Client.' + config.fileVersion + '.nupkg'),
                 source: nuget.sources.symbolSource
             })
         }, { async: true })
