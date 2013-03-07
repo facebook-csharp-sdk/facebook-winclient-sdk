@@ -13,6 +13,11 @@
         <iconUrl>http://csharpsdk.org/assets/img/logo75x75.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <tags>Facebook fb</tags>
+        <dependencies>
+            <group targetFramework="wp71">
+                <dependency id="Microsoft.Bcl.Async" version="1.0.14-rc" />
+            </group>
+        </dependencies>
     </metadata>
     <files>
         <file src="..\..\..\LICENSE.txt" target = "LICENSE.txt" />
@@ -23,6 +28,9 @@
         <file src="..\..\..\Bin\Release\wp8\Facebook.Client.dll" target = "lib\wp8" />
         <file src="..\..\..\Bin\Release\wp8\Facebook.Client.xml" target = "lib\wp8" />
         <file src="..\..\..\Bin\Release\wp8\Facebook.Client.pdb" target = "lib\wp8" />
+        <file src="..\..\..\Bin\Release\wp7\Facebook.Client.dll" target = "lib\wp71" />
+        <file src="..\..\..\Bin\Release\wp7\Facebook.Client.xml" target = "lib\wp71" />
+        <file src="..\..\..\Bin\Release\wp7\Facebook.Client.pdb" target = "lib\wp71" />
         <file src="..\..\..\Source\Facebook.Client\*.cs" target = "src\Facebook.Client\Facebook.Client" />
         <file src="..\..\..\Source\Facebook.Client-WinRT\**\*.cs" target = "src\Facebook.Client\Facebook.Client-WinRT" />
         <file src="..\..\..\Source\Facebook.Client-WP8\**\*.cs" target = "src\Facebook.Client\Facebook.Client-WP8" />
