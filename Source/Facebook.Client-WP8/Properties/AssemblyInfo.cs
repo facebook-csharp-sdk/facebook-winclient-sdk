@@ -1,24 +1,11 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+using System.Reflection;
 using System.Runtime.InteropServices;
-using System.Resources;
-#if WINDOWS_PHONE
-using System.Windows.Markup;
-#endif
-
-
-[assembly: AssemblyTitle("Facebook.Apps")]
-[assembly: AssemblyDescription("Facebook C# SDK")]
+// Do not modify this file manually, use jakefile instead.
+[assembly: AssemblyTitle("Facebook.Client")]
+[assembly: AssemblyDescription("Facebook.Client for Windows Phone 8")]
 [assembly: AssemblyCompany("The Outercurve Foundation")]
 [assembly: AssemblyProduct("Facebook C# SDK")]
-[assembly: AssemblyCopyright("Copyright (c) 2013, The Outercurve Foundation.")]
+[assembly: AssemblyCopyright("Copyright (c) 2011, The Outercurve Foundation.")]
 [assembly: ComVisible(false)]
-[assembly: AssemblyVersion("1.0.0")]
-[assembly: AssemblyFileVersion("1.0.0")]
-[assembly: NeutralResourcesLanguageAttribute("en-US")]
-
-#if WINDOWS_PHONE
-[assembly: XmlnsPrefix("clr-namespace:Facebook.Apps;assembly=Facebook.Apps", "fb")]
-[assembly: XmlnsDefinition("clr-namespace:Facebook.Apps;assembly=Facebook.Apps", "Facebook.Apps")]
-#endif
-
+[assembly: AssemblyVersion("6.0.10")]
+[assembly: AssemblyFileVersion("6.2.1-beta")]
