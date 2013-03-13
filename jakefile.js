@@ -40,9 +40,9 @@ directory('Dist/')
 namespace('build', function () {
 
     desc('Build Windows Store binaries')
-    task('winrt', ['assemblyinfo:facebook'], function () {
+    task('winstore', ['assemblyinfo:facebook'], function () {
         msbuild({
-            file: 'Source/Facebook.Client-WinRT.sln',
+            file: 'Source/Facebook.Client-WindowsStore.sln',
             targets: ['Build']
         })
     }, { async: true })
@@ -63,7 +63,7 @@ namespace('build', function () {
         })
     }, { async: true })
 
-    task('all', ['build:wp71', 'build:wp8', 'build:winrt'])
+    task('all', ['build:wp71', 'build:wp8', 'build:winstore'])
 
     //task('mono', function (xbuildPath) {
     //    msbuild({
@@ -80,9 +80,9 @@ task('build', ['build:all'])
 
 namespace('clean', function () {
 
-    task('winrt', function () {
+    task('winstore', function () {
         msbuild({
-            file: 'Source/Facebook.Client-WinRT.sln',
+            file: 'Source/Facebook.Client-WindowsStore.sln',
             targets: ['Clean']
         })
     }, { async: true })
@@ -101,7 +101,7 @@ namespace('clean', function () {
         })
     }, { async: true })
 
-    task('all', ['clean:wp71', 'clean:wp8', 'clean:winrt'])
+    task('all', ['clean:wp71', 'clean:wp8', 'clean:winstore'])
 
 })
 
@@ -113,13 +113,13 @@ task('clean', ['clean:all'], function () {
 
 namespace('tests', function () {
 
-    task('winrt', ['build:winrt'], function () {
+    task('winstore', ['build:winstore'], function () {
         //xunit({
         //    assembly: 'Bin/Tests/Release/Facebook.Client.Tests.dll'
         //})
     }, { async: true })
 
-    task('all', ['tests:winrt'])
+    task('all', ['tests:winstore'])
 
 })
 

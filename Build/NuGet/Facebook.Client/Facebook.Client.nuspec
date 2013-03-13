@@ -26,8 +26,8 @@
     <files>
         <file src="..\..\..\LICENSE.txt" target = "LICENSE.txt" />
         <file src="..\..\..\Build\readme.txt" target = "readme.txt" />
-        <file src="..\..\..\Bin\Release\winRT\Facebook.Client.dll" target = "lib\win8" />
-        <file src="..\..\..\Bin\Release\winRT\Facebook.Client.xml" target = "lib\win8" />
+        <file src="..\..\..\Bin\Release\win8\Facebook.Client.dll" target = "lib\win8" />
+        <file src="..\..\..\Bin\Release\win8\Facebook.Client.xml" target = "lib\win8" />
         <file src="..\..\..\Bin\Release\wp71\Facebook.Client.dll" target = "lib\wp71" />
         <file src="..\..\..\Bin\Release\wp71\Facebook.Client.xml" target = "lib\wp71" />
         <file src="..\..\..\Bin\Release\wp8\Facebook.Client.dll" target = "lib\wp8" />

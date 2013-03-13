@@ -8,7 +8,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{F72679
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Client-WinRT", "Facebook.Client-WinRT\Facebook.Client-WinRT.csproj", "{F7FFE744-7CC4-42C5-BF7B-A0F11ECF9722}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Client-WindowsStore", "Facebook.Client-WindowsStore\Facebook.Client-WindowsStore.csproj", "{F7FFE744-7CC4-42C5-BF7B-A0F11ECF9722}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

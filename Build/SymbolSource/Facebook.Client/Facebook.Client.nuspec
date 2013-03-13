@@ -26,11 +26,11 @@
     <files>
         <file src="..\..\..\LICENSE.txt" target = "LICENSE.txt" />
         <file src="..\..\..\Build\readme.txt" target = "readme.txt" />
-        <file src="..\..\..\Bin\Release\winRT\*.dll" target = "lib\win8" />
-        <file src="..\..\..\Bin\Release\winRT\*.xml" target = "lib\win8" />
-        <file src="..\..\..\Bin\Release\wp71\*.dll" target = "lib\wp71" />
-        <file src="..\..\..\Bin\Release\wp71\*.xml" target = "lib\wp71" />
-        <file src="..\..\..\Bin\Release\wp8\*.dll" target = "lib\wp8" />
-        <file src="..\..\..\Bin\Release\wp8\*.xml" target = "lib\wp8" />
+        <file src="..\..\..\Bin\Release\win8\Facebook.Client.dll" target = "lib\win8" />
+        <file src="..\..\..\Bin\Release\win8\Facebook.Client.xml" target = "lib\win8" />
+        <file src="..\..\..\Bin\Release\wp71\Facebook.Client.dll" target = "lib\wp71" />
+        <file src="..\..\..\Bin\Release\wp71\Facebook.Client.xml" target = "lib\wp71" />
+        <file src="..\..\..\Bin\Release\wp8\Facebook.Client.dll" target = "lib\wp8" />
+        <file src="..\..\..\Bin\Release\wp8\Facebook.Client.xml" target = "lib\wp8" />
     </files>
 </package>
