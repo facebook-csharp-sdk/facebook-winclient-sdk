@@ -29,15 +29,11 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
 [Facebook Change Log](https://developers.facebook.com/docs/changelog/)
 
 ## Features
-* NuGet Packages Available ([Facebook](http://nuget.org/packages/Facebook) and [Facebook.channel](http://nuget.org/packages/Facebook.channel))
-* Compatible with all Facebook Graph and REST API methods.
-* Supports photo/video uploads
-* Supports batch requests and etags
-* Supports Facebook's most current authentication systems.
-* Sample applications and documentation are provided to get you started quickly.
+* NuGet Packages Available ([Facebook.Client](http://nuget.org/packages/Facebook.Client)
+* Authentication Helpers
 
 ## Supported Platforms
-* Windows Store Apps
+* Windows Store
 * Windows Phone 7.1 (Mango)
 * Windows Phone 8
  
