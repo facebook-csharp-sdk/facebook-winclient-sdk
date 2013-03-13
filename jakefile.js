@@ -11,7 +11,7 @@ var fs = require('fs'),
         fileVersion: fs.readFileSync('VERSION', 'utf-8').split('\r\n')[1]
     };
 
-console.log('Facebook C# SDK v' + config.version + ' (' + config.fileVersion + ')')
+console.log('Facebook C# SDK for Windows & Windows Phone v' + config.version + ' (' + config.fileVersion + ')')
 
 msbuild.setDefaults({
     properties: { Configuration: 'Release' },
@@ -39,34 +39,10 @@ directory('Dist/')
 
 namespace('build', function () {
 
-    desc('Build .NET 4.5 binaries')
-    task('net45', ['assemblyinfo:facebook'], function () {
-        msbuild({
-            file: 'Source/Facebook-Net45.sln',
-            targets: ['Build']
-        })
-    }, { async: true })
-
-    desc('Build .NET 4.0 binaries')
-    task('net40', ['assemblyinfo:facebook'], function () {
-        msbuild({
-            file: 'Source/Facebook-Net40.sln',
-            targets: ['Build']
-        })
-    }, { async: true })
-
-    desc('Build .NET 3.5 binaries')
-    task('net35', ['assemblyinfo:facebook'], function () {
-        msbuild({
-            file: 'Source/Facebook-Net35.sln',
-            targets: ['Build']
-        })
-    }, { async: true })
-
     desc('Build Windows Store binaries')
-    task('winstore', ['assemblyinfo:facebook'], function () {
+    task('winrt', ['assemblyinfo:facebook'], function () {
         msbuild({
-            file: 'Source/Facebook-WindowsStore.sln',
+            file: 'Source/Facebook.Client-WinRT.sln',
             targets: ['Build']
         })
     }, { async: true })
@@ -74,7 +50,7 @@ namespace('build', function () {
     desc('Build Windows Phone 7.1 binaries')
     task('wp71', ['assemblyinfo:facebook'], function () {
         msbuild({
-            file: 'Source/Facebook-WP7.sln',
+            file: 'Source/Facebook.Client-WP7.sln',
             targets: ['Build']
         })
     }, { async: true })
@@ -82,29 +58,21 @@ namespace('build', function () {
     desc('Build Windows Phone 8 binaries')
     task('wp8', ['assemblyinfo:facebook'], function () {
         msbuild({
-            file: 'Source/Facebook-WP8.sln',
+            file: 'Source/Facebook.Client-WP8.sln',
             targets: ['Build']
         })
     }, { async: true })
 
-    desc('Build Silverlight 5 binaries')
-    task('sl5', ['assemblyinfo:facebook'], function () {
-        msbuild({
-            file: 'Source/Facebook-SL5.sln',
-            targets: ['Build']
-        })
-    }, { async: true })
+    task('all', ['build:wp71', 'build:wp8', 'build:winrt'])
 
-    task('all', ['build:net45', 'build:net40', 'build:net35', 'build:wp71', 'build:wp8', 'build:sl5', 'build:winstore'])
-
-    task('mono', function (xbuildPath) {
-        msbuild({
-            _exe: xbuildPath || 'xbuild',
-            file: 'Source/Facebook-Net40.sln',
-            targets: ['Build'],
-            properties: { TargetFrameworkProfile: '' }
-        })
-    }, { async: true })
+    //task('mono', function (xbuildPath) {
+    //    msbuild({
+    //        _exe: xbuildPath || 'xbuild',
+    //        file: 'Source/Facebook-Net40.sln',
+    //        targets: ['Build'],
+    //        properties: { TargetFrameworkProfile: '' }
+    //    })
+    //}, { async: true })
 
 })
 
@@ -112,56 +80,28 @@ task('build', ['build:all'])
 
 namespace('clean', function () {
 
-    task('net45', function () {
+    task('winrt', function () {
         msbuild({
-            file: 'Source/Facebook-Net40.sln',
-            targets: ['Clean']
-        })
-    }, { async: true })
-
-    task('net40', function () {
-        msbuild({
-            file: 'Source/Facebook-Net40.sln',
-            targets: ['Clean']
-        })
-    }, { async: true })
-
-    task('net35', function () {
-        msbuild({
-            file: 'Source/Facebook-Net35.sln',
-            targets: ['Clean']
-        })
-    }, { async: true })
-
-    task('winstore', function () {
-        msbuild({
-            file: 'Source/Facebook-WindowsStore.sln',
+            file: 'Source/Facebook.Client-WinRT.sln',
             targets: ['Clean']
         })
     }, { async: true })
 
     task('wp71', function () {
         msbuild({
-            file: 'Source/Facebook-WP7.sln',
+            file: 'Source/Facebook.Client-WP7.sln',
             targets: ['Clean']
         })
     }, { async: true })
 
     task('wp8', function () {
         msbuild({
-            file: 'Source/Facebook-WP8.sln',
+            file: 'Source/Facebook.Client-WP8.sln',
             targets: ['Clean']
         })
     }, { async: true })
 
-    task('sl5', function () {
-        msbuild({
-            file: 'Source/Facebook-SL5.sln',
-            targets: ['Clean']
-        })
-    }, { async: true })
-
-    task('all', ['clean:net45', 'clean:net40', 'clean:net35', 'clean:wp71', 'clean:wp8', 'clean:sl5', 'clean:winstore'])
+    task('all', ['clean:wp71', 'clean:wp8', 'clean:winrt'])
 
 })
 
@@ -173,13 +113,13 @@ task('clean', ['clean:all'], function () {
 
 namespace('tests', function () {
 
-    task('net45', ['build:net45'], function () {
-        xunit({
-            assembly: 'Bin/Tests/Release/Facebook.Tests.dll'
-        })
+    task('winrt', ['build:winrt'], function () {
+        //xunit({
+        //    assembly: 'Bin/Tests/Release/Facebook.Client.Tests.dll'
+        //})
     }, { async: true })
 
-    task('all', ['tests:net45'])
+    task('all', ['tests:winrt'])
 
 })
 
@@ -195,7 +135,7 @@ namespace('nuget', function () {
 
         task('nuget', ['Dist/NuGet', 'build'], function () {
             nuget.pack({
-                nuspec: 'Build/NuGet/Facebook/Facebook.nuspec',
+                nuspec: 'Build/NuGet/Facebook.Client/Facebook.Client.nuspec',
                 version: config.fileVersion,
                 outputDirectory: 'Dist/NuGet'
             })
@@ -204,7 +144,7 @@ namespace('nuget', function () {
 
         task('symbolsource', ['Dist/SymbolSource', 'build'], function () {
             nuget.pack({
-                nuspec: 'Build/SymbolSource/Facebook/Facebook.nuspec',
+                nuspec: 'Build/SymbolSource/Facebook.Client/Facebook.Client.nuspec',
                 version: config.fileVersion,
                 outputDirectory: 'Dist/SymbolSource'
             })
@@ -220,7 +160,7 @@ namespace('nuget', function () {
         task('nuget', function(apiKey) {
             nuget.push({
                 apiKey: apiKey,
-                package: path.join(config.rootPath, 'Dist/NuGet/Facebook.' + config.fileVersion + '.nupkg')
+                package: path.join(config.rootPath, 'Dist/NuGet/Facebook.Client.' + config.fileVersion + '.nupkg')
             })
         }, { async: true })
 
@@ -228,7 +168,7 @@ namespace('nuget', function () {
         task('symbolsource', function(apiKey) {
             nuget.push({
                 apiKey: apiKey,
-                package: path.join(config.rootPath, 'Dist/SymbolSource/Facebook.' + config.fileVersion + '.nupkg'),
+                package: path.join(config.rootPath, 'Dist/SymbolSource/Facebook.Client.' + config.fileVersion + '.nupkg'),
                 source: nuget.sources.symbolSource
             })
         }, { async: true })
@@ -244,15 +184,15 @@ namespace('assemblyinfo', function () {
 
     task('facebook', function () {
         assemblyinfo({
-            file: 'Source/Facebook/Properties/AssemblyInfo.cs',
+            file: 'Source/Facebook.Client/Properties/AssemblyInfo.cs',
             assembly: {
                 notice: function () {
                     return '// Do not modify this file manually, use jakefile instead.\r\n';
                 },
                 AssemblyTitle: 'Facebook',
-                AssemblyDescription: 'Facebook C# SDK',
+                AssemblyDescription: 'Facebook SDK for Windows & Windows Phone',
                 AssemblyCompany: 'The Outercurve Foundation',
-                AssemblyProduct: 'Facebook C# SDK',
+                AssemblyProduct: 'Facebook SDK for Windows & Windows Phone',
                 AssemblyCopyright: 'Copyright (c) 2011, The Outercurve Foundation.',
                 ComVisible: false,
                 AssemblyVersion: config.version,

@@ -61,10 +61,5 @@ namespace App1
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
         }
-
-        private void foo()
-        {
-            //var client = new FacebookClient
-        }
     }
 }

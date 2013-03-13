@@ -1,0 +1,30 @@
+<?xml version='1.0'?>
+<package xmlns='http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd'>
+    <metadata>
+        <id>Facebook.Client</id>
+        <version>$version$</version>
+        <title/>
+        <authors>Outercurve Foundation</authors>
+        <owners>Nathan Totten, Prabir Shrestha</owners>
+        <description><![CDATA[The Facebook SDK for Windows & Windows Phone helps .Net developers build phone and Windows Store applications that integrate with Facebook.]]></description>
+        <language>en-US</language>
+        <licenseUrl>https://github.com/facebook-csharp-sdk/facebook-winclient-sdk/master/LICENSE.txt</licenseUrl>
+        <projectUrl>https://github.com/facebook-csharp-sdk/facebook-winclient-sdk</projectUrl>
+        <iconUrl>http://csharpsdk.org/assets/img/logo75x75.png</iconUrl>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <tags>Facebook fb</tags>
+        <dependencies>
+          <dependency id="Facebook" version="6.2" />
+        </dependencies>
+    </metadata>
+    <files>
+        <file src="..\..\..\LICENSE.txt" target = "LICENSE.txt" />
+        <file src="..\..\..\Build\readme.txt" target = "readme.txt" />
+        <file src="..\..\..\Bin\Release\winRT\*.dll" target = "lib\win8" />
+        <file src="..\..\..\Bin\Release\winRT\*.xml" target = "lib\win8" />
+        <file src="..\..\..\Bin\Release\wp71\*.dll" target = "lib\wp71" />
+        <file src="..\..\..\Bin\Release\wp71\*.xml" target = "lib\wp71" />
+        <file src="..\..\..\Bin\Release\wp8\*.dll" target = "lib\wp8" />
+        <file src="..\..\..\Bin\Release\wp8\*.xml" target = "lib\wp8" />
+    </files>
+</package>

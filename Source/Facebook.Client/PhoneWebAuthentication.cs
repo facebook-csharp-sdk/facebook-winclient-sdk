@@ -92,7 +92,7 @@ namespace Facebook.Client
             WebAuthenticationBroker.AuthenticationInProgress = true;
 
             // Navigate to the login page.
-            rootFrame.Navigate(new Uri("/Facebook.Apps;component/loginpage.xaml", UriKind.Relative));
+            rootFrame.Navigate(new Uri("/Facebook.Client;component/loginpage.xaml", UriKind.Relative));
 
             Task<WebAuthenticationResult> task = Task<WebAuthenticationResult>.Factory.StartNew(() =>
             {

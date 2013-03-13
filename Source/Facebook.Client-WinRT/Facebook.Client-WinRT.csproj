@@ -30,10 +30,11 @@
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\Release\</OutputPath>
+    <OutputPath>..\..\Bin\Release\winRT\</OutputPath>
     <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>..\..\Bin\Release\winRT\Facebook.Client.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
     <DebugSymbols>true</DebugSymbols>
@@ -124,7 +125,9 @@
       <DependentUpon>FacebookDialogPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="FacebookSessionLocalSettingsCacheProvider.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\Facebook.Client\Properties\AssemblyInfo.cs">
+      <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
     <Compile Include="SimpleJson.cs" />
   </ItemGroup>
   <ItemGroup>

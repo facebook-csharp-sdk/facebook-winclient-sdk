@@ -14,7 +14,7 @@ namespace PhoneApp2
     public partial class App : Application
     {
 
-        public static FacebookSessionClient FacebookSessionClient;
+        public static FacebookSessionClient FacebookSessionClient = new FacebookSessionClient("427365490674294");
 
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
@@ -58,9 +58,6 @@ namespace PhoneApp2
                 // and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
-
-            FacebookSessionClient = new FacebookSessionClient("427365490674294");
-
         }
 
         // Code to execute when the application is launching (eg, from Start)
