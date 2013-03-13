@@ -14,7 +14,13 @@
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <tags>Facebook fb</tags>
         <dependencies>
-          <dependency id="Facebook" version="6.2" />
+            <group>
+                <dependency id="Facebook" version="6.2" />
+            </group>
+            <group targetFramework="wp71">
+                <dependency id="Facebook" version="6.2" />
+                <dependency id="Microsoft.Bcl.Async" />
+            </group>
         </dependencies>
     </metadata>
     <files>

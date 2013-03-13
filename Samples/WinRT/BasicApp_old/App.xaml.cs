@@ -17,7 +17,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
 
-namespace BasicApp
+namespace App1
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
@@ -26,6 +26,7 @@ namespace BasicApp
     {
 
         public static FacebookSessionClient FacebookSessionClient = new FacebookSessionClient("427365490674294");
+
         /// <summary>
         /// Initializes the singleton application object.  This is the first line of authored code
         /// executed, and as such is the logical equivalent of main() or WinMain().

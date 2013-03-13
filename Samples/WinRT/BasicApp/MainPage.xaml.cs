@@ -15,7 +15,7 @@ using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 
-namespace App1
+namespace BasicApp
 {
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
@@ -41,7 +41,7 @@ namespace App1
                 string message;
                 try
                 {
-                    sesion = await App.FacebookSessionClient.LoginAsync("email,publish_checkins");
+                    sesion = await App.FacebookSessionClient.LoginAsync("email,publish_checkins,publish_actions,friends_online_presence");
                     message = "You are now logged in";
                 }
                 catch (InvalidOperationException)

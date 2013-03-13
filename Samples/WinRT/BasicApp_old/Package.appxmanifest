@@ -1,13 +1,13 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
 
-  <Identity Name="b99925e1-8853-4b21-a8ef-5090924eef12"
-            Publisher="CN=ntotten"
+  <Identity Name="c98703a5-db84-4ebf-8f6e-020d41e2d341"
+            Publisher="CN=Nathan"
             Version="1.0.0.0" />
 
   <Properties>
-    <DisplayName>BasicApp</DisplayName>
-    <PublisherDisplayName>ntotten</PublisherDisplayName>
+    <DisplayName>App1</DisplayName>
+    <PublisherDisplayName>Nathan</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
 
@@ -23,12 +23,12 @@
   <Applications>
     <Application Id="App"
         Executable="$targetnametoken$.exe"
-        EntryPoint="BasicApp.App">
+        EntryPoint="App1.App">
         <VisualElements
-            DisplayName="BasicApp"
+            DisplayName="App1"
             Logo="Assets\Logo.png"
             SmallLogo="Assets\SmallLogo.png"
-            Description="BasicApp"
+            Description="App1"
             ForegroundText="light"
             BackgroundColor="#464646">
             <DefaultTile ShowName="allLogos" />

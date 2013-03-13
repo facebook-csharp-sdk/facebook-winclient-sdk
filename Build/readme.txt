@@ -1,21 +1,22 @@
-# Facebook C# SDK
-The Facebook C# SDK helps .Net developers build web, desktop, Silverlight, Windows Phone and Windows 8 Store applications that integrate with Facebook.
+# Facebook SDK for Windows & Windows Phone
+The Facebook SDK for Windows & Windows Phone helps .Net developers build Windows Phone and Windows Store applications that integrate with Facebook.
+
+> Note the Facebook SDK for Windows & Windows Phone is currently in alpha. The APIs will change as we move to v1.0.0.
 
 [Like us on Facebook at our official page](http://facebook.com/csharpsdk) or [Follow us on twitter @chsarpsdk](http://twitter.com/csharpsdk).
 
 ## NuGet
 
-    Install-Package Facebook
+    Install-Package Facebook.Client -pre
 
-*Binaries for Facebook C# SDK are only distributed via nuget. For those using older versions of Visual Studio that
-does not support NuGet Package Manager, please download the [command line version of NuGet.exe](http://nuget.codeplex.com/releases/view/58939) and run the following
+*Binaries for Facebook SDK for Windows & Windows Phone are only distributed via nuget. For those using older versions of Visual Studio that does not support NuGet Package Manager, please download the [command line version of NuGet.exe](http://nuget.codeplex.com/releases/view/58939) and run the following
 command.*
 
-    nuget install Facebook
+    nuget install Facebook.Client -pre
     
 If you would like to get an older version of the the binaries please use the following command.
 
-    nuget install Facebook -v 5.4.1
+    nuget install Facebook.Client -v 0.1.1
     
 ## Documentation
 You can find the documentation for this project at [http://csharpsdk.org](http://csharpsdk.org).
@@ -36,11 +37,7 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
 * Sample applications and documentation are provided to get you started quickly.
 
 ## Supported Platforms
-* .NET 3.5 (Client Profile and Full Profile)
-* .NET 4.0 (Client Profile and Full Profile)
-* .NET 4.5
-* Windows 8 Store Apps
-* Silverlight 5
+* Windows Store Apps
 * Windows Phone 7.1 (Mango)
 * Windows Phone 8
  
