@@ -1,7 +1,7 @@
 # Facebook SDK for Windows & Windows Phone
 The Facebook SDK for Windows & Windows Phone helps .Net developers build Windows Phone and Windows Store applications that integrate with Facebook.
 
-> **Note the Facebook SDK for Windows & Windows Phone is currently in alpha. The APIs will change and things will break as we move to v1.0.0.**
+> **WARNING: The Facebook SDK for Windows & Windows Phone is currently considered alpha quality. The APIs will change and things will break as we move to v1.0.0.**
 
 [Like us on Facebook at our official page](http://facebook.com/csharpsdk) or [Follow us on twitter @chsarpsdk](http://twitter.com/csharpsdk).
 
