@@ -15,10 +15,10 @@
         <tags>Facebook fb</tags>
         <dependencies>
             <group>
-                <dependency id="Facebook" version="6.2" />
+                <dependency id="Facebook" version="6.3" />
             </group>
             <group targetFramework="wp71">
-                <dependency id="Facebook" version="6.2" />
+                <dependency id="Facebook" version="6.3" />
                 <dependency id="Microsoft.Bcl.Async" />
             </group>
         </dependencies>
