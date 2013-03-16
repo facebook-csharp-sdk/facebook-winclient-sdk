@@ -22,8 +22,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
+using System.Xml.Serialization;
 
 namespace Facebook.Client
 {
@@ -31,7 +33,7 @@ namespace Facebook.Client
     {
         private const string fileName = "FACEBOOK_SESSION";
 
-        public override async Task<FacebookSession> GetSessionDataAsync()
+        public override FacebookSession GetSessionDataAsync()
         {
             var store = IsolatedStorageFile.GetUserStoreForApplication();
             if (!store.FileExists(fileName))
@@ -39,39 +41,26 @@ namespace Facebook.Client
                 return null;
             }
 
-            string json;
+            FacebookSession data;
+            var serializer = new XmlSerializer(typeof(FacebookSession));
             using (var stream = store.OpenFile(fileName, System.IO.FileMode.Open))
-            using (var reader = new StreamReader(stream))
             {
-                json = await reader.ReadToEndAsync();
-            }
-
-            FacebookSession data = null;
-            try
-            {
-                data = SimpleJson.DeserializeObject<FacebookSession>(json);
-            }
-            catch
-            {
-                // Invalid Json, delete the session and return an empty session;
-                DeleteSessionDataAsync();
+                data = serializer.Deserialize(stream) as FacebookSession;
             }
             return data;
         }
 
-        public override async Task SaveSessionDataAsync(FacebookSession data)
+        public override void SaveSessionDataAsync(FacebookSession data)
         {
-            var json = SimpleJson.SerializeObject(data);
-
+            var serializer = new XmlSerializer(typeof(FacebookSession));
             var store = IsolatedStorageFile.GetUserStoreForApplication();
             using (var stream = store.OpenFile(fileName, FileMode.Create))
-            using (var writer = new StreamWriter(stream))
             {
-                await writer.WriteAsync(json);
+                serializer.Serialize(stream, data);
             }
         }
 
-        public override async Task DeleteSessionDataAsync()
+        public override void DeleteSessionDataAsync()
         {
             var store = IsolatedStorageFile.GetUserStoreForApplication();
             if (store.FileExists(fileName))

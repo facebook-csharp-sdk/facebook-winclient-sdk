@@ -32,11 +32,11 @@ namespace Facebook.Client
             current = provider;
         }
 
-        public abstract Task<FacebookSession> GetSessionDataAsync();
+        public abstract FacebookSession GetSessionDataAsync();
 
-        public abstract Task SaveSessionDataAsync(FacebookSession data);
+        public abstract void SaveSessionDataAsync(FacebookSession data);
 
-        public abstract Task DeleteSessionDataAsync();
+        public abstract void DeleteSessionDataAsync();
 
     }
 }

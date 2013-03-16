@@ -60,7 +60,7 @@ namespace Facebook.Client
             this.LoginInProgress = true;
             try
             {
-                var session = await FacebookSessionCacheProvider.Current.GetSessionDataAsync();
+                var session = FacebookSessionCacheProvider.Current.GetSessionDataAsync();
                 if (session == null)
                 {
                     // Authenticate
@@ -83,7 +83,7 @@ namespace Facebook.Client
                 }
 
                 // Save session data
-                await FacebookSessionCacheProvider.Current.SaveSessionDataAsync(session);
+                FacebookSessionCacheProvider.Current.SaveSessionDataAsync(session);
                 this.CurrentSession = session;
             }
             finally
@@ -98,11 +98,11 @@ namespace Facebook.Client
         /// Log a user out of Facebook.
         /// </summary>
         [SuppressMessage("Microsoft.Naming", "CA1726:UsePreferredTerms", MessageId = "Logout", Justification = "Logout is preferred by design")]
-        public async void Logout()
+        public void Logout()
         {
             try
             {
-                await FacebookSessionCacheProvider.Current.DeleteSessionDataAsync();
+                FacebookSessionCacheProvider.Current.DeleteSessionDataAsync();
             }
             finally
             {

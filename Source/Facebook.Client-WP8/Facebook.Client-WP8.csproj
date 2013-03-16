@@ -118,7 +118,6 @@
     <Compile Include="..\Facebook.Client\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
-    <Compile Include="SimpleJson.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Facebook">
