@@ -27,5 +27,8 @@ namespace Facebook.Client
 {
     public class FacebookDialog
     {
+
+        public string AppId { get; set; }
+
     }
 }

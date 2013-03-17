@@ -109,6 +109,8 @@
     <Compile Include="..\Facebook.Client\FacebookSession.cs">
       <Link>FacebookSession.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\FacebookDialogResult.cs" />
+    <Compile Include="..\Facebook.Client\FacebookWebDialogResponseStatus.cs" />
     <Compile Include="..\Facebook.Client\FacebookSessionCacheProvider.cs">
       <Link>FacebookSessionCacheProvider.cs</Link>
     </Compile>
@@ -125,6 +127,15 @@
     <Compile Include="..\Facebook.Client\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\Tasks\FacebookFeedTask.cs">
+      <Link>Tasks\FacebookFeedTask.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Tasks\FacebookFeedTaskResult.cs">
+      <Link>Tasks\FacebookFeedTaskResult.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Tasks\FacebookTask.cs">
+      <Link>Tasks\FacebookTask.cs</Link>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="FacebookDialogPage.xaml">
@@ -134,7 +145,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Facebook">
-      <HintPath>..\packages\Facebook.6.3.1\lib\win8\Facebook.dll</HintPath>
+      <HintPath>..\packages\Facebook.6.4.0\lib\win8\Facebook.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
