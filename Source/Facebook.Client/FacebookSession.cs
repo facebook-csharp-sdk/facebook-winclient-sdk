@@ -33,6 +33,9 @@ namespace Facebook.Client
             this.CurrentPermissions = new List<string>();
         }
 
+        // NOTE: If you add properties to this object, you must update the 
+        // cache provider implimentations to ensure all values get persisted.
+
         public string AccessToken { get; set; }
         public DateTime Expires { get; set; }
         public string FacebookId { get; set; }

@@ -33,7 +33,7 @@ namespace Facebook.Client
     {
         private const string fileName = "FACEBOOK_SESSION";
 
-        public override FacebookSession GetSessionDataAsync()
+        public override FacebookSession GetSessionData()
         {
             var store = IsolatedStorageFile.GetUserStoreForApplication();
             if (!store.FileExists(fileName))
@@ -50,7 +50,7 @@ namespace Facebook.Client
             return data;
         }
 
-        public override void SaveSessionDataAsync(FacebookSession data)
+        public override void SaveSessionData(FacebookSession data)
         {
             var serializer = new XmlSerializer(typeof(FacebookSession));
             var store = IsolatedStorageFile.GetUserStoreForApplication();
@@ -60,7 +60,7 @@ namespace Facebook.Client
             }
         }
 
-        public override void DeleteSessionDataAsync()
+        public override void DeleteSessionData()
         {
             var store = IsolatedStorageFile.GetUserStoreForApplication();
             if (store.FileExists(fileName))

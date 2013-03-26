@@ -121,10 +121,10 @@
     <Compile Include="FacebookDialogPage.xaml.cs">
       <DependentUpon>FacebookDialogPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FacebookSessionLocalSettingsCacheProvider.cs" />
     <Compile Include="..\Facebook.Client\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="FacebookSessionRoamingSettingsCacheProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="FacebookDialogPage.xaml">

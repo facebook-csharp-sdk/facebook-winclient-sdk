@@ -20,7 +20,7 @@ namespace Facebook.Client
 #if WINDOWS_PHONE
                     current = new FacebookSessionIsolatedStorageCacheProvider();
 #else
-                    current = new FacebookSessionLocalSettingsCacheProvider();
+                    current = new FacebookSessionRoamingSettingsCacheProvider();
 #endif
                 }
                 return current;
@@ -32,11 +32,11 @@ namespace Facebook.Client
             current = provider;
         }
 
-        public abstract FacebookSession GetSessionDataAsync();
+        public abstract FacebookSession GetSessionData();
 
-        public abstract void SaveSessionDataAsync(FacebookSession data);
+        public abstract void SaveSessionData(FacebookSession data);
 
-        public abstract void DeleteSessionDataAsync();
+        public abstract void DeleteSessionData();
 
     }
 }

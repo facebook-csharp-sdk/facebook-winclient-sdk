@@ -65,24 +65,24 @@ namespace Facebook.Client
             this.LoginInProgress = true;
             try
             {
-                var session = FacebookSessionCacheProvider.Current.GetSessionDataAsync();
+                var session = FacebookSessionCacheProvider.Current.GetSessionData();
                 if (session == null)
                 {
                     // Authenticate
                     var authResult = await PromptOAuthDialog(permissions, WebAuthenticationOptions.None);
 
-                    //FacebookClient client = new FacebookClient(authResult.AccessToken);
-                    //var parameters = new Dictionary<string, object>();
-                    //parameters["fields"] = "id";
+                    FacebookClient client = new FacebookClient(authResult.AccessToken);
+                    var parameters = new Dictionary<string, object>();
+                    parameters["fields"] = "id";
 
-                    //var result = await client.GetTaskAsync("me", parameters);
-                    //var dict = (IDictionary<string, object>)result;
+                    var result = await client.GetTaskAsync("me", parameters);
+                    var dict = (IDictionary<string, object>)result;
 
                     session = new FacebookSession
                     {
                         AccessToken = authResult.AccessToken,
                         Expires = authResult.Expires,
-                        //FacebookId = (string)dict["id"],
+                        FacebookId = (string)dict["id"],
                     };
                   
                 }
@@ -118,7 +118,7 @@ namespace Facebook.Client
                 }
 
                 // Save session data
-                FacebookSessionCacheProvider.Current.SaveSessionDataAsync(session);
+                FacebookSessionCacheProvider.Current.SaveSessionData(session);
                 this.CurrentSession = session;
             }
             finally
@@ -137,7 +137,7 @@ namespace Facebook.Client
         {
             try
             {
-                FacebookSessionCacheProvider.Current.DeleteSessionDataAsync();
+                FacebookSessionCacheProvider.Current.DeleteSessionData();
             }
             finally
             {
