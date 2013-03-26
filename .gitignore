@@ -44,3 +44,6 @@ Working/
 Dist/
 packages/
 NuGet.exe
+
+#Windows 8
+AppPackages/
