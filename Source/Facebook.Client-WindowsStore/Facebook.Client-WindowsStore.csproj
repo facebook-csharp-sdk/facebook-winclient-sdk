@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\Bin\Debug\win8\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFX_CORE;SIMPLE_JSON_INTERNAL</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\Bin\Debug\win8\Facebook.Client.xml</DocumentationFile>

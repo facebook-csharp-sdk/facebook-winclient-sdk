@@ -65,21 +65,51 @@ namespace Facebook.Client
                 {
                     // Authenticate
                     var authResult = await PromptOAuthDialog(permissions, WebAuthenticationOptions.None);
+
+                    //FacebookClient client = new FacebookClient(authResult.AccessToken);
+                    //var parameters = new Dictionary<string, object>();
+                    //parameters["fields"] = "id";
+
+                    //var result = await client.GetTaskAsync("me", parameters);
+                    //var dict = (IDictionary<string, object>)result;
+
                     session = new FacebookSession
                     {
                         AccessToken = authResult.AccessToken,
                         Expires = authResult.Expires,
+                        //FacebookId = (string)dict["id"],
                     };
+                  
                 }
                 else
                 {
-                    // Attempt to renew access token using the server-side flow with no UI.
-                    // TODO: Should we check to ensure we only renew once per app start?
-                    var authResult = await PromptOAuthDialog(permissions, WebAuthenticationOptions.None);
-                    if (authResult != null)
+                    bool newPermissions = false;
+                    if (!string.IsNullOrEmpty(permissions))
                     {
-                        session.AccessToken = authResult.AccessToken;
+                        var p = permissions.Split(',');
+                        newPermissions = session.CurrentPermissions.Join(p, s1 => s1, s2 => s2, (s1, s2) => s1).Count() != p.Length;
                     }
+
+                    if (newPermissions)
+                    {
+                        var authResult = await PromptOAuthDialog(permissions, WebAuthenticationOptions.None);
+                        if (authResult != null)
+                        {
+                            session.AccessToken = authResult.AccessToken;
+                            session.Expires = authResult.Expires;
+                        }
+                    }
+                    else
+                    {
+                        // TODO: We need to handle automatic renewal of the access token.
+                    }
+                }
+
+                // Set the current known permissions
+                if (!string.IsNullOrEmpty(permissions))
+                {
+                    var p = permissions.Split(',');
+                    session.CurrentPermissions = session.CurrentPermissions.Union(p).ToList();
                 }
 
                 // Save session data

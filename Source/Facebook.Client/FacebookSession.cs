@@ -28,8 +28,15 @@ namespace Facebook.Client
     public class FacebookSession
     {
 
+        public FacebookSession()
+        {
+            this.CurrentPermissions = new List<string>();
+        }
+
         public string AccessToken { get; set; }
         public DateTime Expires { get; set; }
+        public string FacebookId { get; set; }
+        public List<string> CurrentPermissions { get; set; }
 
     }
 }
