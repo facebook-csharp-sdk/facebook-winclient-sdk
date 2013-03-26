@@ -33,7 +33,8 @@ assemblyinfo.setDefaults({
 })
 
 desc('Build all binaries, run tests and create nuget and symbolsource packages')
-task('default', ['build', 'test', 'nuget:pack'])
+//task('default', ['build', 'test', 'nuget:pack'])
+task('default', ['build', 'nuget:pack'])
 
 directory('Dist/')
 
