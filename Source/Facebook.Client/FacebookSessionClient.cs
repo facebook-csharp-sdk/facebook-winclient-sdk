@@ -47,10 +47,15 @@ namespace Facebook.Client
 
         public async Task<FacebookSession> LoginAsync()
         {
-            return await LoginAsync(null);
+            return await LoginAsync(null, false);
         }
 
         public async Task<FacebookSession> LoginAsync(string permissions)
+        {
+            return await LoginAsync(permissions, false);
+        }
+
+        internal async Task<FacebookSession> LoginAsync(string permissions, bool force)
         {
             if (this.LoginInProgress)
             {
@@ -83,6 +88,7 @@ namespace Facebook.Client
                 }
                 else
                 {
+                    // Check if we are requesting new permissions
                     bool newPermissions = false;
                     if (!string.IsNullOrEmpty(permissions))
                     {
@@ -90,7 +96,10 @@ namespace Facebook.Client
                         newPermissions = session.CurrentPermissions.Join(p, s1 => s1, s2 => s2, (s1, s2) => s1).Count() != p.Length;
                     }
 
-                    if (newPermissions)
+                    // Prompt OAuth dialog if force renew is true or
+                    // if new permissions are requested or 
+                    // if the access token is going to expire in less than 30 days.
+                    if (force || newPermissions || session.Expires < DateTime.Now.AddDays(30))
                     {
                         var authResult = await PromptOAuthDialog(permissions, WebAuthenticationOptions.None);
                         if (authResult != null)
@@ -98,10 +107,6 @@ namespace Facebook.Client
                             session.AccessToken = authResult.AccessToken;
                             session.Expires = authResult.Expires;
                         }
-                    }
-                    else
-                    {
-                        // TODO: We need to handle automatic renewal of the access token.
                     }
                 }
 

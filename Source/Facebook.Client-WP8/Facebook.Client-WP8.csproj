@@ -112,7 +112,8 @@
     <Compile Include="..\Facebook.Client\PhoneWebAuthentication.cs">
       <Link>PhoneWebAuthentication.cs</Link>
     </Compile>
-    <Compile Include="LoginPage.xaml.cs">
+    <Compile Include="..\Facebook.Client\LoginPage.xaml.cs">
+      <Link>LoginPage.xaml.cs</Link>
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="..\Facebook.Client\Properties\AssemblyInfo.cs">
@@ -125,7 +126,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="LoginPage.xaml">
+    <Page Include="..\Facebook.Client\LoginPage.xaml">
+      <Link>LoginPage.xaml</Link>
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -133,7 +135,7 @@
   <ItemGroup>
     <Reference Include="Facebook, Version=6.0.10.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Facebook.6.3.1\lib\wp8\Facebook.dll</HintPath>
+      <HintPath>..\packages\Facebook.6.4.0\lib\wp8\Facebook.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
