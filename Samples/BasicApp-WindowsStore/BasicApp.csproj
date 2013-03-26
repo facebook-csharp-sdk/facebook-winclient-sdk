@@ -139,11 +139,14 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Facebook">
-      <HintPath>..\packages\Facebook.6.4.0\lib\win8\Facebook.dll</HintPath>
+      <HintPath>..\..\Source\packages\Facebook.6.4.0\lib\win8\Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="Facebook.Client">
-      <HintPath>..\..\..\Bin\Debug\win8\Facebook.Client.dll</HintPath>
-    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Source\Facebook.Client-WindowsStore\Facebook.Client-WindowsStore.csproj">
+      <Project>{f7ffe744-7cc4-42c5-bf7b-a0f11ecf9722}</Project>
+      <Name>Facebook.Client-WindowsStore</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>

@@ -19,7 +19,7 @@ namespace BasicApp
     public partial class App : Application
     {
 
-        public static FacebookSessionClient FacebookSessionClient;
+        public static FacebookSessionClient FacebookSessionClient = new FacebookSessionClient("427365490674294");
 
         /// <summary>
         /// Provides easy access to the root frame of the Phone Application.
