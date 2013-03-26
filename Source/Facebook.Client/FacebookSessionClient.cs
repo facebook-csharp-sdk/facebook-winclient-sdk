@@ -98,8 +98,8 @@ namespace Facebook.Client
 
                     // Prompt OAuth dialog if force renew is true or
                     // if new permissions are requested or 
-                    // if the access token is going to expire in less than 30 days.
-                    if (force || newPermissions || session.Expires < DateTime.Now.AddDays(30))
+                    // if the access token is expired.
+                    if (force || newPermissions || session.Expires > DateTime.UtcNow)
                     {
                         var authResult = await PromptOAuthDialog(permissions, WebAuthenticationOptions.None);
                         if (authResult != null)
