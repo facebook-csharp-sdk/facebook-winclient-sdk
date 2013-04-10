@@ -52,7 +52,7 @@
   <ItemGroup>
     <Reference Include="Facebook, Version=6.0.10.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\Source\packages\Facebook.6.4.0\lib\wp71\Facebook.dll</HintPath>
+      <HintPath>..\..\Source\packages\Facebook.6.4.0\lib\wp71\Facebook.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Interop" />
