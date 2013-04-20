@@ -6,7 +6,7 @@
         <title/>
         <authors>Outercurve Foundation</authors>
         <owners>Nathan Totten, Prabir Shrestha</owners>
-        <description><![CDATA[The Facebook SDK for Windows & Windows Phone helps .Net developers build phone and Windows Store applications that integrate with Facebook.]]></description>
+        <description><![CDATA[The Facebook C# SDK for Windows & Windows Phone helps .NET developers build phone and Windows Store applications that integrate with Facebook.]]></description>
         <language>en-US</language>
         <licenseUrl>https://github.com/facebook-csharp-sdk/facebook-winclient-sdk/master/LICENSE.txt</licenseUrl>
         <projectUrl>https://github.com/facebook-csharp-sdk/facebook-winclient-sdk</projectUrl>
