@@ -31,7 +31,7 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
 [Facebook Change Log](https://developers.facebook.com/docs/changelog/)
 
 ## Features
-* NuGet Packages Available ([Facebook.Client](http://nuget.org/packages/Facebook.Client)
+* NuGet Packages Available ([Facebook.Client](http://nuget.org/packages/Facebook.Client))
 * Authentication Helpers
 
 ## Supported Platforms
