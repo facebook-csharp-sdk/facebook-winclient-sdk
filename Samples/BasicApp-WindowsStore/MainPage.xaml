@@ -5,9 +5,10 @@
     xmlns:local="using:BasicApp"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:facebookControls="using:Facebook.Client.Controls"
     mc:Ignorable="d">
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
-
+        <facebookControls:LoginView ApplicationId="427365490674294" Width="200" Height="100" UserInfoChanged="OnUserInfoChanged" />
     </Grid>
 </Page>

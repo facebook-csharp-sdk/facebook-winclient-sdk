@@ -30,7 +30,7 @@ namespace BasicApp
 
         async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            await Authenticate();
+            //await Authenticate();
         }
 
         private FacebookSession sesion;
@@ -59,6 +59,10 @@ namespace BasicApp
         /// <param name="e">Event data that describes how this page was reached.  The Parameter
         /// property is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+        }
+
+        private void OnUserInfoChanged(object sender, Facebook.Client.Controls.UserInfoChangedEventArgs e)
         {
         }
     }
