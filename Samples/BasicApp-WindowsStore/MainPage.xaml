@@ -9,6 +9,12 @@
     mc:Ignorable="d">
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
-        <facebookControls:LoginView ApplicationId="427365490674294" Width="200" Height="100" UserInfoChanged="OnUserInfoChanged" />
+        <facebookControls:LoginView 
+            ApplicationId="427365490674294" 
+            Width="150" Height="60" 
+            HorizontalAlignment="Right"
+            VerticalAlignment="Top"
+            Margin="50"
+            UserInfoChanged="OnUserInfoChanged" />
     </Grid>
 </Page>

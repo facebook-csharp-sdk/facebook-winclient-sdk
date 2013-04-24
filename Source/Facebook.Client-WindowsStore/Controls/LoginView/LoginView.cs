@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -209,9 +210,28 @@ namespace Facebook.Client.Controls
         /// Identifies the Label dependency property.
         /// </summary>
         public static readonly DependencyProperty LabelProperty =
-            DependencyProperty.Register("Label", typeof(string), typeof(LoginView), new PropertyMetadata(0));
+            DependencyProperty.Register("Label", typeof(string), typeof(LoginView), new PropertyMetadata(string.Empty));
         
         #endregion Label
+
+        #region CornerRadius
+
+        #endregion CornerRadius
+
+        /// <summary>
+        /// Gets or sets a value that represents the degree to which the corners of a Border are rounded. 
+        /// </summary>
+        public CornerRadius CornerRadius
+        {
+            get { return (CornerRadius)GetValue(CornerRadiusProperty); }
+            set { SetValue(CornerRadiusProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the CornerRadius dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CornerRadiusProperty =
+            DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(LoginView), new PropertyMetadata(new CornerRadius(0)));
 
         #endregion Properties
 
@@ -266,18 +286,24 @@ namespace Facebook.Client.Controls
                 // retrieve information about the current user
                 if (this.FetchUserInfo)
                 {
-                    // TODO: implement fetching user info
+                    FacebookClient client = new FacebookClient(session.AccessToken);
+                    var parameters = new Dictionary<string, object>();
+                    parameters["fields"] = "id,name,username,first_name,middle_name,last_name,birthday,location,link";
+
+                    var result = await client.GetTaskAsync("me", parameters) as IDictionary<string, object>;
+
                     var userInfo = new UserInfoChangedEventArgs(
                         new FacebookUser()
                         {
-                            Id = session.FacebookId,
-                            Name = "Name placeholder",
-                            UserName = "UserName placeholder",
-                            FirstName = "FirstName placeholder",
-                            MiddleName = "MiddleName placeholder",
-                            LastName = "LastName placeholder",
-                            Birthday = "Birthday placeholder",
-                            Link = "Link placeholder"
+                            Id = result.ContainsKey("id") ? (string) result["id"] : string.Empty,
+                            Name = result.ContainsKey("name") ? (string) result["name"] : string.Empty,
+                            UserName = result.ContainsKey("username") ? (string) result["username"] : string.Empty,
+                            FirstName = result.ContainsKey("first_name") ? (string)result["first_name"] : string.Empty,
+                            MiddleName = result.ContainsKey("middle_name") ? (string)result["middle_name"] : string.Empty,
+                            LastName = result.ContainsKey("last_name") ? (string)result["last_name"] : string.Empty,
+                            Birthday = result.ContainsKey("birthday") ? (string)result["birthday"] : string.Empty,
+                            //Location = result.ContainsKey("location") ? (string)result["location"] : string.Empty,
+                            Link = result.ContainsKey("link") ? (string)result["link"] : string.Empty
                         });
 
                     RaiseUserInfoChanged(userInfo);

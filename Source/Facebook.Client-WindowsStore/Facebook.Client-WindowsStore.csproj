@@ -118,6 +118,8 @@
     <Compile Include="..\Facebook.Client\FacebookWebDialog.cs">
       <Link>FacebookWebDialog.cs</Link>
     </Compile>
+    <Compile Include="Controls\Converters\ColorIntensityConverter.cs" />
+    <Compile Include="Controls\Converters\ScaleConverter.cs" />
     <Compile Include="Controls\LoginView\AuthenticationErrorEventArgs.cs" />
     <Compile Include="Controls\LoginView\DefaultAudience.cs" />
     <Compile Include="Controls\LoginView\FacebookSessionState.cs" />
@@ -134,6 +136,11 @@
     <Compile Include="FacebookUser.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\LoginView\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
     <Page Include="FacebookDialogPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
