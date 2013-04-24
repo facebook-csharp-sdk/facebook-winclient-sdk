@@ -6,65 +6,6 @@
     <local:ColorIntensityConverter x:Key="ColorIntensityConverter" />
     <local:ScaleConverter x:Key="ScaleConverter" />
 
-    <!--<Style TargetType="local:LoginView">
-        <Setter Property="Background" Value="#FF3B5998" />
-        <Setter Property="Foreground" Value="#FFFFFFFF"/>
-        <Setter Property="CornerRadius" Value="18" />
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="local:LoginView">
-                    <Border
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding Foreground}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        CornerRadius="{TemplateBinding CornerRadius}">
-                        <Button x:Name="PART_LoginButton"
-                                Width="{TemplateBinding Width}" 
-                                Height="{TemplateBinding Height}" 
-                                Foreground="{TemplateBinding Foreground}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="45*"/>
-                                    <ColumnDefinition Width="2*"/>
-                                    <ColumnDefinition Width="3*"/>
-                                    <ColumnDefinition Width="100*"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock
-                                            Grid.Column="0" 
-                                            Text="f"
-                                            VerticalAlignment="Center"
-                                            HorizontalAlignment="Center"
-                                            FontFamily="{TemplateBinding FontFamily}"
-                                            FontWeight="Bold"
-                                            FontSize="{Binding 
-                                                RelativeSource={RelativeSource TemplatedParent}, 
-                                                Path=Width,
-                                                Converter={StaticResource ScaleConverter},
-                                                ConverterParameter=0.30}"/>
-
-                                <Rectangle Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
-                                               Fill="{Binding RelativeSource={RelativeSource TemplatedParent}, 
-                                                                                                Path=Background,
-                                                                                                Converter={StaticResource ColorIntensityConverter},
-                                                                                                ConverterParameter=0.75}"/>
-                                <Rectangle Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
-                                               Fill="{Binding RelativeSource={RelativeSource TemplatedParent}, 
-                                                                                                Path=Background,
-                                                                                                Converter={StaticResource ColorIntensityConverter},
-                                                                                                ConverterParameter=1.25}"/>
-                                <TextBlock
-                                        Grid.Column="3"
-                                        Padding="10"
-                                        Text="{TemplateBinding Label}"
-                                        HorizontalAlignment="Center" 
-                                        VerticalAlignment="Center" />
-                            </Grid>
-                        </Button>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>-->
     <Style TargetType="local:LoginView">
         <Setter Property="Background" Value="#FF3B5998" />
         <Setter Property="Foreground" Value="{StaticResource ButtonForegroundThemeBrush}"/>
@@ -188,10 +129,9 @@
                                                 <TextBlock
                                                     Grid.Column="3"
                                                     Padding="10"
-                                                    Text="Log In"
                                                     HorizontalAlignment="Center" 
-                                                    VerticalAlignment="Center" />
-                                                <!--Text="{TemplateBinding Label}-->
+                                                    VerticalAlignment="Center" 
+                                                    Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" />
                                             </Grid>
                                         </ContentPresenter>
                                     </Border>
