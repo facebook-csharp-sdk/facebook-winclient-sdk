@@ -4,7 +4,7 @@
     xmlns:local="using:Facebook.Client.Controls">
 
     <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="ms-appx:///Facebook.Client/Controls/LoginView/LoginView.xaml" />
+        <ResourceDictionary Source="ms-appx:///Facebook.Client/Controls/LoginButton/LoginButton.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
 </ResourceDictionary>

@@ -1,8 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+
+#if NETFX_CORE
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+#endif
+#if WINDOWS_PHONE
+using System.Windows.Controls;
+using System.Windows;
+#endif
 
 namespace Facebook.Client.Controls
 {
@@ -10,26 +17,29 @@ namespace Facebook.Client.Controls
     /// Represents a button control that can log in or log out the user when clicked.
     /// </summary>
     /// <remarks>
-    /// The LoginView keeps track of the authentication status and shows an appropriate label that 
+    /// The LoginButton keeps track of the authentication status and shows an appropriate label that 
     /// reflects whether the user is currently authenticated. When a user logs in, it can automatically 
     /// retrieve their basic information.
     /// </remarks>
-    public sealed class LoginView : Control
+    [TemplatePart(Name = Part_LoginButton, Type = typeof(Button))]
+    [TemplatePart(Name = Part_Caption, Type = typeof(TextBlock))]
+    public sealed class LoginButton : Control
     {
         private Button loginButton;
         private FacebookSessionClient facebookSessionClient;
 
         /// <summary>
-        /// Initializes a new instance of the LoginView class. 
+        /// Initializes a new instance of the LoginButton class. 
         /// </summary>
-        public LoginView()
+        public LoginButton()
         {
-            this.DefaultStyleKey = typeof(LoginView);
+            this.DefaultStyleKey = typeof(LoginButton);
         }
 
         #region Part Definitions
 
         private const string Part_LoginButton = "PART_LoginButton";
+        private const string Part_Caption = "PART_Caption";
 
         #endregion Part Definitions
 
@@ -72,11 +82,11 @@ namespace Facebook.Client.Controls
         /// Identifies the ApplicationId dependency property.
         /// </summary>
         public static readonly DependencyProperty ApplicationIdProperty =
-            DependencyProperty.Register("ApplicationId", typeof(string), typeof(LoginView), new PropertyMetadata(string.Empty, OnApplicationIdPropertyChanged));
+            DependencyProperty.Register("ApplicationId", typeof(string), typeof(LoginButton), new PropertyMetadata(string.Empty, OnApplicationIdPropertyChanged));
 
         private static void OnApplicationIdPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var target = (LoginView)d;
+            var target = (LoginButton)d;
             target.facebookSessionClient = new FacebookSessionClient(target.ApplicationId);
         }
 
@@ -102,7 +112,7 @@ namespace Facebook.Client.Controls
         /// Identifies the DefaultAudience dependency property.
         /// </summary>
         public static readonly DependencyProperty DefaultAudienceProperty =
-            DependencyProperty.Register("DefaultAudience", typeof(DefaultAudience), typeof(LoginView), new PropertyMetadata(DefaultAudience.None));
+            DependencyProperty.Register("DefaultAudience", typeof(DefaultAudience), typeof(LoginButton), new PropertyMetadata(DefaultAudience.None));
 
         #endregion DefaultAudience
 
@@ -124,7 +134,7 @@ namespace Facebook.Client.Controls
         /// Identifies the ReadPermissions dependency property.
         /// </summary>
         public static readonly DependencyProperty ReadPermissionsProperty =
-            DependencyProperty.Register("ReadPermissions", typeof(string), typeof(LoginView), new PropertyMetadata(null));
+            DependencyProperty.Register("ReadPermissions", typeof(string), typeof(LoginButton), new PropertyMetadata(null));
         
         #endregion ReadPermissions
 
@@ -147,7 +157,7 @@ namespace Facebook.Client.Controls
         /// Identifies the PublishPermissions dependency property.
         /// </summary>
         public static readonly DependencyProperty PublishPermissionsProperty =
-            DependencyProperty.Register("PublishPermissions", typeof(string), typeof(LoginView), new PropertyMetadata(null));
+            DependencyProperty.Register("PublishPermissions", typeof(string), typeof(LoginButton), new PropertyMetadata(null));
 
         #endregion PublishPermissions
 
@@ -166,7 +176,7 @@ namespace Facebook.Client.Controls
         /// Identifies the FetchUserInfo dependency property.
         /// </summary>
         public static readonly DependencyProperty FetchUserInfoProperty =
-            DependencyProperty.Register("FetchUserInfo", typeof(bool), typeof(LoginView), new PropertyMetadata(true));
+            DependencyProperty.Register("FetchUserInfo", typeof(bool), typeof(LoginButton), new PropertyMetadata(true));
         
         #endregion FetchUserInfo
 
@@ -185,38 +195,17 @@ namespace Facebook.Client.Controls
         /// Identifies the CurrentSession dependency property.
         /// </summary>
         public static readonly DependencyProperty CurrentSessionProperty =
-            DependencyProperty.Register("CurrentSession", typeof(FacebookSession), typeof(LoginView), new PropertyMetadata(null, OnCurrentSessionPropertyChanged));
+            DependencyProperty.Register("CurrentSession", typeof(FacebookSession), typeof(LoginButton), new PropertyMetadata(null, OnCurrentSessionPropertyChanged));
 
         private static void OnCurrentSessionPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var target = (LoginView)d;
-            target.SetLoginButtonLabel();
+            var target = (LoginButton)d;
+            target.UpdateButtonCaption();
         }
         
         #endregion CurrentSession
 
-        #region Label
-
-        /// <summary>
-        /// Gets or sets the label shown by the control.
-        /// </summary>
-        public string Label
-        {
-            get { return (string)GetValue(LabelProperty); }
-            set { SetValue(LabelProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the Label dependency property.
-        /// </summary>
-        public static readonly DependencyProperty LabelProperty =
-            DependencyProperty.Register("Label", typeof(string), typeof(LoginView), new PropertyMetadata(string.Empty));
-        
-        #endregion Label
-
         #region CornerRadius
-
-        #endregion CornerRadius
 
         /// <summary>
         /// Gets or sets a value that represents the degree to which the corners of a Border are rounded. 
@@ -231,7 +220,9 @@ namespace Facebook.Client.Controls
         /// Identifies the CornerRadius dependency property.
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty =
-            DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(LoginView), new PropertyMetadata(new CornerRadius(0)));
+            DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(LoginButton), new PropertyMetadata(new CornerRadius(0)));
+
+        #endregion CornerRadius
 
         #endregion Properties
 
@@ -242,7 +233,12 @@ namespace Facebook.Client.Controls
         /// terms, this means the method is called just before a UI element displays in your app. Override this method to influence the 
         /// default post-template logic of a class. 
         /// </summary>
+#if NETFX_CORE
         protected override void OnApplyTemplate()
+#endif
+#if WINDOWS_PHONE
+        public override void OnApplyTemplate()
+#endif
         {
             base.OnApplyTemplate();
 
@@ -253,8 +249,9 @@ namespace Facebook.Client.Controls
                 throw new Exception(string.Format("Template element '{0}' is missing.", Part_LoginButton));
             }
 
+            this.loginButton.DataContext = this;
             this.loginButton.Click += OnLoginButtonClicked;
-            SetLoginButtonLabel();
+            UpdateButtonCaption();
         }
 
         async void OnLoginButtonClicked(object sender, RoutedEventArgs e)
@@ -353,7 +350,7 @@ namespace Facebook.Client.Controls
             }
         }
 
-        private void SetLoginButtonLabel()
+        private void UpdateButtonCaption()
         {
             this.loginButton.Content = this.CurrentSession == null ? "Log In" : "Log Out";
         }

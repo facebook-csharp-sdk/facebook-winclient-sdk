@@ -3,10 +3,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Facebook.Client.Controls">
 
-    <local:ColorIntensityConverter x:Key="ColorIntensityConverter" />
+    <local:ColorLuminosityConverter x:Key="ColorLuminosityConverter" />
     <local:ScaleConverter x:Key="ScaleConverter" />
 
-    <Style TargetType="local:LoginView">
+    <Style TargetType="local:LoginButton">
         <Setter Property="Background" Value="#FF3B5998" />
         <Setter Property="Foreground" Value="{StaticResource ButtonForegroundThemeBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource ButtonBorderThemeBrush}"/>
@@ -17,9 +17,10 @@
         <Setter Property="FontFamily" Value="{StaticResource ContentControlThemeFontFamily}"/>
         <Setter Property="FontWeight" Value="SemiBold"/>
         <Setter Property="FontSize" Value="{StaticResource ControlContentThemeFontSize}"/>
+        <Setter Property="CornerRadius" Value="8" />
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="local:LoginView">
+                <ControlTemplate TargetType="local:LoginButton">
                     <Button x:Name="PART_LoginButton"
                             BorderBrush="{TemplateBinding BorderBrush}" 
                             BorderThickness="{TemplateBinding BorderThickness}" 
@@ -28,8 +29,7 @@
                             Padding="{TemplateBinding Padding}" 
                             FontFamily="{TemplateBinding FontFamily}" 
                             Width="{TemplateBinding Width}" 
-                            Height="{TemplateBinding Height}" 
-                            >
+                            Height="{TemplateBinding Height}">
                         <Button.Template>
                             <ControlTemplate>
                                 <Grid>
@@ -41,7 +41,7 @@
                                                     <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
                                                         <DiscreteObjectKeyFrame KeyTime="0" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, 
                                                                                                             Path=Background,
-                                                                                                            Converter={StaticResource ColorIntensityConverter},
+                                                                                                            Converter={StaticResource ColorLuminosityConverter},
                                                                                                             ConverterParameter=0.7}"/>
                                                     </ObjectAnimationUsingKeyFrames>
                                                     <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
@@ -54,7 +54,7 @@
                                                     <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
                                                         <DiscreteObjectKeyFrame KeyTime="0" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, 
                                                                                                             Path=Background,
-                                                                                                            Converter={StaticResource ColorIntensityConverter},
+                                                                                                            Converter={StaticResource ColorLuminosityConverter},
                                                                                                             ConverterParameter=1.3}"/>
                                                     </ObjectAnimationUsingKeyFrames>
                                                     <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
@@ -91,9 +91,8 @@
                                             BorderBrush="{TemplateBinding BorderBrush}" 
                                             BorderThickness="{TemplateBinding BorderThickness}" 
                                             Background="{TemplateBinding Background}" 
-                                            Padding="{TemplateBinding Padding}" 
-                                            >
-                                        <!--CornerRadius="{TemplateBinding CornerRadius}"-->
+                                            CornerRadius="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DataContext.CornerRadius}"
+                                            Padding="{TemplateBinding Padding}">
                                         <ContentPresenter x:Name="ContentPresenter" 
                                                           Foreground="{TemplateBinding Foreground}">
                                             <Grid>
@@ -119,14 +118,14 @@
                                                 <Rectangle Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
                                                            Fill="{Binding RelativeSource={RelativeSource TemplatedParent}, 
                                                                                                             Path=Background,
-                                                                                                            Converter={StaticResource ColorIntensityConverter},
+                                                                                                            Converter={StaticResource ColorLuminosityConverter},
                                                                                                             ConverterParameter=0.75}"/>
                                                 <Rectangle Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
                                                            Fill="{Binding RelativeSource={RelativeSource TemplatedParent}, 
                                                                                                             Path=Background,
-                                                                                                            Converter={StaticResource ColorIntensityConverter},
+                                                                                                            Converter={StaticResource ColorLuminosityConverter},
                                                                                                             ConverterParameter=1.25}"/>
-                                                <TextBlock
+                                                <TextBlock x:Name="PART_Caption"
                                                     Grid.Column="3"
                                                     Padding="10"
                                                     HorizontalAlignment="Center" 

@@ -103,6 +103,33 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Facebook.Client\Controls\Converters\ColorLuminosityConverter.cs">
+      <Link>Controls\Converters\ColorLuminosityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Converters\HlsColor.cs">
+      <Link>Controls\Converters\HlsColor.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Converters\ScaleConverter.cs">
+      <Link>Controls\Converters\ScaleConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\LoginButton\AuthenticationErrorEventArgs.cs">
+      <Link>Controls\LoginButton\AuthenticationErrorEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\LoginButton\DefaultAudience.cs">
+      <Link>Controls\LoginButton\DefaultAudience.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\LoginButton\FacebookSessionState.cs">
+      <Link>Controls\LoginButton\FacebookSessionState.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\LoginButton\LoginButton.cs">
+      <Link>Controls\LoginButton\LoginButton.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\LoginButton\SessionStateChangedEventArgs.cs">
+      <Link>Controls\LoginButton\SessionStateChangedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\LoginButton\UserInfoChangedEventArgs.cs">
+      <Link>Controls\LoginButton\UserInfoChangedEventArgs.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\FacebookDialog.cs">
       <Link>FacebookDialog.cs</Link>
     </Compile>
@@ -115,17 +142,12 @@
     <Compile Include="..\Facebook.Client\FacebookSessionClient.cs">
       <Link>FacebookSessionClient.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\FacebookUser.cs">
+      <Link>FacebookUser.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\FacebookWebDialog.cs">
       <Link>FacebookWebDialog.cs</Link>
     </Compile>
-    <Compile Include="Controls\Converters\ColorIntensityConverter.cs" />
-    <Compile Include="Controls\Converters\ScaleConverter.cs" />
-    <Compile Include="Controls\LoginView\AuthenticationErrorEventArgs.cs" />
-    <Compile Include="Controls\LoginView\DefaultAudience.cs" />
-    <Compile Include="Controls\LoginView\FacebookSessionState.cs" />
-    <Compile Include="Controls\LoginView\LoginView.cs" />
-    <Compile Include="Controls\LoginView\SessionStateChangedEventArgs.cs" />
-    <Compile Include="Controls\LoginView\UserInfoChangedEventArgs.cs" />
     <Compile Include="FacebookDialogPage.xaml.cs">
       <DependentUpon>FacebookDialogPage.xaml</DependentUpon>
     </Compile>
@@ -133,10 +155,9 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="FacebookSessionRoamingSettingsCacheProvider.cs" />
-    <Compile Include="FacebookUser.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Controls\LoginView\LoginView.xaml">
+    <Page Include="Controls\LoginButton\LoginButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
