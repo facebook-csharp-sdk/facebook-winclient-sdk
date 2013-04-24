@@ -27,7 +27,7 @@ namespace PhoneApp2
 
         async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            await Authenticate();
+            //await Authenticate();
         }
 
         private FacebookSession session;
@@ -65,5 +65,14 @@ namespace PhoneApp2
         //    ApplicationBarMenuItem appBarMenuItem = new ApplicationBarMenuItem(AppResources.AppBarMenuItemText);
         //    ApplicationBar.MenuItems.Add(appBarMenuItem);
         //}
+
+        private void OnUserInfoChanged(object sender, Facebook.Client.Controls.UserInfoChangedEventArgs e)
+        {
+        }
+
+        private void OnSessionStateChanged(object sender, Facebook.Client.Controls.SessionStateChangedEventArgs e)
+        {
+        }
+
     }
 }
