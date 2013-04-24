@@ -11,7 +11,7 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
-                        <Button x:Name="PART_LoginButton" Content="{TemplateBinding Label}" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" />
+                        <Button x:Name="PART_LoginButton" Width="{TemplateBinding Width}" Height="{TemplateBinding Height}" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
