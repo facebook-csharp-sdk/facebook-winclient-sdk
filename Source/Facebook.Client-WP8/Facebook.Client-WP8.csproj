@@ -87,6 +87,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Facebook.Client\Controls\Converters\ColorLuminosityConverter.cs">
+      <Link>Controls\Converters\ColorLuminosityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Converters\HlsColor.cs">
+      <Link>Controls\Converters\HlsColor.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Converters\ScaleConverter.cs">
+      <Link>Controls\Converters\ScaleConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\Controls\LoginButton\AuthenticationErrorEventArgs.cs">
       <Link>Controls\LoginButton\AuthenticationErrorEventArgs.cs</Link>
     </Compile>
