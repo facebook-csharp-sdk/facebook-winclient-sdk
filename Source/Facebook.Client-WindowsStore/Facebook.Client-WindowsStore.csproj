@@ -109,6 +109,9 @@
     <Compile Include="..\Facebook.Client\Controls\Converters\HlsColor.cs">
       <Link>Controls\Converters\HlsColor.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Converters\IsNullOrEmptyConverter.cs">
+      <Link>Controls\Converters\IsNullOrEmptyConverter.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\Controls\Converters\ScaleConverter.cs">
       <Link>Controls\Converters\ScaleConverter.cs</Link>
     </Compile>
