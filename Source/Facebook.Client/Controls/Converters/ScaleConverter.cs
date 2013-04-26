@@ -2,6 +2,7 @@
 
 #if NETFX_CORE
 using Windows.UI.Xaml.Data;
+using System.Globalization;
 #endif
 #if WINDOWS_PHONE
 using System.Windows.Data;
@@ -11,13 +12,13 @@ using System.Globalization;
 namespace Facebook.Client.Controls
 {
     /// <summary>
-    /// Scales a value by multiplying by a given factor.
+    /// Scales a value by a given factor.
     /// </summary>
     public class ScaleConverter : IValueConverter
     {
 #if NETFX_CORE
         /// <summary>
-        /// Scales the value by multiplying by a given factor.
+        /// Scales the value by a given factor.
         /// </summary>
         /// <param name="value">The value that is produced by the binding target.</param>
         /// <param name="targetType">The type to convert to.</param>
@@ -38,7 +39,7 @@ namespace Facebook.Client.Controls
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 #endif
         {
-            return System.Convert.ToDouble(value) * System.Convert.ToDouble(parameter);
+            return System.Convert.ToDouble(value, CultureInfo.InvariantCulture) * System.Convert.ToDouble(parameter, CultureInfo.InvariantCulture);
         }
 
 #if NETFX_CORE

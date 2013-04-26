@@ -5,6 +5,7 @@ using Windows.UI;
 #if NETFX_CORE
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
+using System.Globalization;
 #endif
 #if WINDOWS_PHONE
 using System.Windows.Data;
@@ -45,7 +46,7 @@ namespace Facebook.Client.Controls
             if (value == null) return null;
             if (parameter == null) return null;
 
-            var factor = Double.Parse((parameter.ToString()));
+            var factor = Double.Parse(parameter.ToString(), CultureInfo.InvariantCulture);
 
             if (value is SolidColorBrush)
             {
