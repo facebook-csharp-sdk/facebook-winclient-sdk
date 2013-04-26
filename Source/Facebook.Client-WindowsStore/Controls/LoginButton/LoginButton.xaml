@@ -22,8 +22,9 @@
         <Setter Property="FontFamily" Value="{StaticResource ContentControlThemeFontFamily}"/>
         <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="FontFamily" Value="Segoe UI" />
         <Setter Property="Width" Value="140" />
-        <Setter Property="Height" Value="48" />
+        <Setter Property="Height" Value="50" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:LoginButton">
@@ -104,7 +105,7 @@
                                                           Foreground="{TemplateBinding Foreground}">
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
-                                                    <ColumnDefinition Width="45*"/>
+                                                    <ColumnDefinition Width="40*"/>
                                                     <ColumnDefinition Width="2"/>
                                                     <ColumnDefinition Width="2"/>
                                                     <ColumnDefinition Width="100*"/>
@@ -139,17 +140,31 @@
                                                     Padding="10"
                                                     HorizontalAlignment="Center" 
                                                     VerticalAlignment="Center" 
+                                                    TextWrapping="Wrap"
+                                                    TextAlignment="Center"
                                                     Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DataContext.Caption}"
                                                     FontSize="{Binding RelativeSource={RelativeSource TemplatedParent}, 
                                                                         Path=Width,
                                                                         Converter={StaticResource ScaleConverter},
-                                                                        ConverterParameter=0.125}"/>
+                                                                        ConverterParameter=0.11}"/>
                                                 
                                             </Grid>
                                         </ContentPresenter>
                                     </Border>
-                                    <Rectangle x:Name="FocusVisualWhite" IsHitTestVisible="False" Opacity="0" StrokeDashOffset="1.5" StrokeEndLineCap="Square" Stroke="{StaticResource FocusVisualWhiteStrokeThemeBrush}" StrokeDashArray="1,1"/>
-                                    <Rectangle x:Name="FocusVisualBlack" IsHitTestVisible="False" Opacity="0" StrokeDashOffset="0.5" StrokeEndLineCap="Square" Stroke="{StaticResource FocusVisualBlackStrokeThemeBrush}" StrokeDashArray="1,1"/>
+                                    <Rectangle x:Name="FocusVisualWhite" 
+                                               IsHitTestVisible="False" 
+                                               Opacity="0" 
+                                               StrokeDashOffset="1.5" 
+                                               StrokeEndLineCap="Square" 
+                                               Stroke="{StaticResource FocusVisualWhiteStrokeThemeBrush}" 
+                                               StrokeDashArray="1,1"/>
+                                    <Rectangle x:Name="FocusVisualBlack" 
+                                               IsHitTestVisible="False" 
+                                               Opacity="0" 
+                                               StrokeDashOffset="0.5" 
+                                               StrokeEndLineCap="Square" 
+                                               Stroke="{StaticResource FocusVisualBlackStrokeThemeBrush}" 
+                                               StrokeDashArray="1,1"/>
                                 </Grid>
                             </ControlTemplate>
                         </Button.Template>
