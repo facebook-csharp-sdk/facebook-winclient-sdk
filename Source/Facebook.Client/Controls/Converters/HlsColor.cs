@@ -1,5 +1,11 @@
 ﻿using System;
+
+#if NETFX_CORE
 using Windows.UI;
+#endif
+#if WINDOWS_PHONE
+using System.Windows.Media;
+#endif
 
 namespace Facebook.Client.Controls
 {

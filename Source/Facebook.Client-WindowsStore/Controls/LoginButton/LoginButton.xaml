@@ -7,27 +7,34 @@
     <local:ScaleConverter x:Key="ScaleConverter" />
 
     <Style TargetType="local:LoginButton">
-        <Setter Property="Background" Value="#FF3B5998" />
+        <Setter Property="Background">
+            <Setter.Value>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FF506DA0"/>
+                    <GradientStop Color="#FF385588" Offset="1"/>
+                </LinearGradientBrush>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Foreground" Value="{StaticResource ButtonForegroundThemeBrush}"/>
         <Setter Property="BorderBrush" Value="{StaticResource ButtonBorderThemeBrush}"/>
         <Setter Property="BorderThickness" Value="{StaticResource ButtonBorderThemeThickness}"/>
-        <Setter Property="Padding" Value="12,4,12,4"/>
-        <Setter Property="HorizontalAlignment" Value="Left"/>
-        <Setter Property="VerticalAlignment" Value="Center"/>
+        <Setter Property="Padding" Value="12,2,12,2"/>
         <Setter Property="FontFamily" Value="{StaticResource ContentControlThemeFontFamily}"/>
-        <Setter Property="FontWeight" Value="SemiBold"/>
-        <Setter Property="FontSize" Value="{StaticResource ControlContentThemeFontSize}"/>
+        <Setter Property="FontWeight" Value="Medium" />
         <Setter Property="CornerRadius" Value="8" />
+        <Setter Property="Width" Value="140" />
+        <Setter Property="Height" Value="48" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:LoginButton">
                     <Button x:Name="PART_LoginButton"
-                            BorderBrush="{TemplateBinding BorderBrush}" 
-                            BorderThickness="{TemplateBinding BorderThickness}" 
                             Background="{TemplateBinding Background}" 
                             Foreground="{TemplateBinding Foreground}" 
+                            BorderBrush="{TemplateBinding BorderBrush}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" 
                             Padding="{TemplateBinding Padding}" 
                             FontFamily="{TemplateBinding FontFamily}" 
+                            FontWeight="{TemplateBinding FontWeight}"
                             Width="{TemplateBinding Width}" 
                             Height="{TemplateBinding Height}">
                         <Button.Template>
@@ -57,15 +64,15 @@
                                                                                                             Converter={StaticResource ColorLuminosityConverter},
                                                                                                             ConverterParameter=1.3}"/>
                                                     </ObjectAnimationUsingKeyFrames>
-                                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
-                                                        <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonPressedForegroundThemeBrush}"/>
-                                                    </ObjectAnimationUsingKeyFrames>
                                                 </Storyboard>
                                             </VisualState>
                                             <VisualState x:Name="Disabled">
                                                 <Storyboard>
                                                     <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="Border">
-                                                        <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonDisabledBackgroundThemeBrush}"/>
+                                                        <DiscreteObjectKeyFrame KeyTime="0" Value="{Binding RelativeSource={RelativeSource TemplatedParent}, 
+                                                                                                            Path=Background,
+                                                                                                            Converter={StaticResource ColorLuminosityConverter},
+                                                                                                            ConverterParameter=0.7}"/>
                                                     </ObjectAnimationUsingKeyFrames>
                                                     <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="Border">
                                                         <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ButtonDisabledBorderThemeBrush}"/>
@@ -98,8 +105,8 @@
                                             <Grid>
                                                 <Grid.ColumnDefinitions>
                                                     <ColumnDefinition Width="45*"/>
-                                                    <ColumnDefinition Width="2*"/>
-                                                    <ColumnDefinition Width="3*"/>
+                                                    <ColumnDefinition Width="2"/>
+                                                    <ColumnDefinition Width="2"/>
                                                     <ColumnDefinition Width="100*"/>
                                                 </Grid.ColumnDefinitions>
                                                 <TextBlock
@@ -109,28 +116,35 @@
                                                         HorizontalAlignment="Center"
                                                         FontFamily="{TemplateBinding FontFamily}"
                                                         FontWeight="Bold"
-                                                        FontSize="{Binding 
-                                                            RelativeSource={RelativeSource TemplatedParent}, 
-                                                            Path=Width,
-                                                            Converter={StaticResource ScaleConverter},
-                                                            ConverterParameter=0.30}"/>
-
-                                                <Rectangle Grid.Column="1" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
+                                                        FontSize="{Binding RelativeSource={RelativeSource TemplatedParent}, 
+                                                                            Path=Width,
+                                                                            Converter={StaticResource ScaleConverter},
+                                                                            ConverterParameter=0.30}"/>
+                                                <Rectangle Grid.Column="1" 
+                                                           VerticalAlignment="Stretch" 
+                                                           HorizontalAlignment="Stretch" 
                                                            Fill="{Binding RelativeSource={RelativeSource TemplatedParent}, 
-                                                                                                            Path=Background,
-                                                                                                            Converter={StaticResource ColorLuminosityConverter},
-                                                                                                            ConverterParameter=0.75}"/>
-                                                <Rectangle Grid.Column="2" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" 
+                                                                            Path=Background,
+                                                                            Converter={StaticResource ColorLuminosityConverter},
+                                                                            ConverterParameter=0.75}"/>
+                                                <Rectangle Grid.Column="2" 
+                                                           VerticalAlignment="Stretch" 
+                                                           HorizontalAlignment="Stretch" 
                                                            Fill="{Binding RelativeSource={RelativeSource TemplatedParent}, 
-                                                                                                            Path=Background,
-                                                                                                            Converter={StaticResource ColorLuminosityConverter},
-                                                                                                            ConverterParameter=1.25}"/>
-                                                <TextBlock x:Name="PART_Caption"
+                                                                            Path=Background,
+                                                                            Converter={StaticResource ColorLuminosityConverter},
+                                                                            ConverterParameter=1.25}"/>
+                                                <TextBlock
                                                     Grid.Column="3"
                                                     Padding="10"
                                                     HorizontalAlignment="Center" 
                                                     VerticalAlignment="Center" 
-                                                    Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=Content}" />
+                                                    Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DataContext.Caption}"
+                                                    FontSize="{Binding RelativeSource={RelativeSource TemplatedParent}, 
+                                                                        Path=Width,
+                                                                        Converter={StaticResource ScaleConverter},
+                                                                        ConverterParameter=0.125}"/>
+                                                
                                             </Grid>
                                         </ContentPresenter>
                                     </Border>

@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 #if NETFX_CORE
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.ApplicationModel.Resources;
 #endif
 #if WINDOWS_PHONE
 using System.Windows.Controls;
@@ -21,8 +22,7 @@ namespace Facebook.Client.Controls
     /// reflects whether the user is currently authenticated. When a user logs in, it can automatically 
     /// retrieve their basic information.
     /// </remarks>
-    [TemplatePart(Name = Part_LoginButton, Type = typeof(Button))]
-    [TemplatePart(Name = Part_Caption, Type = typeof(TextBlock))]
+    [TemplatePart(Name = PartLoginButton, Type = typeof(Button))]
     public sealed class LoginButton : Control
     {
         private Button loginButton;
@@ -38,8 +38,7 @@ namespace Facebook.Client.Controls
 
         #region Part Definitions
 
-        private const string Part_LoginButton = "PART_LoginButton";
-        private const string Part_Caption = "PART_Caption";
+        private const string PartLoginButton = "PART_LoginButton";
 
         #endregion Part Definitions
 
@@ -242,15 +241,18 @@ namespace Facebook.Client.Controls
         {
             base.OnApplyTemplate();
 
-            this.loginButton = this.GetTemplateChild(Part_LoginButton) as Button;
-            if (this.loginButton == null)
+            if (this.loginButton != null)
             {
-                // TODO: throw appropriate exception
-                throw new Exception(string.Format("Template element '{0}' is missing.", Part_LoginButton));
+                this.loginButton.Click -= OnLoginButtonClicked;
             }
 
-            this.loginButton.DataContext = this;
-            this.loginButton.Click += OnLoginButtonClicked;
+            this.loginButton = this.GetTemplateChild(PartLoginButton) as Button;
+            if (this.loginButton != null)
+            {
+                this.loginButton.Click += OnLoginButtonClicked;
+                this.loginButton.DataContext = this;
+            }
+
             UpdateButtonCaption();
         }
 
@@ -292,9 +294,9 @@ namespace Facebook.Client.Controls
                     var userInfo = new UserInfoChangedEventArgs(
                         new FacebookUser()
                         {
-                            Id = result.ContainsKey("id") ? (string) result["id"] : string.Empty,
-                            Name = result.ContainsKey("name") ? (string) result["name"] : string.Empty,
-                            UserName = result.ContainsKey("username") ? (string) result["username"] : string.Empty,
+                            Id = result.ContainsKey("id") ? (string)result["id"] : string.Empty,
+                            Name = result.ContainsKey("name") ? (string)result["name"] : string.Empty,
+                            UserName = result.ContainsKey("username") ? (string)result["username"] : string.Empty,
                             FirstName = result.ContainsKey("first_name") ? (string)result["first_name"] : string.Empty,
                             MiddleName = result.ContainsKey("middle_name") ? (string)result["middle_name"] : string.Empty,
                             LastName = result.ContainsKey("last_name") ? (string)result["last_name"] : string.Empty,
@@ -305,6 +307,14 @@ namespace Facebook.Client.Controls
 
                     RaiseUserInfoChanged(userInfo);
                 }
+            }
+            catch (ArgumentNullException error)
+            {
+                // TODO: remove when bug in SDK is fixed (the bug happens when you cancel the facebook login dialog)
+                var authenticationErrorEventArgs =
+                    new AuthenticationErrorEventArgs("Login failure.", error.Message);
+
+                RaiseAuthenticationFailure(authenticationErrorEventArgs);
             }
             catch (InvalidOperationException error)
             {
@@ -350,9 +360,19 @@ namespace Facebook.Client.Controls
             }
         }
 
+        private static readonly DependencyProperty CaptionProperty =
+            DependencyProperty.Register("Caption", typeof(string), typeof(LoginButton), new PropertyMetadata(string.Empty));
+
         private void UpdateButtonCaption()
         {
-            this.loginButton.Content = this.CurrentSession == null ? "Log In" : "Log Out";
+#if NETFX_CORE
+            var loader = new ResourceLoader("Facebook.Client/Resources/LoginButton");
+            var resourceName = this.CurrentSession == null ? "Caption_OpenSession" : "Caption_CloseSession";
+            var caption = loader.GetString(resourceName);
+#else
+            var caption = this.CurrentSession == null ? "Log In" : "Log Out";
+#endif
+            SetValue(CaptionProperty, caption);
         }
 
         #endregion Implementation
