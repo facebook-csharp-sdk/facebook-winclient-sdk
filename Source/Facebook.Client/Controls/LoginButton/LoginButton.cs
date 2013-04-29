@@ -115,7 +115,7 @@ namespace Facebook.Client.Controls
         /// Identifies the AccessToken dependency property.
         /// </summary>
         public static readonly DependencyProperty AccessTokenProperty =
-            DependencyProperty.Register("AccessToken", typeof(string), typeof(ProfilePicture), new PropertyMetadata(string.Empty));
+            DependencyProperty.Register("AccessToken", typeof(string), typeof(LoginButton), new PropertyMetadata(string.Empty));
 
         #endregion AccessToken
         
@@ -393,7 +393,7 @@ namespace Facebook.Client.Controls
 
         private void UpdateSession()
         {
-            this.AccessToken = this.CurrentSession.AccessToken;
+            this.AccessToken = this.CurrentSession != null ? this.CurrentSession.AccessToken : string.Empty;
             this.UpdateButtonCaption();
         }
 
