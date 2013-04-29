@@ -10,6 +10,7 @@ using Windows.ApplicationModel.Resources;
 #if WINDOWS_PHONE
 using System.Windows.Controls;
 using System.Windows;
+using Facebook.Client.Resources;
 #endif
 
 namespace Facebook.Client.Controls
@@ -402,8 +403,9 @@ namespace Facebook.Client.Controls
             var loader = new ResourceLoader("Facebook.Client/Resources/LoginButton");
             var resourceName = this.CurrentSession == null ? "Caption_OpenSession" : "Caption_CloseSession";
             var caption = loader.GetString(resourceName);
-#else
-            var caption = this.CurrentSession == null ? "Log In" : "Log Out";
+#endif
+#if WINDOWS_PHONE
+            var caption = this.CurrentSession == null ? AppResources.LoginButtonCaptionOpenSession : AppResources.LoginButtonCaptionCloseSession;
 #endif
             SetValue(CaptionProperty, caption);
         }

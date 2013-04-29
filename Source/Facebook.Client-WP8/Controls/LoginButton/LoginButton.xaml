@@ -5,6 +5,7 @@
 
     <local:ColorLuminosityConverter x:Key="ColorLuminosityConverter" />
     <local:ScaleConverter x:Key="ScaleConverter" />
+    <local:IsNullOrEmptyConverter x:Key="IsNullOrEmptyConverter" />
     
     <Style TargetType="local:LoginButton">
         <Setter Property="Background">
@@ -31,6 +32,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="local:LoginButton">
                     <Button x:Name="PART_LoginButton"
+                            IsEnabled="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=ApplicationId, Converter={StaticResource IsNullOrEmptyConverter}, ConverterParameter=True}"
                             BorderBrush="{TemplateBinding BorderBrush}" 
                             BorderThickness="{TemplateBinding BorderThickness}" 
                             Background="{TemplateBinding Background}" 
