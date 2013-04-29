@@ -151,6 +151,8 @@
     <Compile Include="..\Facebook.Client\FacebookWebDialog.cs">
       <Link>FacebookWebDialog.cs</Link>
     </Compile>
+    <Compile Include="Controls\ProfilePicture\CropMode.cs" />
+    <Compile Include="Controls\ProfilePicture\ProfilePicture.cs" />
     <Compile Include="FacebookDialogPage.xaml.cs">
       <DependentUpon>FacebookDialogPage.xaml</DependentUpon>
     </Compile>
@@ -161,6 +163,11 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Controls\LoginButton\LoginButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Controls\ProfilePicture\ProfilePicture.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
@@ -183,11 +190,20 @@
   <ItemGroup>
     <PRIResource Include="..\Facebook.Client\Strings\en-US\Resources.resw">
       <Link>Strings\en-US\Resources.resw</Link>
+      <SubType>Designer</SubType>
     </PRIResource>
     <PRIResource Include="..\Facebook.Client\Strings\es-AR\Resources.resw">
       <Link>Strings\es-AR\Resources.resw</Link>
     </PRIResource>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\Facebook.Client\Images\fb_blank_profile_portrait.png">
+      <Link>Images\fb_blank_profile_portrait.png</Link>
+    </Content>
+    <Content Include="..\Facebook.Client\Images\fb_blank_profile_square.png">
+      <Link>Images\fb_blank_profile_square.png</Link>
+    </Content>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>

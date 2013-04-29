@@ -101,7 +101,6 @@
                 <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Location" />
                 <TextBlock Grid.Row="8" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Location}" />
             </Grid>
-        
             <facebookControls:LoginButton 
                 Grid.Row="1"
                 ApplicationId="427365490674294"
@@ -109,6 +108,7 @@
                 VerticalAlignment="Bottom"
                 UserInfoChanged="OnUserInfoChanged" 
                 SessionStateChanged="OnSessionStateChanged" />
+            <facebookControls:ProfilePicture HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" ProfileId="9721897972" Width="75" Height="75" />
         </Grid>
     </Grid>
 </Page>
