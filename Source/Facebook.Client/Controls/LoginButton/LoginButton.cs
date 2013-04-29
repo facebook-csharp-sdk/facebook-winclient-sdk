@@ -18,8 +18,8 @@ namespace Facebook.Client.Controls
     /// Represents a button control that can log in or log out the user when clicked.
     /// </summary>
     /// <remarks>
-    /// The LoginButton keeps track of the authentication status and shows an appropriate label that 
-    /// reflects whether the user is currently authenticated. When a user logs in, it can automatically 
+    /// The LoginButton control keeps track of the authentication status and shows an appropriate label 
+    /// that reflects whether the user is currently authenticated. When a user logs in, it can automatically 
     /// retrieve their basic information.
     /// </remarks>
     [TemplatePart(Name = PartLoginButton, Type = typeof(Button))]
@@ -28,6 +28,12 @@ namespace Facebook.Client.Controls
         private Button loginButton;
         private FacebookSessionClient facebookSessionClient;
 
+        #region Part Definitions
+
+        private const string PartLoginButton = "PART_LoginButton";
+
+        #endregion Part Definitions
+
         /// <summary>
         /// Initializes a new instance of the LoginButton class. 
         /// </summary>
@@ -35,12 +41,6 @@ namespace Facebook.Client.Controls
         {
             this.DefaultStyleKey = typeof(LoginButton);
         }
-
-        #region Part Definitions
-
-        private const string PartLoginButton = "PART_LoginButton";
-
-        #endregion Part Definitions
 
         #region Events
 
@@ -86,11 +86,38 @@ namespace Facebook.Client.Controls
         private static void OnApplicationIdPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var target = (LoginButton)d;
-            target.facebookSessionClient = new FacebookSessionClient(target.ApplicationId);
+            var applicationId = (string)e.NewValue;
+            if (!string.IsNullOrWhiteSpace(applicationId))
+            {
+                target.facebookSessionClient = new FacebookSessionClient(applicationId);
+            }
+            else
+            {
+                target.facebookSessionClient = null;
+            }
         }
 
         #endregion ApplicationId
 
+        #region AccessToken
+
+        /// <summary>
+        /// Gets or sets the access token returned by the Facebook Login service.
+        /// </summary>
+        public string AccessToken
+        {
+            get { return (string)GetValue(AccessTokenProperty); }
+            set { SetValue(AccessTokenProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the AccessToken dependency property.
+        /// </summary>
+        public static readonly DependencyProperty AccessTokenProperty =
+            DependencyProperty.Register("AccessToken", typeof(string), typeof(ProfilePicture), new PropertyMetadata(string.Empty));
+
+        #endregion AccessToken
+        
         #region DefaultAudience
 
         /// <summary>
@@ -143,7 +170,7 @@ namespace Facebook.Client.Controls
         /// The publish permissions to request.
         /// </summary>
         /// <remarks>
-        /// Note, that a defaultAudience value of OnlyMe, Everyone, or Friends should be set if publish permissions are 
+        /// Note, that a DefaultAudience value of OnlyMe, Everyone, or Friends should be set if publish permissions are 
         /// specified. Additionally, when publish permissions are specified, then read should not be specified.
         /// </remarks>
         public string PublishPermissions
@@ -199,7 +226,7 @@ namespace Facebook.Client.Controls
         private static void OnCurrentSessionPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var target = (LoginButton)d;
-            target.UpdateButtonCaption();
+            target.UpdateSession();
         }
         
         #endregion CurrentSession
@@ -362,6 +389,12 @@ namespace Facebook.Client.Controls
 
         private static readonly DependencyProperty CaptionProperty =
             DependencyProperty.Register("Caption", typeof(string), typeof(LoginButton), new PropertyMetadata(string.Empty));
+
+        private void UpdateSession()
+        {
+            this.AccessToken = this.CurrentSession.AccessToken;
+            this.UpdateButtonCaption();
+        }
 
         private void UpdateButtonCaption()
         {
