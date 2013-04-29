@@ -14,11 +14,40 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
 
+    <phone:PhoneApplicationPage.Resources>
+        <Style x:Key="FormLabel" BasedOn="{StaticResource PhoneTextBlockBase}" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style x:Key="FormField" BasedOn="{StaticResource PhoneTextBlockBase}" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style x:Key="GridLine" TargetType="Line">
+            <Setter Property="Stroke" Value="Gray" />
+            <Setter Property="Stretch" Value="Fill" />
+        </Style>
+
+        <Style x:Key="HorizontalGridLine" TargetType="Line" BasedOn="{StaticResource GridLine}">
+            <Setter Property="Grid.ColumnSpan" Value="2" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="X2" Value="1" />
+        </Style>
+
+        <Style x:Key="VerticalGridLine" TargetType="Line" BasedOn="{StaticResource GridLine}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Y2" Value="1" />
+        </Style>
+    </phone:PhoneApplicationPage.Resources>
+
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
 
         <!-- LOCALIZATION NOTE:
@@ -40,21 +69,80 @@
             CurrentUICulture of the app at run time.
          -->
 
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
-            <TextBlock Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        <StackPanel x:Name="welcomeText" Grid.Row="0" Orientation="Vertical" VerticalAlignment="Center">
+            <TextBlock Text="FACEBOOK SDK FOR .NET" Style="{StaticResource PhoneTextTitle2Style}" />
+            <TextBlock Text="Log in to start"  Style="{StaticResource PhoneTextTitle3Style}" Margin="12,0,0,30"/>
         </StackPanel>
 
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
-            <facebookControls:LoginButton
-                ApplicationId="427365490674294" 
-                UserInfoChanged="OnUserInfoChanged"
-                SessionStateChanged="OnSessionStateChanged"
-                HorizontalAlignment="Center"
-                VerticalAlignment="Top" />
-        </Grid>
+        <!--Pivot Control-->
+        <phone:Pivot x:Name="contentPanel" Grid.Row="0" Opacity="0" Title="FACEBOOK SDK FOR .NET">
+            <!--Pivot item one-->
+            <phone:PivotItem Header="user info">
+                <Grid x:Name="userInfo" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="125" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Line Grid.Row="0" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="1" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="2" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="3" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="4" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="5" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="6" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="7" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="0" Grid.Column="0" Grid.RowSpan="8" Style="{StaticResource VerticalGridLine}"/>
+
+                    <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Name" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Name}" />
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FormLabel}" Text="User name" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding UserName}" />
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource FormLabel}" Text="First name" />
+                    <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding FirstName}" />
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Middle name" />
+                    <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding MiddleName}" />
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Last name" />
+                    <TextBlock Grid.Row="4" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding LastName}" />
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Birthday" />
+                    <TextBlock Grid.Row="5" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Birthday}" />
+
+                    <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Link" />
+                    <TextBlock Grid.Row="6" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Link}" />
+
+                    <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Location" />
+                    <TextBlock Grid.Row="7" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Location}" />
+                </Grid>
+            </phone:PivotItem>
+
+            <!--Pivot item two-->
+            <phone:PivotItem Header="profile">
+                <TextBlock Text="Not yet implemented." />                   
+            </phone:PivotItem>
+        </phone:Pivot>
+
+        <facebookControls:LoginButton
+            Grid.Row="1"
+            ApplicationId="427365490674294" 
+            UserInfoChanged="OnUserInfoChanged"
+            SessionStateChanged="OnSessionStateChanged"
+            HorizontalAlignment="Right"
+            VerticalAlignment="Bottom"
+            Margin="0,0,10,10" />
 
         <!--Uncomment to see an alignment grid to help ensure your controls are
             aligned on common boundaries.  The image has a top margin of -32px to

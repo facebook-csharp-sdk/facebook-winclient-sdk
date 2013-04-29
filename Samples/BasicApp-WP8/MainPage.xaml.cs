@@ -10,6 +10,7 @@ using Microsoft.Phone.Shell;
 using PhoneApp2.Resources;
 using Facebook;
 using Facebook.Client;
+using Facebook.Client.Controls;
 
 namespace PhoneApp2
 {
@@ -68,11 +69,13 @@ namespace PhoneApp2
 
         private void OnUserInfoChanged(object sender, Facebook.Client.Controls.UserInfoChangedEventArgs e)
         {
+            this.userInfo.DataContext = e.User;
         }
 
         private void OnSessionStateChanged(object sender, Facebook.Client.Controls.SessionStateChangedEventArgs e)
         {
+            this.welcomeText.Opacity = (e.SessionState == FacebookSessionState.Opened) ? 0 : 100;
+            this.contentPanel.Opacity = (e.SessionState == FacebookSessionState.Opened) ? 100 : 0;
         }
-
     }
 }
