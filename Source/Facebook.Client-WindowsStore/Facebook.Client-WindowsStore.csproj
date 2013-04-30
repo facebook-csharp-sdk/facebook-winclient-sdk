@@ -133,6 +133,12 @@
     <Compile Include="..\Facebook.Client\Controls\LoginButton\UserInfoChangedEventArgs.cs">
       <Link>Controls\LoginButton\UserInfoChangedEventArgs.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\Controls\ProfilePicture\CropMode.cs">
+      <Link>Controls\ProfilePicture\CropMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\ProfilePicture\ProfilePicture.cs">
+      <Link>Controls\ProfilePicture\ProfilePicture.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\FacebookDialog.cs">
       <Link>FacebookDialog.cs</Link>
     </Compile>
@@ -151,8 +157,6 @@
     <Compile Include="..\Facebook.Client\FacebookWebDialog.cs">
       <Link>FacebookWebDialog.cs</Link>
     </Compile>
-    <Compile Include="Controls\ProfilePicture\CropMode.cs" />
-    <Compile Include="Controls\ProfilePicture\ProfilePicture.cs" />
     <Compile Include="FacebookDialogPage.xaml.cs">
       <DependentUpon>FacebookDialogPage.xaml</DependentUpon>
     </Compile>
