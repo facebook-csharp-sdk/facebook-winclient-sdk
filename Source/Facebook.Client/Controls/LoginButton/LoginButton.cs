@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.ApplicationModel.Resources;
+using System.Reflection;
 #endif
 #if WINDOWS_PHONE
 using System.Windows.Controls;
@@ -118,7 +119,26 @@ namespace Facebook.Client.Controls
             DependencyProperty.Register("AccessToken", typeof(string), typeof(LoginButton), new PropertyMetadata(string.Empty));
 
         #endregion AccessToken
+
+        #region ProfileId
+
+        /// <summary>
+        /// The Facebook ID of the logged in user.
+        /// </summary>
+        public string ProfileId
+        {
+            get { return (string)GetValue(ProfileIdProperty); }
+            set { SetValue(ProfileIdProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the ProfileId dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ProfileIdProperty =
+            DependencyProperty.Register("ProfileId", typeof(string), typeof(LoginButton), new PropertyMetadata(string.Empty));
         
+        #endregion ProfileId
+
         #region DefaultAudience
 
         /// <summary>
@@ -394,13 +414,16 @@ namespace Facebook.Client.Controls
         private void UpdateSession()
         {
             this.AccessToken = this.CurrentSession != null ? this.CurrentSession.AccessToken : string.Empty;
+            this.ProfileId = this.CurrentSession != null ? this.CurrentSession.FacebookId : string.Empty;
             this.UpdateButtonCaption();
         }
 
         private void UpdateButtonCaption()
         {
 #if NETFX_CORE
-            var loader = new ResourceLoader("Facebook.Client/Resources/LoginButton");
+            var libraryName = typeof(ProfilePicture).GetTypeInfo().Assembly.GetName().Name;
+            var name = string.Format("{0}/Resources/LoginButton", libraryName);
+            var loader = new ResourceLoader(name);
             var resourceName = this.CurrentSession == null ? "Caption_OpenSession" : "Caption_CloseSession";
             var caption = loader.GetString(resourceName);
 #endif
