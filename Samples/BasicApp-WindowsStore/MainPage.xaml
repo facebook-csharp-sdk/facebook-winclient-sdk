@@ -108,7 +108,12 @@
                 VerticalAlignment="Bottom"
                 UserInfoChanged="OnUserInfoChanged" 
                 SessionStateChanged="OnSessionStateChanged" />
-            <facebookControls:ProfilePicture HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" ProfileId="9721897972" Width="75" Height="75" />
+            <facebookControls:ProfilePicture 
+                Grid.Row="1" 
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top" 
+                Width="75" 
+                Height="75" />
         </Grid>
     </Grid>
 </Page>

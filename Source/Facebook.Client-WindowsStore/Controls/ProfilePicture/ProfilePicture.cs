@@ -119,36 +119,32 @@ namespace Facebook.Client.Controls
         {
             const string graphApiUrl = "https://graph.facebook.com";
 
-            if (double.IsNaN(this.Width) ||
-                double.IsNaN(this.Height) ||
-                string.IsNullOrEmpty(this.ProfileId))
+            if (double.IsNaN(this.Width) || double.IsNaN(this.Height)) 
             {
                 return;
             }
 
-            // TODO: if Facebook ID is null, force web.application.toolkits1's ID to retrieve 
-            // its silhuoutte image, replace later with a suitable image
-            var facebookId = string.IsNullOrEmpty(this.ProfileId) ? "100000627996796" : this.ProfileId;
-
             string profilePictureUrl = graphApiUrl;
             if (this.CropMode == CropMode.Square)
             {
-                var size = Math.Min(this.Height, this.Width);
-                profilePictureUrl = string.Format(
-                    "{0}/{1}/picture?width={2}&height={3}",
-                    profilePictureUrl,
-                    facebookId,
-                    size,
-                    size);
+                var size = Math.Min(this.Height, this.Width);                
+                profilePictureUrl = string.IsNullOrEmpty(this.ProfileId) ? 
+                                    "fb_blank_profile_portrait.png" : 
+                                    string.Format("{0}/{1}/picture?width={2}&height={3}",
+                                        graphApiUrl,
+                                        this.ProfileId,
+                                        size,
+                                        size);
             }
             else if (this.CropMode == CropMode.Original)
             {
-                profilePictureUrl = string.Format(
-                    "{0}/{1}/picture?width={2}&height={3}",
-                    profilePictureUrl,
-                    facebookId,
-                    this.Width,
-                    this.Height);
+                profilePictureUrl = string.IsNullOrEmpty(this.ProfileId) ?
+                                    "fb_blank_profile_portrait.png" :
+                                    string.Format("{0}/{1}/picture?width={2}&height={3}",
+                                        graphApiUrl,
+                                        this.ProfileId,
+                                        this.Width,
+                                        this.Height);
             }
 
             if (!string.IsNullOrEmpty(this.AccessToken))

@@ -22,7 +22,7 @@
                                HorizontalAlignment="Stretch" 
                                VerticalAlignment="Stretch">
                             <Image.Source>
-                                <BitmapImage UriSource="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DataContext.ImageSource}" />
+                                <BitmapImage UriSource="{Binding ImageSource}" />
                             </Image.Source>
                         </Image>
                     </Border>
