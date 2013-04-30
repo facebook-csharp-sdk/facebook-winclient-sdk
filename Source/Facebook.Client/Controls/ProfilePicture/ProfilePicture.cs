@@ -1,7 +1,7 @@
 ﻿using System;
+using System.Reflection;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
 
 namespace Facebook.Client.Controls
 {
@@ -112,44 +112,45 @@ namespace Facebook.Client.Controls
 
             this.image = ((Image)GetTemplateChild(PartProfilePicture));
             this.image.DataContext = this;
-            LoadPicture();
+            this.LoadPicture();
         }
 
         private void LoadPicture()
         {
-            const string graphApiUrl = "https://graph.facebook.com";
+            string profilePictureUrl;
 
-            if (double.IsNaN(this.Width) || double.IsNaN(this.Height)) 
+            if (string.IsNullOrEmpty(this.ProfileId))
             {
-                return;
+                string imageName = (this.CropMode == CropMode.Square) ? "fb_blank_profile_square.png" : "fb_blank_profile_portrait.png";
+                var libraryName = typeof(ProfilePicture).GetTypeInfo().Assembly.GetName().Name;
+                profilePictureUrl = string.Format("ms-appx:///{0}/Images/{1}", libraryName, imageName);
             }
+            else
+            {
+                const string graphApiUrl = "https://graph.facebook.com";
 
-            string profilePictureUrl = graphApiUrl;
-            if (this.CropMode == CropMode.Square)
-            {
-                var size = Math.Min(this.Height, this.Width);                
-                profilePictureUrl = string.IsNullOrEmpty(this.ProfileId) ? 
-                                    "fb_blank_profile_portrait.png" : 
-                                    string.Format("{0}/{1}/picture?width={2}&height={3}",
-                                        graphApiUrl,
-                                        this.ProfileId,
-                                        size,
-                                        size);
-            }
-            else if (this.CropMode == CropMode.Original)
-            {
-                profilePictureUrl = string.IsNullOrEmpty(this.ProfileId) ?
-                                    "fb_blank_profile_portrait.png" :
-                                    string.Format("{0}/{1}/picture?width={2}&height={3}",
-                                        graphApiUrl,
-                                        this.ProfileId,
-                                        this.Width,
-                                        this.Height);
-            }
+                if (this.CropMode == CropMode.Square)
+                {
+                    var size = Math.Min(this.Height, this.Width);
+                    profilePictureUrl = string.Format("{0}/{1}/picture?width={2}&height={3}",
+                                            graphApiUrl,
+                                            this.ProfileId,
+                                            size,
+                                            size);
+                }
+                else
+                {
+                    profilePictureUrl = string.Format("{0}/{1}/picture?width={2}&height={3}",
+                                            graphApiUrl,
+                                            this.ProfileId,
+                                            this.Width,
+                                            this.Height);
+                }
 
-            if (!string.IsNullOrEmpty(this.AccessToken))
-            {
-                profilePictureUrl += "&access_token=" + this.AccessToken;
+                if (!string.IsNullOrEmpty(this.AccessToken))
+                {
+                    profilePictureUrl += "&access_token=" + this.AccessToken;
+                }
             }
 
             SetValue(ImageSourceProperty, profilePictureUrl);

@@ -202,12 +202,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="..\Facebook.Client\Images\fb_blank_profile_portrait.png">
-      <Link>Images\fb_blank_profile_portrait.png</Link>
-    </Content>
-    <Content Include="..\Facebook.Client\Images\fb_blank_profile_square.png">
-      <Link>Images\fb_blank_profile_square.png</Link>
-    </Content>
+    <Content Include="Images\fb_blank_profile_portrait.png" />
+    <Content Include="Images\fb_blank_profile_square.png" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
