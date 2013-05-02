@@ -4,8 +4,9 @@
     xmlns:local="using:Facebook.Client.Controls">
 
     <Style TargetType="local:ProfilePicture">
-        <Setter Property="Width" Value="75" />
-        <Setter Property="Height" Value="75" />
+        <Setter Property="Width" Value="50" />
+        <Setter Property="Height" Value="50" />
+        <Setter Property="CropMode" Value="Square" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:ProfilePicture">
@@ -18,7 +19,7 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center">
                         <Image x:Name="PART_ProfilePicture"
-                                Stretch="UniformToFill"
+                                Stretch="Uniform"
                                 HorizontalAlignment="Center" 
                                 VerticalAlignment="Center">
                             <Image.Source>

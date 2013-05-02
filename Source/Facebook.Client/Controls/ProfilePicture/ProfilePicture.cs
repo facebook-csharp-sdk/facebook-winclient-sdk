@@ -2,6 +2,7 @@
 using System.Reflection;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace Facebook.Client.Controls
 {
@@ -100,7 +101,13 @@ namespace Facebook.Client.Controls
 
         private static void OnCropModePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((ProfilePicture)d).LoadPicture();
+            var profilePicture = ((ProfilePicture)d);
+            if (profilePicture.image != null)
+            {
+                profilePicture.image.Stretch = (CropMode)e.NewValue == CropMode.Fill ? Stretch.UniformToFill : Stretch.Uniform;
+            }
+
+            profilePicture.LoadPicture();
         }
         
         #endregion CropMode
@@ -123,6 +130,7 @@ namespace Facebook.Client.Controls
 
             this.image = ((Image)GetTemplateChild(PartProfilePicture));
             this.image.DataContext = this;
+            this.image.Stretch = this.CropMode == CropMode.Fill ? Stretch.UniformToFill : Stretch.Uniform;
             this.LoadPicture();
         }
 
