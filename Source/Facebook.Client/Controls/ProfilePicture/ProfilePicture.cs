@@ -59,6 +59,9 @@ namespace Facebook.Client.Controls
         /// <summary>
         /// The Facebook ID of the user, place or object for which a picture should be fetched and displayed.
         /// </summary>
+        /// <remarks>
+        /// The control displays a blank profile (silhoutte) picture if this property is null or empty.
+        /// </remarks>
         public string ProfileId
         {
             get { return (string)GetValue(ProfileIdProperty); }
@@ -139,7 +142,7 @@ namespace Facebook.Client.Controls
 
                 if (this.CropMode == CropMode.Square)
                 {
-                    var size = Math.Min(this.Height, this.Width);
+                    var size = Math.Max(this.Height, this.Width);
                     profilePictureUrl = string.Format("{0}/{1}/picture?width={2}&height={3}",
                                             graphApiUrl,
                                             this.ProfileId,
@@ -161,7 +164,11 @@ namespace Facebook.Client.Controls
                 }
             }
 
-            SetValue(ImageSourceProperty, profilePictureUrl);
+            var currentprofilePictureUrl = (string)this.GetValue(ImageSourceProperty);
+            if (currentprofilePictureUrl != profilePictureUrl)
+            {
+                this.SetValue(ImageSourceProperty, profilePictureUrl);
+            }
         }
 
         private static readonly DependencyProperty ImageSourceProperty =
