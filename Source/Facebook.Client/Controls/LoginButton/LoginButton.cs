@@ -36,6 +36,20 @@ namespace Facebook.Client.Controls
 
         #endregion Part Definitions
 
+        #region Default Property Values
+
+        private const string DefaultApplicationId = "";
+        private const string DefaultAccessToken = "";
+        private const string DefaultProfileId = "";
+        private const DefaultAudience DefaultDefaultAudience = DefaultAudience.None;
+        private const string DefaultReadPermissions = "";
+        private const string DefaultPublishPermissions = "";
+        private const bool DefaultFetchUserInfo = true;
+        private const FacebookSession DefaultCurrentSession = null;
+        private static readonly CornerRadius DefaultCornerRadius = new CornerRadius(0);
+
+        #endregion Default Property Values
+
         /// <summary>
         /// Initializes a new instance of the LoginButton class. 
         /// </summary>
@@ -83,7 +97,7 @@ namespace Facebook.Client.Controls
         /// Identifies the ApplicationId dependency property.
         /// </summary>
         public static readonly DependencyProperty ApplicationIdProperty =
-            DependencyProperty.Register("ApplicationId", typeof(string), typeof(LoginButton), new PropertyMetadata(string.Empty, OnApplicationIdPropertyChanged));
+            DependencyProperty.Register("ApplicationId", typeof(string), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultApplicationId, OnApplicationIdPropertyChanged));
 
         private static void OnApplicationIdPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -116,7 +130,7 @@ namespace Facebook.Client.Controls
         /// Identifies the AccessToken dependency property.
         /// </summary>
         public static readonly DependencyProperty AccessTokenProperty =
-            DependencyProperty.Register("AccessToken", typeof(string), typeof(LoginButton), new PropertyMetadata(string.Empty));
+            DependencyProperty.Register("AccessToken", typeof(string), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultAccessToken));
 
         #endregion AccessToken
 
@@ -135,7 +149,7 @@ namespace Facebook.Client.Controls
         /// Identifies the ProfileId dependency property.
         /// </summary>
         public static readonly DependencyProperty ProfileIdProperty =
-            DependencyProperty.Register("ProfileId", typeof(string), typeof(LoginButton), new PropertyMetadata(string.Empty));
+            DependencyProperty.Register("ProfileId", typeof(string), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultProfileId));
         
         #endregion ProfileId
 
@@ -159,7 +173,7 @@ namespace Facebook.Client.Controls
         /// Identifies the DefaultAudience dependency property.
         /// </summary>
         public static readonly DependencyProperty DefaultAudienceProperty =
-            DependencyProperty.Register("DefaultAudience", typeof(DefaultAudience), typeof(LoginButton), new PropertyMetadata(DefaultAudience.None));
+            DependencyProperty.Register("DefaultAudience", typeof(DefaultAudience), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultDefaultAudience));
 
         #endregion DefaultAudience
 
@@ -181,7 +195,7 @@ namespace Facebook.Client.Controls
         /// Identifies the ReadPermissions dependency property.
         /// </summary>
         public static readonly DependencyProperty ReadPermissionsProperty =
-            DependencyProperty.Register("ReadPermissions", typeof(string), typeof(LoginButton), new PropertyMetadata(null));
+            DependencyProperty.Register("ReadPermissions", typeof(string), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultReadPermissions));
         
         #endregion ReadPermissions
 
@@ -204,7 +218,7 @@ namespace Facebook.Client.Controls
         /// Identifies the PublishPermissions dependency property.
         /// </summary>
         public static readonly DependencyProperty PublishPermissionsProperty =
-            DependencyProperty.Register("PublishPermissions", typeof(string), typeof(LoginButton), new PropertyMetadata(null));
+            DependencyProperty.Register("PublishPermissions", typeof(string), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultPublishPermissions));
 
         #endregion PublishPermissions
 
@@ -223,7 +237,7 @@ namespace Facebook.Client.Controls
         /// Identifies the FetchUserInfo dependency property.
         /// </summary>
         public static readonly DependencyProperty FetchUserInfoProperty =
-            DependencyProperty.Register("FetchUserInfo", typeof(bool), typeof(LoginButton), new PropertyMetadata(true));
+            DependencyProperty.Register("FetchUserInfo", typeof(bool), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultFetchUserInfo));
         
         #endregion FetchUserInfo
 
@@ -242,7 +256,7 @@ namespace Facebook.Client.Controls
         /// Identifies the CurrentSession dependency property.
         /// </summary>
         public static readonly DependencyProperty CurrentSessionProperty =
-            DependencyProperty.Register("CurrentSession", typeof(FacebookSession), typeof(LoginButton), new PropertyMetadata(null, OnCurrentSessionPropertyChanged));
+            DependencyProperty.Register("CurrentSession", typeof(FacebookSession), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultCurrentSession, OnCurrentSessionPropertyChanged));
 
         private static void OnCurrentSessionPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -267,7 +281,7 @@ namespace Facebook.Client.Controls
         /// Identifies the CornerRadius dependency property.
         /// </summary>
         public static readonly DependencyProperty CornerRadiusProperty =
-            DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(LoginButton), new PropertyMetadata(new CornerRadius(0)));
+            DependencyProperty.Register("CornerRadius", typeof(CornerRadius), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultCornerRadius));
 
         #endregion CornerRadius
 

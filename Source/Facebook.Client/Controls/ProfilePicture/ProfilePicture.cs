@@ -19,6 +19,14 @@ namespace Facebook.Client.Controls
 
         #endregion Part Definitions
 
+        #region Default Property Values
+
+        private const string DefaultAccessToken = "";
+        private const string DefaultProfileId = "";
+        private const CropMode DefaultCropMode = CropMode.Original;
+
+        #endregion Default Property Values
+
         /// <summary>
         /// Initializes a new instance of the ProfilePicture class.
         /// </summary>
@@ -42,7 +50,7 @@ namespace Facebook.Client.Controls
         /// Identifies the AccessToken dependency property.
         /// </summary>
         public static readonly DependencyProperty AccessTokenProperty =
-            DependencyProperty.Register("AccessToken", typeof(string), typeof(ProfilePicture), new PropertyMetadata(string.Empty)); 
+            DependencyProperty.Register("AccessToken", typeof(string), typeof(ProfilePicture), new PropertyMetadata(ProfilePicture.DefaultAccessToken)); 
         
         #endregion AccessToken
         
@@ -61,7 +69,7 @@ namespace Facebook.Client.Controls
         /// Identifies the ProfileId dependency property.
         /// </summary>
         public static readonly DependencyProperty ProfileIdProperty =
-            DependencyProperty.Register("ProfileId", typeof(string), typeof(ProfilePicture), new PropertyMetadata(string.Empty, OnProfileIdPropertyChanged));
+            DependencyProperty.Register("ProfileId", typeof(string), typeof(ProfilePicture), new PropertyMetadata(ProfilePicture.DefaultProfileId, OnProfileIdPropertyChanged));
 
         private static void OnProfileIdPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -85,7 +93,7 @@ namespace Facebook.Client.Controls
         /// Identifies the CropMode dependency property.
         /// </summary>
         public static readonly DependencyProperty CropModeProperty =
-            DependencyProperty.Register("CropMode", typeof(CropMode), typeof(ProfilePicture), new PropertyMetadata(CropMode.Original, OnCropModePropertyChanged));
+            DependencyProperty.Register("CropMode", typeof(CropMode), typeof(ProfilePicture), new PropertyMetadata(ProfilePicture.DefaultCropMode, OnCropModePropertyChanged));
 
         private static void OnCropModePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
