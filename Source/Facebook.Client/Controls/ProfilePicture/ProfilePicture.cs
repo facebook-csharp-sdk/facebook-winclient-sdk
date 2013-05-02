@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -132,6 +133,17 @@ namespace Facebook.Client.Controls
             this.image.DataContext = this;
             this.image.Stretch = this.CropMode == CropMode.Fill ? Stretch.UniformToFill : Stretch.Uniform;
             this.LoadPicture();
+        }
+
+        /// <summary>
+        /// Provides the behavior for the "Arrange" pass of layout. Classes can override this method to define their own "Arrange" pass behavior.
+        /// </summary>
+        /// <param name="finalSize">The final area within the parent that this object should use to arrange itself and its children.</param>
+        /// <returns>The actual size that is used after the element is arranged in layout.</returns>
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            LoadPicture();
+            return base.ArrangeOverride(finalSize);
         }
 
         private void LoadPicture()
