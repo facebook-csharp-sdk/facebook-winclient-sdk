@@ -115,11 +115,11 @@
     <Compile Include="..\Facebook.Client\Controls\Converters\ScaleConverter.cs">
       <Link>Controls\Converters\ScaleConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\Controls\LoginButton\Audience.cs">
+      <Link>Controls\LoginButton\Audience.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\Controls\LoginButton\AuthenticationErrorEventArgs.cs">
       <Link>Controls\LoginButton\AuthenticationErrorEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\Facebook.Client\Controls\LoginButton\DefaultAudience.cs">
-      <Link>Controls\LoginButton\DefaultAudience.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\Controls\LoginButton\FacebookSessionState.cs">
       <Link>Controls\LoginButton\FacebookSessionState.cs</Link>

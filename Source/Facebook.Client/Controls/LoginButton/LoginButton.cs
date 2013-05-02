@@ -41,7 +41,7 @@ namespace Facebook.Client.Controls
         private const string DefaultApplicationId = "";
         private const string DefaultAccessToken = "";
         private const string DefaultProfileId = "";
-        private const DefaultAudience DefaultDefaultAudience = DefaultAudience.None;
+        private const Audience DefaultDefaultAudience = Audience.None;
         private const string DefaultReadPermissions = "";
         private const string DefaultPublishPermissions = "";
         private const bool DefaultFetchUserInfo = true;
@@ -163,9 +163,9 @@ namespace Facebook.Client.Controls
         /// permission to perform a publish operation, a default audience is selected as the publication ceiling for the application. This 
         /// enumerated value allows the application to select which audience to ask the user to grant publish permission for.
         /// </remarks>
-        public DefaultAudience DefaultAudience
+        public Audience DefaultAudience
         {
-            get { return (DefaultAudience)GetValue(DefaultAudienceProperty); }
+            get { return (Audience)GetValue(DefaultAudienceProperty); }
             set { SetValue(DefaultAudienceProperty, value); }
         }
 
@@ -173,7 +173,7 @@ namespace Facebook.Client.Controls
         /// Identifies the DefaultAudience dependency property.
         /// </summary>
         public static readonly DependencyProperty DefaultAudienceProperty =
-            DependencyProperty.Register("DefaultAudience", typeof(DefaultAudience), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultDefaultAudience));
+            DependencyProperty.Register("DefaultAudience", typeof(Audience), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultDefaultAudience));
 
         #endregion DefaultAudience
 

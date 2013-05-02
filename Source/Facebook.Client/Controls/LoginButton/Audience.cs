@@ -3,7 +3,7 @@
     /// <summary>
     /// Identifies the default audience to use for sessions that post data to Facebook.
     /// </summary>
-    public enum DefaultAudience
+    public enum Audience
     {
         /// <summary>
         /// No audience needed; this value is useful for cases where data will only be read from Facebook.
