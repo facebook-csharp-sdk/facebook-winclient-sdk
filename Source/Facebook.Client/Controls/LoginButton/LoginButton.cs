@@ -42,8 +42,7 @@ namespace Facebook.Client.Controls
         private const string DefaultAccessToken = "";
         private const string DefaultProfileId = "";
         private const Audience DefaultDefaultAudience = Audience.None;
-        private const string DefaultReadPermissions = "";
-        private const string DefaultPublishPermissions = "";
+        private const string DefaultPermissions = "";
         private const bool DefaultFetchUserInfo = true;
         private const FacebookSession DefaultCurrentSession = null;
         private const FacebookSession DefaultCurrentUser = null;
@@ -178,50 +177,24 @@ namespace Facebook.Client.Controls
 
         #endregion DefaultAudience
 
-        #region ReadPermissions
+        #region Permissions
 
         /// <summary>
-        /// The read permissions to request.
+        /// The permissions to request.
         /// </summary>
-        /// <remarks>
-        /// Note, that if read permissions are specified, then publish permissions should not be specified.
-        /// </remarks>
-        public string ReadPermissions
+        public string Permissions
         {
-            get { return (string)GetValue(ReadPermissionsProperty); }
-            set { SetValue(ReadPermissionsProperty, value); }
+            get { return (string)GetValue(PermissionsProperty); }
+            set { SetValue(PermissionsProperty, value); }
         }
 
         /// <summary>
-        /// Identifies the ReadPermissions dependency property.
+        /// Identifies the Permissions dependency property.
         /// </summary>
-        public static readonly DependencyProperty ReadPermissionsProperty =
-            DependencyProperty.Register("ReadPermissions", typeof(string), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultReadPermissions));
+        public static readonly DependencyProperty PermissionsProperty =
+            DependencyProperty.Register("Permissions", typeof(string), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultPermissions));
         
-        #endregion ReadPermissions
-
-        #region PublishPermissions
-
-        /// <summary>
-        /// The publish permissions to request.
-        /// </summary>
-        /// <remarks>
-        /// Note, that a DefaultAudience value of OnlyMe, Everyone, or Friends should be set if publish permissions are 
-        /// specified. Additionally, when publish permissions are specified, then read should not be specified.
-        /// </remarks>
-        public string PublishPermissions
-        {
-            get { return (string)GetValue(PublishPermissionsProperty); }
-            set { SetValue(PublishPermissionsProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the PublishPermissions dependency property.
-        /// </summary>
-        public static readonly DependencyProperty PublishPermissionsProperty =
-            DependencyProperty.Register("PublishPermissions", typeof(string), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultPublishPermissions));
-
-        #endregion PublishPermissions
+        #endregion Permissions
 
         #region FetchUserInfo
 
@@ -272,9 +245,9 @@ namespace Facebook.Client.Controls
         /// <summary>
         /// Gets the current logged in user.
         /// </summary>
-        public FacebookUser CurrentUser
+        public GraphUser CurrentUser
         {
-            get { return (FacebookUser)GetValue(CurrentUserProperty); }
+            get { return (GraphUser)GetValue(CurrentUserProperty); }
             private set { SetValue(CurrentUserProperty, value); }
         }
 
@@ -282,7 +255,7 @@ namespace Facebook.Client.Controls
         /// Identifies the CurrentUser dependency property.
         /// </summary>
         public static readonly DependencyProperty CurrentUserProperty =
-            DependencyProperty.Register("CurrentUser", typeof(FacebookUser), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultCurrentUser));
+            DependencyProperty.Register("CurrentUser", typeof(GraphUser), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultCurrentUser));
 
         #endregion CurrentUser
 
@@ -356,9 +329,9 @@ namespace Facebook.Client.Controls
             {
                 RaiseSessionStateChanged(new SessionStateChangedEventArgs(FacebookSessionState.Opening));
 
-                // TODO: using only ReadPermissions for the time being until we decide how 
+                // TODO: using Permissions for the time being until we decide how 
                 // to handle separate ReadPermissions and PublishPermissions
-                var session = await this.facebookSessionClient.LoginAsync(this.ReadPermissions);
+                var session = await this.facebookSessionClient.LoginAsync(this.Permissions);
 
                 // initialize current session
                 this.CurrentSession = session;
@@ -371,19 +344,28 @@ namespace Facebook.Client.Controls
                     var parameters = new Dictionary<string, object>();
                     parameters["fields"] = "id,name,username,first_name,middle_name,last_name,birthday,location,link";
 
-                    var result = await client.GetTaskAsync("me", parameters) as IDictionary<string, object>;
-
-                    this.CurrentUser = new FacebookUser()
+                    dynamic result = await client.GetTaskAsync("me", parameters);
+                    dynamic location = result.location;
+                    this.CurrentUser = new GraphUser()
                     {
-                        Id = result.ContainsKey("id") ? (string)result["id"] : string.Empty,
-                        Name = result.ContainsKey("name") ? (string)result["name"] : string.Empty,
-                        UserName = result.ContainsKey("username") ? (string)result["username"] : string.Empty,
-                        FirstName = result.ContainsKey("first_name") ? (string)result["first_name"] : string.Empty,
-                        MiddleName = result.ContainsKey("middle_name") ? (string)result["middle_name"] : string.Empty,
-                        LastName = result.ContainsKey("last_name") ? (string)result["last_name"] : string.Empty,
-                        Birthday = result.ContainsKey("birthday") ? (string)result["birthday"] : string.Empty,
-                        //Location = result.ContainsKey("location") ? (string)result["location"] : string.Empty,
-                        Link = result.ContainsKey("link") ? (string)result["link"] : string.Empty
+                        Id = result.id,
+                        Name = result.name,
+                        UserName = result.username,
+                        FirstName = result.first_name,
+                        MiddleName = result.middle_name,
+                        LastName = result.last_name,
+                        Birthday = result.birthday,
+                        Location = new GraphLocation 
+                        {
+                            //Street = location.street,
+                            City = (location != null) ? location.name : null,
+                            //State = location.state,
+                            //Zip = location.zip,
+                            //Country = location.country,
+                            //Latitude = location.latitude ?? 0.0,
+                            //Longitude = location.longitude ?? 0.0
+                        },
+                        Link = result.link
                     };
 
                     var userInfo = new UserInfoChangedEventArgs(this.CurrentUser);

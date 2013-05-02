@@ -151,11 +151,14 @@
     <Compile Include="..\Facebook.Client\FacebookSessionClient.cs">
       <Link>FacebookSessionClient.cs</Link>
     </Compile>
-    <Compile Include="..\Facebook.Client\FacebookUser.cs">
-      <Link>FacebookUser.cs</Link>
-    </Compile>
     <Compile Include="..\Facebook.Client\FacebookWebDialog.cs">
       <Link>FacebookWebDialog.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\GraphLocation.cs">
+      <Link>GraphLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\GraphUser.cs">
+      <Link>GraphUser.cs</Link>
     </Compile>
     <Compile Include="FacebookDialogPage.xaml.cs">
       <DependentUpon>FacebookDialogPage.xaml</DependentUpon>

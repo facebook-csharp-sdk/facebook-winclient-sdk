@@ -125,7 +125,7 @@
                     <TextBlock Grid.Row="6" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Link}" />
 
                     <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Location" />
-                    <TextBlock Grid.Row="7" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Location}" />
+                    <TextBlock Grid.Row="7" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Location.City}" />
                 </Grid>
             </phone:PivotItem>
 

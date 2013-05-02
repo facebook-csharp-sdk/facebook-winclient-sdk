@@ -113,7 +113,7 @@
                 <TextBlock Grid.Row="7" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Link}" />
 
                 <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Location" />
-                <TextBlock Grid.Row="8" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Location}" />
+                <TextBlock Grid.Row="8" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Location.City}" />
 
                 <!--<facebookControls:ProfilePicture 
                     Grid.Row="2" 
@@ -136,7 +136,7 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 UserInfoChanged="OnUserInfoChanged" 
-                SessionStateChanged="OnSessionStateChanged" />
+                SessionStateChanged="OnSessionStateChanged" Permissions="user_birthday" />
         </Grid>
     </Grid>
 </Page>

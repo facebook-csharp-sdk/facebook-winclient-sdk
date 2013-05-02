@@ -9,7 +9,7 @@
         /// Initializes a new instance of the UserInfoChangedEventArgs class.
         /// </summary>
         /// <param name="user">The current user.</param>
-        public UserInfoChangedEventArgs(FacebookUser user)
+        public UserInfoChangedEventArgs(GraphUser user)
         {
             this.User = user;
         }
@@ -17,6 +17,6 @@
         /// <summary>
         /// Gets the current user, or null if there is no user.
         /// </summary>
-        public FacebookUser User { get; private set; }
+        public GraphUser User { get; private set; }
     }
 }
