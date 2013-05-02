@@ -46,6 +46,7 @@ namespace Facebook.Client.Controls
         private const string DefaultPublishPermissions = "";
         private const bool DefaultFetchUserInfo = true;
         private const FacebookSession DefaultCurrentSession = null;
+        private const FacebookSession DefaultCurrentUser = null;
         private static readonly CornerRadius DefaultCornerRadius = new CornerRadius(0);
 
         #endregion Default Property Values
@@ -266,6 +267,25 @@ namespace Facebook.Client.Controls
         
         #endregion CurrentSession
 
+        #region CurrentUser
+
+        /// <summary>
+        /// Gets the current logged in user.
+        /// </summary>
+        public FacebookUser CurrentUser
+        {
+            get { return (FacebookUser)GetValue(CurrentUserProperty); }
+            private set { SetValue(CurrentUserProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the CurrentUser dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CurrentUserProperty =
+            DependencyProperty.Register("CurrentUser", typeof(FacebookUser), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultCurrentUser));
+
+        #endregion CurrentUser
+
         #region CornerRadius
 
         /// <summary>
@@ -353,20 +373,20 @@ namespace Facebook.Client.Controls
 
                     var result = await client.GetTaskAsync("me", parameters) as IDictionary<string, object>;
 
-                    var userInfo = new UserInfoChangedEventArgs(
-                        new FacebookUser()
-                        {
-                            Id = result.ContainsKey("id") ? (string)result["id"] : string.Empty,
-                            Name = result.ContainsKey("name") ? (string)result["name"] : string.Empty,
-                            UserName = result.ContainsKey("username") ? (string)result["username"] : string.Empty,
-                            FirstName = result.ContainsKey("first_name") ? (string)result["first_name"] : string.Empty,
-                            MiddleName = result.ContainsKey("middle_name") ? (string)result["middle_name"] : string.Empty,
-                            LastName = result.ContainsKey("last_name") ? (string)result["last_name"] : string.Empty,
-                            Birthday = result.ContainsKey("birthday") ? (string)result["birthday"] : string.Empty,
-                            //Location = result.ContainsKey("location") ? (string)result["location"] : string.Empty,
-                            Link = result.ContainsKey("link") ? (string)result["link"] : string.Empty
-                        });
+                    this.CurrentUser = new FacebookUser()
+                    {
+                        Id = result.ContainsKey("id") ? (string)result["id"] : string.Empty,
+                        Name = result.ContainsKey("name") ? (string)result["name"] : string.Empty,
+                        UserName = result.ContainsKey("username") ? (string)result["username"] : string.Empty,
+                        FirstName = result.ContainsKey("first_name") ? (string)result["first_name"] : string.Empty,
+                        MiddleName = result.ContainsKey("middle_name") ? (string)result["middle_name"] : string.Empty,
+                        LastName = result.ContainsKey("last_name") ? (string)result["last_name"] : string.Empty,
+                        Birthday = result.ContainsKey("birthday") ? (string)result["birthday"] : string.Empty,
+                        //Location = result.ContainsKey("location") ? (string)result["location"] : string.Empty,
+                        Link = result.ContainsKey("link") ? (string)result["link"] : string.Empty
+                    };
 
+                    var userInfo = new UserInfoChangedEventArgs(this.CurrentUser);
                     RaiseUserInfoChanged(userInfo);
                 }
             }
@@ -392,6 +412,7 @@ namespace Facebook.Client.Controls
         {
             this.facebookSessionClient.Logout();
             this.CurrentSession = null;
+            this.CurrentUser = null;
             RaiseSessionStateChanged(new SessionStateChangedEventArgs(FacebookSessionState.Closed));
         }
 
