@@ -40,24 +40,27 @@
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
         <Grid Margin="40">
             <Grid.RowDefinitions>
-                <RowDefinition Height="75" />
-                <RowDefinition Height="*" />
                 <RowDefinition Height="100" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="60" />
             </Grid.RowDefinitions>
 
-            <facebookControls:ProfilePicture 
-                Grid.Row="0" 
-                HorizontalAlignment="Right" 
-                VerticalAlignment="Top" 
-                Width="75" 
-                Height="75" AccessToken="{Binding AccessToken, ElementName=loginButton}" ProfileId="{Binding ProfileId, ElementName=loginButton}" />
+            <!--Profile Picture-->
+            <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" Width="100">
+                <facebookControls:ProfilePicture                                         
+                    AccessToken="{Binding AccessToken, ElementName=loginButton}" 
+                    ProfileId="{Binding ProfileId, ElementName=loginButton}" />
+                <TextBlock Style="{StaticResource BasicTextStyle}" TextWrapping="Wrap" TextAlignment="Center" Text="{Binding CurrentUser.Name, ElementName=loginButton}" />
+            </StackPanel>
 
+            <!--Welcome Text-->
             <StackPanel x:Name="welcomeText" 
                         Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center">
                 <TextBlock Text="FACEBOOK SDK FOR .NET" Style="{StaticResource HeaderTextStyle}" Margin="0,0,0,30"/>
                 <TextBlock Text="Log in to start" Style="{StaticResource SubheaderTextStyle}" />
             </StackPanel>
 
+            <!--User Information-->
             <Grid x:Name="userInfo" 
                   Grid.Row="1" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <Grid.RowDefinitions>
@@ -74,6 +77,7 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="150" />
                     <ColumnDefinition Width="450" />
+                    <!--<ColumnDefinition />-->
                 </Grid.ColumnDefinitions>
                 <Line Grid.Row="1" Style="{StaticResource HorizontalGridLine}"/>
                 <Line Grid.Row="2" Style="{StaticResource HorizontalGridLine}"/>
@@ -110,7 +114,22 @@
 
                 <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Location" />
                 <TextBlock Grid.Row="8" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Location}" />
+
+                <!--<facebookControls:ProfilePicture 
+                    Grid.Row="2" 
+                    Grid.Column="2"
+                    Grid.RowSpan="7"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Margin="30"
+                    Width="200"
+                    Height="240"
+                    CropMode="Original"
+                    AccessToken="{Binding AccessToken, ElementName=loginButton}" 
+                    ProfileId="{Binding ProfileId, ElementName=loginButton}" />-->
             </Grid>
+
+            <!--Login Button-->
             <facebookControls:LoginButton x:Name="loginButton" 
                 Grid.Row="2"
                 ApplicationId="427365490674294"
