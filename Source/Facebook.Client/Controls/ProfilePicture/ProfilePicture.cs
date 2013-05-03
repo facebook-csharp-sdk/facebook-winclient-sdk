@@ -1,9 +1,17 @@
 ﻿using System;
 using System.Reflection;
+
+#if NETFX_CORE
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+#endif
+#if WINDOWS_PHONE
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
+#endif
 
 namespace Facebook.Client.Controls
 {
@@ -153,8 +161,13 @@ namespace Facebook.Client.Controls
             if (string.IsNullOrEmpty(this.ProfileId))
             {
                 string imageName = (this.CropMode == CropMode.Square) ? "fb_blank_profile_square.png" : "fb_blank_profile_portrait.png";
+#if NETFX_CORE
                 var libraryName = typeof(ProfilePicture).GetTypeInfo().Assembly.GetName().Name;
                 profilePictureUrl = string.Format("ms-appx:///{0}/Images/{1}", libraryName, imageName);
+#endif
+#if WINDOWS_PHONE
+                profilePictureUrl = string.Format("/Images/{0}", imageName);
+#endif
             }
             else
             {

@@ -118,6 +118,12 @@
     <Compile Include="..\Facebook.Client\Controls\LoginButton\UserInfoChangedEventArgs.cs">
       <Link>Controls\LoginButton\UserInfoChangedEventArgs.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\Controls\ProfilePicture\CropMode.cs">
+      <Link>Controls\ProfilePicture\CropMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\ProfilePicture\ProfilePicture.cs">
+      <Link>Controls\ProfilePicture\ProfilePicture.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\FacebookDialog.cs">
       <Link>FacebookDialog.cs</Link>
     </Compile>
@@ -177,6 +183,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\ProfilePicture\ProfilePicture.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -191,7 +201,10 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Images\fb_blank_profile_portrait.png" />
+    <Content Include="Images\fb_blank_profile_square.png" />
+  </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\AppResources.es.resx" />
     <EmbeddedResource Include="Resources\AppResources.resx">

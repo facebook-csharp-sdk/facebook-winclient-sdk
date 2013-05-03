@@ -5,6 +5,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/Facebook.Client;component/Controls/LoginButton/LoginButton.xaml" />
+        <ResourceDictionary Source="/Facebook.Client;component/Controls/ProfilePicture/ProfilePicture.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>
