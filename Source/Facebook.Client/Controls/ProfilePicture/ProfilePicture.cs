@@ -11,6 +11,7 @@ using Windows.UI.Xaml.Media;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 #endif
 
 namespace Facebook.Client.Controls
@@ -143,6 +144,7 @@ namespace Facebook.Client.Controls
             this.LoadPicture();
         }
 
+#if NETFX_CORE
         /// <summary>
         /// Provides the behavior for the "Arrange" pass of layout. Classes can override this method to define their own "Arrange" pass behavior.
         /// </summary>
@@ -153,7 +155,9 @@ namespace Facebook.Client.Controls
             LoadPicture();
             return base.ArrangeOverride(finalSize);
         }
+#endif
 
+#if NETFX_CORE
         private void LoadPicture()
         {
             string profilePictureUrl;
@@ -161,40 +165,13 @@ namespace Facebook.Client.Controls
             if (string.IsNullOrEmpty(this.ProfileId))
             {
                 string imageName = (this.CropMode == CropMode.Square) ? "fb_blank_profile_square.png" : "fb_blank_profile_portrait.png";
-#if NETFX_CORE
+
                 var libraryName = typeof(ProfilePicture).GetTypeInfo().Assembly.GetName().Name;
                 profilePictureUrl = string.Format("ms-appx:///{0}/Images/{1}", libraryName, imageName);
-#endif
-#if WINDOWS_PHONE
-                profilePictureUrl = string.Format("/Images/{0}", imageName);
-#endif
             }
             else
             {
-                const string graphApiUrl = "https://graph.facebook.com";
-
-                if (this.CropMode == CropMode.Square)
-                {
-                    var size = Math.Max(this.Height, this.Width);
-                    profilePictureUrl = string.Format("{0}/{1}/picture?width={2}&height={3}",
-                                            graphApiUrl,
-                                            this.ProfileId,
-                                            size,
-                                            size);
-                }
-                else
-                {
-                    profilePictureUrl = string.Format("{0}/{1}/picture?width={2}&height={3}",
-                                            graphApiUrl,
-                                            this.ProfileId,
-                                            this.Width,
-                                            this.Height);
-                }
-
-                if (!string.IsNullOrEmpty(this.AccessToken))
-                {
-                    profilePictureUrl += "&access_token=" + this.AccessToken;
-                }
+                profilePictureUrl = GetFacebookProfilePictureUrl();
             }
 
             var currentprofilePictureUrl = (string)this.GetValue(ImageSourceProperty);
@@ -203,9 +180,81 @@ namespace Facebook.Client.Controls
                 this.SetValue(ImageSourceProperty, profilePictureUrl);
             }
         }
+#endif
 
+#if WINDOWS_PHONE
+        private void LoadPicture()
+        {
+            if (this.image != null)
+            {
+                var bmp = new BitmapImage();              
+                if (this.CropMode == CropMode.Square)
+                {
+                    var size = Math.Max(this.Height, this.Width);
+                    bmp.DecodePixelWidth = (int)size;
+                    bmp.DecodePixelHeight = (int)size;
+                }
+                else
+                {
+                    bmp.DecodePixelWidth = (int)this.Width;
+                    bmp.DecodePixelHeight = (int)this.Height;
+                }
+
+                if (string.IsNullOrEmpty(this.ProfileId))
+                {
+                    var imageName = (this.CropMode == CropMode.Square) ? "fb_blank_profile_square.png" : "fb_blank_profile_portrait.png";
+                    var library = typeof(ProfilePicture).GetTypeInfo().Assembly;
+                    var libraryName = library.GetName().Name;
+                    using (var stream = typeof(ProfilePicture).GetTypeInfo().Assembly.GetManifestResourceStream(string.Format("{0}.Images.{1}", libraryName, imageName)))
+                    {
+                        bmp.SetSource(stream);
+                    }
+                }
+                else
+                {
+                    var profilePictureUrl = GetFacebookProfilePictureUrl();
+                    bmp.UriSource = new Uri(profilePictureUrl, UriKind.Absolute);
+                }
+
+                this.image.Source = bmp;
+            }
+        }
+#endif
+
+        private string GetFacebookProfilePictureUrl()
+        {
+            string profilePictureUrl;
+            const string graphApiUrl = "https://graph.facebook.com";
+
+            if (this.CropMode == CropMode.Square)
+            {
+                var size = Math.Max(this.Height, this.Width);
+                profilePictureUrl = string.Format("{0}/{1}/picture?width={2}&height={3}",
+                                        graphApiUrl,
+                                        this.ProfileId,
+                                        size,
+                                        size);
+            }
+            else
+            {
+                profilePictureUrl = string.Format("{0}/{1}/picture?width={2}&height={3}",
+                                        graphApiUrl,
+                                        this.ProfileId,
+                                        this.Width,
+                                        this.Height);
+            }
+
+            if (!string.IsNullOrEmpty(this.AccessToken))
+            {
+                profilePictureUrl += "&access_token=" + this.AccessToken;
+            }
+            return profilePictureUrl;
+        }
+
+#if NETFX_CORE
         private static readonly DependencyProperty ImageSourceProperty =
             DependencyProperty.Register("ImageSource", typeof(string), typeof(ProfilePicture), new PropertyMetadata(string.Empty));
+#endif
 
         #endregion Implementation
     }

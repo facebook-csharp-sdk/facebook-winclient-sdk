@@ -22,12 +22,6 @@
                                 Stretch="Uniform"
                                 HorizontalAlignment="Center" 
                                 VerticalAlignment="Center">
-                            <Image.Source>
-                                <BitmapImage
-                                    DecodePixelWidth="{TemplateBinding Width}" 
-                                    DecodePixelHeight="{TemplateBinding Height}" 
-                                    UriSource="{Binding ImageSource}" />
-                            </Image.Source>
                         </Image>
                     </Border>
                 </ControlTemplate>

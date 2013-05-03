@@ -202,8 +202,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Images\fb_blank_profile_portrait.png" />
-    <Content Include="Images\fb_blank_profile_square.png" />
+    <EmbeddedResource Include="Images\fb_blank_profile_portrait.png" />
+    <EmbeddedResource Include="Images\fb_blank_profile_square.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Resources\AppResources.es.resx" />
