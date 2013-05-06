@@ -1,29 +1,29 @@
-﻿using System;
-using System.Reflection;
-
+﻿namespace Facebook.Client.Controls
+{
 #if NETFX_CORE
-using Windows.Foundation;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
+    using System;
+    using System.Globalization;
+    using System.Reflection;
+    using Windows.Foundation;
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Media;
 #endif
 #if WINDOWS_PHONE
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
+    using System;
+    using System.Reflection;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
 #endif
 
-namespace Facebook.Client.Controls
-{
     /// <summary>
     /// Shows the profile picture for an object such as a user, place, or event.
     /// </summary>
     [TemplatePart(Name = PartProfilePicture, Type = typeof(Image))]
     public class ProfilePicture : Control
     {
-        private Image image;
-
         #region Part Definitions
 
         private const string PartProfilePicture = "PART_ProfilePicture";
@@ -37,6 +37,12 @@ namespace Facebook.Client.Controls
         private const CropMode DefaultCropMode = CropMode.Original;
 
         #endregion Default Property Values
+
+        #region Member variables
+
+        private Image image;
+
+        #endregion Member variables
 
         /// <summary>
         /// Initializes a new instance of the ProfilePicture class.
@@ -54,7 +60,7 @@ namespace Facebook.Client.Controls
         public string AccessToken
         {
             get { return (string)GetValue(AccessTokenProperty); }
-            set { SetValue(AccessTokenProperty, value); }
+            set { this.SetValue(AccessTokenProperty, value); }
         }
 
         /// <summary>
@@ -71,12 +77,12 @@ namespace Facebook.Client.Controls
         /// The Facebook ID of the user, place or object for which a picture should be fetched and displayed.
         /// </summary>
         /// <remarks>
-        /// The control displays a blank profile (silhoutte) picture if this property is null or empty.
+        /// The control displays a blank profile (silhouette) picture if this property is null or empty.
         /// </remarks>
         public string ProfileId
         {
             get { return (string)GetValue(ProfileIdProperty); }
-            set { SetValue(ProfileIdProperty, value); }
+            set { this.SetValue(ProfileIdProperty, value); }
         }
 
         /// <summary>
@@ -100,7 +106,7 @@ namespace Facebook.Client.Controls
         public CropMode CropMode
         {
             get { return (CropMode)GetValue(CropModeProperty); }
-            set { SetValue(CropModeProperty, value); }
+            set { this.SetValue(CropModeProperty, value); }
         }
 
         /// <summary>
@@ -111,7 +117,7 @@ namespace Facebook.Client.Controls
 
         private static void OnCropModePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var profilePicture = ((ProfilePicture)d);
+            var profilePicture = (ProfilePicture)d;
             if (profilePicture.image != null)
             {
                 profilePicture.image.Stretch = (CropMode)e.NewValue == CropMode.Fill ? Stretch.UniformToFill : Stretch.Uniform;
@@ -138,7 +144,7 @@ namespace Facebook.Client.Controls
         {
             base.OnApplyTemplate();
 
-            this.image = ((Image)GetTemplateChild(PartProfilePicture));
+            this.image = (Image)GetTemplateChild(PartProfilePicture);
             this.image.DataContext = this;
             this.image.Stretch = this.CropMode == CropMode.Fill ? Stretch.UniformToFill : Stretch.Uniform;
             this.LoadPicture();
@@ -152,7 +158,7 @@ namespace Facebook.Client.Controls
         /// <returns>The actual size that is used after the element is arranged in layout.</returns>
         protected override Size ArrangeOverride(Size finalSize)
         {
-            LoadPicture();
+            this.LoadPicture();
             return base.ArrangeOverride(finalSize);
         }
 #endif
@@ -167,11 +173,11 @@ namespace Facebook.Client.Controls
                 string imageName = (this.CropMode == CropMode.Square) ? "fb_blank_profile_square.png" : "fb_blank_profile_portrait.png";
 
                 var libraryName = typeof(ProfilePicture).GetTypeInfo().Assembly.GetName().Name;
-                profilePictureUrl = string.Format("ms-appx:///{0}/Images/{1}", libraryName, imageName);
+                profilePictureUrl = string.Format(CultureInfo.InvariantCulture, "ms-appx:///{0}/Images/{1}", libraryName, imageName);
             }
             else
             {
-                profilePictureUrl = GetFacebookProfilePictureUrl();
+                profilePictureUrl = this.GetFacebookProfilePictureUrl();
             }
 
             var currentprofilePictureUrl = (string)this.GetValue(ImageSourceProperty);
@@ -224,21 +230,25 @@ namespace Facebook.Client.Controls
         private string GetFacebookProfilePictureUrl()
         {
             string profilePictureUrl;
-            const string graphApiUrl = "https://graph.facebook.com";
+            const string GraphApiUrl = "https://graph.facebook.com";
 
             if (this.CropMode == CropMode.Square)
             {
                 var size = Math.Max(this.Height, this.Width);
-                profilePictureUrl = string.Format("{0}/{1}/picture?width={2}&height={3}",
-                                        graphApiUrl,
+                profilePictureUrl = string.Format(
+                                        CultureInfo.InvariantCulture,
+                                        "{0}/{1}/picture?width={2}&height={3}",
+                                        GraphApiUrl,
                                         this.ProfileId,
                                         size,
                                         size);
             }
             else
             {
-                profilePictureUrl = string.Format("{0}/{1}/picture?width={2}&height={3}",
-                                        graphApiUrl,
+                profilePictureUrl = string.Format(
+                                        CultureInfo.InvariantCulture,
+                                        "{0}/{1}/picture?width={2}&height={3}",
+                                        GraphApiUrl,
                                         this.ProfileId,
                                         this.Width,
                                         this.Height);
@@ -248,6 +258,7 @@ namespace Facebook.Client.Controls
             {
                 profilePictureUrl += "&access_token=" + this.AccessToken;
             }
+
             return profilePictureUrl;
         }
 

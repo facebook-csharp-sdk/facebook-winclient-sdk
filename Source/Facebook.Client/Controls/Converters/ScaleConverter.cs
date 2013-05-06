@@ -1,16 +1,16 @@
-﻿using System;
-
+﻿namespace Facebook.Client.Controls
+{
 #if NETFX_CORE
-using Windows.UI.Xaml.Data;
-using System.Globalization;
+    using System;
+    using System.Globalization;
+    using Windows.UI.Xaml.Data;
 #endif
 #if WINDOWS_PHONE
-using System.Windows.Data;
-using System.Globalization;
+    using System;
+    using System.Windows.Data;
+    using System.Globalization;
 #endif
 
-namespace Facebook.Client.Controls
-{
     /// <summary>
     /// Scales a value by a given factor.
     /// </summary>

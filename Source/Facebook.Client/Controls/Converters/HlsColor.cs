@@ -1,14 +1,14 @@
-﻿using System;
-
+﻿namespace Facebook.Client.Controls
+{
 #if NETFX_CORE
-using Windows.UI;
+    using System;
+    using Windows.UI;
 #endif
 #if WINDOWS_PHONE
-using System.Windows.Media;
+    using System;
+    using System.Windows.Media;
 #endif
 
-namespace Facebook.Client.Controls
-{
     /// <summary>
     /// Describes a color in terms of hue, lightness, and saturation (HLS).
     /// </summary>
@@ -21,10 +21,10 @@ namespace Facebook.Client.Controls
 
         /// <summary>
         /// Converts a color described in terms of alpha, red, green and blue channels (RGB) to 
-        /// its equivalent HlsColor.
+        /// its equivalent HLS Color.
         /// </summary>
         /// <param name="rgbColor">The RGB color to convert.</param>
-        /// <returns>An equivalent HlsColor.</returns>
+        /// <returns>An equivalent HLS Color.</returns>
         public static HlsColor FromRgb(Color rgbColor)
         {
             var hlsColor = new HlsColor();
@@ -50,8 +50,8 @@ namespace Facebook.Client.Controls
             hlsColor.S = delta / ((hlsColor.L < 0.5) ? (maxVal + minVal) : (2.0 - maxVal - minVal));
 
             if (red == maxVal) hlsColor.H = (green - blue) / delta;
-            if (green == maxVal) hlsColor.H = 2.0 + (blue - red) / delta;
-            if (blue == maxVal) hlsColor.H = 4.0 + (red - green) / delta;
+            if (green == maxVal) hlsColor.H = 2.0 + ((blue - red) / delta);
+            if (blue == maxVal) hlsColor.H = 4.0 + ((red - green) / delta);
 
             hlsColor.H *= 60;
             if (hlsColor.H < 0) hlsColor.H += 360;
@@ -88,7 +88,7 @@ namespace Facebook.Client.Controls
                 t1 = this.L + this.S - (this.L * this.S);
             }
 
-            var t2 = 2.0 * this.L - t1;
+            var t2 = (2.0 * this.L) - t1;
 
             var h = this.H / 360;
 
@@ -117,7 +117,7 @@ namespace Facebook.Client.Controls
             double color;
             if (6.0 * t3 < 1)
             {
-                color = t2 + (t1 - t2) * 6.0 * t3;
+                color = t2 + ((t1 - t2) * 6.0 * t3);
             }
             else if (2.0 * t3 < 1)
             {
@@ -125,7 +125,7 @@ namespace Facebook.Client.Controls
             }
             else if (3.0 * t3 < 2)
             {
-                color = t2 + (t1 - t2) * ((2.0 / 3.0) - t3) * 6.0;
+                color = t2 + ((t1 - t2) * ((2.0 / 3.0) - t3) * 6.0);
             }
             else
             {

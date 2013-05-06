@@ -1,21 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-
+﻿namespace Facebook.Client.Controls
+{
 #if NETFX_CORE
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-using Windows.ApplicationModel.Resources;
-using System.Reflection;
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Reflection;
+    using System.Threading.Tasks;
+    using Windows.ApplicationModel.Resources;
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
 #endif
 #if WINDOWS_PHONE
-using System.Windows.Controls;
-using System.Windows;
-using Facebook.Client.Resources;
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
+    using System.Windows.Controls;
+    using System.Windows;
+    using Facebook.Client.Resources;
 #endif
 
-namespace Facebook.Client.Controls
-{
     /// <summary>
     /// Represents a button control that can log in or log out the user when clicked.
     /// </summary>
@@ -27,9 +30,6 @@ namespace Facebook.Client.Controls
     [TemplatePart(Name = PartLoginButton, Type = typeof(Button))]
     public sealed class LoginButton : Control
     {
-        private Button loginButton;
-        private FacebookSessionClient facebookSessionClient;
-
         #region Part Definitions
 
         private const string PartLoginButton = "PART_LoginButton";
@@ -49,6 +49,13 @@ namespace Facebook.Client.Controls
         private static readonly CornerRadius DefaultCornerRadius = new CornerRadius(0);
 
         #endregion Default Property Values
+
+        #region Member variables
+
+        private Button loginButton;
+        private FacebookSessionClient facebookSessionClient;
+
+        #endregion Member variables
 
         /// <summary>
         /// Initializes a new instance of the LoginButton class. 
@@ -90,7 +97,7 @@ namespace Facebook.Client.Controls
         public string ApplicationId
         {
             get { return (string)GetValue(ApplicationIdProperty); }
-            set { SetValue(ApplicationIdProperty, value); }
+            set { this.SetValue(ApplicationIdProperty, value); }
         }
 
         /// <summary>
@@ -123,7 +130,7 @@ namespace Facebook.Client.Controls
         public string AccessToken
         {
             get { return (string)GetValue(AccessTokenProperty); }
-            set { SetValue(AccessTokenProperty, value); }
+            set { this.SetValue(AccessTokenProperty, value); }
         }
 
         /// <summary>
@@ -142,7 +149,7 @@ namespace Facebook.Client.Controls
         public string ProfileId
         {
             get { return (string)GetValue(ProfileIdProperty); }
-            set { SetValue(ProfileIdProperty, value); }
+            set { this.SetValue(ProfileIdProperty, value); }
         }
 
         /// <summary>
@@ -166,7 +173,7 @@ namespace Facebook.Client.Controls
         public Audience DefaultAudience
         {
             get { return (Audience)GetValue(DefaultAudienceProperty); }
-            set { SetValue(DefaultAudienceProperty, value); }
+            set { this.SetValue(DefaultAudienceProperty, value); }
         }
 
         /// <summary>
@@ -185,7 +192,7 @@ namespace Facebook.Client.Controls
         public string Permissions
         {
             get { return (string)GetValue(PermissionsProperty); }
-            set { SetValue(PermissionsProperty, value); }
+            set { this.SetValue(PermissionsProperty, value); }
         }
 
         /// <summary>
@@ -204,7 +211,7 @@ namespace Facebook.Client.Controls
         public bool FetchUserInfo
         {
             get { return (bool)GetValue(FetchUserInfoProperty); }
-            set { SetValue(FetchUserInfoProperty, value); }
+            set { this.SetValue(FetchUserInfoProperty, value); }
         }
 
         /// <summary>
@@ -223,7 +230,7 @@ namespace Facebook.Client.Controls
         public FacebookSession CurrentSession
         {
             get { return (FacebookSession)GetValue(CurrentSessionProperty); }
-            private set { SetValue(CurrentSessionProperty, value); }
+            private set { this.SetValue(CurrentSessionProperty, value); }
         }
 
         /// <summary>
@@ -248,7 +255,7 @@ namespace Facebook.Client.Controls
         public GraphUser CurrentUser
         {
             get { return (GraphUser)GetValue(CurrentUserProperty); }
-            private set { SetValue(CurrentUserProperty, value); }
+            private set { this.SetValue(CurrentUserProperty, value); }
         }
 
         /// <summary>
@@ -267,7 +274,7 @@ namespace Facebook.Client.Controls
         public CornerRadius CornerRadius
         {
             get { return (CornerRadius)GetValue(CornerRadiusProperty); }
-            set { SetValue(CornerRadiusProperty, value); }
+            set { this.SetValue(CornerRadiusProperty, value); }
         }
 
         /// <summary>
@@ -298,28 +305,28 @@ namespace Facebook.Client.Controls
 
             if (this.loginButton != null)
             {
-                this.loginButton.Click -= OnLoginButtonClicked;
+                this.loginButton.Click -= this.OnLoginButtonClicked;
             }
 
             this.loginButton = this.GetTemplateChild(PartLoginButton) as Button;
             if (this.loginButton != null)
             {
-                this.loginButton.Click += OnLoginButtonClicked;
+                this.loginButton.Click += this.OnLoginButtonClicked;
                 this.loginButton.DataContext = this;
             }
 
-            UpdateButtonCaption();
+            this.UpdateButtonCaption();
         }
 
-        async void OnLoginButtonClicked(object sender, RoutedEventArgs e)
+        private async void OnLoginButtonClicked(object sender, RoutedEventArgs e)
         {
             if (this.CurrentSession == null)
             {
-                await LogIn();
+                await this.LogIn();
             }
             else
             {
-                LogOut();
+                this.LogOut();
             }
         }
 
@@ -327,7 +334,7 @@ namespace Facebook.Client.Controls
         {
             try
             {
-                RaiseSessionStateChanged(new SessionStateChangedEventArgs(FacebookSessionState.Opening));
+                this.RaiseSessionStateChanged(new SessionStateChangedEventArgs(FacebookSessionState.Opening));
 
                 // TODO: using Permissions for the time being until we decide how 
                 // to handle separate ReadPermissions and PublishPermissions
@@ -335,7 +342,7 @@ namespace Facebook.Client.Controls
 
                 // initialize current session
                 this.CurrentSession = session;
-                RaiseSessionStateChanged(new SessionStateChangedEventArgs(FacebookSessionState.Opened));
+                this.RaiseSessionStateChanged(new SessionStateChangedEventArgs(FacebookSessionState.Opened));
 
                 // retrieve information about the current user
                 if (this.FetchUserInfo)
@@ -357,19 +364,19 @@ namespace Facebook.Client.Controls
                         Birthday = result.birthday,
                         Location = new GraphLocation 
                         {
-                            //Street = location.street,
+                            ////Street = location.street,
                             City = (location != null) ? location.name : null,
-                            //State = location.state,
-                            //Zip = location.zip,
-                            //Country = location.country,
-                            //Latitude = location.latitude ?? 0.0,
-                            //Longitude = location.longitude ?? 0.0
+                            ////State = location.state,
+                            ////Zip = location.zip,
+                            ////Country = location.country,
+                            ////Latitude = location.latitude ?? 0.0,
+                            ////Longitude = location.longitude ?? 0.0
                         },
                         Link = result.link
                     };
 
                     var userInfo = new UserInfoChangedEventArgs(this.CurrentUser);
-                    RaiseUserInfoChanged(userInfo);
+                    this.RaiseUserInfoChanged(userInfo);
                 }
             }
             catch (ArgumentNullException error)
@@ -378,7 +385,7 @@ namespace Facebook.Client.Controls
                 var authenticationErrorEventArgs =
                     new AuthenticationErrorEventArgs("Login failure.", error.Message);
 
-                RaiseAuthenticationFailure(authenticationErrorEventArgs);
+                this.RaiseAuthenticationFailure(authenticationErrorEventArgs);
             }
             catch (InvalidOperationException error)
             {
@@ -386,7 +393,7 @@ namespace Facebook.Client.Controls
                 var authenticationErrorEventArgs =
                     new AuthenticationErrorEventArgs("Login failure.", error.Message);
 
-                RaiseAuthenticationFailure(authenticationErrorEventArgs);
+                this.RaiseAuthenticationFailure(authenticationErrorEventArgs);
             }
         }
 
@@ -395,12 +402,12 @@ namespace Facebook.Client.Controls
             this.facebookSessionClient.Logout();
             this.CurrentSession = null;
             this.CurrentUser = null;
-            RaiseSessionStateChanged(new SessionStateChangedEventArgs(FacebookSessionState.Closed));
+            this.RaiseSessionStateChanged(new SessionStateChangedEventArgs(FacebookSessionState.Closed));
         }
 
         private void RaiseSessionStateChanged(SessionStateChangedEventArgs e)
         {
-            EventHandler<SessionStateChangedEventArgs> handler = SessionStateChanged;
+            EventHandler<SessionStateChangedEventArgs> handler = this.SessionStateChanged;
             if (handler != null)
             {
                 handler(this, e);
@@ -409,7 +416,7 @@ namespace Facebook.Client.Controls
 
         private void RaiseUserInfoChanged(UserInfoChangedEventArgs e)
         {
-            EventHandler<UserInfoChangedEventArgs> handler = UserInfoChanged;
+            EventHandler<UserInfoChangedEventArgs> handler = this.UserInfoChanged;
             if (handler != null)
             {
                 handler(this, e);
@@ -418,7 +425,7 @@ namespace Facebook.Client.Controls
 
         private void RaiseAuthenticationFailure(AuthenticationErrorEventArgs e)
         {
-            EventHandler<AuthenticationErrorEventArgs> handler = AuthenticationError;
+            EventHandler<AuthenticationErrorEventArgs> handler = this.AuthenticationError;
             if (handler != null)
             {
                 handler(this, e);
@@ -438,8 +445,8 @@ namespace Facebook.Client.Controls
         private void UpdateButtonCaption()
         {
 #if NETFX_CORE
-            var libraryName = typeof(ProfilePicture).GetTypeInfo().Assembly.GetName().Name;
-            var name = string.Format("{0}/Resources/LoginButton", libraryName);
+            var libraryName = typeof(LoginButton).GetTypeInfo().Assembly.GetName().Name;
+            var name = string.Format(CultureInfo.InvariantCulture, "{0}/Resources/LoginButton", libraryName);
             var loader = new ResourceLoader(name);
             var resourceName = this.CurrentSession == null ? "Caption_OpenSession" : "Caption_CloseSession";
             var caption = loader.GetString(resourceName);
@@ -447,7 +454,7 @@ namespace Facebook.Client.Controls
 #if WINDOWS_PHONE
             var caption = this.CurrentSession == null ? AppResources.LoginButtonCaptionOpenSession : AppResources.LoginButtonCaptionCloseSession;
 #endif
-            SetValue(CaptionProperty, caption);
+            this.SetValue(CaptionProperty, caption);
         }
 
         #endregion Implementation

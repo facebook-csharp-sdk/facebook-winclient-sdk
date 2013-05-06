@@ -1,20 +1,18 @@
-﻿using System;
-using System.Linq;
-using Windows.UI;
+﻿namespace Facebook.Client.Controls
+{
+    using System;
 
 #if NETFX_CORE
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Media;
-using System.Globalization;
+    using System.Globalization;
+    using Windows.UI.Xaml.Data;
+    using Windows.UI.Xaml.Media;
 #endif
 #if WINDOWS_PHONE
-using System.Windows.Data;
-using System.Globalization;
-using System.Windows.Media;
+    using System.Windows.Data;
+    using System.Globalization;
+    using System.Windows.Media;
 #endif
 
-namespace Facebook.Client.Controls
-{
     /// <summary>
     /// Adjusts the color of a brush changing its luminosity by a given factor.
     /// </summary>
@@ -46,7 +44,7 @@ namespace Facebook.Client.Controls
             if (value == null) return null;
             if (parameter == null) return null;
 
-            var factor = Double.Parse(parameter.ToString(), CultureInfo.InvariantCulture);
+            var factor = double.Parse(parameter.ToString(), CultureInfo.InvariantCulture);
 
             if (value is SolidColorBrush)
             {
