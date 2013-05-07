@@ -161,10 +161,12 @@
       <Link>GraphUser.cs</Link>
     </Compile>
     <Compile Include="Controls\FriendPicker\DataReadyEventArgs.cs" />
+    <Compile Include="Controls\FriendPicker\FriendPickerGroupTemplateSelector.cs" />
     <Compile Include="Controls\FriendPicker\Friend.cs" />
     <Compile Include="Controls\FriendPicker\FriendPicker.cs" />
     <Compile Include="Controls\FriendPicker\FriendRetrievedEventArgs.cs" />
     <Compile Include="Controls\FriendPicker\GroupInfoList.cs" />
+    <Compile Include="Controls\FriendPicker\GroupTemplateSelector.cs" />
     <Compile Include="Controls\FriendPicker\LoadFailedEventArgs.cs" />
     <Compile Include="FacebookDialogPage.xaml.cs">
       <DependentUpon>FacebookDialogPage.xaml</DependentUpon>

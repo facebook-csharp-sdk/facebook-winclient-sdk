@@ -1,25 +1,34 @@
-﻿namespace Facebook.Client.Controls
+﻿// BUG!!!!!!
+// If you are zoomed out in a semantic zoom control, and the last group is empty, if you tap it, 
+// you get a catastrophic failure:
+// See http://social.msdn.microsoft.com/Forums/en-US/winappswithcsharp/thread/6535656e-3293-4e0d-93b5-453864b95601
+// See http://stackoverflow.com/questions/9952574/semantic-zoom-control-throwing-exception-when-groups-are-empty?rq=1
+namespace Facebook.Client.Controls
 {
 #if NETFX_CORE
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Globalization;
     using System.Linq;
     using System.Threading.Tasks;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Controls.Primitives;
     using Windows.UI.Xaml.Data;
+    using Windows.UI.Xaml.Input;
 #endif
+#if WINDOWS_PHONE
+#endif
+
     /// <summary>
     /// Shows the .
     /// </summary>
-    [TemplatePart(Name = PartListView, Type = typeof(ListView))]
+    [TemplatePart(Name = PartSemanticZoom, Type = typeof(SemanticZoom))]
     public class FriendPicker : Control
     {
         #region Part Definitions
 
-        private const string PartListView = "PART_ListView";
+        private const string PartSemanticZoom = "PART_SemanticZoom";
 
         #endregion Part Definitions
 
@@ -32,7 +41,8 @@
 
         #region Member variables
 
-        private ListView listView;
+        private bool isZoomedOut = false;
+        private SemanticZoom semanticZoom;
 
         #endregion Member variables
 
@@ -161,15 +171,37 @@
         {
             base.OnApplyTemplate();
 
-            this.listView = this.GetTemplateChild(FriendPicker.PartListView) as ListView;
-            if (this.listView != null)
+            this.semanticZoom = this.GetTemplateChild(FriendPicker.PartSemanticZoom) as SemanticZoom;
+            if (this.semanticZoom != null)
             {
-                this.listView.SelectionChanged += this.OnSelectionChanged;
+                var view = this.semanticZoom.ZoomedInView as Selector;
+                view.SelectionChanged += this.OnSelectionChanged;
+                this.semanticZoom.IsZoomOutButtonEnabled = false;
+                this.semanticZoom.ViewChangeCompleted += this.OnSemanticZoomViewChangeCompleted;
+                this.semanticZoom.Tapped += this.OnSemanticZoomTapped;
             }
 
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
                 this.DataContext = this.GroupData(Friend.DesignData);
+            }
+        }
+
+        private void OnSemanticZoomTapped(object sender, TappedRoutedEventArgs e)
+        {
+            if (!this.isZoomedOut && ((e.OriginalSource as FrameworkElement).DataContext is GroupInfoList<Friend>))
+            {
+                this.isZoomedOut = true;
+                this.semanticZoom.ToggleActiveView();
+                e.Handled = true;
+            }
+        }
+
+        private void OnSemanticZoomViewChangeCompleted(object sender, SemanticZoomViewChangedEventArgs e)
+        {
+            if (!e.IsSourceZoomedInView)
+            {
+                this.isZoomedOut = false;
             }
         }
 
@@ -221,11 +253,10 @@
                         Name = (string)friend["name"],
                         Id = (string)friend["id"],
                         PictureUri = string.Format(
-                                        CultureInfo.InvariantCulture,
-                                        "https://graph.facebook.com/{0}/picture?type={1}&access_token={2}",
-                                        (string)friend["id"],
-                                        "square",
-                                        this.AccessToken)
+                                "https://graph.facebook.com/{0}/picture?type={1}&access_token={2}",
+                                (string)friend["id"],
+                                "square",
+                                this.AccessToken)
                     });
             }
 
