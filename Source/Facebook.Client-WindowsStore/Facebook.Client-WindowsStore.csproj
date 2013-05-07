@@ -160,6 +160,12 @@
     <Compile Include="..\Facebook.Client\GraphUser.cs">
       <Link>GraphUser.cs</Link>
     </Compile>
+    <Compile Include="Controls\FriendPicker\DataReadyEventArgs.cs" />
+    <Compile Include="Controls\FriendPicker\Friend.cs" />
+    <Compile Include="Controls\FriendPicker\FriendPicker.cs" />
+    <Compile Include="Controls\FriendPicker\FriendRetrievedEventArgs.cs" />
+    <Compile Include="Controls\FriendPicker\GroupInfoList.cs" />
+    <Compile Include="Controls\FriendPicker\LoadFailedEventArgs.cs" />
     <Compile Include="FacebookDialogPage.xaml.cs">
       <DependentUpon>FacebookDialogPage.xaml</DependentUpon>
     </Compile>
@@ -169,6 +175,11 @@
     <Compile Include="FacebookSessionRoamingSettingsCacheProvider.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Controls\FriendPicker\FriendPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
     <Page Include="Controls\LoginButton\LoginButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

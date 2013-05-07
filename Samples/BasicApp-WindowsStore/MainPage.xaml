@@ -55,6 +55,7 @@
 
             <!--Welcome Text-->
             <StackPanel x:Name="welcomeText" 
+                        Opacity="0" 
                         Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center">
                 <TextBlock Text="FACEBOOK SDK FOR .NET" Style="{StaticResource HeaderTextStyle}" Margin="0,0,0,30"/>
                 <TextBlock Text="Log in to start" Style="{StaticResource SubheaderTextStyle}" />
@@ -129,6 +130,14 @@
                     ProfileId="{Binding ProfileId, ElementName=loginButton}" />-->
             </Grid>
 
+            <!--Friend Picker-->
+            <Grid x:Name="friendPicker" 
+                  Grid.Row="1" Opacity="100" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <facebookControls:FriendPicker
+                    Width="680"
+                    Height="700"
+                    AccessToken="{Binding AccessToken, ElementName=loginButton}" />
+            </Grid>
             <!--Login Button-->
             <facebookControls:LoginButton x:Name="loginButton" 
                 Grid.Row="2"

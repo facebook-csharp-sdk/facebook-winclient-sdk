@@ -6,6 +6,7 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="ms-appx:///Facebook.Client/Controls/LoginButton/LoginButton.xaml" />
         <ResourceDictionary Source="ms-appx:///Facebook.Client/Controls/ProfilePicture/ProfilePicture.xaml" />
+        <ResourceDictionary Source="ms-appx:///Facebook.Client/Controls/FriendPicker/FriendPicker.xaml" />
     </ResourceDictionary.MergedDictionaries>
     
 </ResourceDictionary>
