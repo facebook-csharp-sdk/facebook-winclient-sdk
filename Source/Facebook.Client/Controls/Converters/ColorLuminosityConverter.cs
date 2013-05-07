@@ -8,8 +8,8 @@
     using Windows.UI.Xaml.Media;
 #endif
 #if WINDOWS_PHONE
-    using System.Windows.Data;
     using System.Globalization;
+    using System.Windows.Data;
     using System.Windows.Media;
 #endif
 
