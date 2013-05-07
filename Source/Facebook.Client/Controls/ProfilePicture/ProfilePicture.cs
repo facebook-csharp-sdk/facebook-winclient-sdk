@@ -11,6 +11,7 @@
 #endif
 #if WINDOWS_PHONE
     using System;
+    using System.Globalization;
     using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
@@ -170,10 +171,7 @@
 
             if (string.IsNullOrEmpty(this.ProfileId))
             {
-                string imageName = (this.CropMode == CropMode.Square) ? "fb_blank_profile_square.png" : "fb_blank_profile_portrait.png";
-
-                var libraryName = typeof(ProfilePicture).GetTypeInfo().Assembly.GetName().Name;
-                profilePictureUrl = string.Format(CultureInfo.InvariantCulture, "ms-appx:///{0}/Images/{1}", libraryName, imageName);
+                profilePictureUrl = ProfilePicture.GetBlankProfilePictureUrl(this.CropMode == CropMode.Square);
             }
             else
             {
@@ -218,7 +216,7 @@
                 }
                 else
                 {
-                    var profilePictureUrl = GetFacebookProfilePictureUrl();
+                    var profilePictureUrl = this.GetFacebookProfilePictureUrl();
                     bmp.UriSource = new Uri(profilePictureUrl, UriKind.Absolute);
                 }
 
@@ -266,6 +264,17 @@
         private static readonly DependencyProperty ImageSourceProperty =
             DependencyProperty.Register("ImageSource", typeof(string), typeof(ProfilePicture), new PropertyMetadata(string.Empty));
 #endif
+
+        internal static string GetBlankProfilePictureUrl(bool isSquare)
+        {
+            const string BlankProfilePictureSquare = "fb_blank_profile_square.png";
+            const string BlankProfilePicturePortrait = "fb_blank_profile_portrait.png";
+
+            string imageName = isSquare ? BlankProfilePictureSquare : BlankProfilePicturePortrait;
+
+            var libraryName = typeof(ProfilePicture).GetTypeInfo().Assembly.GetName().Name;
+            return string.Format(CultureInfo.InvariantCulture, "ms-appx:///{0}/Images/{1}", libraryName, imageName);
+        }
 
         #endregion Implementation
     }
