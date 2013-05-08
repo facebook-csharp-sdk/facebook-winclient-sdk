@@ -102,7 +102,7 @@ namespace Facebook.Client.Controls
         private async static void OnAccessTokenPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var friendPicker = (FriendPicker)d;
-            friendPicker.DataContext = await friendPicker.RetrieveData();
+            friendPicker.semanticZoom.DataContext = await friendPicker.RetrieveData();
         }
 
         #endregion AccessToken
@@ -183,7 +183,7 @@ namespace Facebook.Client.Controls
 
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
             {
-                this.DataContext = this.GroupData(Friend.DesignData);
+                this.semanticZoom.DataContext = this.GroupData(Friend.DesignData);
             }
         }
 
@@ -252,7 +252,8 @@ namespace Facebook.Client.Controls
                     {
                         Name = (string)friend["name"],
                         Id = (string)friend["id"],
-                        PictureUri = string.Format(
+                        PictureUri =
+                            string.Format(
                                 "https://graph.facebook.com/{0}/picture?type={1}&access_token={2}",
                                 (string)friend["id"],
                                 "square",
