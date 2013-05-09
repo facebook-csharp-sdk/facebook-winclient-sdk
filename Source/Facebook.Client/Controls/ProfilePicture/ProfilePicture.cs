@@ -12,11 +12,9 @@
 #if WINDOWS_PHONE
     using System;
     using System.Globalization;
-    using System.Reflection;
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Media;
-    using System.Windows.Media.Imaging;
 #endif
 
     /// <summary>
@@ -151,7 +149,6 @@
             this.LoadPicture();
         }
 
-#if NETFX_CORE
         /// <summary>
         /// Provides the behavior for the "Arrange" pass of layout. Classes can override this method to define their own "Arrange" pass behavior.
         /// </summary>
@@ -162,9 +159,7 @@
             this.LoadPicture();
             return base.ArrangeOverride(finalSize);
         }
-#endif
 
-#if NETFX_CORE
         private void LoadPicture()
         {
             string profilePictureUrl;
@@ -184,46 +179,6 @@
                 this.SetValue(ImageSourceProperty, profilePictureUrl);
             }
         }
-#endif
-
-#if WINDOWS_PHONE
-        private void LoadPicture()
-        {
-            if (this.image != null)
-            {
-                var bmp = new BitmapImage();              
-                if (this.CropMode == CropMode.Square)
-                {
-                    var size = Math.Max(this.Height, this.Width);
-                    bmp.DecodePixelWidth = (int)size;
-                    bmp.DecodePixelHeight = (int)size;
-                }
-                else
-                {
-                    bmp.DecodePixelWidth = (int)this.Width;
-                    bmp.DecodePixelHeight = (int)this.Height;
-                }
-
-                if (string.IsNullOrEmpty(this.ProfileId))
-                {
-                    var imageName = (this.CropMode == CropMode.Square) ? "fb_blank_profile_square.png" : "fb_blank_profile_portrait.png";
-                    var library = typeof(ProfilePicture).GetTypeInfo().Assembly;
-                    var libraryName = library.GetName().Name;
-                    using (var stream = typeof(ProfilePicture).GetTypeInfo().Assembly.GetManifestResourceStream(string.Format("{0}.Images.{1}", libraryName, imageName)))
-                    {
-                        bmp.SetSource(stream);
-                    }
-                }
-                else
-                {
-                    var profilePictureUrl = this.GetFacebookProfilePictureUrl();
-                    bmp.UriSource = new Uri(profilePictureUrl, UriKind.Absolute);
-                }
-
-                this.image.Source = bmp;
-            }
-        }
-#endif
 
         private string GetFacebookProfilePictureUrl()
         {
@@ -260,10 +215,8 @@
             return profilePictureUrl;
         }
 
-#if NETFX_CORE
         private static readonly DependencyProperty ImageSourceProperty =
             DependencyProperty.Register("ImageSource", typeof(string), typeof(ProfilePicture), new PropertyMetadata(string.Empty));
-#endif
 
         internal static string GetBlankProfilePictureUrl(bool isSquare)
         {
@@ -271,9 +224,14 @@
             const string BlankProfilePicturePortrait = "fb_blank_profile_portrait.png";
 
             string imageName = isSquare ? BlankProfilePictureSquare : BlankProfilePicturePortrait;
-
+#if NETFX_CORE
             var libraryName = typeof(ProfilePicture).GetTypeInfo().Assembly.GetName().Name;
+
             return string.Format(CultureInfo.InvariantCulture, "ms-appx:///{0}/Images/{1}", libraryName, imageName);
+#endif
+#if WINDOWS_PHONE
+            return string.Format(CultureInfo.InvariantCulture, "/Images/{0}", imageName);
+#endif
         }
 
         #endregion Implementation
