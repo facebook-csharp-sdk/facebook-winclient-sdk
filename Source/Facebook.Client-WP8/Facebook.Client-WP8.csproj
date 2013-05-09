@@ -162,6 +162,12 @@
     <Compile Include="..\Facebook.Client\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Controls\Converters\ImageSourceUriConverter.cs" />
+    <Compile Include="Controls\Converters\VisibilityConverter.cs" />
+    <Compile Include="Controls\FriendPicker\AlphaKeyGroup.cs" />
+    <Compile Include="Controls\FriendPicker\Friend.cs" />
+    <Compile Include="Controls\FriendPicker\FriendPicker.cs" />
+    <Compile Include="Controls\FriendPicker\FriendPickerItem.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -178,6 +184,10 @@
       <Link>LoginPage.xaml</Link>
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\FriendPicker\FriendPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\LoginButton\LoginButton.xaml">
       <SubType>Designer</SubType>
