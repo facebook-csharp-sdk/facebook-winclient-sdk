@@ -352,29 +352,7 @@
                     parameters["fields"] = "id,name,username,first_name,middle_name,last_name,birthday,location,link";
 
                     dynamic result = await client.GetTaskAsync("me", parameters);
-                    dynamic location = result.location;
-                    this.CurrentUser = new GraphUser()
-                    {
-                        Id = result.id,
-                        Name = result.name,
-                        UserName = result.username,
-                        FirstName = result.first_name,
-                        MiddleName = result.middle_name,
-                        LastName = result.last_name,
-                        Birthday = result.birthday,
-                        Location = new GraphLocation 
-                        {
-                            ////Street = location.street,
-                            City = (location != null) ? location.name : null,
-                            ////State = location.state,
-                            ////Zip = location.zip,
-                            ////Country = location.country,
-                            ////Latitude = location.latitude ?? 0.0,
-                            ////Longitude = location.longitude ?? 0.0
-                        },
-                        Link = result.link
-                    };
-
+                    this.CurrentUser = new GraphUser(result);
                     var userInfo = new UserInfoChangedEventArgs(this.CurrentUser);
                     this.RaiseUserInfoChanged(userInfo);
                 }

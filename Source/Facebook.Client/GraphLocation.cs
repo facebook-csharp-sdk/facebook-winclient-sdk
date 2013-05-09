@@ -1,4 +1,5 @@
-﻿namespace Facebook.Client
+﻿using System;
+namespace Facebook.Client
 {
     /// <summary>
     /// Provides a strongly-typed representation of a Facebook Location as defined by the Graph API.
@@ -8,6 +9,33 @@
     /// </remarks>
     public class GraphLocation
     {
+        /// <summary>
+        /// Initializes a new instance of the GraphLocation class.
+        /// </summary>
+        public GraphLocation()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the GraphLocation class  from a dynamic object returned by the Facebook API.
+        /// </summary>
+        /// <param name="location">The dynamic object representing the Facebook location.</param>
+        public GraphLocation(dynamic location)
+        {
+            if (location == null)
+            {
+                throw new ArgumentNullException("location");
+            }
+
+            this.Street = location.street;
+            this.City = location.name;
+            this.State = location.state;
+            this.Zip = location.zip;
+            this.Country = location.country;
+            this.Latitude = location.latitude ?? 0.0;
+            this.Longitude = location.longitude ?? 0.0;
+        }
+
         /// <summary>
         /// Gets or sets the street component of the location.
         /// </summary>
