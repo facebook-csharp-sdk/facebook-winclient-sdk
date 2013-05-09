@@ -1,6 +1,6 @@
 ﻿namespace Facebook.Client.Controls
 {
-    public class FriendPickerGroupTemplateSelector : GroupTemplateSelector<Friend>
+    public class FriendPickerGroupTemplateSelector : GroupTemplateSelector<GraphUser>
     {
     }
 }

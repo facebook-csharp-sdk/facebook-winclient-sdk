@@ -7,11 +7,15 @@
     mc:Ignorable="d">
 
     <local:ScaleConverter x:Key="ScaleConverter" />
+    <local:SizeToGridCellConverter x:Key="SizeToGridCellConverter" />
+    <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
     <DataTemplate x:Name="GroupTemplate">
-        <!-- HARD CODED WIDTH -->
-        <Border Background="#FF25A1DB" Width="50" Height="50">
+        <Border Background="#FF25A1DB"
+                Width="{Binding ElementName=PART_SemanticZoom, Converter={StaticResource SizeToGridCellConverter}, ConverterParameter=True}" 
+                Height="{Binding ElementName=PART_SemanticZoom, Converter={StaticResource SizeToGridCellConverter}, ConverterParameter=False}">
             <TextBlock 
+                Margin="10"
                 Text="{Binding Key}"
                 FontFamily="Segoe UI Light"
                 FontSize="24" />
@@ -19,9 +23,11 @@
     </DataTemplate>
     
     <DataTemplate x:Name="EmptyGroupTemplate">
-        <!-- HARD CODED WIDTH -->
-        <Border Background="Gray" Width="50" Height="50">
-            <TextBlock 
+        <Border Background="Gray" 
+                Width="{Binding ElementName=PART_SemanticZoom, Converter={StaticResource SizeToGridCellConverter}, ConverterParameter=True}" 
+                Height="{Binding ElementName=PART_SemanticZoom, Converter={StaticResource SizeToGridCellConverter}, ConverterParameter=False}">
+            <TextBlock
+                Margin="10"
                 Text="{Binding Key}"
                 FontFamily="Segoe UI Light"
                 FontSize="24" />
@@ -43,10 +49,11 @@
         <!-- HARD CODED WIDTH -->
         <StackPanel Orientation="Horizontal" Width="300">
             <Image
-                Width="50" 
-                Height="50" 
+                Width="{Binding Tag.PictureSize.Width, ElementName=PART_SemanticZoom}"
+                Height="{Binding Tag.PictureSize.Height, ElementName=PART_SemanticZoom}"
                 Stretch="UniformToFill" 
-                Source="{Binding PictureUri}"/>
+                Visibility="{Binding Tag.DisplayProfilePictures, ElementName=PART_SemanticZoom, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                Source="{Binding ProfilePictureUrl}"/>
             <TextBlock
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top" 
@@ -72,8 +79,9 @@
                         <SemanticZoom.ZoomedInView>
                             <ListView ItemsSource="{Binding}"
                                         HorizontalContentAlignment="Stretch"
-                                        SelectionMode="Multiple"
+                                        SelectionMode="{TemplateBinding SelectionMode}"
                                         ItemTemplate="{StaticResource ZoomedInItemTemplate}"
+                                        Tag="{Binding DisplayProfilePictures, ElementName=PART_SemanticZoom}"
                                         ScrollViewer.IsVerticalScrollChainingEnabled="False">
                                 <ListView.GroupStyle>
                                     <GroupStyle HidesIfEmpty="True">
@@ -87,7 +95,6 @@
                                         </GroupStyle.ContainerStyle>
                                         <GroupStyle.HeaderTemplate>
                                             <DataTemplate>
-                                                <!--BorderBrush="#FF25A1DB"-->
                                                 <Border 
                                                         BorderBrush="#FF25A1DB" 
                                                         BorderThickness="0, 0, 0, 1"
@@ -117,11 +124,6 @@
                                         </GroupStyle.Panel>
                                     </GroupStyle>
                                 </ListView.GroupStyle>
-                                <ListView.ItemContainerStyle>
-                                    <Style TargetType="ListViewItem">
-                                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                                    </Style>
-                                </ListView.ItemContainerStyle>
                             </ListView>
                         </SemanticZoom.ZoomedInView>
 
@@ -136,9 +138,9 @@
                                 <ListView.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <!-- HARD CODED Rows and Columns -->
-                                        <WrapGrid Orientation="Horizontal"
-                                                  ItemWidth="{Binding Width, ElementName=RootElement, Converter={StaticResource ScaleConverter}, ConverterParameter=6}" 
-                                                  ItemHeight="{Binding Height, ElementName=RootElement, Converter={StaticResource ScaleConverter}, ConverterParameter=6}" />
+                                        <WrapGrid Orientation="Horizontal" />
+                                                  <!--ItemWidth="{Binding Width, ElementName=RootElement, Converter={StaticResource ScaleConverter}, ConverterParameter=6}" 
+                                                  ItemHeight="{Binding Height, ElementName=RootElement, Converter={StaticResource ScaleConverter}, ConverterParameter=6}" />-->
                                     </ItemsPanelTemplate>
                                 </ListView.ItemsPanel>
                                 <ListView.ItemContainerStyle>
