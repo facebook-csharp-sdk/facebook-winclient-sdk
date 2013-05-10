@@ -57,7 +57,16 @@
         private void OnSessionStateChanged(object sender, Facebook.Client.Controls.SessionStateChangedEventArgs e)
         {
             this.welcomeText.Opacity = (e.SessionState == FacebookSessionState.Opened) ? 0 : 100;
-            this.userInfo.Opacity = (e.SessionState == FacebookSessionState.Opened) ? 100 : 0;
+            //this.userInfo.Opacity = (e.SessionState == FacebookSessionState.Opened) ? 100 : 0;
+            this.friendPicker.Opacity = (e.SessionState == FacebookSessionState.Opened) ? 100 : 0;
+        }
+
+        private void OnFriendRetrieved(object sender, FriendRetrievedEventArgs e)
+        {
+            if (e.Friend.LastName.StartsWith("I"))
+            {
+                e.Exclude = true;
+            }
         }
     }
 }

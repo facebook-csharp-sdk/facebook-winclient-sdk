@@ -55,7 +55,7 @@
 
             <!--Welcome Text-->
             <StackPanel x:Name="welcomeText" 
-                        Opacity="100" 
+                        Opacity="100"
                         Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center">
                 <TextBlock Text="FACEBOOK SDK FOR .NET" Style="{StaticResource HeaderTextStyle}" Margin="0,0,0,30"/>
                 <TextBlock Text="Log in to start" Style="{StaticResource SubheaderTextStyle}" />
@@ -78,7 +78,6 @@
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="150" />
                     <ColumnDefinition Width="450" />
-                    <!--<ColumnDefinition />-->
                 </Grid.ColumnDefinitions>
                 <Line Grid.Row="1" Style="{StaticResource HorizontalGridLine}"/>
                 <Line Grid.Row="2" Style="{StaticResource HorizontalGridLine}"/>
@@ -115,29 +114,21 @@
 
                 <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Location" />
                 <TextBlock Grid.Row="8" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Location.City}" />
-
-                <!--<facebookControls:ProfilePicture 
-                    Grid.Row="2" 
-                    Grid.Column="2"
-                    Grid.RowSpan="7"
-                    HorizontalAlignment="Center" 
-                    VerticalAlignment="Center" 
-                    Margin="30"
-                    Width="200"
-                    Height="240"
-                    CropMode="Original"
-                    AccessToken="{Binding AccessToken, ElementName=loginButton}" 
-                    ProfileId="{Binding ProfileId, ElementName=loginButton}" />-->
             </Grid>
-
+            
             <!--Friend Picker-->
             <Grid x:Name="friendPicker" 
                   Grid.Row="1" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <facebookControls:FriendPicker
-                    Width="680"
-                    Height="700"
+                <facebookControls:FriendPicker 
+                    Width="800"
+                    Height="450"
+                    SelectionMode="Multiple"
+                    DisplayProfilePictures="True"
+                    PictureSize="60,60"
+                    FriendRetrieved="OnFriendRetrieved"
                     AccessToken="{Binding AccessToken, ElementName=loginButton}" />
             </Grid>
+
             <!--Login Button-->
             <facebookControls:LoginButton x:Name="loginButton" 
                 Grid.Row="2"
