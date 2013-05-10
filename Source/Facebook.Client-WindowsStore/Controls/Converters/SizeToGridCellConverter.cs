@@ -12,15 +12,21 @@
         {
             var control = (Control)value;
             var data = (IEnumerable) ((CollectionViewSource) control.DataContext).Source;
-            var count = data.Cast<object>().Count();
-            var cells = Math.Ceiling(Math.Sqrt(count));
+            var totalCells = data.Cast<object>().Count();
+            var numRows = Math.Round(Math.Sqrt(totalCells * control.Height / control.Width));
+            var numColumns = Math.Round(totalCells / numRows);
+            if (numRows * numColumns < totalCells)
+            {
+                numRows++;
+            }
+
             if (bool.Parse((string) parameter))
             {
-                return ((control.Width - 0) / cells) - 10;
+                return ((int) (control.Width / numColumns)) - 12;
             }
             else
             {
-                return ((control.Height - 0) / cells) - 10;
+                return ((int)(control.Height / numRows)) - 12;
             }
         }
 

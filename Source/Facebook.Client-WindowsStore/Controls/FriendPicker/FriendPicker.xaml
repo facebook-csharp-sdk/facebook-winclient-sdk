@@ -132,15 +132,12 @@
                                 ItemsSource="{Binding Path=CollectionGroups}"
                                 ScrollViewer.IsVerticalScrollChainingEnabled="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Hidden"
-                                Foreground="White"
+                                Padding="-1"
                                 ItemTemplate="{StaticResource ZoomedOutItemTemplate}"
                                 SelectionMode="None">
                                 <ListView.ItemsPanel>
                                     <ItemsPanelTemplate>
-                                        <!-- HARD CODED Rows and Columns -->
                                         <WrapGrid Orientation="Horizontal" />
-                                                  <!--ItemWidth="{Binding Width, ElementName=RootElement, Converter={StaticResource ScaleConverter}, ConverterParameter=6}" 
-                                                  ItemHeight="{Binding Height, ElementName=RootElement, Converter={StaticResource ScaleConverter}, ConverterParameter=6}" />-->
                                     </ItemsPanelTemplate>
                                 </ListView.ItemsPanel>
                                 <ListView.ItemContainerStyle>
