@@ -1,8 +1,16 @@
 ﻿namespace Facebook.Client.Controls
 {
+#if NETFX_CORE
     using System;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Data;
+#endif
+#if WINDOWS_PHONE
+    using System;
+    using System.Globalization;
+    using System.Windows;
+    using System.Windows.Data;
+#endif
 
     /// <summary>
     /// Translates boolean values to Visibility constants.
@@ -14,6 +22,7 @@
         /// </summary>
         public bool IsReversed { get; set; }
 
+#if NETFX_CORE
         /// <summary>
         /// Converts a boolean value to a Visibility constant.
         /// </summary>
@@ -23,6 +32,18 @@
         /// <param name="language">The culture to use in the converter (unused).</param>
         /// <returns>A Vibility constant.</returns>
         public object Convert(object value, Type targetType, object parameter, string language)
+#endif
+#if WINDOWS_PHONE
+        /// <summary>
+        /// Scales the value by multiplying by a given factor.
+        /// </summary>
+        /// <param name="value">The value that is produced by the binding target.</param>
+        /// <param name="targetType">The type to convert to.</param>
+        /// <param name="parameter">The factor used to scale the value.</param>
+        /// <param name="culture">The culture to use in the converter (unused).</param>
+        /// <returns>A converted value.</returns>
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+#endif
         {
             var state = System.Convert.ToBoolean(value);
             if (this.IsReversed)
@@ -33,10 +54,18 @@
             return state ? Visibility.Visible : Visibility.Collapsed;
         }
 
+#if NETFX_CORE
         /// <summary>
         /// Not implemented.
         /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
+#endif
+#if WINDOWS_PHONE
+        /// <summary>
+        /// Not implemented.
+        /// </summary>
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+#endif
         {
             throw new NotImplementedException();
         }
