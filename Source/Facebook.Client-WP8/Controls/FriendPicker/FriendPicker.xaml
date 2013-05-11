@@ -7,7 +7,7 @@
     <Controls:JumpListItemBackgroundConverter x:Key="BackgroundConverter"/>
     <Controls:JumpListItemForegroundConverter x:Key="ForegroundConverter"/>
     <local:ImageSourceUriConverter x:Key="ImageSourceUriConverter" />
-    <local:VisibilityConverter x:Key="VisibilityConverter" />
+    <local:BooleanToVisibilityConverter x:Key="VisibilityConverter" />
 
     <Style TargetType="local:FriendPicker">
         <Setter Property="Template">
@@ -37,7 +37,7 @@
                                             <ColumnDefinition Width="Auto"/>
                                             <ColumnDefinition Width="*"/>
                                         </Grid.ColumnDefinitions>
-                                        <Image Width="50" Height="50" Source="{Binding Item.PictureUri, Converter={StaticResource ImageSourceUriConverter}}" VerticalAlignment="Top"/>
+                                        <Image Width="50" Height="50" Source="{Binding Item.ProfilePictureUrl, Converter={StaticResource ImageSourceUriConverter}}" VerticalAlignment="Top"/>
                                         <StackPanel Grid.Column="1" VerticalAlignment="Top">
                                             <TextBlock Text="{Binding Item.Name}" Style="{StaticResource PhoneTextLargeStyle}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" Margin="12,-12,12,6"/>
                                         </StackPanel>

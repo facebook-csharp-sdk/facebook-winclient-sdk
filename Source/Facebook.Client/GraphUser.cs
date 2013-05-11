@@ -16,7 +16,7 @@
         /// </summary>
         public GraphUser()
         {
-            this.ProfilePictureUrl = new Uri(ProfilePicture.GetBlankProfilePictureUrl(true));
+            this.ProfilePictureUrl = new Uri(ProfilePicture.GetBlankProfilePictureUrl(true), UriKind.RelativeOrAbsolute);
         }
 
         /// <summary>
@@ -52,7 +52,7 @@
 
             if (this.ProfilePictureUrl == null)
             {
-                this.ProfilePictureUrl = new Uri(ProfilePicture.GetBlankProfilePictureUrl(true));
+                this.ProfilePictureUrl = new Uri(ProfilePicture.GetBlankProfilePictureUrl(true), UriKind.RelativeOrAbsolute);
             }
         }
 

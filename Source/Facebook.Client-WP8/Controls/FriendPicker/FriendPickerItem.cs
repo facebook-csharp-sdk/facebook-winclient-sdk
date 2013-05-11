@@ -21,8 +21,8 @@
             }
         }
 
-        private Friend item = null;
-        public Friend Item
+        private GraphUser item = null;
+        public GraphUser Item
         {
             get
             {

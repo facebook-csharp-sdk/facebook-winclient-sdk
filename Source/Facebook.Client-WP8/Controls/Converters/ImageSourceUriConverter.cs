@@ -26,10 +26,21 @@
         /// <returns>A converted value.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var sourceUrl = (string)value;
             Uri sourceUri;
-            
-            if (!Uri.TryCreate(sourceUrl, UriKind.RelativeOrAbsolute, out sourceUri))
+
+            if (value is string)
+            {
+                var sourceUrl = (string)value;
+                if (!Uri.TryCreate(sourceUrl, UriKind.RelativeOrAbsolute, out sourceUri))
+                {
+                    return value;
+                }
+            }
+            else if (value is Uri)
+            {
+                sourceUri = value as Uri;
+            }
+            else
             {
                 return value;
             }
@@ -45,7 +56,7 @@
             {
                 var library = typeof(ImageSourceUriConverter).Assembly;
                 var libraryName = library.GetName().Name;
-                var resourceName = string.Format(CultureInfo.InvariantCulture, "{0}{1}", libraryName, sourceUrl.Replace("/", "."));
+                var resourceName = string.Format(CultureInfo.InvariantCulture, "{0}{1}", libraryName, sourceUri.ToString().Replace("/", "."));
 
                 using (var stream = library.GetManifestResourceStream(resourceName))
                 {

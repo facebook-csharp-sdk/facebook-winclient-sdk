@@ -48,6 +48,13 @@
     <DataTemplate x:Name="ZoomedInItemTemplate">
         <!-- HARD CODED WIDTH -->
         <StackPanel Orientation="Horizontal" Width="300">
+            <StackPanel.Resources>
+                <local:ParameterizedConverter x:Key="UserDisplayNameConverter" ConverterParameter="{Binding Tag.DisplayOrder, ElementName=PART_SemanticZoom}">
+                    <local:ParameterizedConverter.Converter>
+                        <local:UserDisplayNameConverter />
+                    </local:ParameterizedConverter.Converter>
+                </local:ParameterizedConverter>
+            </StackPanel.Resources>
             <Image
                 Width="{Binding Tag.PictureSize.Width, ElementName=PART_SemanticZoom}"
                 Height="{Binding Tag.PictureSize.Height, ElementName=PART_SemanticZoom}"
@@ -59,7 +66,7 @@
                 VerticalAlignment="Top" 
                 Margin="10, 0, 0, 0"
                 TextWrapping="Wrap" 
-                Text="{Binding Name}" 
+                Text="{Binding Converter={StaticResource UserDisplayNameConverter}}"
                 FontSize="18" />
         </StackPanel>
     </DataTemplate>
@@ -81,7 +88,6 @@
                                         HorizontalContentAlignment="Stretch"
                                         SelectionMode="{TemplateBinding SelectionMode}"
                                         ItemTemplate="{StaticResource ZoomedInItemTemplate}"
-                                        Tag="{Binding DisplayProfilePictures, ElementName=PART_SemanticZoom}"
                                         ScrollViewer.IsVerticalScrollChainingEnabled="False">
                                 <ListView.GroupStyle>
                                     <GroupStyle HidesIfEmpty="True">
@@ -99,7 +105,7 @@
                                                         BorderBrush="#FF25A1DB" 
                                                         BorderThickness="0, 0, 0, 1"
                                                         Width="{Binding Width, ElementName=PART_SemanticZoom}"
-                                                        Margin="3, 6, 3, 6">
+                                                        Margin="4, 6, 4, 6">
                                                     <Grid HorizontalAlignment="Left">
                                                         <Border Width="50" Grid.Column="0" Background="#FF25A1DB">
                                                             <TextBlock

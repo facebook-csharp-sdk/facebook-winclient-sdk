@@ -2,17 +2,15 @@
 {
     using System.Collections.Generic;
     using System.Linq;
-    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using Microsoft.Phone.Controls;
-    using System.Collections.ObjectModel;
 
     /// <summary>
     /// Shows the.
     /// </summary>
     [TemplatePart(Name = PartLongListSelector, Type = typeof(LongListSelector))]
-    public class FriendPicker : Control
+    public class FriendPicker : FriendPickerBase
     {
         #region Part Definitions
 
@@ -20,88 +18,55 @@
 
         #endregion Part Definitions
 
+        #region Default Property Values
+
+        private const FriendPickerSelectionMode DefaultSelectionMode = FriendPickerSelectionMode.Multiple;
+
+        #endregion Default Property Values
+
         #region Member variables
 
         private LongListSelector longListSelector;
 
         #endregion Member variables
 
+        #region Properties
+
+        #region SelectionMode
+
+        /// <summary>
+        /// Gets or sets the selection behavior of the control. 
+        /// </summary>
+        public FriendPickerSelectionMode SelectionMode
+        {
+            get { return (FriendPickerSelectionMode)GetValue(SelectionModeProperty); }
+            set { SetValue(SelectionModeProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the SelectionMode dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SelectionModeProperty =
+            DependencyProperty.Register("SelectionMode", typeof(FriendPickerSelectionMode), typeof(FriendPicker), new PropertyMetadata(DefaultSelectionMode, OnSelectionModeProperyChanged));
+
+        private async static void OnSelectionModeProperyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var friendPicker = (FriendPicker)d;
+            friendPicker.ClearSelection();          
+        }
+
+        #endregion SelectionMode
+
+        #endregion Properties
+
         /// <summary>
         /// Initializes a new instance of the FriendPicker class.
         /// </summary>
         public FriendPicker()
+            :base()
         {
             this.DefaultStyleKey = typeof(FriendPicker);
-            this.SetValue(ItemsProperty, new ObservableCollection<Friend>());
-            this.SetValue(SelectedItemsProperty, new ObservableCollection<Friend>()); 
         }
-
-        #region Properties
-
-        #region AccessToken
-
-        /// <summary>
-        /// Gets or sets the access token returned by the Facebook Login service.
-        /// </summary>
-        public string AccessToken
-        {
-            get { return (string)GetValue(AccessTokenProperty); }
-            set { this.SetValue(AccessTokenProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the AccessToken dependency property.
-        /// </summary>
-        public static readonly DependencyProperty AccessTokenProperty =
-            DependencyProperty.Register("AccessToken", typeof(string), typeof(FriendPicker), new PropertyMetadata(string.Empty, OnAccessTokenChanged));
-
-        private static async void OnAccessTokenChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var friendPicker = (FriendPicker)d;
-            await friendPicker.RetrieveData();
-        }
-
-        #endregion AccessToken
-
-        #region Items
-
-        /// <summary>
-        /// Gets the list of currently selected items for the FriendPicker control.
-        /// </summary>
-        public ObservableCollection<Friend> Items
-        {
-            get { return (ObservableCollection<Friend>)this.GetValue(ItemsProperty); }
-            private set { this.SetValue(ItemsProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the Items dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ItemsProperty =
-            DependencyProperty.Register("Items", typeof(ObservableCollection<Friend>), typeof(FriendPicker), null);
-
-        #endregion Items
-
-        #region SelectedItems
-
-        /// <summary>
-        /// Gets the list of currently selected items for the FriendPicker control.
-        /// </summary>
-        public ObservableCollection<Friend> SelectedItems
-        {
-            get { return (ObservableCollection<Friend>)this.GetValue(SelectedItemsProperty); }
-            private set { this.SetValue(SelectedItemsProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the SelectedItems dependency property.
-        /// </summary>
-        public static readonly DependencyProperty SelectedItemsProperty =
-            DependencyProperty.Register("SelectedItems", typeof(ObservableCollection<Friend>), typeof(FriendPicker), null);
-
-        #endregion SelectedItems
-
-        #endregion Properties
 
         #region Implementation
 
@@ -121,13 +86,18 @@
 
                 if (System.ComponentModel.DesignerProperties.IsInDesignTool)
                 {
-                    this.longListSelector.ItemsSource = AlphaKeyGroup<FriendPickerItem>.CreateGroups(Friend.DesignData.Select(f => new FriendPickerItem { Item = f }), System.Globalization.CultureInfo.CurrentUICulture, (u) => { return u.Item.Name; }, true);
+                    this.SetDataSource(FriendPickerDesignSupport.DesignData);
                 }
             }
         }
 
-        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        protected override void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (this.SelectionMode == FriendPickerSelectionMode.None)
+            {
+                return;
+            }
+
             if (this.longListSelector == null)
             {
                 return;
@@ -138,60 +108,63 @@
                 return;
             }
 
-            var selectedItem = this.longListSelector.SelectedItem as FriendPickerItem;
-            selectedItem.IsSelected = !selectedItem.IsSelected;
+            SelectionChangedEventArgs selectionChangedEventArgs;
 
-            if (selectedItem.IsSelected)
-            {
+            var selectedItem = this.longListSelector.SelectedItem as FriendPickerItem;
+
+            if (this.SelectionMode == FriendPickerSelectionMode.Single)
+            {       
+                var unselectedItem = e.RemovedItems[0] as FriendPickerItem;
+
+                selectedItem.IsSelected = true;
+                if (unselectedItem != null)
+                {
+                    unselectedItem.IsSelected = false;
+                    this.SelectedItems.Remove(unselectedItem.Item);
+                    selectionChangedEventArgs = new SelectionChangedEventArgs(new object[1] { unselectedItem.Item }, new object[1] { selectedItem.Item });
+                }
+                else
+                {
+                    selectionChangedEventArgs = new SelectionChangedEventArgs(new object[0], new object[1] { selectedItem.Item });
+                }
+                
                 this.SelectedItems.Add(selectedItem.Item);
             }
             else
             {
-                this.SelectedItems.Remove(selectedItem.Item);
+                selectedItem.IsSelected = !selectedItem.IsSelected;
+
+                if (selectedItem.IsSelected)
+                {
+                    this.SelectedItems.Add(selectedItem.Item);
+                    selectionChangedEventArgs = new SelectionChangedEventArgs(new object[0], new object[1] { selectedItem.Item });
+                }
+                else
+                {
+                    this.SelectedItems.Remove(selectedItem.Item);
+                    selectionChangedEventArgs = new SelectionChangedEventArgs(new object[1] { selectedItem.Item }, new object[0]);
+                }
+
+                /// Reset selected item to null (no selection)
+                this.longListSelector.SelectedItem = null;
             }
 
-            /// Reset selected item to null (no selection)
-            this.longListSelector.SelectedItem = null;
+            base.OnSelectionChanged(sender, selectionChangedEventArgs);
         }
 
-        private async Task RetrieveData()
+        protected override void SetDataSource(IEnumerable<GraphUser> friends)
         {
-            this.Items.Clear();
+            if (this.longListSelector != null)
+            {
+                this.longListSelector.ItemsSource = AlphaKeyGroup<FriendPickerItem>.CreateGroups(friends.Select(f => new FriendPickerItem { Item = f }), System.Globalization.CultureInfo.CurrentUICulture, (u) => { return u.Item.Name; }, true);
+                this.longListSelector.SelectedItem = null;
+            }
+        }
+
+        private void ClearSelection()
+        {
             this.SelectedItems.Clear();
-
-            if (this.longListSelector == null)
-            {
-                return;
-            }
-
-            if (string.IsNullOrEmpty(this.AccessToken))
-            {
-                return;
-            }
-
-            FacebookClient facebookClient = new FacebookClient(this.AccessToken);
-
-            dynamic friendsTaskResult = await facebookClient.GetTaskAsync("/me/friends");
-            var result = (IDictionary<string, object>)friendsTaskResult;
-            var data = (IEnumerable<object>)result["data"];
-            foreach (var item in data)
-            {
-                var friend = (IDictionary<string, object>)item;
-
-                this.Items.Add(
-                    new Friend
-                        {
-                            Id = (string)friend["id"],
-                            Name = (string)friend["name"],
-                            PictureUri = string.Format(
-                                    "https://graph.facebook.com/{0}/picture?type={1}&access_token={2}",
-                                    (string)friend["id"],
-                                    "square",
-                                    this.AccessToken)
-                        });
-            }
-
-            this.longListSelector.ItemsSource = AlphaKeyGroup<FriendPickerItem>.CreateGroups(this.Items.Select(f => new FriendPickerItem { Item = f }), System.Globalization.CultureInfo.CurrentUICulture, (u) => { return u.Item.Name; }, true);
+            this.SetDataSource(this.Items);
         }
 
         #endregion Implementation
