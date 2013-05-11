@@ -334,7 +334,7 @@
         {
             try
             {
-                this.RaiseSessionStateChanged(new SessionStateChangedEventArgs(FacebookSessionState.Opening));
+                this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Opening));
 
                 // TODO: using Permissions for the time being until we decide how 
                 // to handle separate ReadPermissions and PublishPermissions
@@ -342,7 +342,7 @@
 
                 // initialize current session
                 this.CurrentSession = session;
-                this.RaiseSessionStateChanged(new SessionStateChangedEventArgs(FacebookSessionState.Opened));
+                this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Opened));
 
                 // retrieve information about the current user
                 if (this.FetchUserInfo)
@@ -354,7 +354,7 @@
                     dynamic result = await client.GetTaskAsync("me", parameters);
                     this.CurrentUser = new GraphUser(result);
                     var userInfo = new UserInfoChangedEventArgs(this.CurrentUser);
-                    this.RaiseUserInfoChanged(userInfo);
+                    this.UserInfoChanged.RaiseEvent(this, userInfo);
                 }
             }
             catch (ArgumentNullException error)
@@ -363,7 +363,7 @@
                 var authenticationErrorEventArgs =
                     new AuthenticationErrorEventArgs("Login failure.", error.Message);
 
-                this.RaiseAuthenticationFailure(authenticationErrorEventArgs);
+                this.AuthenticationError.RaiseEvent(this, authenticationErrorEventArgs);
             }
             catch (InvalidOperationException error)
             {
@@ -371,7 +371,7 @@
                 var authenticationErrorEventArgs =
                     new AuthenticationErrorEventArgs("Login failure.", error.Message);
 
-                this.RaiseAuthenticationFailure(authenticationErrorEventArgs);
+                this.AuthenticationError.RaiseEvent(this, authenticationErrorEventArgs);
             }
         }
 
@@ -380,34 +380,7 @@
             this.facebookSessionClient.Logout();
             this.CurrentSession = null;
             this.CurrentUser = null;
-            this.RaiseSessionStateChanged(new SessionStateChangedEventArgs(FacebookSessionState.Closed));
-        }
-
-        private void RaiseSessionStateChanged(SessionStateChangedEventArgs e)
-        {
-            EventHandler<SessionStateChangedEventArgs> handler = this.SessionStateChanged;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
-
-        private void RaiseUserInfoChanged(UserInfoChangedEventArgs e)
-        {
-            EventHandler<UserInfoChangedEventArgs> handler = this.UserInfoChanged;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
-        }
-
-        private void RaiseAuthenticationFailure(AuthenticationErrorEventArgs e)
-        {
-            EventHandler<AuthenticationErrorEventArgs> handler = this.AuthenticationError;
-            if (handler != null)
-            {
-                handler(this, e);
-            }
+            this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Closed));
         }
 
         private static readonly DependencyProperty CaptionProperty =
