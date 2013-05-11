@@ -69,13 +69,13 @@
             CurrentUICulture of the app at run time.
          -->
         
-        <StackPanel x:Name="welcomeText" Grid.Row="0" Opacity="0" Orientation="Vertical" VerticalAlignment="Center">
+        <StackPanel x:Name="welcomeText" Grid.Row="0" Opacity="100" Orientation="Vertical" VerticalAlignment="Center">
             <TextBlock Text="FACEBOOK SDK FOR .NET" Style="{StaticResource PhoneTextTitle2Style}" />
             <TextBlock Text="Log in to start"  Style="{StaticResource PhoneTextTitle3Style}" Margin="12,0,0,30"/>
         </StackPanel>
 
         <!--Pivot Control-->
-        <phone:Pivot x:Name="contentPanel" Grid.Row="0" Opacity="100" Title="FACEBOOK SDK FOR .NET">
+        <phone:Pivot x:Name="contentPanel" Grid.Row="0" Opacity="0" Title="FACEBOOK SDK FOR .NET">
             <!--Pivot item one-->
             <phone:PivotItem Header="user info">
                 <Grid x:Name="userInfo" HorizontalAlignment="Left" VerticalAlignment="Top">

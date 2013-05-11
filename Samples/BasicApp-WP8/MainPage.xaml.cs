@@ -13,6 +13,7 @@
     using Microsoft.Phone.Controls;
     using Microsoft.Phone.Shell;
     using PhoneApp2.Resources;
+    using System.Linq;
 
     public partial class MainPage : PhoneApplicationPage
     {
