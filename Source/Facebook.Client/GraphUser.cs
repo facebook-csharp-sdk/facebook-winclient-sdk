@@ -11,12 +11,13 @@
     /// </remarks>
     public class GraphUser
     {
+        private Uri profilePictureUrl;
+
         /// <summary>
         /// Initializes a new instance of the GraphUser class.
         /// </summary>
         public GraphUser()
         {
-            this.ProfilePictureUrl = new Uri(ProfilePicture.GetBlankProfilePictureUrl(true), UriKind.RelativeOrAbsolute);
         }
 
         /// <summary>
@@ -43,16 +44,7 @@
             var picture = user.picture;
             if (picture != null)
             {
-                Uri profilePictureUrl = null;
-                if (Uri.TryCreate(picture.data.url, UriKind.Absolute, out profilePictureUrl))
-                {
-                    this.ProfilePictureUrl = profilePictureUrl;
-                }
-            }
-
-            if (this.ProfilePictureUrl == null)
-            {
-                this.ProfilePictureUrl = new Uri(ProfilePicture.GetBlankProfilePictureUrl(true), UriKind.RelativeOrAbsolute);
+                Uri.TryCreate(picture.data.url, UriKind.Absolute, out this.profilePictureUrl);
             }
         }
 
@@ -104,6 +96,22 @@
         /// <summary>
         /// Gets or sets the URL of the user's profile picture.
         /// </summary>
-        public Uri ProfilePictureUrl { get; set; }
+        public Uri ProfilePictureUrl
+        {
+            get
+            {
+                if (this.profilePictureUrl == null)
+                {
+                    this.profilePictureUrl = new Uri(ProfilePicture.GetBlankProfilePictureUrl(true), UriKind.RelativeOrAbsolute);
+                }
+
+                return this.profilePictureUrl;
+            }
+
+            set
+            {
+                this.profilePictureUrl = value;
+            }
+        }
     }
 }
