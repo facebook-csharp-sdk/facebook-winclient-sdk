@@ -164,7 +164,17 @@
         private void ClearSelection()
         {
             this.SelectedItems.Clear();
-            this.SetDataSource(this.Items);
+
+            if (this.longListSelector != null && this.longListSelector.ItemsSource != null)
+            {
+                (this.longListSelector.ItemsSource as IEnumerable<AlphaKeyGroup<FriendPickerItem>>)
+                    .SelectMany(i => i)
+                    .Where(f => f.IsSelected)
+                    .ToList()
+                    .ForEach(i => i.IsSelected = false);
+
+                this.longListSelector.SelectedItem = null;
+            }
         }
 
         #endregion Implementation
