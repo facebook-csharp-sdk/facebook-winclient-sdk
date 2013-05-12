@@ -158,7 +158,7 @@ namespace Facebook.Client.Controls
         private CollectionViewSource GroupData(IEnumerable<GraphUser> friends)
         {
             var groups = from f in friends
-                         group f by f.Name.Substring(0, 1) into grp
+                         group f by FriendPicker.FormatDisplayName(f, this.DisplayOrder).Substring(0, 1) into grp
                          orderby grp.Key
                          select grp;
 
@@ -181,6 +181,26 @@ namespace Facebook.Client.Controls
             {
                 this.semanticZoom.DataContext = this.GroupData(friends);
             }
+        }
+
+        internal static string FormatDisplayName(GraphUser user, FriendPickerDisplayOrder displayOrder)
+        {
+            bool hasFirstName = !string.IsNullOrWhiteSpace(user.FirstName);
+            bool hasLastName = !string.IsNullOrWhiteSpace(user.LastName);
+            bool hasFirstNameAndLastName = hasFirstName && hasLastName;
+
+            if (hasFirstName || hasLastName)
+            {
+                switch (displayOrder)
+                {
+                    case FriendPickerDisplayOrder.DisplayFirstNameFirst:
+                        return user.FirstName + (hasFirstNameAndLastName ? " " : null) + user.LastName;
+                    case FriendPickerDisplayOrder.DisplayLastNameFirst:
+                        return user.LastName + (hasFirstNameAndLastName ? ", " : null) + user.FirstName;
+                }
+            }
+
+            return user.Name;
         }
 
         #endregion Implementation
