@@ -11,6 +11,9 @@
     /// </summary>
     public class SizeToGridCellConverter : IValueConverter
     {
+        private const int MinimumWidth = 50;
+        private const int MinimumHeight = 50;
+
         /// <summary>
         /// Calculates the width and height of the group templates based on the size of the control.
         /// </summary>
@@ -33,11 +36,13 @@
 
             if (bool.Parse((string) parameter))
             {
-                return ((int) (control.Width / numColumns)) - 12;
+                var width = ((int)(control.Width / numColumns)) - 12;
+                return Math.Max(width, MinimumWidth);
             }
             else
             {
-                return ((int)(control.Height / numRows)) - 12;
+                var height = ((int)(control.Height / numRows)) - 12;
+                return Math.Max(height, MinimumHeight);
             }
         }
 
