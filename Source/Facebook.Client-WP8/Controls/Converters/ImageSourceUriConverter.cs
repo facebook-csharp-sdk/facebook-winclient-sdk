@@ -17,7 +17,7 @@
         /// Retrieves a BitmapImage object for the specified image source uri.
         /// </summary>
         /// <remarks>
-        /// If the specified source uri is a relative path, the image is loaded as an embeded resource stream.
+        /// If the specified source uri is a relative path, the image is loaded as an embedded resource stream.
         /// </remarks>
         /// <param name="value">The value that is produced by the binding target.</param>
         /// <param name="targetType">The type to convert to.</param>

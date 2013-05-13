@@ -7,15 +7,15 @@
 
     /// <summary>
     /// Helper class that is used to convert a flat list of data into a grouped list in which the entries are grouped by a key.
-    /// See: "http://msdn.microsoft.com/en-us/library/windowsphone/develop/jj244365%28v=vs.105%29.aspx"
     /// </summary>
+    /// <see href="http://msdn.microsoft.com/en-us/library/windowsphone/develop/jj244365%28v=vs.105%29.aspx"/>
     /// <typeparam name="T">The data type of the grouped list.</typeparam>
     internal class AlphaKeyGroup<T> : List<T>
     {
         private const string GlobeGroupKey = "\uD83C\uDF10";
 
         /// <summary>
-        /// Public ctor.
+        /// Initializes a new instance of the AlphaKeyGroup class.
         /// </summary>
         /// <param name="key">The key for this group.</param>
         public AlphaKeyGroup(string key)
@@ -24,9 +24,9 @@
         }
 
         /// <summary>
-        /// Public ctor.
+        /// Initializes a new instance of the AlphaKeyGroup class.
         /// </summary>
-        /// <param name="grouping">The Linq grouping. N.B. this will enumerate all items.</param>
+        /// <param name="grouping">The grouping object. N.B. this will enumerate all items.</param>
         public AlphaKeyGroup(IGrouping<string, T> grouping)
         {
             this.Key = grouping.Key;

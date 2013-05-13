@@ -30,18 +30,18 @@
         /// <param name="targetType">The type to convert to.</param>
         /// <param name="parameter">Unused.</param>
         /// <param name="language">The culture to use in the converter (unused).</param>
-        /// <returns>A Vibility constant.</returns>
+        /// <returns>A Visibility constant.</returns>
         public object Convert(object value, Type targetType, object parameter, string language)
 #endif
 #if WINDOWS_PHONE
         /// <summary>
-        /// onverts a boolean value to a Visibility constant.
+        /// Converts a boolean value to a Visibility constant.
         /// </summary>
         /// <param name="value">The source data being passed to the target.</param>
         /// <param name="targetType">The type to convert to.</param>
         /// <param name="parameter">Unused.</param>
         /// <param name="culture">The culture to use in the converter (unused).</param>
-        /// <returns>A converted value.</returns>
+        /// <returns>A Visibility constant.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
 #endif
         {

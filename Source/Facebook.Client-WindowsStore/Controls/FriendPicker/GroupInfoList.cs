@@ -18,12 +18,12 @@
 
         public IEnumerator<T> GetEnumerator()
         {
-            return items.GetEnumerator();
+            return this.items.GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            return items.GetEnumerator();
+            return this.items.GetEnumerator();
         }
     }
 }

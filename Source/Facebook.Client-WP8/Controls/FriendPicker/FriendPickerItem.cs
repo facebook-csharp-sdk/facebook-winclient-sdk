@@ -11,21 +11,31 @@
             this.parent = parent;
         }
 
+        #region Properties
+
+        #region Parent
+
         public FriendPicker Parent
         {
             get
             {
-                return parent;
+                return this.parent;
             }
         }
 
+        #endregion
+
+        #region IsSelected
+
         private bool isSelected = false;
+
         public bool IsSelected
         {
             get
             {
                 return this.isSelected;
             }
+
             set
             {
                 if (value != this.isSelected)
@@ -36,13 +46,19 @@
             }
         }
 
+        #endregion
+
+        #region Item
+
         private GraphUser item = null;
+
         public GraphUser Item
         {
             get
             {
                 return this.item;
             }
+
             set
             {
                 if (this.item == null || value.Id != this.item.Id)
@@ -53,14 +69,23 @@
             }
         }
 
+        #endregion
+
+        #endregion Properties
+
+        #region implementation
+
         public event PropertyChangedEventHandler PropertyChanged;
+
         private void NotifyPropertyChanged(string propertyName)
         {
-            PropertyChangedEventHandler handler = PropertyChanged;
+            PropertyChangedEventHandler handler = this.PropertyChanged;
             if (null != handler)
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
     }
+
+    #endregion
 }

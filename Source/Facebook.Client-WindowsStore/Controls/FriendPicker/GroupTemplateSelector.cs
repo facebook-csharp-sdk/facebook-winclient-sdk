@@ -1,12 +1,13 @@
-﻿using System.Linq;
-using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
-
-namespace Facebook.Client.Controls
+﻿namespace Facebook.Client.Controls
 {
+    using System.Linq;
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Controls;
+
     public class GroupTemplateSelector<T> : DataTemplateSelector
     {
         public DataTemplate EmptyGroupTemplate { get; set; }
+
         public DataTemplate GroupTemplate { get; set; }
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)

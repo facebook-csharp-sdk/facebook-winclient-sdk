@@ -52,7 +52,7 @@ namespace Facebook.Client.Controls
         public ListViewSelectionMode SelectionMode
         {
             get { return (ListViewSelectionMode)GetValue(SelectionModeProperty); }
-            set { SetValue(SelectionModeProperty, value); }
+            set { this.SetValue(SelectionModeProperty, value); }
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace Facebook.Client.Controls
         public Brush GroupHeaderForeground
         {
             get { return (Brush)GetValue(GroupHeaderForegroundProperty); }
-            set { SetValue(GroupHeaderForegroundProperty, value); }
+            set { this.SetValue(GroupHeaderForegroundProperty, value); }
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace Facebook.Client.Controls
         public Brush GroupHeaderBackground
         {
             get { return (Brush)GetValue(GroupHeaderBackgroundProperty); }
-            set { SetValue(GroupHeaderBackgroundProperty, value); }
+            set { this.SetValue(GroupHeaderBackgroundProperty, value); }
         }
 
         /// <summary>
@@ -107,7 +107,7 @@ namespace Facebook.Client.Controls
         /// Initializes a new instance of the FriendPicker class.
         /// </summary>
         public FriendPicker()
-            :base()
+            : base()
         {
             this.DefaultStyleKey = typeof(FriendPicker);
         }
@@ -129,7 +129,7 @@ namespace Facebook.Client.Controls
                 view.SelectionChanged -= this.OnSelectionChanged;
                 this.semanticZoom.ViewChangeCompleted -= this.OnSemanticZoomViewChangeCompleted;
                 this.semanticZoom.Tapped -= this.OnSemanticZoomTapped;
-                (this.semanticZoom.ZoomedOutView as Control).Tapped -= OnSemanticZoomOutViewTapped;
+                (this.semanticZoom.ZoomedOutView as Control).Tapped -= this.OnSemanticZoomOutViewTapped;
             }
 
             this.semanticZoom = this.GetTemplateChild(FriendPicker.PartSemanticZoom) as SemanticZoom;
@@ -141,7 +141,7 @@ namespace Facebook.Client.Controls
                 this.semanticZoom.ViewChangeCompleted += this.OnSemanticZoomViewChangeCompleted;
                 this.semanticZoom.Tapped += this.OnSemanticZoomTapped;
                 this.semanticZoom.Tag = this;
-                (this.semanticZoom.ZoomedOutView as Control).Tapped += OnSemanticZoomOutViewTapped;
+                (this.semanticZoom.ZoomedOutView as Control).Tapped += this.OnSemanticZoomOutViewTapped;
             }
 
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
@@ -153,7 +153,7 @@ namespace Facebook.Client.Controls
         // TODO: this is a hack to prevent switching views whenever an empty group is clicked. 
         // It is not completely effective. For example, it fails if you double-click a group, or click outside a group's area.
         // Must find a better alternative.
-        void OnSemanticZoomOutViewTapped(object sender, TappedRoutedEventArgs e)
+        private void OnSemanticZoomOutViewTapped(object sender, TappedRoutedEventArgs e)
         {
             var group = (e.OriginalSource as FrameworkElement).DataContext as GroupInfoList<GraphUser>;
             if (group != null && !group.Any())

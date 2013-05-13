@@ -1,7 +1,7 @@
 ﻿namespace Facebook.Client
 {
-    using Facebook.Client.Controls;
     using System;
+    using Facebook.Client.Controls;
 
     /// <summary>
     /// Provides a strongly-typed representation of a Facebook User as defined by the Graph API.

@@ -40,7 +40,7 @@
         public FriendPickerSelectionMode SelectionMode
         {
             get { return (FriendPickerSelectionMode)GetValue(SelectionModeProperty); }
-            set { SetValue(SelectionModeProperty, value); }
+            set { this.SetValue(SelectionModeProperty, value); }
         }
 
         /// <summary>
@@ -49,7 +49,7 @@
         public static readonly DependencyProperty SelectionModeProperty =
             DependencyProperty.Register("SelectionMode", typeof(FriendPickerSelectionMode), typeof(FriendPicker), new PropertyMetadata(DefaultSelectionMode, OnSelectionModeProperyChanged));
 
-        private async static void OnSelectionModeProperyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnSelectionModeProperyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var friendPicker = (FriendPicker)d;
             friendPicker.ClearSelection();          
@@ -63,7 +63,7 @@
         /// Initializes a new instance of the FriendPicker class.
         /// </summary>
         public FriendPicker()
-            :base()
+            : base()
         {
             this.DefaultStyleKey = typeof(FriendPicker);
         }

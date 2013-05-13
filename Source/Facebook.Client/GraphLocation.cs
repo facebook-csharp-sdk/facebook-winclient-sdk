@@ -1,6 +1,7 @@
-﻿using System;
-namespace Facebook.Client
+﻿namespace Facebook.Client
 {
+    using System;
+
     /// <summary>
     /// Provides a strongly-typed representation of a Facebook Location as defined by the Graph API.
     /// </summary>

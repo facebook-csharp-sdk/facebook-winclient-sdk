@@ -38,7 +38,7 @@
         public IValueConverter Converter
         {
             get { return (IValueConverter)GetValue(ConverterProperty); }
-            set { SetValue(ConverterProperty, value); }
+            set { this.SetValue(ConverterProperty, value); }
         }
 
         /// <summary>
@@ -57,7 +57,7 @@
         public object ConverterParameter
         {
             get { return (object)GetValue(ConverterParameterProperty); }
-            set { SetValue(ConverterParameterProperty, value); }
+            set { this.SetValue(ConverterParameterProperty, value); }
         }
 
         /// <summary>
