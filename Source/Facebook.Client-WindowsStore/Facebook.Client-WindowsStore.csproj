@@ -198,6 +198,8 @@
     <Compile Include="Controls\FriendPicker\FriendPickerGroupTemplateSelector.cs" />
     <Compile Include="Controls\FriendPicker\GroupInfoList.cs" />
     <Compile Include="Controls\FriendPicker\GroupTemplateSelector.cs" />
+    <Compile Include="Controls\PlacePicker\LocationCoordinate.cs" />
+    <Compile Include="Controls\PlacePicker\PlacePicker.cs" />
     <Compile Include="FacebookDialogPage.xaml.cs">
       <DependentUpon>FacebookDialogPage.xaml</DependentUpon>
     </Compile>
@@ -215,6 +217,11 @@
     <Page Include="Controls\LoginButton\LoginButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Controls\PlacePicker\PlacePicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Controls\ProfilePicture\ProfilePicture.xaml">
