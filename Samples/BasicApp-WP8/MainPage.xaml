@@ -132,8 +132,11 @@
             <!--Pivot item two-->
             <phone:PivotItem Header="friends">
                 <Grid>
-                    <facebookControls:FriendPicker
-                          AccessToken="{Binding AccessToken, ElementName=loginButton}" />
+                    <facebookControls:FriendPicker x:Name="friendPicker"
+                        SelectionMode="Multiple"
+                        DisplayProfilePictures="True"
+                        PictureSize="60,60"
+                        AccessToken="{Binding AccessToken, ElementName=loginButton}" />
                 </Grid>
             </phone:PivotItem>
         </phone:Pivot>

@@ -4,6 +4,21 @@
 
     internal class FriendPickerItem : INotifyPropertyChanged
     {
+        private FriendPicker parent;
+
+        internal FriendPickerItem(FriendPicker parent)
+        {
+            this.parent = parent;
+        }
+
+        public FriendPicker Parent
+        {
+            get
+            {
+                return parent;
+            }
+        }
+
         private bool isSelected = false;
         public bool IsSelected
         {

@@ -35,11 +35,11 @@
 #endif
 #if WINDOWS_PHONE
         /// <summary>
-        /// Scales the value by multiplying by a given factor.
+        /// onverts a boolean value to a Visibility constant.
         /// </summary>
-        /// <param name="value">The value that is produced by the binding target.</param>
+        /// <param name="value">The source data being passed to the target.</param>
         /// <param name="targetType">The type to convert to.</param>
-        /// <param name="parameter">The factor used to scale the value.</param>
+        /// <param name="parameter">Unused.</param>
         /// <param name="culture">The culture to use in the converter (unused).</param>
         /// <returns>A converted value.</returns>
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

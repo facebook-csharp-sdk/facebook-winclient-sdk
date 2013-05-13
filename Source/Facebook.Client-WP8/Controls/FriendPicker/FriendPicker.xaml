@@ -7,13 +7,14 @@
     <Controls:JumpListItemBackgroundConverter x:Key="BackgroundConverter"/>
     <Controls:JumpListItemForegroundConverter x:Key="ForegroundConverter"/>
     <local:ImageSourceUriConverter x:Key="ImageSourceUriConverter" />
-    <local:BooleanToVisibilityConverter x:Key="VisibilityConverter" />
+    <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
     <Style TargetType="local:FriendPicker">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:FriendPicker">
-                    <Controls:LongListSelector x:Name="PART_LongListSelector"
+                    <Controls:LongListSelector
+                        x:Name="PART_LongListSelector"
                         IsGroupingEnabled="true" HideEmptyGroups="true">
                         <Controls:LongListSelector.GroupHeaderTemplate>
                             <DataTemplate>
@@ -32,23 +33,29 @@
                         <Controls:LongListSelector.ItemTemplate>
                             <DataTemplate>
                                 <Grid Margin="2">
-                                    <Grid Margin="12,8,0,8" Background="Transparent">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto"/>
-                                            <ColumnDefinition Width="*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Image Width="50" Height="50" Source="{Binding Item.ProfilePictureUrl, Converter={StaticResource ImageSourceUriConverter}}" VerticalAlignment="Top"/>
-                                        <StackPanel Grid.Column="1" VerticalAlignment="Top">
-                                            <TextBlock Text="{Binding Item.Name}" Style="{StaticResource PhoneTextLargeStyle}" FontFamily="{StaticResource PhoneFontFamilySemiBold}" Margin="12,-12,12,6"/>
-                                        </StackPanel>
-                                    </Grid>
-                                    <Rectangle x:Name="SelectionRectangle" Visibility="{Binding IsSelected, Converter={StaticResource VisibilityConverter}}"
+                                    <StackPanel Margin="12,8,0,8" Orientation="Horizontal">
+                                        <Image
+                                            Width="{Binding Parent.PictureSize.Width}"
+                                            Height="{Binding Parent.PictureSize.Height}"
+                                            Stretch="UniformToFill" 
+                                            Visibility="{Binding Parent.DisplayProfilePictures, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                                            Source="{Binding Item.ProfilePictureUrl, Converter={StaticResource ImageSourceUriConverter}}"/>
+                                        <TextBlock 
+                                            HorizontalAlignment="Left" 
+                                            VerticalAlignment="Top"
+                                            TextWrapping="Wrap"
+                                            Text="{Binding Item.Name}"
+                                            Style="{StaticResource PhoneTextLargeStyle}"
+                                            FontFamily="{StaticResource PhoneFontFamilySemiBold}"
+                                            Margin="10, 0, 0, 0" />
+                                    </StackPanel>
+                                    <Rectangle x:Name="SelectionRectangle" Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
                                                    Stroke="{StaticResource PhoneAccentBrush}" StrokeThickness="2"/>
-                                    <Polyline x:Name="SelectionTriangle" Visibility="{Binding IsSelected, Converter={StaticResource VisibilityConverter}}"
+                                    <Polyline x:Name="SelectionTriangle" Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
                                                   HorizontalAlignment="Right" VerticalAlignment="Top"
                                                   Points="50,0 50,50 0,0"
                                                   Fill="{StaticResource PhoneAccentBrush}" />
-                                    <Polyline x:Name="SelectionCheck" Visibility="{Binding IsSelected, Converter={StaticResource VisibilityConverter}}"
+                                    <Polyline x:Name="SelectionCheck" Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
                                                   Margin="5" HorizontalAlignment="Right" VerticalAlignment="Top"
                                                   Points="40,0 43,3 28,18 18,8 21,5 28,12"
                                                   Fill="{StaticResource PhoneForegroundBrush}"/>
