@@ -13,6 +13,7 @@ namespace Facebook.Client.Controls
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Data;
     using Windows.UI.Xaml.Input;
+    using Windows.UI.Xaml.Media;
 
     /// <summary>
     /// Shows a user interface that can be used to select Facebook friends.
@@ -29,6 +30,8 @@ namespace Facebook.Client.Controls
         #region Default Property Values
 
         private const ListViewSelectionMode DefaultSelectionMode = ListViewSelectionMode.Multiple;
+        private static readonly Brush DefaultGroupHeaderBackground = null;
+        private static readonly Brush DefaultGroupHeaderForeground = null;
 
         #endregion Default Property Values
 
@@ -59,6 +62,44 @@ namespace Facebook.Client.Controls
             DependencyProperty.Register("SelectionMode", typeof(ListViewSelectionMode), typeof(FriendPicker), new PropertyMetadata(DefaultSelectionMode));
 
         #endregion SelectionMode
+
+        #region GroupHeaderForeground
+
+        /// <summary>
+        /// Gets or sets the foreground brush used for the group headers.
+        /// </summary>
+        public Brush GroupHeaderForeground
+        {
+            get { return (Brush)GetValue(GroupHeaderForegroundProperty); }
+            set { SetValue(GroupHeaderForegroundProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the GroupHeaderForeground dependency property.
+        /// </summary>
+        public static readonly DependencyProperty GroupHeaderForegroundProperty =
+            DependencyProperty.Register("GroupHeaderForeground", typeof(Brush), typeof(FriendPicker), new PropertyMetadata(FriendPicker.DefaultGroupHeaderForeground));
+
+        #endregion GroupHeaderForeground
+
+        #region GroupHeaderBackground
+
+        /// <summary>
+        /// Gets or sets the background brush used for the group headers.
+        /// </summary>
+        public Brush GroupHeaderBackground
+        {
+            get { return (Brush)GetValue(GroupHeaderBackgroundProperty); }
+            set { SetValue(GroupHeaderBackgroundProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the GroupHeaderBackground dependency property.
+        /// </summary>
+        public static readonly DependencyProperty GroupHeaderBackgroundProperty =
+            DependencyProperty.Register("GroupHeaderBackground", typeof(Brush), typeof(FriendPicker), new PropertyMetadata(FriendPicker.DefaultGroupHeaderBackground));
+
+        #endregion GroupHeaderBackground
 
         #endregion Properties
 

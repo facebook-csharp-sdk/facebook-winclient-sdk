@@ -11,25 +11,27 @@
     <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
 
     <DataTemplate x:Name="GroupTemplate">
-        <Border Background="#FF25A1DB"
-                Width="{Binding ElementName=PART_SemanticZoom, Converter={StaticResource SizeToGridCellConverter}, ConverterParameter=True}" 
-                Height="{Binding ElementName=PART_SemanticZoom, Converter={StaticResource SizeToGridCellConverter}, ConverterParameter=False}">
+        <Border 
+            Background="{Binding Tag.GroupHeaderBackground, ElementName=PART_SemanticZoom}"
+            Width="{Binding ElementName=PART_SemanticZoom, Converter={StaticResource SizeToGridCellConverter}, ConverterParameter=True}" 
+            Height="{Binding ElementName=PART_SemanticZoom, Converter={StaticResource SizeToGridCellConverter}, ConverterParameter=False}">
             <TextBlock 
                 Margin="10"
+                Foreground="{Binding Tag.GroupHeaderForeground, ElementName=PART_SemanticZoom}"
                 Text="{Binding Key}"
-                FontFamily="Segoe UI Light"
                 FontSize="24" />
         </Border>
     </DataTemplate>
     
     <DataTemplate x:Name="EmptyGroupTemplate">
-        <Border Background="Gray" 
-                Width="{Binding ElementName=PART_SemanticZoom, Converter={StaticResource SizeToGridCellConverter}, ConverterParameter=True}" 
-                Height="{Binding ElementName=PART_SemanticZoom, Converter={StaticResource SizeToGridCellConverter}, ConverterParameter=False}">
+        <Border 
+            Background="Gray" 
+            Width="{Binding ElementName=PART_SemanticZoom, Converter={StaticResource SizeToGridCellConverter}, ConverterParameter=True}" 
+            Height="{Binding ElementName=PART_SemanticZoom, Converter={StaticResource SizeToGridCellConverter}, ConverterParameter=False}">
             <TextBlock
                 Margin="10"
+                Foreground="{Binding Tag.GroupHeaderForeground, ElementName=PART_SemanticZoom}"
                 Text="{Binding Key}"
-                FontFamily="Segoe UI Light"
                 FontSize="24" />
         </Border>
     </DataTemplate>
@@ -72,9 +74,34 @@
         </StackPanel>
     </DataTemplate>
 
+    <DataTemplate x:Name="GroupHeaderTemplate">
+        <Border 
+            BorderBrush="{Binding Tag.GroupHeaderBackground, ElementName=PART_SemanticZoom}"
+            BorderThickness="0, 0, 0, 1"
+            Width="{Binding Width, ElementName=PART_SemanticZoom}"
+            Margin="4, 6, 4, 6">
+            <Grid HorizontalAlignment="Left">
+                <Border 
+                    Grid.Column="0" 
+                    MinWidth="50" 
+                    Background="{Binding Tag.GroupHeaderBackground, ElementName=PART_SemanticZoom}">
+                    <TextBlock
+                        Text='{Binding Key}' 
+                        Margin="10"
+                        Foreground="{Binding Tag.GroupHeaderForeground, ElementName=PART_SemanticZoom}"
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource PageSubheaderTextStyle}" />
+                </Border>
+            </Grid>
+        </Border>
+    </DataTemplate>
+
     <Style TargetType="local:FriendPicker">
         <Setter Property="Width" Value="400" />
         <Setter Property="Height" Value="300" />
+        <Setter Property="GroupHeaderForeground" Value="White" />
+        <Setter Property="GroupHeaderBackground" Value="#FF25A1DB" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:FriendPicker">
@@ -86,44 +113,22 @@
                                     BorderThickness="{TemplateBinding BorderThickness}">
                         <SemanticZoom.ZoomedInView>
                             <ListView ItemsSource="{Binding}"
-                                        HorizontalContentAlignment="Stretch"
                                         SelectionMode="{TemplateBinding SelectionMode}"
-                                        ItemTemplate="{StaticResource ZoomedInItemTemplate}"
+                                        ItemTemplate="{StaticResource ZoomedInItemTemplate}"                                        
                                         ScrollViewer.IsVerticalScrollChainingEnabled="False">
                                 <ListView.GroupStyle>
-                                    <GroupStyle HidesIfEmpty="True">
+                                    <GroupStyle 
+                                        HidesIfEmpty="True" 
+                                        HeaderTemplate="{StaticResource GroupHeaderTemplate}">
                                         <GroupStyle.ContainerStyle>
                                             <Style TargetType="GroupItem">
-                                                <Setter Property="HorizontalAlignment" Value="Stretch" />
-                                                <Setter Property="HorizontalContentAlignment" Value="Stretch" />
                                                 <Setter Property="Margin" Value="0,10,20,10" />
                                                 <Setter Property="Padding" Value="0" />
                                             </Style>
                                         </GroupStyle.ContainerStyle>
-                                        <GroupStyle.HeaderTemplate>
-                                            <DataTemplate>
-                                                <Border 
-                                                        BorderBrush="#FF25A1DB" 
-                                                        BorderThickness="0, 0, 0, 1"
-                                                        Width="{Binding Width, ElementName=PART_SemanticZoom}"
-                                                        Margin="4, 6, 4, 6">
-                                                    <Grid HorizontalAlignment="Left">
-                                                        <Border Width="50" Grid.Column="0" Background="#FF25A1DB">
-                                                            <TextBlock
-                                                                Text='{Binding Key}' 
-                                                                Margin="10"
-                                                                VerticalAlignment="Center" 
-                                                                HorizontalAlignment="Center"
-                                                                Style="{StaticResource PageSubheaderTextStyle}" />
-                                                        </Border>
-                                                    </Grid>
-                                                </Border>
-                                            </DataTemplate>
-                                        </GroupStyle.HeaderTemplate>
                                         <GroupStyle.Panel>
                                             <ItemsPanelTemplate>
-                                                <VariableSizedWrapGrid
-                                                    Orientation="Horizontal" />
+                                                <VariableSizedWrapGrid Orientation="Horizontal" />
                                             </ItemsPanelTemplate>
                                         </GroupStyle.Panel>
                                     </GroupStyle>
@@ -133,12 +138,12 @@
 
                         <SemanticZoom.ZoomedOutView>
                             <ListView 
-                                ItemsSource="{Binding Path=CollectionGroups}"
-                                ScrollViewer.IsVerticalScrollChainingEnabled="False"
-                                ScrollViewer.VerticalScrollBarVisibility="Hidden"
                                 Padding="-1"
+                                ItemsSource="{Binding Path=CollectionGroups}"
                                 ItemTemplate="{StaticResource ZoomedOutItemTemplate}"
-                                SelectionMode="None">
+                                SelectionMode="None"
+                                ScrollViewer.IsVerticalScrollChainingEnabled="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Hidden">
                                 <ListView.ItemsPanel>
                                     <ItemsPanelTemplate>
                                         <WrapGrid Orientation="Horizontal" />
@@ -148,9 +153,7 @@
                                     <Style TargetType="ListViewItem">
                                         <Setter Property="Margin" Value="0" />
                                         <Setter Property="Padding" Value="0" />
-                                        <Setter Property="BorderThickness" Value="1" />
-                                        <Setter Property="HorizontalContentAlignment" Value="Left" />
-                                        <Setter Property="VerticalContentAlignment" Value="Bottom" />
+                                        <Setter Property="BorderThickness" Value="0" />
                                     </Style>
                                 </ListView.ItemContainerStyle>
                             </ListView>
