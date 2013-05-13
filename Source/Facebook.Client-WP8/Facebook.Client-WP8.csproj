@@ -103,11 +103,14 @@
     <Compile Include="..\Facebook.Client\Controls\Converters\ScaleConverter.cs">
       <Link>Controls\Converters\ScaleConverter.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\Controls\DataItemRetrievedEventArgs.cs">
+      <Link>Controls\DataItemRetrievedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\DataReadyEventArgs.cs">
+      <Link>Controls\DataReadyEventArgs.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\Controls\Extensions\EventExtensions.cs">
       <Link>Controls\Extensions\EventExtensions.cs</Link>
-    </Compile>
-    <Compile Include="..\Facebook.Client\Controls\FriendPicker\DataReadyEventArgs.cs">
-      <Link>Controls\FriendPicker\DataReadyEventArgs.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerBase.cs">
       <Link>Controls\FriendPicker\FriendPickerBase.cs</Link>
@@ -124,11 +127,8 @@
     <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerSortOrder.cs">
       <Link>Controls\FriendPicker\FriendPickerSortOrder.cs</Link>
     </Compile>
-    <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendRetrievedEventArgs.cs">
-      <Link>Controls\FriendPicker\FriendRetrievedEventArgs.cs</Link>
-    </Compile>
-    <Compile Include="..\Facebook.Client\Controls\FriendPicker\LoadFailedEventArgs.cs">
-      <Link>Controls\FriendPicker\LoadFailedEventArgs.cs</Link>
+    <Compile Include="..\Facebook.Client\Controls\LoadFailedEventArgs.cs">
+      <Link>Controls\LoadFailedEventArgs.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\Controls\LoginButton\Audience.cs">
       <Link>Controls\LoginButton\Audience.cs</Link>

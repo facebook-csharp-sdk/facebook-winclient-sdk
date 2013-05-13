@@ -53,12 +53,12 @@ namespace Facebook.Client.Controls
         /// <summary>
         /// Occurs whenever a new friend is about to be added to the list.
         /// </summary>
-        public event EventHandler<FriendRetrievedEventArgs> FriendRetrieved;
+        public event EventHandler<DataItemRetrievedEventArgs<GraphUser>> DataItemRetrieved;
 
         /// <summary>
         /// Occurs when the list of friends has finished loading.
         /// </summary>
-        public event EventHandler<DataReadyEventArgs> LoadCompleted;
+        public event EventHandler<DataReadyEventArgs<GraphUser>> LoadCompleted;
 
         /// <summary>
         /// Occurs whenever an error occurs while loading data.
@@ -91,7 +91,7 @@ namespace Facebook.Client.Controls
         public static readonly DependencyProperty AccessTokenProperty =
             DependencyProperty.Register("AccessToken", typeof(string), typeof(FriendPickerBase), new PropertyMetadata(FriendPickerBase.DefaultAccessToken, OnAccessTokenPropertyChanged));
 
-        private async static void OnAccessTokenPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static async void OnAccessTokenPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var friendPicker = (FriendPickerBase)d;
             await friendPicker.RefreshData();
@@ -116,7 +116,7 @@ namespace Facebook.Client.Controls
         public static readonly DependencyProperty ProfileIdProperty =
             DependencyProperty.Register("ProfileId", typeof(string), typeof(FriendPickerBase), new PropertyMetadata(FriendPickerBase.DefaultProfileId, OnProfileIdPropertyChanged));
 
-        private async static void OnProfileIdPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static async void OnProfileIdPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var friendPicker = (FriendPickerBase)d;
             await friendPicker.RefreshData();
@@ -170,7 +170,7 @@ namespace Facebook.Client.Controls
         public FriendPickerDisplayOrder DisplayOrder
         {
             get { return (FriendPickerDisplayOrder)GetValue(DisplayOrderProperty); }
-            set { SetValue(DisplayOrderProperty, value); }
+            set { this.SetValue(DisplayOrderProperty, value); }
         }
 
         /// <summary>
@@ -189,7 +189,7 @@ namespace Facebook.Client.Controls
         public FriendPickerSortOrder SortOrder
         {
             get { return (FriendPickerSortOrder)GetValue(SortOrderProperty); }
-            set { SetValue(SortOrderProperty, value); }
+            set { this.SetValue(SortOrderProperty, value); }
         }
 
         /// <summary>
@@ -211,7 +211,7 @@ namespace Facebook.Client.Controls
         public string DisplayFields
         {
             get { return (string)GetValue(DisplayFieldsProperty); }
-            set { SetValue(DisplayFieldsProperty, value); }
+            set { this.SetValue(DisplayFieldsProperty, value); }
         }
 
         /// <summary>
@@ -230,7 +230,7 @@ namespace Facebook.Client.Controls
         public bool DisplayProfilePictures
         {
             get { return (bool)GetValue(DisplayProfilePicturesProperty); }
-            set { SetValue(DisplayProfilePicturesProperty, value); }
+            set { this.SetValue(DisplayProfilePicturesProperty, value); }
         }
 
         /// <summary>
@@ -248,7 +248,7 @@ namespace Facebook.Client.Controls
         public Size PictureSize
         {
             get { return (Size)GetValue(PictureSizeProperty); }
-            set { SetValue(PictureSizeProperty, value); }
+            set { this.SetValue(PictureSizeProperty, value); }
         }
 
         /// <summary>
@@ -286,18 +286,18 @@ namespace Facebook.Client.Controls
                 foreach (dynamic friend in data)
                 {
                     var user = new GraphUser(friend);
-                    if (this.FriendRetrieved.RaiseEvent(this, new FriendRetrievedEventArgs(user), e => e.Exclude))
+                    if (this.DataItemRetrieved.RaiseEvent(this, new DataItemRetrievedEventArgs<GraphUser>(user), e => e.Exclude))
                     {
                         this.Items.Add(user);
                     }
                 }
 
                 this.SetDataSource(this.Items);
-                this.LoadCompleted.RaiseEvent(this, new DataReadyEventArgs((this.Items.ToList())));
+                this.LoadCompleted.RaiseEvent(this, new DataReadyEventArgs<GraphUser>(this.Items.ToList()));
             }
-            // TODO: review the types of exception that can be caught here
             catch (Exception ex)
             {
+                // TODO: review the types of exception that can be caught here
                 this.LoadFailed.RaiseEvent(this, new LoadFailedEventArgs("Error loading friend data.", ex.Message));
             }
         }

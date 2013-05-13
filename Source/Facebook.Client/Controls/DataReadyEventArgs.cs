@@ -5,20 +5,20 @@
     /// <summary>
     /// Provides data for the LoadCompleted event.
     /// </summary>
-    public class DataReadyEventArgs
+    public class DataReadyEventArgs<T>
     {
         /// <summary>
         /// Initializes a new instance of the DataReadyEventArgs class.
         /// </summary>
-        /// <param name="friends">The list of Facebook friends.</param>
-        public DataReadyEventArgs(IEnumerable<GraphUser> friends)
+        /// <param name="data">The data that was loaded.</param>
+        public DataReadyEventArgs(IEnumerable<T> data)
         {
-            this.Friends = friends;
+            this.Data = data;
         }
 
         /// <summary>
         /// Gets the list of Facebook friends retrieved.
         /// </summary>
-        public IEnumerable<GraphUser> Friends { get; private set; }
+        public IEnumerable<T> Data { get; private set; }
     }
 }
