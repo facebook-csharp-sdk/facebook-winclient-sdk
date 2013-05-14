@@ -120,15 +120,29 @@
             <Grid x:Name="friendPicker" 
                   Grid.Row="1" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <facebookControls:FriendPicker 
-                    Width="800"
+                    Width="900"
                     Height="450"
                     SelectionMode="Multiple"
                     DisplayProfilePictures="True"
                     PictureSize="60,60"
-                    FriendRetrieved="OnFriendRetrieved"
+                    DataItemRetrieved="OnFriendRetrieved"
                     AccessToken="{Binding AccessToken, ElementName=loginButton}" />
             </Grid>
 
+            <!--Friend Picker-->
+            <Grid x:Name="placePicker" 
+                  Grid.Row="1" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <facebookControls:PlacePicker 
+                    Width="900"
+                    Height="450"
+                    TrackLocation="False"
+                    LoadFailed="OnPlacePickerLoadFailed"
+                    SearchText="Restaurant"
+                    PictureSize="50,50"
+                    DisplayProfilePictures="True"
+                    AccessToken="{Binding AccessToken, ElementName=loginButton}"/>
+            </Grid>
+            
             <!--Login Button-->
             <facebookControls:LoginButton x:Name="loginButton" 
                 Grid.Row="2"
