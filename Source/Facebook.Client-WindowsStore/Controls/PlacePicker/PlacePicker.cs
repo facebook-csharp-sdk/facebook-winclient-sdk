@@ -252,7 +252,13 @@
         }
 
         public static readonly DependencyProperty RadiusInMetersProperty =
-            DependencyProperty.Register("RadiusInMeters", typeof(int), typeof(PlacePicker), new PropertyMetadata(DefaultRadiusInMeters));
+            DependencyProperty.Register("RadiusInMeters", typeof(int), typeof(PlacePicker), new PropertyMetadata(DefaultRadiusInMeters, OnRadiusInMetersPropertyChanged));
+
+        private async static void OnRadiusInMetersPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var placePicker = (PlacePicker)d;
+            await placePicker.RefreshData();
+        }
 
         #endregion RadiusInMeters DependencyProperty
 
