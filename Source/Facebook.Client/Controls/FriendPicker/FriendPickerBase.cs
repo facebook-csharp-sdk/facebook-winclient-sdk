@@ -70,6 +70,11 @@ namespace Facebook.Client.Controls
         /// </summary>
         public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
+        /// <summary>
+        /// Occurs when the display order changes.
+        /// </summary>
+        internal event EventHandler<DependencyPropertyChangedEventArgs> DisplayOrderChanged;
+
         #endregion Events
 
         #region Properties
@@ -174,10 +179,19 @@ namespace Facebook.Client.Controls
         }
 
         /// <summary>
-        /// Identifies the DisplayOrdering dependency property.
+        /// Identifies the DisplayOrder dependency property.
         /// </summary>
         public static readonly DependencyProperty DisplayOrderProperty =
-            DependencyProperty.Register("DisplayOrder", typeof(FriendPickerDisplayOrder), typeof(FriendPickerBase), new PropertyMetadata(DefaultDisplayOrder));
+            DependencyProperty.Register("DisplayOrder", typeof(FriendPickerDisplayOrder), typeof(FriendPickerBase), new PropertyMetadata(DefaultDisplayOrder, OnDisplayOrderPropertyChanged));
+
+        private static void OnDisplayOrderPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var friendPicker = (FriendPickerBase)d;
+            if (friendPicker.DisplayOrderChanged != null)
+            {
+                friendPicker.DisplayOrderChanged(friendPicker, e);
+            }
+        }
 
         #endregion DisplayOrder
 
@@ -261,13 +275,16 @@ namespace Facebook.Client.Controls
 
         #endregion Properties
 
+        #region Implementation
+
         private async Task RefreshData()
         {
             this.Items.Clear();
             this.SelectedItems.Clear();
+            this.SetDataSource(this.Items);
 
             if (string.IsNullOrEmpty(this.AccessToken))
-            {
+            {                
                 return;
             }
 
@@ -283,6 +300,7 @@ namespace Facebook.Client.Controls
                 dynamic friendsTaskResult = await facebookClient.GetTaskAsync(graphUrl);
                 var result = (IDictionary<string, object>)friendsTaskResult;
                 var data = (IEnumerable<object>)result["data"];
+
                 foreach (dynamic friend in data)
                 {
                     var user = new GraphUser(friend);
@@ -308,5 +326,27 @@ namespace Facebook.Client.Controls
         {
             this.SelectionChanged.RaiseEvent(this, e);
         }
+
+        internal static string FormatDisplayName(GraphUser user, FriendPickerDisplayOrder displayOrder)
+        {
+            bool hasFirstName = !string.IsNullOrWhiteSpace(user.FirstName);
+            bool hasLastName = !string.IsNullOrWhiteSpace(user.LastName);
+            bool hasFirstNameAndLastName = hasFirstName && hasLastName;
+
+            if (hasFirstName || hasLastName)
+            {
+                switch (displayOrder)
+                {
+                    case FriendPickerDisplayOrder.DisplayFirstNameFirst:
+                        return user.FirstName + (hasFirstNameAndLastName ? " " : null) + user.LastName;
+                    case FriendPickerDisplayOrder.DisplayLastNameFirst:
+                        return user.LastName + (hasFirstNameAndLastName ? ", " : null) + user.FirstName;
+                }
+            }
+
+            return user.Name;
+        }
+
+        #endregion Implementation
     }
 }

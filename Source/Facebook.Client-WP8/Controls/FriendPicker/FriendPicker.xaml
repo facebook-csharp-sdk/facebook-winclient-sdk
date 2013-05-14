@@ -44,7 +44,7 @@
                                             HorizontalAlignment="Left" 
                                             VerticalAlignment="Top"
                                             TextWrapping="Wrap"
-                                            Text="{Binding Item.Name}"
+                                            Text="{Binding DisplayName}"
                                             Style="{StaticResource PhoneTextLargeStyle}"
                                             FontFamily="{StaticResource PhoneFontFamilySemiBold}"
                                             Margin="10, 0, 0, 0" />

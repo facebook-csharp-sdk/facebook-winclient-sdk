@@ -156,7 +156,7 @@
         {
             if (this.longListSelector != null)
             {
-                this.longListSelector.ItemsSource = AlphaKeyGroup<FriendPickerItem>.CreateGroups(friends.Select(f => new FriendPickerItem(this) { Item = f }), System.Globalization.CultureInfo.CurrentUICulture, (u) => { return u.Item.Name; }, true);
+                this.longListSelector.ItemsSource = AlphaKeyGroup<FriendPickerItem>.CreateGroups(friends.Select(f => new FriendPickerItem(this, f)), System.Globalization.CultureInfo.CurrentUICulture, (u) => { return u.Item.Name; }, true);
                 this.longListSelector.SelectedItem = null;
             }
         }

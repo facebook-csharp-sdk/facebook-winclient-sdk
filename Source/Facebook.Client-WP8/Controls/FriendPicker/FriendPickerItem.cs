@@ -1,14 +1,21 @@
 ﻿namespace Facebook.Client.Controls
 {
     using System.ComponentModel;
+using System.Windows.Data;
 
     internal class FriendPickerItem : INotifyPropertyChanged
     {
         private FriendPicker parent;
 
-        internal FriendPickerItem(FriendPicker parent)
+        internal FriendPickerItem(FriendPicker parent, GraphUser item)
         {
             this.parent = parent;
+            this.item = item;
+
+            this.SetDisplayName();
+
+            //// TODO: Review if there is a better approach to listen for changes in DisplayOrder dependency property
+            parent.DisplayOrderChanged += this.OnDisplayOrderChanged;
         }
 
         #region Properties
@@ -23,7 +30,21 @@
             }
         }
 
-        #endregion
+        #endregion Parent
+
+        #region Item
+
+        private GraphUser item = null;
+
+        public GraphUser Item
+        {
+            get
+            {
+                return this.item;
+            }
+        }
+
+        #endregion Item
 
         #region IsSelected
 
@@ -46,34 +67,34 @@
             }
         }
 
-        #endregion
+        #endregion IsSelected
 
-        #region Item
+        #region DisplayName
 
-        private GraphUser item = null;
+        private string displayName = string.Empty;
 
-        public GraphUser Item
+        public string DisplayName
         {
             get
             {
-                return this.item;
+                return this.displayName;
             }
 
-            set
+            private set
             {
-                if (this.item == null || value.Id != this.item.Id)
+                if (!this.displayName.Equals(value))
                 {
-                    this.item = value;
-                    this.NotifyPropertyChanged("Item");
+                    this.displayName = value;
+                    this.NotifyPropertyChanged("DisplayName");
                 }
             }
         }
 
-        #endregion
+        #endregion DisplayName
 
         #endregion Properties
 
-        #region implementation
+        #region Implementation
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -85,7 +106,17 @@
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
+        private void OnDisplayOrderChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
+        {
+            this.SetDisplayName();
+        }
+
+        private void SetDisplayName()
+        {
+            this.DisplayName = FriendPickerBase.FormatDisplayName(this.Item, this.parent.DisplayOrder);
+        }
     }
 
-    #endregion
+    #endregion Implementation
 }
