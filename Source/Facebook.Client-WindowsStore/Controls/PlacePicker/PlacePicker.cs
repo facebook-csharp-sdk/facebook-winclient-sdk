@@ -16,12 +16,12 @@
     /// <summary>
     /// Shows a user interface that can be used to select Facebook places.
     /// </summary>
-    [TemplatePart(Name = PartListBox, Type = typeof(ListBox))]
+    [TemplatePart(Name = PartListView, Type = typeof(ListView))]
     public class PlacePicker : Control
     {
         #region Part Definitions
 
-        private const string PartListBox = "PART_ListBox";
+        private const string PartListView = "PART_ListView";
 
         #endregion Part Definitions
 
@@ -43,7 +43,7 @@
         #region Member variables
 
         private Geolocator geoLocator;
-        private ListBox listBox;
+        private ListView listView;
 
         #endregion Member variables
 
@@ -320,11 +320,11 @@
         {
             base.OnApplyTemplate();
 
-            this.listBox = this.GetTemplateChild(PartListBox) as ListBox;
-            if (this.listBox != null)
+            this.listView = this.GetTemplateChild(PartListView) as ListView;
+            if (this.listView != null)
             {
-                this.listBox.SelectionChanged += OnSelectionChanged;
-                this.listBox.Tag = this;
+                this.listView.SelectionChanged += OnSelectionChanged;
+                this.listView.Tag = this;
             }
         }
 
@@ -428,10 +428,10 @@
 
         protected void SetDataSource(IEnumerable<GraphPlace> places)
         {
-            if (this.listBox != null)
+            if (this.listView != null)
             {
-                this.listBox.DataContext = this;
-                this.listBox.ItemsSource = places;
+                this.listView.DataContext = this;
+                this.listView.ItemsSource = places;
             }
         }
 

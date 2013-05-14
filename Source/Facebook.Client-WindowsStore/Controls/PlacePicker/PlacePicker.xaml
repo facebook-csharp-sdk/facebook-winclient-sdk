@@ -12,14 +12,14 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:PlacePicker">
-                    <ListBox x:Name="PART_ListBox"
+                    <ListView x:Name="PART_ListView"
                         Width="{TemplateBinding Width}"
                         Height="{TemplateBinding Height}"
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}"
                         SelectionMode="{TemplateBinding SelectionMode}">
-                        <ListBox.ItemTemplate>
+                        <ListView.ItemTemplate>
                             <DataTemplate>
                                 <Grid>
                                     <Grid.ColumnDefinitions>
@@ -27,11 +27,11 @@
                                         <ColumnDefinition />
                                     </Grid.ColumnDefinitions>
                                     <Image 
-                                        Width="{Binding Path=Tag.PictureSize.Height, ElementName=PART_ListBox}" 
-                                        Height="{Binding Path=Tag.PictureSize.Height, ElementName=PART_ListBox}" 
+                                        Width="{Binding Path=Tag.PictureSize.Height, ElementName=PART_ListView}" 
+                                        Height="{Binding Path=Tag.PictureSize.Height, ElementName=PART_ListView}" 
                                         VerticalAlignment="Center" 
                                         HorizontalAlignment="Center"
-                                        Visibility="{Binding Path=Tag.DisplayProfilePictures, ElementName=PART_ListBox, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Visibility="{Binding Path=Tag.DisplayProfilePictures, ElementName=PART_ListView, Converter={StaticResource BooleanToVisibilityConverter}}"
                                         Source="{Binding ProfilePictureUrl}"/>
                                     <StackPanel 
                                         Grid.Column="1" 
@@ -47,8 +47,8 @@
                                     </StackPanel>
                                 </Grid>
                             </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                        </ListView.ItemTemplate>
+                    </ListView>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
