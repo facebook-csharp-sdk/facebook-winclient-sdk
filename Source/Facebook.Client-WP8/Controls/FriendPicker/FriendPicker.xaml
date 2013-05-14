@@ -19,7 +19,7 @@
                         <Controls:LongListSelector.GroupHeaderTemplate>
                             <DataTemplate>
                                 <Border Background="{StaticResource PhoneAccentBrush}" 	
-                                        Padding="8,0,0,0" Width="62" Height="62" 				 
+                                        Padding="8,0,0,0" Width="50" Height="50" 				 
                                         HorizontalAlignment="Left">
                                     <TextBlock Text="{Binding Key}" 
                                                Foreground="#FFFFFF" 
@@ -32,8 +32,8 @@
                         </Controls:LongListSelector.GroupHeaderTemplate>
                         <Controls:LongListSelector.ItemTemplate>
                             <DataTemplate>
-                                <Grid Margin="2">
-                                    <StackPanel Margin="12,8,0,8" Orientation="Horizontal">
+                                <Grid>
+                                    <StackPanel Margin="0,8,0,8" Orientation="Horizontal">
                                         <Image
                                             Width="{Binding Parent.PictureSize.Width}"
                                             Height="{Binding Parent.PictureSize.Height}"
@@ -47,7 +47,7 @@
                                             Text="{Binding DisplayName}"
                                             Style="{StaticResource PhoneTextLargeStyle}"
                                             FontFamily="{StaticResource PhoneFontFamilySemiBold}"
-                                            Margin="10, 0, 0, 0" />
+                                            Margin="10,0,0,0" />
                                     </StackPanel>
                                     <Rectangle x:Name="SelectionRectangle" Visibility="{Binding IsSelected, Converter={StaticResource BooleanToVisibilityConverter}}"
                                                    Stroke="{StaticResource PhoneAccentBrush}" StrokeThickness="2"/>
