@@ -3,7 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
-    using System.Globalization;
+    using System.Dynamic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
@@ -31,11 +31,12 @@
         private const string DefaultDisplayFields = "id,name,location,category,picture,were_here_count";
         private const bool DefaultDisplayProfilePictures = true;
         private static readonly Size DefaultPictureSize = new Size(50, 50);
+        private const SelectionMode DefaultSelectionMode = SelectionMode.Single;
         private const string DefaultSearchText = "";
         private const int DefaultRadiusInMeters = 1000;
         private const int DefaultResultsLimit = 100;
-        private const bool DefaultTrackLocation = true;
-        private static readonly LocationCoordinate DefaultLocationCoordinate = new LocationCoordinate(0.0, 0.0);
+        private const bool DefaultTrackLocation = false;
+        private static readonly LocationCoordinate DefaultLocationCoordinate = new LocationCoordinate(51.494338, -0.176759);
 
         #endregion Default Property Values
 
@@ -52,8 +53,8 @@
         public PlacePicker()
         {
             this.DefaultStyleKey = typeof(PlacePicker);
-            this.SetValue(ItemsProperty, new ObservableCollection<GraphLocation>());
-            this.SetValue(SelectedItemsProperty, new ObservableCollection<GraphLocation>());
+            this.SetValue(ItemsProperty, new ObservableCollection<GraphPlace>());
+            this.SetValue(SelectedItemsProperty, new ObservableCollection<GraphPlace>());
         }
 
         #region Events
@@ -61,12 +62,12 @@
         /// <summary>
         /// Occurs whenever a new place is about to be added to the list.
         /// </summary>
-        public event EventHandler<DataItemRetrievedEventArgs<GraphLocation>> PlaceRetrieved;
+        public event EventHandler<DataItemRetrievedEventArgs<GraphPlace>> PlaceRetrieved;
 
         /// <summary>
         /// Occurs when the list of places has finished loading.
         /// </summary>
-        public event EventHandler<DataReadyEventArgs<GraphLocation>> LoadCompleted;
+        public event EventHandler<DataReadyEventArgs<GraphPlace>> LoadCompleted;
 
         /// <summary>
         /// Occurs whenever an error occurs while loading data.
@@ -102,8 +103,7 @@
         private async static void OnAccessTokenPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var placePicker = (PlacePicker)d;
-            var currentLocation = await placePicker.GetCurrentLocation();
-            await placePicker.RefreshData(currentLocation.Latitude, currentLocation.Longitude);
+            await placePicker.RefreshData();
         }
 
         #endregion AccessToken
@@ -113,9 +113,9 @@
         /// <summary>
         /// Gets the list of friends retrieved by the PlacePicker control.
         /// </summary>
-        public ObservableCollection<GraphLocation> Items
+        public ObservableCollection<GraphPlace> Items
         {
-            get { return (ObservableCollection<GraphLocation>)this.GetValue(ItemsProperty); }
+            get { return (ObservableCollection<GraphPlace>)this.GetValue(ItemsProperty); }
             private set { this.SetValue(ItemsProperty, value); }
         }
 
@@ -123,7 +123,7 @@
         /// Identifies the Items dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemsProperty =
-            DependencyProperty.Register("Items", typeof(ObservableCollection<GraphLocation>), typeof(PlacePicker), null);
+            DependencyProperty.Register("Items", typeof(ObservableCollection<GraphPlace>), typeof(PlacePicker), null);
 
         #endregion Items
 
@@ -132,9 +132,9 @@
         /// <summary>
         /// Gets the list of currently selected items for the PlacePicker control.
         /// </summary>
-        public ObservableCollection<GraphLocation> SelectedItems
+        public ObservableCollection<GraphPlace> SelectedItems
         {
-            get { return (ObservableCollection<GraphLocation>)this.GetValue(SelectedItemsProperty); }
+            get { return (ObservableCollection<GraphPlace>)this.GetValue(SelectedItemsProperty); }
             private set { this.SetValue(SelectedItemsProperty, value); }
         }
 
@@ -142,7 +142,7 @@
         /// Identifies the SelectedItems dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedItemsProperty =
-            DependencyProperty.Register("SelectedItems", typeof(ObservableCollection<GraphLocation>), typeof(PlacePicker), null);
+            DependencyProperty.Register("SelectedItems", typeof(ObservableCollection<GraphPlace>), typeof(PlacePicker), null);
 
         #endregion SelectedItems
 
@@ -205,6 +205,25 @@
 
         #endregion PictureSize
 
+        #region SelectionMode
+
+        /// <summary>
+        /// Gets or sets the selection behavior of the control. 
+        /// </summary>
+        public SelectionMode SelectionMode
+        {
+            get { return (SelectionMode)GetValue(SelectionModeProperty); }
+            set { this.SetValue(SelectionModeProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the SelectionMode dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SelectionModeProperty =
+            DependencyProperty.Register("SelectionMode", typeof(SelectionMode), typeof(PlacePicker), new PropertyMetadata(DefaultSelectionMode));
+
+        #endregion SelectionMode
+        
         #region SearchText
 
         public string SearchText
@@ -214,7 +233,13 @@
         }
 
         public static readonly DependencyProperty SearchTextProperty =
-            DependencyProperty.Register("SearchText", typeof(string), typeof(PlacePicker), new PropertyMetadata(DefaultSearchText));
+            DependencyProperty.Register("SearchText", typeof(string), typeof(PlacePicker), new PropertyMetadata(DefaultSearchText, OnSearchTextPropertyChanged));
+
+        private async static void OnSearchTextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var placePicker = (PlacePicker)d;
+            await placePicker.RefreshData();
+        }
 
         #endregion SearchText
 
@@ -248,7 +273,7 @@
             var coordinate = (LocationCoordinate)e.NewValue;
             if (coordinate != null)
             {
-                await placePicker.RefreshData(coordinate.Latitude, coordinate.Longitude);
+                await placePicker.RefreshData();
             }
         }
 
@@ -263,9 +288,9 @@
         }
 
         public static readonly DependencyProperty TrackLocationProperty =
-            DependencyProperty.Register("TrackLocation", typeof(bool), typeof(PlacePicker), new PropertyMetadata(DefaultTrackLocation, OnTrackCurrentLocationPropertyChanged));
+            DependencyProperty.Register("TrackLocation", typeof(bool), typeof(PlacePicker), new PropertyMetadata(DefaultTrackLocation, OnTrackLocationPropertyChanged));
 
-        private static void OnTrackCurrentLocationPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void OnTrackLocationPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var placePicker = (PlacePicker)d;
             if ((bool)e.NewValue)
@@ -299,6 +324,7 @@
             if (this.listBox != null)
             {
                 this.listBox.SelectionChanged += OnSelectionChanged;
+                this.listBox.Tag = this;
             }
         }
 
@@ -306,26 +332,26 @@
         {
             foreach (var item in e.RemovedItems)
             {
-                this.SelectedItems.Remove((GraphLocation)item);
+                this.SelectedItems.Remove((GraphPlace)item);
             }
 
             foreach (var item in e.AddedItems)
             {
-                this.SelectedItems.Add((GraphLocation)item);
+                this.SelectedItems.Add((GraphPlace)item);
             }
             
             this.SelectionChanged.RaiseEvent(this, e);
         }
 
-        private void OnPositionChanged(Geolocator sender, PositionChangedEventArgs args)
+        private async void OnPositionChanged(Geolocator sender, PositionChangedEventArgs args)
         {
-            this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
             {
-                await this.RefreshData(args.Position.Coordinate.Latitude, args.Position.Coordinate.Longitude);
+                await this.RefreshData();
             });
         }
 
-        private async Task RefreshData(double latitude, double longitude)
+        private async Task RefreshData()
         {
             this.Items.Clear();
             this.SelectedItems.Clear();
@@ -335,40 +361,40 @@
                 return;
             }
 
+            var currentLocation = this.TrackLocation ? await this.GetCurrentLocation() : this.LocationCoordinate;
+            double latitude = currentLocation.Latitude;
+            double longitude = currentLocation.Longitude;
+
             try
             {
                 FacebookClient facebookClient = new FacebookClient(this.AccessToken);
+                dynamic parameters = new ExpandoObject();
+                parameters.type = "place";
+                parameters.center = latitude.ToString() + "," + longitude.ToString();
+                parameters.distance = this.RadiusInMeters;
+                parameters.fields = this.DisplayFields;
+                if (!string.IsNullOrWhiteSpace(this.SearchText))
+                {
+                    parameters.q = this.SearchText;
+                }
 
-                string graphUrl = string.Format(
-                                        CultureInfo.InvariantCulture,
-                                        "/search?fields={0}",
-                                        this.DisplayFields);
-                dynamic placesTaskResult = await facebookClient.GetTaskAsync(
-                                                graphUrl,
-                                                new
-                                                {
-                                                    type = "place",
-                                                    q = this.SearchText,
-                                                    center = latitude.ToString() + "," + longitude.ToString(),
-                                                    distance = this.RadiusInMeters
-                                                });
-
+                dynamic placesTaskResult = await facebookClient.GetTaskAsync("/search", parameters);
                 var data = (IEnumerable<dynamic>)placesTaskResult.data;
                 foreach (var item in data)
                 {
-                    var place = new GraphLocation(item.location);
-                    if (this.PlaceRetrieved.RaiseEvent(this, new DataItemRetrievedEventArgs<GraphLocation>(place), e => e.Exclude))
+                    var place = new GraphPlace(item);
+                    if (this.PlaceRetrieved.RaiseEvent(this, new DataItemRetrievedEventArgs<GraphPlace>(place), e => e.Exclude))
                     {
                         this.Items.Add(place);
                     }
                 }
 
                 this.SetDataSource(this.Items);
-                this.LoadCompleted.RaiseEvent(this, new DataReadyEventArgs<GraphLocation>((this.Items.ToList())));
+                this.LoadCompleted.RaiseEvent(this, new DataReadyEventArgs<GraphPlace>((this.Items.ToList())));
             }
-            // TODO: review the types of exception that can be caught here
             catch (Exception ex)
             {
+                // TODO: review the types of exception that can be caught here
                 this.LoadFailed.RaiseEvent(this, new LoadFailedEventArgs("Error loading place data.", ex.Message));
             }
         }
@@ -379,43 +405,34 @@
             CancellationToken token = cts.Token;
             try
             {
-                // We will wait 100 milliseconds and accept locations up to 48 hours old before we give up
-                // TODO: setting a timeout of 100 milliseconds fails with a timeout exception. Find out the the reason. 
                 var position = await this.geoLocator.GetGeopositionAsync(new TimeSpan(0, 1, 0), new TimeSpan(0, 0, 0, 1)).AsTask(token);
                 return new LocationCoordinate(position.Coordinate.Latitude, position.Coordinate.Longitude);
             }
             catch (System.UnauthorizedAccessException)
             {
-                //MessageTextbox.Text = "Location disabled.";
-
-                //LatitudeTextbox.Text = "No data";
-                //LongitudeTextbox.Text = "No data";
-                //AccuracyTextbox.Text = "No data";
+                this.LoadFailed.RaiseEvent(this, new LoadFailedEventArgs("Error retrieving current location.", "Location is disabled."));
             }
             catch (TaskCanceledException)
             {
-                //MessageTextbox.Text = "Operation canceled.";
+                this.LoadFailed.RaiseEvent(this, new LoadFailedEventArgs("Error retrieving current location.", "Task was cancelled."));
             }
             catch (Exception)
             {
                 // this API can timeout, so no point breaking the code flow. Use
                 // default latitutde and longitude and continue on.
             }
-            //finally
-            //{
-            //    _cts = null;
-            //}
 
             // default location
-            return new LocationCoordinate(51.494338, -0.176759);
+            return DefaultLocationCoordinate;
         }
 
-        protected void SetDataSource(IEnumerable<GraphLocation> place)
+        protected void SetDataSource(IEnumerable<GraphPlace> places)
         {
-            //if (this.semanticZoom != null)
-            //{
-            //    this.semanticZoom.DataContext = this.GroupData(friends);
-            //}
+            if (this.listBox != null)
+            {
+                this.listBox.DataContext = this;
+                this.listBox.ItemsSource = places;
+            }
         }
 
         #endregion Implementation

@@ -4,6 +4,7 @@
     xmlns:local="using:Facebook.Client.Controls">
 
     <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <!--<local:DebugConverter x:Key="DebugConverter" />-->
 
     <Style TargetType="local:PlacePicker">
         <Setter Property="Width" Value="400" />
@@ -11,51 +12,43 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:PlacePicker">
-                    <Border
+                    <ListBox x:Name="PART_ListBox"
                         Width="{TemplateBinding Width}"
                         Height="{TemplateBinding Height}"
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
-                        <ListBox x:Name="PART_ListBox"
-                            VerticalAlignment="Top"
-                            Tag="{TemplateBinding DisplayProfilePictures}"
-                            ItemsSource="{Binding}">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Grid>
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="11*"/>
-                                            <ColumnDefinition Width="12*"/>
-                                        </Grid.ColumnDefinitions>
-                                        <Image 
-                                            Height="50" 
-                                            Width="50" 
-                                            VerticalAlignment="Center" 
-                                            HorizontalAlignment="Center"
-                                            Visibility="{Binding Path=Tag, ElementName=PART_ListBox, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                            Source="{Binding PictureUri}"/>
-                                        <StackPanel 
-                                                    Grid.Column="1" 
-                                                    VerticalAlignment="Center"
-                                                    Margin="10,0,0,18" 
-                                                    Orientation="Vertical">
-                                            <TextBlock 
-                                                       HorizontalAlignment="Left" 
-                                                       TextWrapping="Wrap" 
-                                                       Text="{Binding Name}" 
-                                                       VerticalAlignment="Top" 
-                                                       FontSize="24" /> 
-                                            <TextBlock 
-                                                       TextWrapping="Wrap" 
-                                                       Text="{Binding Category}" 
-                                                       FontSize="14.667"/>
-                                        </StackPanel>
-                                    </Grid>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </Border>
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        SelectionMode="{TemplateBinding SelectionMode}">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Image 
+                                        Width="{Binding Path=Tag.PictureSize.Height, ElementName=PART_ListBox}" 
+                                        Height="{Binding Path=Tag.PictureSize.Height, ElementName=PART_ListBox}" 
+                                        VerticalAlignment="Center" 
+                                        HorizontalAlignment="Center"
+                                        Visibility="{Binding Path=Tag.DisplayProfilePictures, ElementName=PART_ListBox, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                        Source="{Binding ProfilePictureUrl}"/>
+                                    <StackPanel 
+                                        Grid.Column="1" 
+                                        VerticalAlignment="Center"
+                                        Margin="10,0,0,18" 
+                                        Orientation="Vertical">
+                                        <TextBlock 
+                                            HorizontalAlignment="Left" 
+                                            TextWrapping="Wrap" 
+                                            Text="{Binding Name}" 
+                                            VerticalAlignment="Top" 
+                                            FontSize="18" /> 
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
