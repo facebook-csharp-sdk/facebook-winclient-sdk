@@ -60,88 +60,126 @@
                 <TextBlock Text="FACEBOOK SDK FOR .NET" Style="{StaticResource HeaderTextStyle}" Margin="0,0,0,30"/>
                 <TextBlock Text="Log in to start" Style="{StaticResource SubheaderTextStyle}" />
             </StackPanel>
-
-            <!--User Information-->
-            <Grid x:Name="userInfo" 
-                  Grid.Row="1" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="100" />
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="40" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="150" />
-                    <ColumnDefinition Width="450" />
-                </Grid.ColumnDefinitions>
-                <Line Grid.Row="1" Style="{StaticResource HorizontalGridLine}"/>
-                <Line Grid.Row="2" Style="{StaticResource HorizontalGridLine}"/>
-                <Line Grid.Row="3" Style="{StaticResource HorizontalGridLine}"/>
-                <Line Grid.Row="4" Style="{StaticResource HorizontalGridLine}"/>
-                <Line Grid.Row="5" Style="{StaticResource HorizontalGridLine}"/>
-                <Line Grid.Row="6" Style="{StaticResource HorizontalGridLine}"/>
-                <Line Grid.Row="7" Style="{StaticResource HorizontalGridLine}"/>
-                <Line Grid.Row="8" Style="{StaticResource HorizontalGridLine}"/>
-                <Line Grid.Row="1" Grid.Column="0" Grid.RowSpan="8" Style="{StaticResource VerticalGridLine}"/>
-
-                <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="USER INFORMATION" Style="{StaticResource SubheaderTextStyle}" HorizontalAlignment="Left" VerticalAlignment="Center" />
-
-                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Name" />
-                <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Name}" />
-
-                <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource FormLabel}" Text="User name" />
-                <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding UserName}" />
-
-                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource FormLabel}" Text="First name" />
-                <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding FirstName}" />
-
-                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Middle name" />
-                <TextBlock Grid.Row="4" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding MiddleName}" />
-
-                <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Last name" />
-                <TextBlock Grid.Row="5" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding LastName}" />
-
-                <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Birthday" />
-                <TextBlock Grid.Row="6" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Birthday}" />
-
-                <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Link" />
-                <TextBlock Grid.Row="7" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Link}" />
-
-                <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Location" />
-                <TextBlock Grid.Row="8" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Location.City}" />
-            </Grid>
             
-            <!--Friend Picker-->
-            <Grid x:Name="friendPicker" 
-                  Grid.Row="1" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <facebookControls:FriendPicker 
-                    Width="900"
-                    Height="450"
-                    SelectionMode="Multiple"
-                    DisplayProfilePictures="True"
-                    PictureSize="60,60"
-                    DataItemRetrieved="OnFriendRetrieved"
-                    AccessToken="{Binding AccessToken, ElementName=loginButton}" />
-            </Grid>
+            <StackPanel x:Name="contentPanel"
+                        Opacity="0"
+                        Grid.Row="1" VerticalAlignment="Center">
+                <FlipView>
+                    <FlipViewItem>
+                        <!--User Info-->                      
+                        <Grid x:Name="userInfo" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,150,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="40" />
+                                <RowDefinition Height="40" />
+                                <RowDefinition Height="40" />
+                                <RowDefinition Height="40" />
+                                <RowDefinition Height="40" />
+                                <RowDefinition Height="40" />
+                                <RowDefinition Height="40" />
+                                <RowDefinition Height="40" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="150" />
+                                <ColumnDefinition Width="450" />
+                            </Grid.ColumnDefinitions>
+                            <Line Grid.Row="1" Style="{StaticResource HorizontalGridLine}"/>
+                            <Line Grid.Row="2" Style="{StaticResource HorizontalGridLine}"/>
+                            <Line Grid.Row="3" Style="{StaticResource HorizontalGridLine}"/>
+                            <Line Grid.Row="4" Style="{StaticResource HorizontalGridLine}"/>
+                            <Line Grid.Row="5" Style="{StaticResource HorizontalGridLine}"/>
+                            <Line Grid.Row="6" Style="{StaticResource HorizontalGridLine}"/>
+                            <Line Grid.Row="7" Style="{StaticResource HorizontalGridLine}"/>
+                            <Line Grid.Row="8" Style="{StaticResource HorizontalGridLine}"/>
+                            <Line Grid.Row="1" Grid.Column="0" Grid.RowSpan="8" Style="{StaticResource VerticalGridLine}"/>
 
-            <!--Friend Picker-->
-            <Grid x:Name="placePicker" 
-                  Grid.Row="1" Opacity="0" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <facebookControls:PlacePicker 
-                    Width="900"
-                    Height="450"
-                    TrackLocation="False"
-                    LoadFailed="OnPlacePickerLoadFailed"
-                    SearchText="Restaurant"
-                    PictureSize="50,50"
-                    DisplayProfilePictures="True"
-                    AccessToken="{Binding AccessToken, ElementName=loginButton}"/>
-            </Grid>
+                            <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="User Information" Style="{StaticResource SubheaderTextStyle}" HorizontalAlignment="Left" />
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Name" />
+                            <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Name}" />
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource FormLabel}" Text="User name" />
+                            <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding UserName}" />
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource FormLabel}" Text="First name" />
+                            <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding FirstName}" />
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Middle name" />
+                            <TextBlock Grid.Row="4" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding MiddleName}" />
+
+                            <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Last name" />
+                            <TextBlock Grid.Row="5" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding LastName}" />
+
+                            <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Birthday" />
+                            <TextBlock Grid.Row="6" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Birthday}" />
+
+                            <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Link" />
+                            <TextBlock Grid.Row="7" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Link}" />
+
+                            <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Location" />
+                            <TextBlock Grid.Row="8" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Location.City}" />
+                        </Grid>
+                    </FlipViewItem>
+                    <FlipViewItem>
+                        <!--FriendPicker-->
+                        <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,150,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <TextBlock Grid.Row="0" Text="Friends" Style="{StaticResource SubheaderTextStyle}" HorizontalAlignment="Left" />
+                            <facebookControls:FriendPicker 
+                                    Grid.Row="1"
+                                    Width="900"
+                                    Height="400"
+                                    SelectionMode="Multiple"
+                                    DisplayProfilePictures="True"
+                                    PictureSize="60,60"
+                                    DataItemRetrieved="OnFriendRetrieved"
+                                    AccessToken="{Binding AccessToken, ElementName=loginButton}" />
+                        </Grid>
+                    </FlipViewItem>
+                    <FlipViewItem>
+                        <Grid HorizontalAlignment="Left" VerticalAlignment="Top" Margin="150,150,0,0">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="50" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions> 
+                                <ColumnDefinition Width="550" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Grid.Row="0" Text="Places" Style="{StaticResource SubheaderTextStyle}" HorizontalAlignment="Left" />
+                            <facebookControls:PlacePicker 
+                                x:Name="placePicker"
+                                Grid.Row="1"
+                                Width="500"
+                                Height="450"
+                                TrackLocation="False"                              
+                                LoadFailed="OnPlacePickerLoadFailed"
+                                SearchText="Restaurant"
+                                PictureSize="50,50"
+                                DisplayProfilePictures="True"
+                                AccessToken="{Binding AccessToken, ElementName=loginButton}"/>
+                            <Grid Grid.Row="1" Grid.Column="1">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="50"/>
+                                </Grid.RowDefinitions>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="100"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Search for:" VerticalAlignment="Center" />
+                                <TextBox Grid.Row="0" Grid.Column="1" Width="200" Height="20" x:Name="searchText" Text="{Binding ElementName=placePicker, Path=SearchText, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                                <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Radius:" VerticalAlignment="Center" />
+                                <TextBox Grid.Row="1" Grid.Column="1" Width="50" Height="20" x:Name="radius" Text="{Binding ElementName=placePicker, Path=RadiusInMeters, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                            </Grid>
+                        </Grid>
+                    </FlipViewItem>
+                </FlipView>
+                
+            </StackPanel>
             
             <!--Login Button-->
             <facebookControls:LoginButton x:Name="loginButton" 

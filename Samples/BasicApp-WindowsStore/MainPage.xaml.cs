@@ -1,7 +1,9 @@
 ﻿namespace BasicApp
 {
     using Facebook.Client.Controls;
+    using System.Collections.Generic;
     using Windows.UI.Popups;
+    using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Navigation;
 
@@ -58,9 +60,7 @@
         private void OnSessionStateChanged(object sender, Facebook.Client.Controls.SessionStateChangedEventArgs e)
         {
             this.welcomeText.Opacity = (e.SessionState == FacebookSessionState.Opened) ? 0 : 100;
-            ////this.userInfo.Opacity = (e.SessionState == FacebookSessionState.Opened) ? 100 : 0;
-            ////this.friendPicker.Opacity = (e.SessionState == FacebookSessionState.Opened) ? 100 : 0;
-            this.placePicker.Opacity = (e.SessionState == FacebookSessionState.Opened) ? 100 : 0;
+            this.contentPanel.Opacity = (e.SessionState == FacebookSessionState.Opened) ? 100 : 0; 
         }
 
         private void OnFriendRetrieved(object sender, DataItemRetrievedEventArgs<Facebook.Client.GraphUser> e)
@@ -75,6 +75,11 @@
         {
             var msgbox = new MessageDialog(e.Reason, e.Description);
             msgbox.ShowAsync();
+        }
+
+        private void SubmitSearch(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }
