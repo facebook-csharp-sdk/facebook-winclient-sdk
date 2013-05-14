@@ -226,12 +226,18 @@
         
         #region SearchText
 
+        /// <summary>
+        /// Gets or sets the search text to filter place data (e.g. Restaurant, Supermarket, Sports, etc...)
+        /// </summary>
         public string SearchText
         {
             get { return (string)GetValue(SearchTextProperty); }
             set { SetValue(SearchTextProperty, value); }
         }
 
+        /// <summary>
+        /// Identifies the SearchText dependency property.
+        /// </summary>
         public static readonly DependencyProperty SearchTextProperty =
             DependencyProperty.Register("SearchText", typeof(string), typeof(PlacePicker), new PropertyMetadata(DefaultSearchText, OnSearchTextPropertyChanged));
 
@@ -245,12 +251,18 @@
 
         #region RadiusInMeters DependencyProperty
 
+        /// <summary>
+        /// Gets or sets the distance in meters from the search location for which results are returned.
+        /// </summary>
         public int RadiusInMeters
         {
             get { return (int)GetValue(RadiusInMetersProperty); }
             set { SetValue(RadiusInMetersProperty, value); }
         }
 
+        /// <summary>
+        /// Identifies the RadiusInMeters dependency property.
+        /// </summary>
         public static readonly DependencyProperty RadiusInMetersProperty =
             DependencyProperty.Register("RadiusInMeters", typeof(int), typeof(PlacePicker), new PropertyMetadata(DefaultRadiusInMeters, OnRadiusInMetersPropertyChanged));
 
@@ -264,12 +276,18 @@
 
         #region LocationCoordinate DependencyProperty
 
+        /// <summary>
+        /// Gets or sets the location for which to search around.
+        /// </summary>
         public LocationCoordinate LocationCoordinate
         {
             get { return (LocationCoordinate)GetValue(LocationCoordinateProperty); }
             set { SetValue(LocationCoordinateProperty, value); }
         }
 
+        /// <summary>
+        /// Identifies the LocationCoordinate dependency property.
+        /// </summary>
         public static readonly DependencyProperty LocationCoordinateProperty =
             DependencyProperty.Register("LocationCoordinate", typeof(LocationCoordinate), typeof(PlacePicker), new PropertyMetadata(DefaultLocationCoordinate, OnLocationCoordinateChanged));
 
@@ -287,16 +305,22 @@
 
         #region TrackLocation
 
+        /// <summary>
+        /// Specifies whether to track the current location for searches.
+        /// </summary>
         public bool TrackLocation
         {
             get { return (bool)GetValue(TrackLocationProperty); }
             set { SetValue(TrackLocationProperty, value); }
         }
 
+        /// <summary>
+        /// Identifies the TrackLocation dependency property.
+        /// </summary>
         public static readonly DependencyProperty TrackLocationProperty =
             DependencyProperty.Register("TrackLocation", typeof(bool), typeof(PlacePicker), new PropertyMetadata(DefaultTrackLocation, OnTrackLocationPropertyChanged));
 
-        private static void OnTrackLocationPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private async static void OnTrackLocationPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var placePicker = (PlacePicker)d;
             if ((bool)e.NewValue)
@@ -308,6 +332,7 @@
             {
                 placePicker.geoLocator.PositionChanged -= placePicker.OnPositionChanged;
                 placePicker.geoLocator = null;
+                await placePicker.RefreshData();
             }
         }
 
