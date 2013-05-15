@@ -135,7 +135,7 @@
                     <facebookControls:FriendPicker x:Name="friendPicker"
                         SelectionMode="Multiple"
                         DisplayProfilePictures="True"
-                        PictureSize="60,60"
+                        PictureSize="50,50"
                         AccessToken="{Binding AccessToken, ElementName=loginButton}" />
                 </Grid>
             </phone:PivotItem>
