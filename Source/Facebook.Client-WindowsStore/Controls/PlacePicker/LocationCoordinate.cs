@@ -25,5 +25,10 @@
         /// Gets the longitude portion of the coordinate.
         /// </summary>
         public double Longitude { get; private set; }
+
+        public override string ToString()
+        {
+            return this.Latitude + "," + this.Longitude;
+        }
     }
 }

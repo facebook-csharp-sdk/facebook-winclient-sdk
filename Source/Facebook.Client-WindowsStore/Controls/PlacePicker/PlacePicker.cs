@@ -392,16 +392,14 @@
                 return;
             }
 
-            var currentLocation = this.TrackLocation ? await this.GetCurrentLocation() : this.LocationCoordinate;
-            double latitude = currentLocation.Latitude;
-            double longitude = currentLocation.Longitude;
-
             try
             {
+                var currentLocation = this.TrackLocation ? await this.GetCurrentLocation() : this.LocationCoordinate;
                 FacebookClient facebookClient = new FacebookClient(this.AccessToken);
+
                 dynamic parameters = new ExpandoObject();
                 parameters.type = "place";
-                parameters.center = latitude.ToString() + "," + longitude.ToString();
+                parameters.center = currentLocation.ToString();
                 parameters.distance = this.RadiusInMeters;
                 parameters.fields = this.DisplayFields;
                 if (!string.IsNullOrWhiteSpace(this.SearchText))
@@ -461,7 +459,6 @@
         {
             if (this.listView != null)
             {
-                this.listView.DataContext = this;
                 this.listView.ItemsSource = places;
             }
         }
