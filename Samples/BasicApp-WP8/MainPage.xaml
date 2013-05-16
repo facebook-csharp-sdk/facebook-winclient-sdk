@@ -139,6 +139,17 @@
                         AccessToken="{Binding AccessToken, ElementName=loginButton}" />
                 </Grid>
             </phone:PivotItem>
+
+            <!--Pivot item three-->
+            <phone:PivotItem Header="places">
+                <Grid>
+                    <facebookControls:PlacePicker x:Name="placePicker"
+                        SelectionMode="Multiple"
+                        DisplayProfilePictures="True"
+                        PictureSize="50,50"
+                        AccessToken="{Binding AccessToken, ElementName=loginButton}" />
+                </Grid>
+            </phone:PivotItem>
         </phone:Pivot>
 
         <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Width="170" Margin="0,23,0,0">
