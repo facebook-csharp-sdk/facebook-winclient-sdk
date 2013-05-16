@@ -46,7 +46,7 @@
         public string Key { get; private set; }
 
         /// <summary>
-        /// Create a list of AlphaGroup<T> with keys set by a SortedLocaleGrouping.
+        /// Create a list of AlphaGroup&lt;T&gt; with keys set by a SortedLocaleGrouping.
         /// </summary>
         /// <param name="items">The items to place in the groups.</param>
         /// <param name="ci">The CultureInfo to group and sort by.</param>
@@ -79,7 +79,7 @@
         }
 
         /// <summary>
-        /// Create a list of AlphaGroup<T> with keys set by a SortedLocaleGrouping.
+        /// Create a list of AlphaGroup&lt;T&gt; with keys set by a SortedLocaleGrouping.
         /// </summary>
         /// <param name="slg">The sorted group headers for the specified locale</param>
         /// <returns>The items source for a LongListSelector</returns>
