@@ -1,5 +1,6 @@
 ﻿namespace Facebook.Client.Controls
 {
+#if NETFX_CORE
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
@@ -12,6 +13,22 @@
     using Windows.UI.Core;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
+    using PickerSelectionMode = Windows.UI.Xaml.Controls.ListViewSelectionMode;
+#endif
+#if WINDOWS_PHONE
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Dynamic;
+    using System.Linq;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Controls;
+    using Windows.Devices.Geolocation;
+    using Windows.UI.Core;
+    using ListView = Microsoft.Phone.Controls.LongListSelector;
+#endif
 
     /// <summary>
     /// Shows a user interface that can be used to select Facebook places.
@@ -31,7 +48,7 @@
         private const string DefaultDisplayFields = "id,name,location,category,picture,were_here_count";
         private const bool DefaultDisplayProfilePictures = true;
         private static readonly Size DefaultPictureSize = new Size(50, 50);
-        private const SelectionMode DefaultSelectionMode = SelectionMode.Single;
+        private const PickerSelectionMode DefaultSelectionMode = PickerSelectionMode.Single;
         private const string DefaultSearchText = "";
         private const int DefaultRadiusInMeters = 1000;
         private const int DefaultResultsLimit = 100;
@@ -210,9 +227,9 @@
         /// <summary>
         /// Gets or sets the selection behavior of the control. 
         /// </summary>
-        public SelectionMode SelectionMode
+        public PickerSelectionMode SelectionMode
         {
-            get { return (SelectionMode)GetValue(SelectionModeProperty); }
+            get { return (PickerSelectionMode)GetValue(SelectionModeProperty); }
             set { this.SetValue(SelectionModeProperty, value); }
         }
 
@@ -220,7 +237,7 @@
         /// Identifies the SelectionMode dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectionModeProperty =
-            DependencyProperty.Register("SelectionMode", typeof(SelectionMode), typeof(PlacePicker), new PropertyMetadata(DefaultSelectionMode));
+            DependencyProperty.Register("SelectionMode", typeof(PickerSelectionMode), typeof(PlacePicker), new PropertyMetadata(DefaultSelectionMode));
 
         #endregion SelectionMode
         
@@ -249,7 +266,7 @@
 
         #endregion SearchText
 
-        #region RadiusInMeters DependencyProperty
+        #region RadiusInMeters
 
         /// <summary>
         /// Gets or sets the distance in meters from the search location for which results are returned.
@@ -272,9 +289,9 @@
             await placePicker.RefreshData();
         }
 
-        #endregion RadiusInMeters DependencyProperty
+        #endregion RadiusInMeters
 
-        #region LocationCoordinate DependencyProperty
+        #region LocationCoordinate
 
         /// <summary>
         /// Gets or sets the location for which to search around.
@@ -301,7 +318,7 @@
             }
         }
 
-        #endregion LocationCoordinate DependencyProperty
+        #endregion LocationCoordinate
 
         #region TrackLocation
 
@@ -347,7 +364,12 @@
         /// terms, this means the method is called just before a UI element displays in your app. Override this method to influence the 
         /// default post-template logic of a class. 
         /// </summary>
+#if NETFX_CORE
         protected override void OnApplyTemplate()
+#endif
+#if WINDOWS_PHONE
+        public override void OnApplyTemplate()
+#endif
         {
             base.OnApplyTemplate();
 
@@ -359,6 +381,7 @@
             }
         }
 
+#if NETFX_CORE
         private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             foreach (var item in e.RemovedItems)
@@ -373,10 +396,81 @@
             
             this.SelectionChanged.RaiseEvent(this, e);
         }
+#endif
+
+#if WINDOWS_PHONE
+        protected void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (this.SelectionMode == PickerSelectionMode.None)
+            {
+                return;
+            }
+
+            if (this.listView == null)
+            {
+                return;
+            }
+
+            if (this.listView.SelectedItem == null)
+            {
+                return;
+            }
+
+            SelectionChangedEventArgs selectionChangedEventArgs;
+
+            var selectedItem = this.listView.SelectedItem as PickerItem<GraphPlace>;
+
+            if (this.SelectionMode == PickerSelectionMode.Single)
+            {
+                var unselectedItem = e.RemovedItems[0] as PickerItem<GraphPlace>;
+
+                selectedItem.IsSelected = true;
+                if (unselectedItem != null)
+                {
+                    unselectedItem.IsSelected = false;
+                    this.SelectedItems.Remove(unselectedItem.Item);
+                    selectionChangedEventArgs = new SelectionChangedEventArgs(new object[1] { unselectedItem.Item }, new object[1] { selectedItem.Item });
+                }
+                else
+                {
+                    selectionChangedEventArgs = new SelectionChangedEventArgs(new object[0], new object[1] { selectedItem.Item });
+                }
+
+                this.SelectedItems.Add(selectedItem.Item);
+            }
+            else
+            {
+                selectedItem.IsSelected = !selectedItem.IsSelected;
+
+                if (selectedItem.IsSelected)
+                {
+                    this.SelectedItems.Add(selectedItem.Item);
+                    selectionChangedEventArgs = new SelectionChangedEventArgs(new object[0], new object[1] { selectedItem.Item });
+                }
+                else
+                {
+                    this.SelectedItems.Remove(selectedItem.Item);
+                    selectionChangedEventArgs = new SelectionChangedEventArgs(new object[1] { selectedItem.Item }, new object[0]);
+                }
+
+                // Reset selected item to null (no selection)
+                this.listView.SelectedItem = null;
+            }
+
+            // TODO: move to a base class?
+            //base.OnSelectionChanged(sender, selectionChangedEventArgs);
+            this.SelectionChanged.RaiseEvent(this, e);
+        }
+#endif
 
         private async void OnPositionChanged(Geolocator sender, PositionChangedEventArgs args)
         {
+#if NETFX_CORE
             await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+#endif
+#if WINDOWS_PHONE
+            this.Dispatcher.BeginInvoke(async() =>
+#endif
             {
                 await this.RefreshData();
             });
@@ -459,7 +553,12 @@
         {
             if (this.listView != null)
             {
+#if NETFX_CORE
                 this.listView.ItemsSource = places;
+#endif
+#if WINDOWS_PHONE
+                this.listView.ItemsSource = places.Select(place => new PickerItem<GraphPlace>(this, place)).ToList();
+#endif
             }
         }
 

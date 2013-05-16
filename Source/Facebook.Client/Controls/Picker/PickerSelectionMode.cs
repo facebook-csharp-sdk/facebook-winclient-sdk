@@ -1,9 +1,9 @@
 namespace Facebook.Client.Controls
 {
     /// <summary>
-    /// Specifies the selection mode of the FriendPicker control.
+    /// Specifies the selection mode of a Picker control.
     /// </summary>
-    public enum FriendPickerSelectionMode
+    public enum PickerSelectionMode
     {
         /// <summary>
         /// The user can't select items.

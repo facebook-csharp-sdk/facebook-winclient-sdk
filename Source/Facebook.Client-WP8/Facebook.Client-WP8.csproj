@@ -121,9 +121,6 @@
     <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerDisplayOrder.cs">
       <Link>Controls\FriendPicker\FriendPickerDisplayOrder.cs</Link>
     </Compile>
-    <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerSelectionMode.cs">
-      <Link>Controls\FriendPicker\FriendPickerSelectionMode.cs</Link>
-    </Compile>
     <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerSortOrder.cs">
       <Link>Controls\FriendPicker\FriendPickerSortOrder.cs</Link>
     </Compile>
@@ -147,6 +144,18 @@
     </Compile>
     <Compile Include="..\Facebook.Client\Controls\LoginButton\UserInfoChangedEventArgs.cs">
       <Link>Controls\LoginButton\UserInfoChangedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Picker\PickerItem.cs">
+      <Link>Controls\Picker\PickerItem.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Picker\PickerSelectionMode.cs">
+      <Link>Controls\Picker\PickerSelectionMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\PlacePicker\LocationCoordinate.cs">
+      <Link>Controls\PlacePicker\LocationCoordinate.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\PlacePicker\PlacePicker.cs">
+      <Link>Controls\PlacePicker\PlacePicker.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\Controls\ProfilePicture\CropMode.cs">
       <Link>Controls\ProfilePicture\CropMode.cs</Link>
@@ -178,6 +187,9 @@
     </Compile>
     <Compile Include="..\Facebook.Client\GraphLocation.cs">
       <Link>GraphLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\GraphPlace.cs">
+      <Link>GraphPlace.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\GraphUser.cs">
       <Link>GraphUser.cs</Link>
@@ -220,6 +232,10 @@
     <Page Include="Controls\LoginButton\LoginButton.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PlacePicker\PlacePicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\ProfilePicture\ProfilePicture.xaml">
       <Generator>MSBuild:Compile</Generator>

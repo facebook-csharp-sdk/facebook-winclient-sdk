@@ -1,28 +1,23 @@
 ﻿namespace Facebook.Client.Controls
 {
     using System.ComponentModel;
-using System.Windows.Data;
 
-    internal class FriendPickerItem : INotifyPropertyChanged
+    internal class PickerItem<T> : INotifyPropertyChanged
+        where T : class
     {
-        private FriendPicker parent;
+        private object parent;
 
-        internal FriendPickerItem(FriendPicker parent, GraphUser item)
+        internal PickerItem(object parent, T item)
         {
             this.parent = parent;
             this.item = item;
-
-            this.SetDisplayName();
-
-            //// TODO: Review if there is a better approach to listen for changes in DisplayOrder dependency property
-            parent.DisplayOrderChanged += this.OnDisplayOrderChanged;
         }
 
         #region Properties
 
         #region Parent
 
-        public FriendPicker Parent
+        public object Parent
         {
             get
             {
@@ -34,9 +29,9 @@ using System.Windows.Data;
 
         #region Item
 
-        private GraphUser item = null;
+        private T item = null;
 
-        public GraphUser Item
+        public T Item
         {
             get
             {
@@ -69,29 +64,6 @@ using System.Windows.Data;
 
         #endregion IsSelected
 
-        #region DisplayName
-
-        private string displayName = string.Empty;
-
-        public string DisplayName
-        {
-            get
-            {
-                return this.displayName;
-            }
-
-            private set
-            {
-                if (!this.displayName.Equals(value))
-                {
-                    this.displayName = value;
-                    this.NotifyPropertyChanged("DisplayName");
-                }
-            }
-        }
-
-        #endregion DisplayName
-
         #endregion Properties
 
         #region Implementation
@@ -105,16 +77,6 @@ using System.Windows.Data;
             {
                 handler(this, new PropertyChangedEventArgs(propertyName));
             }
-        }
-
-        private void OnDisplayOrderChanged(object sender, System.Windows.DependencyPropertyChangedEventArgs e)
-        {
-            this.SetDisplayName();
-        }
-
-        private void SetDisplayName()
-        {
-            this.DisplayName = FriendPickerBase.FormatDisplayName(this.Item, this.parent.DisplayOrder);
         }
 
         #endregion Implementation

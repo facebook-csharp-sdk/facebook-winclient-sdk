@@ -20,7 +20,7 @@
 
         #region Default Property Values
 
-        private const FriendPickerSelectionMode DefaultSelectionMode = FriendPickerSelectionMode.Multiple;
+        private const PickerSelectionMode DefaultSelectionMode = PickerSelectionMode.Multiple;
 
         #endregion Default Property Values
 
@@ -37,9 +37,9 @@
         /// <summary>
         /// Gets or sets the selection behavior of the control. 
         /// </summary>
-        public FriendPickerSelectionMode SelectionMode
+        public PickerSelectionMode SelectionMode
         {
-            get { return (FriendPickerSelectionMode)GetValue(SelectionModeProperty); }
+            get { return (PickerSelectionMode)GetValue(SelectionModeProperty); }
             set { this.SetValue(SelectionModeProperty, value); }
         }
 
@@ -47,7 +47,7 @@
         /// Identifies the SelectionMode dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectionModeProperty =
-            DependencyProperty.Register("SelectionMode", typeof(FriendPickerSelectionMode), typeof(FriendPicker), new PropertyMetadata(DefaultSelectionMode, OnSelectionModeProperyChanged));
+            DependencyProperty.Register("SelectionMode", typeof(PickerSelectionMode), typeof(FriendPicker), new PropertyMetadata(DefaultSelectionMode, OnSelectionModeProperyChanged));
 
         private static void OnSelectionModeProperyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -93,7 +93,7 @@
 
         protected override void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (this.SelectionMode == FriendPickerSelectionMode.None)
+            if (this.SelectionMode == PickerSelectionMode.None)
             {
                 return;
             }
@@ -112,7 +112,7 @@
 
             var selectedItem = this.longListSelector.SelectedItem as FriendPickerItem;
 
-            if (this.SelectionMode == FriendPickerSelectionMode.Single)
+            if (this.SelectionMode == PickerSelectionMode.Single)
             {       
                 var unselectedItem = e.RemovedItems[0] as FriendPickerItem;
 
@@ -145,7 +145,7 @@
                     selectionChangedEventArgs = new SelectionChangedEventArgs(new object[1] { selectedItem.Item }, new object[0]);
                 }
 
-                /// Reset selected item to null (no selection)
+                // Reset selected item to null (no selection)
                 this.longListSelector.SelectedItem = null;
             }
 

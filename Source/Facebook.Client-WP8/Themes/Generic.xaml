@@ -7,6 +7,7 @@
         <ResourceDictionary Source="/Facebook.Client;component/Controls/LoginButton/LoginButton.xaml" />
         <ResourceDictionary Source="/Facebook.Client;component/Controls/ProfilePicture/ProfilePicture.xaml" />
         <ResourceDictionary Source="/Facebook.Client;component/Controls/FriendPicker/FriendPicker.xaml" />
+        <ResourceDictionary Source="/Facebook.Client;component/Controls/PlacePicker/PlacePicker.xaml" />
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary>

@@ -166,6 +166,12 @@
     <Compile Include="..\Facebook.Client\Controls\LoginButton\UserInfoChangedEventArgs.cs">
       <Link>Controls\LoginButton\UserInfoChangedEventArgs.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\Controls\PlacePicker\LocationCoordinate.cs">
+      <Link>Controls\PlacePicker\LocationCoordinate.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\PlacePicker\PlacePicker.cs">
+      <Link>Controls\PlacePicker\PlacePicker.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\Controls\ProfilePicture\CropMode.cs">
       <Link>Controls\ProfilePicture\CropMode.cs</Link>
     </Compile>
@@ -201,8 +207,6 @@
     <Compile Include="Controls\FriendPicker\FriendPickerGroupTemplateSelector.cs" />
     <Compile Include="Controls\FriendPicker\GroupInfoList.cs" />
     <Compile Include="Controls\FriendPicker\GroupTemplateSelector.cs" />
-    <Compile Include="Controls\PlacePicker\LocationCoordinate.cs" />
-    <Compile Include="Controls\PlacePicker\PlacePicker.cs" />
     <Compile Include="FacebookDialogPage.xaml.cs">
       <DependentUpon>FacebookDialogPage.xaml</DependentUpon>
     </Compile>
@@ -225,7 +229,6 @@
     <Page Include="Controls\PlacePicker\PlacePicker.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Controls\ProfilePicture\ProfilePicture.xaml">
       <SubType>Designer</SubType>
@@ -261,6 +264,7 @@
     <Content Include="Images\fb_blank_profile_portrait.png" />
     <Content Include="Images\fb_blank_profile_square.png" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
   </PropertyGroup>
