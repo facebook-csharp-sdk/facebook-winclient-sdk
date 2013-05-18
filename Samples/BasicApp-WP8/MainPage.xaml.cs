@@ -20,6 +20,13 @@
         public MainPage()
         {
             this.InitializeComponent();
+            
+            this.selectionMode.ItemsSource = new PickerSelectionMode[] { PickerSelectionMode.None, PickerSelectionMode.Single, PickerSelectionMode.Multiple };
+            this.selectionMode.SelectedIndex = 2;
+
+            this.displayOrder.ItemsSource = new FriendPickerDisplayOrder[] { FriendPickerDisplayOrder.DisplayFirstNameFirst, FriendPickerDisplayOrder.DisplayLastNameFirst };
+            this.displayOrder.SelectedIndex = 0;
+
             ////this.Loaded += MainPage_Loaded;
 
             //// Sample code to localize the ApplicationBar
