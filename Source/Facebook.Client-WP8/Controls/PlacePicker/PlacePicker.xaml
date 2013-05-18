@@ -11,7 +11,7 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:PlacePicker">
-                    <Controls:LongListSelector x:Name="PART_ListView">
+                    <Controls:LongListSelector x:Name="PART_ListSelector">
                         <Controls:LongListSelector.ItemTemplate>
                             <DataTemplate>
                                 <Grid>

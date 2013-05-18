@@ -112,14 +112,14 @@
     <Compile Include="..\Facebook.Client\Controls\Extensions\EventExtensions.cs">
       <Link>Controls\Extensions\EventExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerBase.cs">
-      <Link>Controls\FriendPicker\FriendPickerBase.cs</Link>
-    </Compile>
     <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerDesignSupport.cs">
       <Link>Controls\FriendPicker\FriendPickerDesignSupport.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerDisplayOrder.cs">
       <Link>Controls\FriendPicker\FriendPickerDisplayOrder.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerItem.cs">
+      <Link>Controls\FriendPicker\FriendPickerItem.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerSortOrder.cs">
       <Link>Controls\FriendPicker\FriendPickerSortOrder.cs</Link>
@@ -145,6 +145,9 @@
     <Compile Include="..\Facebook.Client\Controls\LoginButton\UserInfoChangedEventArgs.cs">
       <Link>Controls\LoginButton\UserInfoChangedEventArgs.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Picker\AlphaKeyGroup.cs">
+      <Link>Controls\Picker\AlphaKeyGroup.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\Controls\Picker\PickerItem.cs">
       <Link>Controls\Picker\PickerItem.cs</Link>
     </Compile>
@@ -156,6 +159,9 @@
     </Compile>
     <Compile Include="..\Facebook.Client\Controls\PlacePicker\PlacePicker.cs">
       <Link>Controls\PlacePicker\PlacePicker.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\PlacePicker\PlacePickerDesignSupport.cs">
+      <Link>Controls\PlacePicker\PlacePickerDesignSupport.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\Controls\ProfilePicture\CropMode.cs">
       <Link>Controls\ProfilePicture\CropMode.cs</Link>
@@ -205,9 +211,8 @@
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
     <Compile Include="Controls\Converters\ImageSourceUriConverter.cs" />
-    <Compile Include="Controls\FriendPicker\AlphaKeyGroup.cs" />
     <Compile Include="Controls\FriendPicker\FriendPicker.cs" />
-    <Compile Include="Controls\FriendPicker\FriendPickerItem.cs" />
+    <Compile Include="Controls\Picker\Picker.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -265,6 +270,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\fb_blank_place_profile_square.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

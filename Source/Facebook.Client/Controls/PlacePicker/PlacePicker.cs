@@ -2,8 +2,8 @@
 {
 #if NETFX_CORE
     using System;
+    using System.Collections;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Dynamic;
     using System.Linq;
     using System.Threading;
@@ -12,43 +12,30 @@
     using Windows.Foundation;
     using Windows.UI.Core;
     using Windows.UI.Xaml;
-    using Windows.UI.Xaml.Controls;
-    using PickerSelectionMode = Windows.UI.Xaml.Controls.ListViewSelectionMode;
 #endif
 #if WINDOWS_PHONE
     using System;
+    using System.Collections;
     using System.Collections.Generic;
-    using System.Collections.ObjectModel;
     using System.Dynamic;
     using System.Linq;
     using System.Threading;
     using System.Threading.Tasks;
     using System.Windows;
-    using System.Windows.Controls;
     using Windows.Devices.Geolocation;
-    using Windows.UI.Core;
-    using ListView = Microsoft.Phone.Controls.LongListSelector;
 #endif
 
     /// <summary>
     /// Shows a user interface that can be used to select Facebook places.
     /// </summary>
-    [TemplatePart(Name = PartListView, Type = typeof(ListView))]
-    public class PlacePicker : Control
+    public class PlacePicker : Picker<GraphPlace>
     {
-        #region Part Definitions
-
-        private const string PartListView = "PART_ListView";
-
-        #endregion Part Definitions
-
         #region Default Property Values
 
         private const string DefaultAccessToken = "";
         private const string DefaultDisplayFields = "id,name,location,category,picture,were_here_count";
         private const bool DefaultDisplayProfilePictures = true;
         private static readonly Size DefaultPictureSize = new Size(50, 50);
-        private const PickerSelectionMode DefaultSelectionMode = PickerSelectionMode.Single;
         private const string DefaultSearchText = "";
         private const int DefaultRadiusInMeters = 1000;
         private const int DefaultResultsLimit = 100;
@@ -60,7 +47,6 @@
         #region Member variables
 
         private Geolocator geoLocator;
-        private ListView listView;
 
         #endregion Member variables
 
@@ -70,8 +56,6 @@
         public PlacePicker()
         {
             this.DefaultStyleKey = typeof(PlacePicker);
-            this.SetValue(ItemsProperty, new ObservableCollection<GraphPlace>());
-            this.SetValue(SelectedItemsProperty, new ObservableCollection<GraphPlace>());
         }
 
         #region Events
@@ -90,11 +74,6 @@
         /// Occurs whenever an error occurs while loading data.
         /// </summary>
         public event EventHandler<LoadFailedEventArgs> LoadFailed;
-
-        /// <summary>
-        /// Occurs when the current selection changes.
-        /// </summary>
-        public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
 
         #endregion Events
 
@@ -124,44 +103,6 @@
         }
 
         #endregion AccessToken
-
-        #region Items
-
-        /// <summary>
-        /// Gets the list of friends retrieved by the PlacePicker control.
-        /// </summary>
-        public ObservableCollection<GraphPlace> Items
-        {
-            get { return (ObservableCollection<GraphPlace>)this.GetValue(ItemsProperty); }
-            private set { this.SetValue(ItemsProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the Items dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ItemsProperty =
-            DependencyProperty.Register("Items", typeof(ObservableCollection<GraphPlace>), typeof(PlacePicker), null);
-
-        #endregion Items
-
-        #region SelectedItems
-
-        /// <summary>
-        /// Gets the list of currently selected items for the PlacePicker control.
-        /// </summary>
-        public ObservableCollection<GraphPlace> SelectedItems
-        {
-            get { return (ObservableCollection<GraphPlace>)this.GetValue(SelectedItemsProperty); }
-            private set { this.SetValue(SelectedItemsProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the SelectedItems dependency property.
-        /// </summary>
-        public static readonly DependencyProperty SelectedItemsProperty =
-            DependencyProperty.Register("SelectedItems", typeof(ObservableCollection<GraphPlace>), typeof(PlacePicker), null);
-
-        #endregion SelectedItems
 
         #region DisplayFields
 
@@ -222,25 +163,6 @@
 
         #endregion PictureSize
 
-        #region SelectionMode
-
-        /// <summary>
-        /// Gets or sets the selection behavior of the control. 
-        /// </summary>
-        public PickerSelectionMode SelectionMode
-        {
-            get { return (PickerSelectionMode)GetValue(SelectionModeProperty); }
-            set { this.SetValue(SelectionModeProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the SelectionMode dependency property.
-        /// </summary>
-        public static readonly DependencyProperty SelectionModeProperty =
-            DependencyProperty.Register("SelectionMode", typeof(PickerSelectionMode), typeof(PlacePicker), new PropertyMetadata(DefaultSelectionMode));
-
-        #endregion SelectionMode
-        
         #region SearchText
 
         /// <summary>
@@ -359,110 +281,6 @@
 
         #region Implementation
 
-        /// <summary>
-        /// Invoked whenever application code or internal processes (such as a rebuilding layout pass) call ApplyTemplate. In simplest 
-        /// terms, this means the method is called just before a UI element displays in your app. Override this method to influence the 
-        /// default post-template logic of a class. 
-        /// </summary>
-#if NETFX_CORE
-        protected override void OnApplyTemplate()
-#endif
-#if WINDOWS_PHONE
-        public override void OnApplyTemplate()
-#endif
-        {
-            base.OnApplyTemplate();
-
-            this.listView = this.GetTemplateChild(PartListView) as ListView;
-            if (this.listView != null)
-            {
-                this.listView.SelectionChanged += OnSelectionChanged;
-                this.listView.Tag = this;
-            }
-        }
-
-#if NETFX_CORE
-        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            foreach (var item in e.RemovedItems)
-            {
-                this.SelectedItems.Remove((GraphPlace)item);
-            }
-
-            foreach (var item in e.AddedItems)
-            {
-                this.SelectedItems.Add((GraphPlace)item);
-            }
-            
-            this.SelectionChanged.RaiseEvent(this, e);
-        }
-#endif
-
-#if WINDOWS_PHONE
-        protected void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (this.SelectionMode == PickerSelectionMode.None)
-            {
-                return;
-            }
-
-            if (this.listView == null)
-            {
-                return;
-            }
-
-            if (this.listView.SelectedItem == null)
-            {
-                return;
-            }
-
-            SelectionChangedEventArgs selectionChangedEventArgs;
-
-            var selectedItem = this.listView.SelectedItem as PickerItem<GraphPlace>;
-
-            if (this.SelectionMode == PickerSelectionMode.Single)
-            {
-                var unselectedItem = e.RemovedItems[0] as PickerItem<GraphPlace>;
-
-                selectedItem.IsSelected = true;
-                if (unselectedItem != null)
-                {
-                    unselectedItem.IsSelected = false;
-                    this.SelectedItems.Remove(unselectedItem.Item);
-                    selectionChangedEventArgs = new SelectionChangedEventArgs(new object[1] { unselectedItem.Item }, new object[1] { selectedItem.Item });
-                }
-                else
-                {
-                    selectionChangedEventArgs = new SelectionChangedEventArgs(new object[0], new object[1] { selectedItem.Item });
-                }
-
-                this.SelectedItems.Add(selectedItem.Item);
-            }
-            else
-            {
-                selectedItem.IsSelected = !selectedItem.IsSelected;
-
-                if (selectedItem.IsSelected)
-                {
-                    this.SelectedItems.Add(selectedItem.Item);
-                    selectionChangedEventArgs = new SelectionChangedEventArgs(new object[0], new object[1] { selectedItem.Item });
-                }
-                else
-                {
-                    this.SelectedItems.Remove(selectedItem.Item);
-                    selectionChangedEventArgs = new SelectionChangedEventArgs(new object[1] { selectedItem.Item }, new object[0]);
-                }
-
-                // Reset selected item to null (no selection)
-                this.listView.SelectedItem = null;
-            }
-
-            // TODO: move to a base class?
-            //base.OnSelectionChanged(sender, selectionChangedEventArgs);
-            this.SelectionChanged.RaiseEvent(this, e);
-        }
-#endif
-
         private async void OnPositionChanged(Geolocator sender, PositionChangedEventArgs args)
         {
 #if NETFX_CORE
@@ -481,45 +299,43 @@
             this.Items.Clear();
             this.SelectedItems.Clear();
 
-            if (string.IsNullOrEmpty(this.AccessToken))
+            if (!string.IsNullOrEmpty(this.AccessToken))
             {
-                return;
-            }
-
-            try
-            {
-                var currentLocation = this.TrackLocation ? await this.GetCurrentLocation() : this.LocationCoordinate;
-                FacebookClient facebookClient = new FacebookClient(this.AccessToken);
-
-                dynamic parameters = new ExpandoObject();
-                parameters.type = "place";
-                parameters.center = currentLocation.ToString();
-                parameters.distance = this.RadiusInMeters;
-                parameters.fields = this.DisplayFields;
-                if (!string.IsNullOrWhiteSpace(this.SearchText))
+                try
                 {
-                    parameters.q = this.SearchText;
-                }
+                    var currentLocation = this.TrackLocation ? await this.GetCurrentLocation() : this.LocationCoordinate;
+                    FacebookClient facebookClient = new FacebookClient(this.AccessToken);
 
-                dynamic placesTaskResult = await facebookClient.GetTaskAsync("/search", parameters);
-                var data = (IEnumerable<dynamic>)placesTaskResult.data;
-                foreach (var item in data)
-                {
-                    var place = new GraphPlace(item);
-                    if (this.PlaceRetrieved.RaiseEvent(this, new DataItemRetrievedEventArgs<GraphPlace>(place), e => e.Exclude))
+                    dynamic parameters = new ExpandoObject();
+                    parameters.type = "place";
+                    parameters.center = currentLocation.ToString();
+                    parameters.distance = this.RadiusInMeters;
+                    parameters.fields = this.DisplayFields;
+                    if (!string.IsNullOrWhiteSpace(this.SearchText))
                     {
-                        this.Items.Add(place);
+                        parameters.q = this.SearchText;
+                    }
+
+                    dynamic placesTaskResult = await facebookClient.GetTaskAsync("/search", parameters);
+                    var data = (IEnumerable<dynamic>)placesTaskResult.data;
+                    foreach (var item in data)
+                    {
+                        var place = new GraphPlace(item);
+                        if (this.PlaceRetrieved.RaiseEvent(this, new DataItemRetrievedEventArgs<GraphPlace>(place), e => e.Exclude))
+                        {
+                            this.Items.Add(place);
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    // TODO: review the types of exception that can be caught here
+                    this.LoadFailed.RaiseEvent(this, new LoadFailedEventArgs("Error loading place data.", ex.Message));
+                }
+            }
 
-                this.SetDataSource(this.Items);
-                this.LoadCompleted.RaiseEvent(this, new DataReadyEventArgs<GraphPlace>((this.Items.ToList())));
-            }
-            catch (Exception ex)
-            {
-                // TODO: review the types of exception that can be caught here
-                this.LoadFailed.RaiseEvent(this, new LoadFailedEventArgs("Error loading place data.", ex.Message));
-            }
+            this.SetDataSource(this.Items);
+            this.LoadCompleted.RaiseEvent(this, new DataReadyEventArgs<GraphPlace>((this.Items.ToList())));
         }
 
         private async Task<LocationCoordinate> GetCurrentLocation()
@@ -549,17 +365,14 @@
             return DefaultLocationCoordinate;
         }
 
-        protected void SetDataSource(IEnumerable<GraphPlace> places)
+        protected override IList GetData(IEnumerable<GraphPlace> items)
         {
-            if (this.listView != null)
-            {
-#if NETFX_CORE
-                this.listView.ItemsSource = places;
-#endif
-#if WINDOWS_PHONE
-                this.listView.ItemsSource = places.Select(place => new PickerItem<GraphPlace>(this, place)).ToList();
-#endif
-            }
+            return items.Select(item => new PickerItem<GraphPlace>(this, item)).ToList();
+        }
+
+        protected override IEnumerable<GraphPlace> GetDesignTimeData()
+        {
+            return PlacePickerDesignSupport.DesignData;
         }
 
         #endregion Implementation

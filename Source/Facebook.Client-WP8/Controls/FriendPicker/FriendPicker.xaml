@@ -14,7 +14,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="local:FriendPicker">
                     <Controls:LongListSelector
-                        x:Name="PART_LongListSelector"
+                        x:Name="PART_ListSelector"
                         IsGroupingEnabled="true" HideEmptyGroups="true">
                         <Controls:LongListSelector.GroupHeaderTemplate>
                             <DataTemplate>

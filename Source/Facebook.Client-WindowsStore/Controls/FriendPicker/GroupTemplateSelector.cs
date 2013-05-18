@@ -5,6 +5,7 @@
     using Windows.UI.Xaml.Controls;
 
     public class GroupTemplateSelector<T> : DataTemplateSelector
+        where T : class
     {
         public DataTemplate EmptyGroupTemplate { get; set; }
 
@@ -12,7 +13,7 @@
 
         protected override DataTemplate SelectTemplateCore(object item, DependencyObject container)
         {
-            var group = item as GroupInfoList<T>;
+            var group = item as AlphaKeyGroup<PickerItem<T>>;
             if (group != null && group.Any())
             {
                 return this.GroupTemplate;

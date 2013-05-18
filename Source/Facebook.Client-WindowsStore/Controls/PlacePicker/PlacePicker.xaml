@@ -4,7 +4,6 @@
     xmlns:local="using:Facebook.Client.Controls">
 
     <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    <!--<local:DebugConverter x:Key="DebugConverter" />-->
 
     <Style TargetType="local:PlacePicker">
         <Setter Property="Width" Value="400" />
@@ -12,43 +11,52 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:PlacePicker">
-                    <ListView x:Name="PART_ListView"
-                        Width="{TemplateBinding Width}"
-                        Height="{TemplateBinding Height}"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}"
-                        SelectionMode="{TemplateBinding SelectionMode}">
-                        <ListView.ItemTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Image 
-                                        Width="{Binding Path=Tag.PictureSize.Height, ElementName=PART_ListView}" 
-                                        Height="{Binding Path=Tag.PictureSize.Height, ElementName=PART_ListView}" 
-                                        VerticalAlignment="Center" 
-                                        HorizontalAlignment="Center"
-                                        Visibility="{Binding Path=Tag.DisplayProfilePictures, ElementName=PART_ListView, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                        Source="{Binding ProfilePictureUrl}"/>
-                                    <StackPanel 
-                                        Grid.Column="1" 
-                                        VerticalAlignment="Center"
-                                        Margin="10,0,0,18" 
-                                        Orientation="Vertical">
-                                        <TextBlock 
-                                            HorizontalAlignment="Left" 
-                                            TextWrapping="Wrap" 
-                                            Text="{Binding Name}" 
-                                            VerticalAlignment="Top" 
-                                            FontSize="18" /> 
-                                    </StackPanel>
-                                </Grid>
-                            </DataTemplate>
-                        </ListView.ItemTemplate>
-                    </ListView>
+                    <SemanticZoom x:Name="PART_SemanticZoom">
+                        <SemanticZoom.ZoomedInView>
+                            <ListView 
+                                Width="{TemplateBinding Width}"
+                                Height="{TemplateBinding Height}"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                SelectionMode="{TemplateBinding SelectionMode}"
+                                ItemsSource="{Binding}">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+                                            <Image 
+                                                Width="{Binding Path=Parent.PictureSize.Height}" 
+                                                Height="{Binding Path=Parent.PictureSize.Height}" 
+                                                VerticalAlignment="Center" 
+                                                HorizontalAlignment="Center"
+                                                Visibility="{Binding Path=Parent.DisplayProfilePictures, Converter={StaticResource BooleanToVisibilityConverter}}"
+                                                Source="{Binding Item.ProfilePictureUrl}"/>
+                                            <StackPanel 
+                                                Grid.Column="1" 
+                                                VerticalAlignment="Center"
+                                                Margin="10,0,0,18" 
+                                                Orientation="Vertical">
+                                                <TextBlock 
+                                                    HorizontalAlignment="Left" 
+                                                    TextWrapping="Wrap" 
+                                                    Text="{Binding Item.Name}" 
+                                                    VerticalAlignment="Top" 
+                                                    FontSize="18" /> 
+                                            </StackPanel>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </SemanticZoom.ZoomedInView>
+                        <SemanticZoom.ZoomedOutView>
+                            <ListView>                                
+                            </ListView>
+                        </SemanticZoom.ZoomedOutView>
+                    </SemanticZoom>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

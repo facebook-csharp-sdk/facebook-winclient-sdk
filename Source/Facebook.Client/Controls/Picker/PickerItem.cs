@@ -1,8 +1,15 @@
 ﻿namespace Facebook.Client.Controls
 {
+#if NETFX_CORE
     using System.ComponentModel;
+    using Windows.UI.Xaml;
+#endif
+#if WINDOWS_PHONE
+    using System.ComponentModel;
+    using System.Windows;
+#endif
 
-    internal class PickerItem<T> : INotifyPropertyChanged
+    internal class PickerItem<T> : DependencyObject, INotifyPropertyChanged
         where T : class
     {
         private object parent;
@@ -70,7 +77,7 @@
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void NotifyPropertyChanged(string propertyName)
+        protected void NotifyPropertyChanged(string propertyName)
         {
             PropertyChangedEventHandler handler = this.PropertyChanged;
             if (null != handler)

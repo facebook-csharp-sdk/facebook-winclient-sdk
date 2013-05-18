@@ -121,9 +121,6 @@
     <Compile Include="..\Facebook.Client\Controls\Converters\ScaleConverter.cs">
       <Link>Controls\Converters\ScaleConverter.cs</Link>
     </Compile>
-    <Compile Include="..\Facebook.Client\Controls\Converters\UserDisplayNameConverter.cs">
-      <Link>Controls\Converters\UserDisplayNameConverter.cs</Link>
-    </Compile>
     <Compile Include="..\Facebook.Client\Controls\DataItemRetrievedEventArgs.cs">
       <Link>Controls\DataItemRetrievedEventArgs.cs</Link>
     </Compile>
@@ -133,14 +130,14 @@
     <Compile Include="..\Facebook.Client\Controls\Extensions\EventExtensions.cs">
       <Link>Controls\Extensions\EventExtensions.cs</Link>
     </Compile>
-    <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerBase.cs">
-      <Link>Controls\FriendPicker\FriendPickerBase.cs</Link>
-    </Compile>
     <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerDesignSupport.cs">
       <Link>Controls\FriendPicker\FriendPickerDesignSupport.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerDisplayOrder.cs">
       <Link>Controls\FriendPicker\FriendPickerDisplayOrder.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerItem.cs">
+      <Link>Controls\FriendPicker\FriendPickerItem.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerSortOrder.cs">
       <Link>Controls\FriendPicker\FriendPickerSortOrder.cs</Link>
@@ -166,11 +163,23 @@
     <Compile Include="..\Facebook.Client\Controls\LoginButton\UserInfoChangedEventArgs.cs">
       <Link>Controls\LoginButton\UserInfoChangedEventArgs.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Picker\AlphaKeyGroup.cs">
+      <Link>Controls\Picker\AlphaKeyGroup.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Picker\PickerItem.cs">
+      <Link>Controls\Picker\PickerItem.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Picker\PickerSelectionMode.cs">
+      <Link>Controls\Picker\PickerSelectionMode.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\Controls\PlacePicker\LocationCoordinate.cs">
       <Link>Controls\PlacePicker\LocationCoordinate.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\Controls\PlacePicker\PlacePicker.cs">
       <Link>Controls\PlacePicker\PlacePicker.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\PlacePicker\PlacePickerDesignSupport.cs">
+      <Link>Controls\PlacePicker\PlacePickerDesignSupport.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\Controls\ProfilePicture\CropMode.cs">
       <Link>Controls\ProfilePicture\CropMode.cs</Link>
@@ -202,11 +211,14 @@
     <Compile Include="..\Facebook.Client\GraphUser.cs">
       <Link>GraphUser.cs</Link>
     </Compile>
+    <Compile Include="Controls\Converters\BindingDebugger.cs" />
+    <Compile Include="Controls\Converters\PickerSelectionModeConverter.cs" />
     <Compile Include="Controls\Converters\SizeToGridCellConverter.cs" />
     <Compile Include="Controls\FriendPicker\FriendPicker.cs" />
     <Compile Include="Controls\FriendPicker\FriendPickerGroupTemplateSelector.cs" />
-    <Compile Include="Controls\FriendPicker\GroupInfoList.cs" />
     <Compile Include="Controls\FriendPicker\GroupTemplateSelector.cs" />
+    <Compile Include="Controls\FriendPicker\SortedLocaleGrouping.cs" />
+    <Compile Include="Controls\Picker\Picker.cs" />
     <Compile Include="FacebookDialogPage.xaml.cs">
       <DependentUpon>FacebookDialogPage.xaml</DependentUpon>
     </Compile>
@@ -261,6 +273,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Images\fb_blank_place_profile_square.png" />
     <Content Include="Images\fb_blank_profile_portrait.png" />
     <Content Include="Images\fb_blank_profile_square.png" />
   </ItemGroup>

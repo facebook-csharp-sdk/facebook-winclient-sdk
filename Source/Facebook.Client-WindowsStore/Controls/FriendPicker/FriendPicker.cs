@@ -1,107 +1,30 @@
-﻿// BUG!!!!!!
-// If you are zoomed out in a semantic zoom control, and the last group is empty, if you tap it, 
-// you get a catastrophic failure:
-// See http://social.msdn.microsoft.com/Forums/en-US/winappswithcsharp/thread/6535656e-3293-4e0d-93b5-453864b95601
-// See http://stackoverflow.com/questions/9952574/semantic-zoom-control-throwing-exception-when-groups-are-empty?rq=1
-// See http://social.msdn.microsoft.com/Forums/en-US/winappswithcsharp/thread/6535656e-3293-4e0d-93b5-453864b95601
-// See http://stackoverflow.com/questions/14423536/semantic-zoom-catastrophic-failure-on-empty-group
-namespace Facebook.Client.Controls
+﻿namespace Facebook.Client.Controls
 {
+    using System;
+    using System.Collections;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
+    using System.Threading.Tasks;
+    using Windows.Foundation;
     using Windows.UI.Xaml;
-    using Windows.UI.Xaml.Controls;
-    using Windows.UI.Xaml.Data;
-    using Windows.UI.Xaml.Input;
-    using Windows.UI.Xaml.Media;
 
     /// <summary>
     /// Shows a user interface that can be used to select Facebook friends.
     /// </summary>
-    [TemplatePart(Name = PartSemanticZoom, Type = typeof(SemanticZoom))]
-    public class FriendPicker : FriendPickerBase
+    public class FriendPicker : Picker<GraphUser>
     {
-        #region Part Definitions
-
-        private const string PartSemanticZoom = "PART_SemanticZoom";
-
-        #endregion Part Definitions
-
         #region Default Property Values
 
-        private const ListViewSelectionMode DefaultSelectionMode = ListViewSelectionMode.Multiple;
-        private static readonly Brush DefaultGroupHeaderBackground = null;
-        private static readonly Brush DefaultGroupHeaderForeground = null;
+        private const string DefaultAccessToken = "";
+        private const string DefaultProfileId = "me";
+        private const string DefaultDisplayFields = "id,name,first_name,middle_name,last_name,picture";
+        private const FriendPickerDisplayOrder DefaultDisplayOrder = FriendPickerDisplayOrder.DisplayLastNameFirst;
+        private const FriendPickerSortOrder DefaultSortOrder = FriendPickerSortOrder.SortByLastName;
+        private const bool DefaultDisplayProfilePictures = true;
+        private static readonly Size DefaultPictureSize = new Size(50, 50);
 
         #endregion Default Property Values
-
-        #region Member variables
-
-        private bool isZoomedOut = false;
-        private SemanticZoom semanticZoom;
-
-        #endregion Member variables
-
-        #region Properties
-
-        #region SelectionMode
-
-        /// <summary>
-        /// Gets or sets the selection behavior of the control. 
-        /// </summary>
-        public ListViewSelectionMode SelectionMode
-        {
-            get { return (ListViewSelectionMode)GetValue(SelectionModeProperty); }
-            set { this.SetValue(SelectionModeProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the SelectionMode dependency property.
-        /// </summary>
-        public static readonly DependencyProperty SelectionModeProperty =
-            DependencyProperty.Register("SelectionMode", typeof(ListViewSelectionMode), typeof(FriendPicker), new PropertyMetadata(DefaultSelectionMode));
-
-        #endregion SelectionMode
-
-        #region GroupHeaderForeground
-
-        /// <summary>
-        /// Gets or sets the foreground brush used for the group headers.
-        /// </summary>
-        public Brush GroupHeaderForeground
-        {
-            get { return (Brush)GetValue(GroupHeaderForegroundProperty); }
-            set { this.SetValue(GroupHeaderForegroundProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the GroupHeaderForeground dependency property.
-        /// </summary>
-        public static readonly DependencyProperty GroupHeaderForegroundProperty =
-            DependencyProperty.Register("GroupHeaderForeground", typeof(Brush), typeof(FriendPicker), new PropertyMetadata(FriendPicker.DefaultGroupHeaderForeground));
-
-        #endregion GroupHeaderForeground
-
-        #region GroupHeaderBackground
-
-        /// <summary>
-        /// Gets or sets the background brush used for the group headers.
-        /// </summary>
-        public Brush GroupHeaderBackground
-        {
-            get { return (Brush)GetValue(GroupHeaderBackgroundProperty); }
-            set { this.SetValue(GroupHeaderBackgroundProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the GroupHeaderBackground dependency property.
-        /// </summary>
-        public static readonly DependencyProperty GroupHeaderBackgroundProperty =
-            DependencyProperty.Register("GroupHeaderBackground", typeof(Brush), typeof(FriendPicker), new PropertyMetadata(FriendPicker.DefaultGroupHeaderBackground));
-
-        #endregion GroupHeaderBackground
-
-        #endregion Properties
 
         /// <summary>
         /// Initializes a new instance of the FriendPicker class.
@@ -112,116 +35,253 @@ namespace Facebook.Client.Controls
             this.DefaultStyleKey = typeof(FriendPicker);
         }
 
-        #region Implementation
+        #region Events
 
         /// <summary>
-        /// Invoked whenever application code or internal processes (such as a rebuilding layout pass) call ApplyTemplate. In simplest 
-        /// terms, this means the method is called just before a UI element displays in your app. Override this method to influence the 
-        /// default post-template logic of a class. 
+        /// Occurs whenever a new friend is about to be added to the list.
         /// </summary>
-        protected override void OnApplyTemplate()
+        public event EventHandler<DataItemRetrievedEventArgs<GraphUser>> DataItemRetrieved;
+
+        /// <summary>
+        /// Occurs when the list of friends has finished loading.
+        /// </summary>
+        public event EventHandler<DataReadyEventArgs<GraphUser>> LoadCompleted;
+
+        /// <summary>
+        /// Occurs whenever an error occurs while loading data.
+        /// </summary>
+        public event EventHandler<LoadFailedEventArgs> LoadFailed;
+
+        #endregion Events
+
+        #region Properties
+
+        #region AccessToken
+
+        /// <summary>
+        /// Gets or sets the access token returned by the Facebook Login service.
+        /// </summary>
+        public string AccessToken
         {
-            base.OnApplyTemplate();
+            get { return (string)this.GetValue(AccessTokenProperty); }
+            set { this.SetValue(AccessTokenProperty, value); }
+        }
 
-            if (this.semanticZoom != null)
+        /// <summary>
+        /// Identifies the AccessToken dependency property.
+        /// </summary>
+        public static readonly DependencyProperty AccessTokenProperty =
+            DependencyProperty.Register("AccessToken", typeof(string), typeof(FriendPicker), new PropertyMetadata(DefaultAccessToken, OnAccessTokenPropertyChanged));
+
+        private static async void OnAccessTokenPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var friendPicker = (FriendPicker)d;
+            await friendPicker.RefreshData();
+        }
+
+        #endregion AccessToken
+
+        #region ProfileId
+
+        /// <summary>
+        /// The profile ID of the user for which to retrieve a list of friends.
+        /// </summary>
+        public string ProfileId
+        {
+            get { return (string)GetValue(ProfileIdProperty); }
+            set { this.SetValue(ProfileIdProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the ProfileId dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ProfileIdProperty =
+            DependencyProperty.Register("ProfileId", typeof(string), typeof(FriendPicker), new PropertyMetadata(DefaultProfileId, OnProfileIdPropertyChanged));
+
+        private static async void OnProfileIdPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var friendPicker = (FriendPicker)d;
+            await friendPicker.RefreshData();
+        }
+
+        #endregion ProfileId
+
+        #region DisplayOrder
+
+        /// <summary>
+        /// Controls whether to display first name or last name first.
+        /// </summary>
+        public FriendPickerDisplayOrder DisplayOrder
+        {
+            get { return (FriendPickerDisplayOrder)GetValue(DisplayOrderProperty); }
+            set { this.SetValue(DisplayOrderProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the DisplayOrder dependency property.
+        /// </summary>
+        public static readonly DependencyProperty DisplayOrderProperty =
+            DependencyProperty.Register("DisplayOrder", typeof(FriendPickerDisplayOrder), typeof(FriendPicker), new PropertyMetadata(DefaultDisplayOrder));
+
+        #endregion DisplayOrder
+
+        #region SortOrder
+
+        /// <summary>
+        /// Controls the order in which friends are listed in the friend picker.
+        /// </summary>
+        public FriendPickerSortOrder SortOrder
+        {
+            get { return (FriendPickerSortOrder)GetValue(SortOrderProperty); }
+            set { this.SetValue(SortOrderProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the SortOrder dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SortOrderProperty =
+            DependencyProperty.Register("SortOrder", typeof(FriendPickerSortOrder), typeof(FriendPicker), new PropertyMetadata(DefaultSortOrder));
+
+        #endregion SortOrder
+
+        #region DisplayFields
+
+        /// <summary>
+        /// Gets or sets additional fields to fetch when requesting friend data.
+        /// </summary>
+        /// <remarks>
+        /// By default, the following data is retrieved for each friend: id, name, first_name, middle_name, last_name and picture.
+        /// </remarks>
+        public string DisplayFields
+        {
+            get { return (string)GetValue(DisplayFieldsProperty); }
+            set { this.SetValue(DisplayFieldsProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the DisplayFields dependency property.
+        /// </summary>
+        public static readonly DependencyProperty DisplayFieldsProperty =
+            DependencyProperty.Register("DisplayFields", typeof(string), typeof(FriendPicker), new PropertyMetadata(DefaultDisplayFields));
+
+        #endregion DisplayFields
+
+        #region DisplayProfilePictures
+
+        /// <summary>
+        /// Specifies whether profile pictures are displayed.
+        /// </summary>
+        public bool DisplayProfilePictures
+        {
+            get { return (bool)GetValue(DisplayProfilePicturesProperty); }
+            set { this.SetValue(DisplayProfilePicturesProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the DisplayProfilePictures dependency property.
+        /// </summary>
+        public static readonly DependencyProperty DisplayProfilePicturesProperty =
+            DependencyProperty.Register("DisplayProfilePictures", typeof(bool), typeof(FriendPicker), new PropertyMetadata(DefaultDisplayProfilePictures));
+
+        #endregion DisplayProfilePictures
+
+        #region PictureSize
+        /// <summary>
+        /// Gets or sets the size of the profile pictures displayed.
+        /// </summary>
+        public Size PictureSize
+        {
+            get { return (Size)GetValue(PictureSizeProperty); }
+            set { this.SetValue(PictureSizeProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the PictureSize dependency property.
+        /// </summary>
+        public static readonly DependencyProperty PictureSizeProperty =
+            DependencyProperty.Register("PictureSize", typeof(Size), typeof(FriendPicker), new PropertyMetadata(DefaultPictureSize));
+
+        #endregion PictureSize
+
+        #endregion Properties
+
+        #region Implementation
+
+        private async Task RefreshData()
+        {
+            this.Items.Clear();
+            this.SelectedItems.Clear();
+            this.SetDataSource(this.Items);
+
+            if (string.IsNullOrEmpty(this.AccessToken))
             {
-                var view = this.semanticZoom.ZoomedInView as ListViewBase;
-                view.SelectionChanged -= this.OnSelectionChanged;
-                this.semanticZoom.ViewChangeCompleted -= this.OnSemanticZoomViewChangeCompleted;
-                this.semanticZoom.Tapped -= this.OnSemanticZoomTapped;
-                (this.semanticZoom.ZoomedOutView as Control).Tapped -= this.OnSemanticZoomOutViewTapped;
+                return;
             }
 
-            this.semanticZoom = this.GetTemplateChild(FriendPicker.PartSemanticZoom) as SemanticZoom;
-            if (this.semanticZoom != null)
+            try
             {
-                var view = this.semanticZoom.ZoomedInView as ListViewBase;
-                view.SelectionChanged += this.OnSelectionChanged;
-                this.semanticZoom.IsZoomOutButtonEnabled = false;
-                this.semanticZoom.ViewChangeCompleted += this.OnSemanticZoomViewChangeCompleted;
-                this.semanticZoom.Tapped += this.OnSemanticZoomTapped;
-                this.semanticZoom.Tag = this;
-                (this.semanticZoom.ZoomedOutView as Control).Tapped += this.OnSemanticZoomOutViewTapped;
-            }
+                FacebookClient facebookClient = new FacebookClient(this.AccessToken);
 
-            if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
+                string graphUrl = string.Format(
+                                        CultureInfo.InvariantCulture,
+                                        "/{0}/friends?fields={1}",
+                                        this.ProfileId,
+                                        this.DisplayFields);
+                dynamic friendsTaskResult = await facebookClient.GetTaskAsync(graphUrl);
+                var result = (IDictionary<string, object>)friendsTaskResult;
+                var data = (IEnumerable<object>)result["data"];
+
+                foreach (dynamic friend in data)
+                {
+                    var user = new GraphUser(friend);
+                    if (this.DataItemRetrieved.RaiseEvent(this, new DataItemRetrievedEventArgs<GraphUser>(user), e => e.Exclude))
+                    {
+                        this.Items.Add(user);
+                    }
+                }
+
+                this.SetDataSource(this.Items);
+                this.LoadCompleted.RaiseEvent(this, new DataReadyEventArgs<GraphUser>(this.Items.ToList()));
+            }
+            catch (Exception ex)
             {
-                this.SetDataSource(FriendPickerDesignSupport.DesignData);
+                // TODO: review the types of exception that can be caught here
+                this.LoadFailed.RaiseEvent(this, new LoadFailedEventArgs("Error loading friend data.", ex.Message));
             }
         }
 
-        // TODO: this is a hack to prevent switching views whenever an empty group is clicked. 
-        // It is not completely effective. For example, it fails if you double-click a group, or click outside a group's area.
-        // Must find a better alternative.
-        private void OnSemanticZoomOutViewTapped(object sender, TappedRoutedEventArgs e)
+        protected override IList GetData(IEnumerable<GraphUser> items)
         {
-            var group = (e.OriginalSource as FrameworkElement).DataContext as GroupInfoList<GraphUser>;
-            if (group != null && !group.Any())
-            {
-                this.semanticZoom.IsZoomedInViewActive = false;
-                e.Handled = true;
-            }
+            return AlphaKeyGroup<PickerItem<GraphUser>>.CreateGroups(
+                            items.Select(item => new FriendPickerItem((FriendPicker)this, item)),
+                            System.Globalization.CultureInfo.CurrentUICulture,
+                            u => u.Item.Name,
+                            true);
         }
 
-        private void OnSemanticZoomTapped(object sender, TappedRoutedEventArgs e)
+        protected override IEnumerable<GraphUser> GetDesignTimeData()
         {
-            if (!this.isZoomedOut && ((e.OriginalSource as FrameworkElement).DataContext is GroupInfoList<GraphUser>))
-            {
-                this.isZoomedOut = true;
-                this.semanticZoom.ToggleActiveView();
-                e.Handled = true;
-            }
+            return FriendPickerDesignSupport.DesignData;
         }
 
-        private void OnSemanticZoomViewChangeCompleted(object sender, SemanticZoomViewChangedEventArgs e)
+        internal static string FormatDisplayName(GraphUser user, FriendPickerDisplayOrder displayOrder)
         {
-            if (!e.IsSourceZoomedInView)
-            {
-                this.isZoomedOut = false;
-            }
-        }
+            bool hasFirstName = !string.IsNullOrWhiteSpace(user.FirstName);
+            bool hasLastName = !string.IsNullOrWhiteSpace(user.LastName);
+            bool hasFirstNameAndLastName = hasFirstName && hasLastName;
 
-        protected override void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            foreach (var item in e.RemovedItems)
+            if (hasFirstName || hasLastName)
             {
-                this.SelectedItems.Remove((GraphUser)item);
-            }
-
-            foreach (var item in e.AddedItems)
-            {
-                this.SelectedItems.Add((GraphUser)item);
+                switch (displayOrder)
+                {
+                    case FriendPickerDisplayOrder.DisplayFirstNameFirst:
+                        return user.FirstName + (hasFirstNameAndLastName ? " " : null) + user.LastName;
+                    case FriendPickerDisplayOrder.DisplayLastNameFirst:
+                        return user.LastName + (hasFirstNameAndLastName ? ", " : null) + user.FirstName;
+                }
             }
 
-            base.OnSelectionChanged(sender, e);
-        }
-
-        private CollectionViewSource GroupData(IEnumerable<GraphUser> friends)
-        {
-            var groups = from f in friends
-                         group f by FriendPicker.FormatDisplayName(f, this.DisplayOrder).Substring(0, 1) into grp
-                         orderby grp.Key
-                         select grp;
-
-            // TODO: this assumes 26 letters only, may vary in other cultures
-            var alphabet = Enumerable.Range('A', 26).Select(c => ((char)c).ToString());
-
-            return new CollectionViewSource()
-            {
-                IsSourceGrouped = true,
-                Source = from letter in alphabet
-                         join grp in groups on letter equals grp.Key into gj
-                         from subfriend in gj.DefaultIfEmpty()
-                         select new GroupInfoList<GraphUser>(letter, subfriend)
-            };
-        }
-
-        protected override void SetDataSource(IEnumerable<GraphUser> friends)
-        {
-            if (this.semanticZoom != null)
-            {
-                this.semanticZoom.DataContext = this.GroupData(friends);
-            }
+            return user.Name;
         }
 
         #endregion Implementation

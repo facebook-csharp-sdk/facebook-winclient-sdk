@@ -9,6 +9,7 @@
     <local:ScaleConverter x:Key="ScaleConverter" />
     <local:SizeToGridCellConverter x:Key="SizeToGridCellConverter" />
     <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <local:PickerSelectionModeConverter x:Key="PickerSelectionModeConverter" />
 
     <DataTemplate x:Name="GroupTemplate">
         <Border 
@@ -23,6 +24,7 @@
         </Border>
     </DataTemplate>
     
+
     <DataTemplate x:Name="EmptyGroupTemplate">
         <Border 
             Background="Gray" 
@@ -50,26 +52,19 @@
     <DataTemplate x:Name="ZoomedInItemTemplate">
         <!-- HARD CODED WIDTH -->
         <StackPanel Orientation="Horizontal" MinWidth="400">
-            <StackPanel.Resources>
-                <local:ParameterizedConverter x:Key="UserDisplayNameConverter" ConverterParameter="{Binding Tag.DisplayOrder, ElementName=PART_SemanticZoom}">
-                    <local:ParameterizedConverter.Converter>
-                        <local:UserDisplayNameConverter />
-                    </local:ParameterizedConverter.Converter>
-                </local:ParameterizedConverter>
-            </StackPanel.Resources>
             <Image
-                Width="{Binding Tag.PictureSize.Width, ElementName=PART_SemanticZoom}"
-                Height="{Binding Tag.PictureSize.Height, ElementName=PART_SemanticZoom}"
+                Width="{Binding Parent.PictureSize.Width}"
+                Height="{Binding Parent.PictureSize.Height}"
                 Stretch="UniformToFill" 
                 Margin="0, 0, 10, 0"
-                Visibility="{Binding Tag.DisplayProfilePictures, ElementName=PART_SemanticZoom, Converter={StaticResource BooleanToVisibilityConverter}}" 
-                Source="{Binding ProfilePictureUrl}"/>
+                Visibility="{Binding Parent.DisplayProfilePictures, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                Source="{Binding Item.ProfilePictureUrl}"/>
             <TextBlock
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top" 
                 Margin="5"
                 TextWrapping="Wrap" 
-                Text="{Binding Converter={StaticResource UserDisplayNameConverter}}"
+                Text="{Binding Item.Name}"
                 FontSize="18" />
         </StackPanel>
     </DataTemplate>
@@ -113,7 +108,7 @@
                                     BorderThickness="{TemplateBinding BorderThickness}">
                         <SemanticZoom.ZoomedInView>
                             <ListView ItemsSource="{Binding}"
-                                        SelectionMode="{TemplateBinding SelectionMode}"
+                                        SelectionMode="{Binding SelectionMode, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource PickerSelectionModeConverter}}"
                                         ItemTemplate="{StaticResource ZoomedInItemTemplate}"                                        
                                         ScrollViewer.IsVerticalScrollChainingEnabled="False">
                                 <ListView.GroupStyle>

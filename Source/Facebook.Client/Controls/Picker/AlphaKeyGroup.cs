@@ -1,10 +1,16 @@
 ﻿namespace Facebook.Client.Controls
 {
+#if NETFX_CORE
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.Linq;
+#endif
+#if WINDOWS_PHONE
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;
     using Microsoft.Phone.Globalization;
-
+#endif
     /// <summary>
     /// Helper class that is used to convert a flat list of data into a grouped list in which the entries are grouped by a key.
     /// </summary>
