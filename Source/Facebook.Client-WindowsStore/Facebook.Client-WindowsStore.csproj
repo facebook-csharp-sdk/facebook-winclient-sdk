@@ -211,7 +211,6 @@
     <Compile Include="..\Facebook.Client\GraphUser.cs">
       <Link>GraphUser.cs</Link>
     </Compile>
-    <Compile Include="Controls\Converters\BindingDebugger.cs" />
     <Compile Include="Controls\Converters\PickerSelectionModeConverter.cs" />
     <Compile Include="Controls\Converters\SizeToGridCellConverter.cs" />
     <Compile Include="Controls\FriendPicker\FriendPicker.cs" />
