@@ -1,6 +1,7 @@
 ﻿namespace Facebook.Client
 {
     using System;
+    using System.Collections.Generic;
     using Facebook.Client.Controls;
 
     /// <summary>
@@ -9,7 +10,7 @@
     /// <remarks>
     /// The GraphUser class represents the most commonly used properties of a Facebook User object.
     /// </remarks>
-    public class GraphUser
+    public class GraphUser : GraphObject
     {
         private Uri profilePictureUrl;
 
@@ -25,6 +26,7 @@
         /// </summary>
         /// <param name="user">The dynamic object representing the Facebook user.</param>
         public GraphUser(dynamic user)
+            : base((IDictionary<string, object>) user)
         {
             if (user == null)
             {

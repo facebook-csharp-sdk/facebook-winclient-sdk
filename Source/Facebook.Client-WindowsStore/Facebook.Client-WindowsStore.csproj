@@ -205,6 +205,9 @@
     <Compile Include="..\Facebook.Client\GraphLocation.cs">
       <Link>GraphLocation.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\GraphObject.cs">
+      <Link>GraphObject.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\GraphPlace.cs">
       <Link>GraphPlace.cs</Link>
     </Compile>

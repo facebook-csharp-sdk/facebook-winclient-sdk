@@ -1,6 +1,7 @@
 ﻿namespace Facebook.Client
 {
     using System;
+    using System.Collections.Generic;
     using Facebook.Client.Controls;
 
     /// <summary>
@@ -9,7 +10,7 @@
     /// <remarks>
     /// The GraphPlace class represents the most commonly used properties of a Facebook Place object.
     /// </remarks>
-    public class GraphPlace
+    public class GraphPlace : GraphObject
     {
         private Uri pictureUrl;
 
@@ -25,6 +26,7 @@
         /// </summary>
         /// <param name="place">The dynamic object representing the Facebook place.</param>
         public GraphPlace(dynamic place)
+            : base((IDictionary<string, object>)place)
         {
             if (place == null)
             {

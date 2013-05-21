@@ -1,6 +1,7 @@
 ﻿namespace Facebook.Client
 {
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Provides a strongly-typed representation of a Facebook Location as defined by the Graph API.
@@ -8,7 +9,7 @@
     /// <remarks>
     /// The GraphLocation class represents the most commonly used properties of a Facebook Location object.
     /// </remarks>
-    public class GraphLocation
+    public class GraphLocation : GraphObject
     {
         /// <summary>
         /// Initializes a new instance of the GraphLocation class.
@@ -18,10 +19,11 @@
         }
 
         /// <summary>
-        /// Initializes a new instance of the GraphLocation class  from a dynamic object returned by the Facebook API.
+        /// Initializes a new instance of the GraphLocation class from a dynamic object returned by the Facebook API.
         /// </summary>
         /// <param name="location">The dynamic object representing the Facebook location.</param>
         public GraphLocation(dynamic location)
+            : base((IDictionary<string, object>)location)
         {
             if (location == null)
             {
