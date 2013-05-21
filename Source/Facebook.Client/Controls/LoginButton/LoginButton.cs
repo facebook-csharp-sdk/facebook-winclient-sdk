@@ -348,10 +348,8 @@
                 if (this.FetchUserInfo)
                 {
                     FacebookClient client = new FacebookClient(session.AccessToken);
-                    var parameters = new Dictionary<string, object>();
-                    parameters["fields"] = "id,name,username,first_name,middle_name,last_name,birthday,location,link";
 
-                    dynamic result = await client.GetTaskAsync("me", parameters);
+                    dynamic result = await client.GetTaskAsync("me");
                     this.CurrentUser = new GraphUser(result);
                     var userInfo = new UserInfoChangedEventArgs(this.CurrentUser);
                     this.UserInfoChanged.RaiseEvent(this, userInfo);
