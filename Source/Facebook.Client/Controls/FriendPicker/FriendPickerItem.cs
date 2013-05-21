@@ -50,7 +50,7 @@
             {
                 return FriendPicker.FormatDisplayName(
                     this.Item, 
-                    (FriendPickerDisplayOrder) this.GetValue(DisplayOrderProperty));
+                    (FriendPickerDisplayOrder)this.GetValue(DisplayOrderProperty));
             }
         }
 

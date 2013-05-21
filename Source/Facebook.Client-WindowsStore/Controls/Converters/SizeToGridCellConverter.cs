@@ -25,7 +25,7 @@
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             var control = (Control)value;
-            var data = (IEnumerable) ((CollectionViewSource) control.DataContext).Source;
+            var data = (IEnumerable)((CollectionViewSource)control.DataContext).Source;
             var totalCells = data.Cast<object>().Count();
             var numRows = Math.Round(Math.Sqrt(totalCells * control.Height / control.Width));
             var numColumns = Math.Round(totalCells / numRows);
@@ -34,7 +34,7 @@
                 numRows++;
             }
 
-            if (bool.Parse((string) parameter))
+            if (bool.Parse((string)parameter))
             {
                 var width = ((int)(control.Width / numColumns)) - 12;
                 return Math.Max(width, MinimumWidth);

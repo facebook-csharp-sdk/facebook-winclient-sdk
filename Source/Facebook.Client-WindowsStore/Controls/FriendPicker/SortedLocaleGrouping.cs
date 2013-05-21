@@ -7,7 +7,7 @@
     /// <summary>
     /// Provides a way to access basic set of sorted group headers for any locale.
     /// </summary>
-    class SortedLocaleGrouping
+    internal class SortedLocaleGrouping
     {
         private List<string> groupDisplayNames;
 

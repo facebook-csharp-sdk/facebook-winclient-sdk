@@ -223,7 +223,7 @@
         {
             if (this.longListSelector != null)
             {
-                this.longListSelector.ItemsSource = GetData(items);
+                this.longListSelector.ItemsSource = this.GetData(items);
             }
         }
 

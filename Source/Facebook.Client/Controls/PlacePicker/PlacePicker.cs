@@ -35,11 +35,11 @@
         private const string DefaultAccessToken = "";
         private const string DefaultDisplayFields = "id,name,location,category,picture,were_here_count";
         private const bool DefaultDisplayProfilePictures = true;
-        private static readonly Size DefaultPictureSize = new Size(50, 50);
         private const string DefaultSearchText = "";
         private const int DefaultRadiusInMeters = 1000;
         private const int DefaultResultsLimit = 100;
         private const bool DefaultTrackLocation = false;
+        private static readonly Size DefaultPictureSize = new Size(50, 50);
         private static readonly LocationCoordinate DefaultLocationCoordinate = new LocationCoordinate(51.494338, -0.176759);
 
         #endregion Default Property Values
@@ -96,7 +96,7 @@
         public static readonly DependencyProperty AccessTokenProperty =
             DependencyProperty.Register("AccessToken", typeof(string), typeof(PlacePicker), new PropertyMetadata(DefaultAccessToken, OnAccessTokenPropertyChanged));
 
-        private async static void OnAccessTokenPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static async void OnAccessTokenPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var placePicker = (PlacePicker)d;
             await placePicker.RefreshData();
@@ -115,7 +115,7 @@
         public string DisplayFields
         {
             get { return (string)GetValue(DisplayFieldsProperty); }
-            set { SetValue(DisplayFieldsProperty, value); }
+            set { this.SetValue(DisplayFieldsProperty, value); }
         }
 
         /// <summary>
@@ -134,7 +134,7 @@
         public bool DisplayProfilePictures
         {
             get { return (bool)GetValue(DisplayProfilePicturesProperty); }
-            set { SetValue(DisplayProfilePicturesProperty, value); }
+            set { this.SetValue(DisplayProfilePicturesProperty, value); }
         }
 
         /// <summary>
@@ -152,7 +152,7 @@
         public Size PictureSize
         {
             get { return (Size)GetValue(PictureSizeProperty); }
-            set { SetValue(PictureSizeProperty, value); }
+            set { this.SetValue(PictureSizeProperty, value); }
         }
 
         /// <summary>
@@ -171,7 +171,7 @@
         public string SearchText
         {
             get { return (string)GetValue(SearchTextProperty); }
-            set { SetValue(SearchTextProperty, value); }
+            set { this.SetValue(SearchTextProperty, value); }
         }
 
         /// <summary>
@@ -180,7 +180,7 @@
         public static readonly DependencyProperty SearchTextProperty =
             DependencyProperty.Register("SearchText", typeof(string), typeof(PlacePicker), new PropertyMetadata(DefaultSearchText, OnSearchTextPropertyChanged));
 
-        private async static void OnSearchTextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static async void OnSearchTextPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var placePicker = (PlacePicker)d;
             await placePicker.RefreshData();
@@ -196,7 +196,7 @@
         public int RadiusInMeters
         {
             get { return (int)GetValue(RadiusInMetersProperty); }
-            set { SetValue(RadiusInMetersProperty, value); }
+            set { this.SetValue(RadiusInMetersProperty, value); }
         }
 
         /// <summary>
@@ -205,7 +205,7 @@
         public static readonly DependencyProperty RadiusInMetersProperty =
             DependencyProperty.Register("RadiusInMeters", typeof(int), typeof(PlacePicker), new PropertyMetadata(DefaultRadiusInMeters, OnRadiusInMetersPropertyChanged));
 
-        private async static void OnRadiusInMetersPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static async void OnRadiusInMetersPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var placePicker = (PlacePicker)d;
             await placePicker.RefreshData();
@@ -221,7 +221,7 @@
         public LocationCoordinate LocationCoordinate
         {
             get { return (LocationCoordinate)GetValue(LocationCoordinateProperty); }
-            set { SetValue(LocationCoordinateProperty, value); }
+            set { this.SetValue(LocationCoordinateProperty, value); }
         }
 
         /// <summary>
@@ -230,7 +230,7 @@
         public static readonly DependencyProperty LocationCoordinateProperty =
             DependencyProperty.Register("LocationCoordinate", typeof(LocationCoordinate), typeof(PlacePicker), new PropertyMetadata(DefaultLocationCoordinate, OnLocationCoordinateChanged));
 
-        private async static void OnLocationCoordinateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static async void OnLocationCoordinateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var placePicker = (PlacePicker)d;
             var coordinate = (LocationCoordinate)e.NewValue;
@@ -250,7 +250,7 @@
         public bool TrackLocation
         {
             get { return (bool)GetValue(TrackLocationProperty); }
-            set { SetValue(TrackLocationProperty, value); }
+            set { this.SetValue(TrackLocationProperty, value); }
         }
 
         /// <summary>
@@ -259,7 +259,7 @@
         public static readonly DependencyProperty TrackLocationProperty =
             DependencyProperty.Register("TrackLocation", typeof(bool), typeof(PlacePicker), new PropertyMetadata(DefaultTrackLocation, OnTrackLocationPropertyChanged));
 
-        private async static void OnTrackLocationPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static async void OnTrackLocationPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var placePicker = (PlacePicker)d;
             if ((bool)e.NewValue)
@@ -284,10 +284,13 @@
         private async void OnPositionChanged(Geolocator sender, PositionChangedEventArgs args)
         {
 #if NETFX_CORE
-            await this.Dispatcher.RunAsync(CoreDispatcherPriority.Normal, async () =>
+            await this.Dispatcher.RunAsync(
+                CoreDispatcherPriority.Normal,
+                async () =>
 #endif
 #if WINDOWS_PHONE
-            this.Dispatcher.BeginInvoke(async() =>
+            this.Dispatcher.BeginInvoke(
+                async () =>
 #endif
             {
                 await this.RefreshData();
@@ -335,7 +338,7 @@
             }
 
             this.SetDataSource(this.Items);
-            this.LoadCompleted.RaiseEvent(this, new DataReadyEventArgs<GraphPlace>((this.Items.ToList())));
+            this.LoadCompleted.RaiseEvent(this, new DataReadyEventArgs<GraphPlace>(this.Items.ToList()));
         }
 
         private async Task<LocationCoordinate> GetCurrentLocation()

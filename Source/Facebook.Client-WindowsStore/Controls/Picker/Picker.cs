@@ -8,15 +8,15 @@
 namespace Facebook.Client.Controls
 {
     using System;
-    using System.Linq;
     using System.Collections;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.Linq;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
+    using Windows.UI.Xaml.Data;
     using Windows.UI.Xaml.Input;
     using Windows.UI.Xaml.Media;
-    using Windows.UI.Xaml.Data;
 
     /// <summary>
     /// Displays a list of selectable items with optional multi-selection.
@@ -270,11 +270,11 @@ namespace Facebook.Client.Controls
         {
             if (this.semanticZoom != null)
             {
-                var source = GetData(items);                
+                var source = this.GetData(items);                
                 this.semanticZoom.DataContext = new CollectionViewSource
                 {
                     IsSourceGrouped = !(source is IList<PickerItem<T>>),
-                    Source = GetData(items)
+                    Source = this.GetData(items)
                 };
             }
         }
