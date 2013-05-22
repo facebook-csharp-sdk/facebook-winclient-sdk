@@ -39,8 +39,6 @@
         #region Default Property Values
 
         private const string DefaultApplicationId = "";
-        private const string DefaultAccessToken = "";
-        private const string DefaultProfileId = "";
         private const Audience DefaultDefaultAudience = Audience.None;
         private const string DefaultPermissions = "";
         private const bool DefaultFetchUserInfo = true;
@@ -110,60 +108,15 @@
         {
             var target = (LoginButton)d;
             var applicationId = (string)e.NewValue;
-            if (!string.IsNullOrWhiteSpace(applicationId))
-            {
-                target.facebookSessionClient = new FacebookSessionClient(applicationId);
-            }
-            else
-            {
-                target.facebookSessionClient = null;
-            }
+            target.facebookSessionClient = string.IsNullOrWhiteSpace(applicationId) ? null : new FacebookSessionClient(applicationId);
         }
 
         #endregion ApplicationId
 
-        #region AccessToken
-
-        /// <summary>
-        /// Gets or sets the access token returned by the Facebook Login service.
-        /// </summary>
-        public string AccessToken
-        {
-            get { return (string)GetValue(AccessTokenProperty); }
-            set { this.SetValue(AccessTokenProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the AccessToken dependency property.
-        /// </summary>
-        public static readonly DependencyProperty AccessTokenProperty =
-            DependencyProperty.Register("AccessToken", typeof(string), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultAccessToken));
-
-        #endregion AccessToken
-
-        #region ProfileId
-
-        /// <summary>
-        /// The Facebook ID of the logged in user.
-        /// </summary>
-        public string ProfileId
-        {
-            get { return (string)GetValue(ProfileIdProperty); }
-            set { this.SetValue(ProfileIdProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the ProfileId dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ProfileIdProperty =
-            DependencyProperty.Register("ProfileId", typeof(string), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultProfileId));
-        
-        #endregion ProfileId
-
         #region DefaultAudience
 
         /// <summary>
-        /// The default audience to use, if publish permissions are requested at login time.
+        /// Gets or sets the default audience to use, if publish permissions are requested at login time.
         /// </summary>
         /// <remarks>
         /// Certain operations such as publishing a status or publishing a photo require an audience. When the user grants an application 
@@ -187,7 +140,7 @@
         #region Permissions
 
         /// <summary>
-        /// The permissions to request.
+        /// Gets or sets the permissions to request.
         /// </summary>
         public string Permissions
         {
@@ -244,7 +197,7 @@
             var target = (LoginButton)d;
             target.UpdateSession();
         }
-        
+
         #endregion CurrentSession
 
         #region CurrentUser
@@ -286,6 +239,19 @@
         #endregion CornerRadius
 
         #endregion Properties
+
+        #region Methods
+        
+        /// <summary>
+        /// Requests new permissions for the current Facebook session.
+        /// </summary>
+        /// <param name="permissions">The permissions to request.</param>
+        public async Task RequestNewPermissions(string permissions)
+        {
+            await this.LogIn(permissions);
+        }
+
+        #endregion Methods
 
         #region Implementation
 
@@ -330,7 +296,7 @@
             }
         }
 
-        private async Task LogIn()
+        private async Task LogIn(string permissions = null)
         {
             try
             {
@@ -338,7 +304,7 @@
 
                 // TODO: using Permissions for the time being until we decide how 
                 // to handle separate ReadPermissions and PublishPermissions
-                var session = await this.facebookSessionClient.LoginAsync(this.Permissions);
+                var session = await this.facebookSessionClient.LoginAsync(permissions ?? this.Permissions);
 
                 // initialize current session
                 this.CurrentSession = session;
@@ -371,6 +337,13 @@
 
                 this.AuthenticationError.RaiseEvent(this, authenticationErrorEventArgs);
             }
+            catch (FacebookOAuthException error)
+            {
+                var authenticationErrorEventArgs =
+                    new AuthenticationErrorEventArgs("Login failure.", error.Message);
+
+                this.AuthenticationError.RaiseEvent(this, authenticationErrorEventArgs);
+            }
         }
 
         private void LogOut()
@@ -386,8 +359,6 @@
 
         private void UpdateSession()
         {
-            this.AccessToken = this.CurrentSession != null ? this.CurrentSession.AccessToken : string.Empty;
-            this.ProfileId = this.CurrentSession != null ? this.CurrentSession.FacebookId : string.Empty;
             this.UpdateButtonCaption();
         }
 
