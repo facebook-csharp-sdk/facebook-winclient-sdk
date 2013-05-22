@@ -170,7 +170,7 @@
                         DisplayOrder="{Binding SelectedItem, ElementName=displayOrder}"
                         DisplayProfilePictures="{Binding IsChecked, ElementName=displayPicture}"
                         PictureSize="50,50"
-                        AccessToken="{Binding AccessToken, ElementName=loginButton}" />
+                        AccessToken="{Binding CurrentSession.AccessToken, ElementName=loginButton}" />
                 </Grid>
             </phone:PivotItem>
 
@@ -202,15 +202,15 @@
                         SelectionMode="Multiple"
                         DisplayProfilePictures="True"
                         PictureSize="50,50"
-                        AccessToken="{Binding AccessToken, ElementName=loginButton}" />                                       
+                        AccessToken="{Binding CurrentSession.AccessToken, ElementName=loginButton}" />                                       
                 </Grid>
             </phone:PivotItem>
         </phone:Pivot>
 
         <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Width="170" Margin="0,23,0,0">
             <facebookControls:ProfilePicture
-                    AccessToken="{Binding AccessToken, ElementName=loginButton}" 
-                    ProfileId="{Binding ProfileId, ElementName=loginButton}" />
+                    AccessToken="{Binding CurrentSession.AccessToken, ElementName=loginButton}" 
+                    ProfileId="{Binding CurrentSession.ProfileId, ElementName=loginButton}" />
             <TextBlock Style="{StaticResource PhoneTextBlockBase}" TextWrapping="Wrap" TextAlignment="Center" Text="{Binding CurrentUser.Name, ElementName=loginButton}" />
         </StackPanel>
         

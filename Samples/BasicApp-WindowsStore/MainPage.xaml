@@ -48,8 +48,8 @@
             <!--Profile Picture-->
             <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" Width="100">
                 <facebookControls:ProfilePicture                                         
-                    AccessToken="{Binding AccessToken, ElementName=loginButton}" 
-                    ProfileId="{Binding ProfileId, ElementName=loginButton}" />
+                    AccessToken="{Binding CurrentSession.AccessToken, ElementName=loginButton}" 
+                    ProfileId="{Binding CurrentSession.FacebookId, ElementName=loginButton}" />
                 <TextBlock Style="{StaticResource BasicTextStyle}" TextWrapping="Wrap" TextAlignment="Center" Text="{Binding CurrentUser.Name, ElementName=loginButton}" />
             </StackPanel>
 
@@ -136,7 +136,7 @@
                                     DisplayProfilePictures="True"
                                     PictureSize="50,50"
                                     DataItemRetrieved="OnFriendRetrieved"
-                                    AccessToken="{Binding AccessToken, ElementName=loginButton}" />
+                                    AccessToken="{Binding CurrentSession.AccessToken, ElementName=loginButton}" />
                         </Grid>
                     </FlipViewItem>
                     <FlipViewItem>
@@ -161,7 +161,7 @@
                                 SearchText="Restaurant"
                                 PictureSize="50,50"
                                 DisplayProfilePictures="True"
-                                AccessToken="{Binding AccessToken, ElementName=loginButton}" />
+                                AccessToken="{Binding CurrentSession.AccessToken, ElementName=loginButton}" />
 
                             <Grid Grid.Row="1" Grid.Column="1">
                                 <Grid.RowDefinitions>
