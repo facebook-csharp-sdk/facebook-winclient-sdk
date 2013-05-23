@@ -145,14 +145,13 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:FriendPicker">
-                    <SemanticZoom 
-                        x:Name="PART_SemanticZoom"
+                    <SemanticZoom x:Name="PART_SemanticZoom"
                         Background="{TemplateBinding Background}">
                         <SemanticZoom.ZoomedInView>
                             <ListView 
                                 ItemsSource="{Binding}"
-                                SelectionMode="{Binding SelectionMode, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource PickerSelectionModeConverter}}"
                                 ItemTemplate="{StaticResource ZoomedInItemTemplate}"
+                                SelectionMode="{Binding SelectionMode, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource PickerSelectionModeConverter}}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 ScrollViewer.IsVerticalScrollChainingEnabled="False">
