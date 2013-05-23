@@ -27,7 +27,7 @@
             var control = (Control)value;
             var data = (IEnumerable)((CollectionViewSource)control.DataContext).Source;
             var totalCells = data.Cast<object>().Count();
-            var numRows = Math.Round(Math.Sqrt(totalCells * control.Height / control.Width));
+            var numRows = Math.Round(Math.Sqrt(totalCells * control.ActualHeight / control.ActualWidth));
             var numColumns = Math.Round(totalCells / numRows);
             if (numRows * numColumns < totalCells)
             {
@@ -36,12 +36,12 @@
 
             if (bool.Parse((string)parameter))
             {
-                var width = ((int)(control.Width / numColumns)) - 12;
+                var width = ((int)(control.ActualWidth / numColumns)) - 10;
                 return Math.Max(width, MinimumWidth);
             }
             else
             {
-                var height = ((int)(control.Height / numRows)) - 12;
+                var height = ((int)(control.ActualHeight / numRows)) - 10;
                 return Math.Max(height, MinimumHeight);
             }
         }
