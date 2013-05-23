@@ -210,7 +210,7 @@
         <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Width="170" Margin="0,23,0,0">
             <facebookControls:ProfilePicture
                     AccessToken="{Binding CurrentSession.AccessToken, ElementName=loginButton}" 
-                    ProfileId="{Binding CurrentSession.ProfileId, ElementName=loginButton}" />
+                    ProfileId="{Binding CurrentSession.FacebookId, ElementName=loginButton}" />
             <TextBlock Style="{StaticResource PhoneTextBlockBase}" TextWrapping="Wrap" TextAlignment="Center" Text="{Binding CurrentUser.Name, ElementName=loginButton}" />
         </StackPanel>
         
