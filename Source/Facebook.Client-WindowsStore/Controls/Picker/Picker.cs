@@ -209,17 +209,24 @@ namespace Facebook.Client.Controls
 
         protected void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            foreach (var item in e.RemovedItems)
+            var removedItems = e.RemovedItems
+                                .Select(item => (object)((PickerItem<T>)item).Item)
+                                .ToList();
+            var addedItems = e.AddedItems
+                                .Select(item => (object)((PickerItem<T>)item).Item)
+                                .ToList();
+
+            foreach (var item in removedItems)
             {
-                this.SelectedItems.Remove(((PickerItem<T>)item).Item);
+                this.SelectedItems.Remove((T)item);
             }
 
-            foreach (var item in e.AddedItems)
+            foreach (var item in addedItems)
             {
-                this.SelectedItems.Add(((PickerItem<T>)item).Item);
+                this.SelectedItems.Add((T)item);
             }
 
-            this.SelectionChanged.RaiseEvent(this, e);
+            this.SelectionChanged.RaiseEvent(this, new SelectionChangedEventArgs(removedItems, addedItems));
         }
 
         // TODO: this is a hack to prevent switching views whenever an empty group is clicked. 
