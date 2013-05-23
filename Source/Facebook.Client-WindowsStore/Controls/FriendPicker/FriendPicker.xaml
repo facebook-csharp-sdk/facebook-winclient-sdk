@@ -20,10 +20,9 @@
                 Margin="10"
                 Foreground="{Binding Tag.GroupHeaderForeground, ElementName=PART_SemanticZoom}"
                 Text="{Binding Key}"
-                FontSize="24" />
+                Style="{StaticResource GroupHeaderTextStyle}" />
         </Border>
     </DataTemplate>
-    
 
     <DataTemplate x:Name="EmptyGroupTemplate">
         <Border 
@@ -34,62 +33,108 @@
                 Margin="10"
                 Foreground="{Binding Tag.GroupHeaderForeground, ElementName=PART_SemanticZoom}"
                 Text="{Binding Key}"
-                FontSize="24" />
+                Style="{StaticResource GroupHeaderTextStyle}" />
         </Border>
     </DataTemplate>
 
     <DataTemplate x:Key="ZoomedOutItemTemplate">
-        <ContentControl DataContext="{Binding Group}" 
-                        Content="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}">
+        <ContentControl
+            DataContext="{Binding Group}"
+            Content="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}">
             <ContentControl.ContentTemplateSelector>
                 <local:FriendPickerGroupTemplateSelector
-                        GroupTemplate="{StaticResource GroupTemplate}"
-                        EmptyGroupTemplate="{StaticResource EmptyGroupTemplate}" />
+                    GroupTemplate="{StaticResource GroupTemplate}"
+                    EmptyGroupTemplate="{StaticResource EmptyGroupTemplate}" />
             </ContentControl.ContentTemplateSelector>
         </ContentControl>
     </DataTemplate>
 
+    <!--see http://msdn.microsoft.com/library/windows/apps/jj709917.aspx-->
+    <Style x:Key="GroupItemStyle" TargetType="GroupItem">
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="GroupItem">
+                    <Border 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <ContentControl 
+                                x:Name="HeaderContent"
+                                Content="{TemplateBinding Content}"
+                                ContentTransitions="{TemplateBinding ContentTransitions}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                Margin="{TemplateBinding Padding}"
+                                TabIndex="0"
+                                IsTabStop="False"
+                                HorizontalContentAlignment="Stretch" />
+                            <ItemsControl 
+                                x:Name="ItemsControl" 
+                                Grid.Row="1"
+                                ItemsSource="{Binding GroupItems}"
+                                IsTabStop="False"
+                                TabNavigation="Once"
+                                TabIndex="1">
+                                <ItemsControl.ItemContainerTransitions>
+                                    <TransitionCollection>
+                                        <AddDeleteThemeTransition />
+                                        <ContentThemeTransition />
+                                        <ReorderThemeTransition />
+                                        <EntranceThemeTransition IsStaggeringEnabled="False" />
+                                    </TransitionCollection>
+                                </ItemsControl.ItemContainerTransitions>
+                            </ItemsControl>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <DataTemplate x:Name="GroupHeaderTemplate">
+        <Border
+            HorizontalAlignment="Stretch"
+            BorderBrush="{Binding Tag.GroupHeaderBackground, ElementName=PART_SemanticZoom}"
+            Margin="4,0,18,0"
+            BorderThickness="0,0,0,1">
+            <Border
+                MinWidth="50" 
+                HorizontalAlignment="Left"
+                Background="{Binding Tag.GroupHeaderBackground, ElementName=PART_SemanticZoom}">
+                <TextBlock
+                        Text="{Binding Key}" 
+                        Margin="10"
+                        Foreground="{Binding Tag.GroupHeaderForeground, ElementName=PART_SemanticZoom}"
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource GroupHeaderTextStyle}" />
+            </Border>
+        </Border>
+    </DataTemplate>
+
     <DataTemplate x:Name="ZoomedInItemTemplate">
-        <!-- HARD CODED WIDTH -->
-        <StackPanel Orientation="Horizontal" MinWidth="400">
+        <StackPanel Orientation="Horizontal" Margin="0,4">
             <Image
                 Width="{Binding Parent.PictureSize.Width}"
                 Height="{Binding Parent.PictureSize.Height}"
                 Stretch="UniformToFill" 
                 Margin="0, 0, 10, 0"
                 Visibility="{Binding Parent.DisplayProfilePictures, Converter={StaticResource BooleanToVisibilityConverter}}" 
-                Source="{Binding Item.ProfilePictureUrl}"/>
+                Source="{Binding Item.ProfilePictureUrl}" />
             <TextBlock
                 HorizontalAlignment="Left" 
                 VerticalAlignment="Top" 
                 Margin="5"
                 TextWrapping="Wrap" 
-                Text="{Binding Item.Name}"
-                FontSize="18" />
+                Text="{Binding DisplayName}"
+                Style="{StaticResource ItemTextStyle}" />
         </StackPanel>
-    </DataTemplate>
-
-    <DataTemplate x:Name="GroupHeaderTemplate">
-        <Border 
-            BorderBrush="{Binding Tag.GroupHeaderBackground, ElementName=PART_SemanticZoom}"
-            BorderThickness="0, 0, 0, 1"
-            Width="{Binding Width, ElementName=PART_SemanticZoom}"
-            Margin="4, 6, 4, 6">
-            <Grid HorizontalAlignment="Left">
-                <Border 
-                    Grid.Column="0" 
-                    MinWidth="50" 
-                    Background="{Binding Tag.GroupHeaderBackground, ElementName=PART_SemanticZoom}">
-                    <TextBlock
-                        Text='{Binding Key}' 
-                        Margin="10"
-                        Foreground="{Binding Tag.GroupHeaderForeground, ElementName=PART_SemanticZoom}"
-                        VerticalAlignment="Center" 
-                        HorizontalAlignment="Center"
-                        Style="{StaticResource PageSubheaderTextStyle}" />
-                </Border>
-            </Grid>
-        </Border>
     </DataTemplate>
 
     <Style TargetType="local:FriendPicker">
@@ -100,32 +145,24 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:FriendPicker">
-                    <SemanticZoom x:Name="PART_SemanticZoom"
-                                    Width="{TemplateBinding Width}"
-                                    Height="{TemplateBinding Height}"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}">
+                        <!--Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}"-->
+                    <SemanticZoom 
+                        x:Name="PART_SemanticZoom"
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
                         <SemanticZoom.ZoomedInView>
-                            <ListView ItemsSource="{Binding}"
-                                        SelectionMode="{Binding SelectionMode, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource PickerSelectionModeConverter}}"
-                                        ItemTemplate="{StaticResource ZoomedInItemTemplate}"                                        
-                                        ScrollViewer.IsVerticalScrollChainingEnabled="False">
+                            <ListView 
+                                ItemsSource="{Binding}"
+                                SelectionMode="{Binding SelectionMode, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource PickerSelectionModeConverter}}"
+                                ItemTemplate="{StaticResource ZoomedInItemTemplate}"
+                                ScrollViewer.IsVerticalScrollChainingEnabled="False">
                                 <ListView.GroupStyle>
                                     <GroupStyle 
                                         HidesIfEmpty="True" 
+                                        ContainerStyle="{StaticResource GroupItemStyle}"
                                         HeaderTemplate="{StaticResource GroupHeaderTemplate}">
-                                        <GroupStyle.ContainerStyle>
-                                            <Style TargetType="GroupItem">
-                                                <Setter Property="Margin" Value="0,10,20,10" />
-                                                <Setter Property="Padding" Value="0" />
-                                            </Style>
-                                        </GroupStyle.ContainerStyle>
-                                        <GroupStyle.Panel>
-                                            <ItemsPanelTemplate>
-                                                <VariableSizedWrapGrid Orientation="Horizontal" />
-                                            </ItemsPanelTemplate>
-                                        </GroupStyle.Panel>
                                     </GroupStyle>
                                 </ListView.GroupStyle>
                             </ListView>
