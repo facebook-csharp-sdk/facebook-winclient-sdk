@@ -26,8 +26,6 @@
     </DataTemplate>
 
     <Style TargetType="local:PlacePicker">
-        <Setter Property="Width" Value="400" />
-        <Setter Property="Height" Value="300" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:PlacePicker">

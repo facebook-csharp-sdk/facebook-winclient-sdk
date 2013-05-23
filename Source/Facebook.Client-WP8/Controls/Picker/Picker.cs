@@ -159,48 +159,46 @@
                 return;
             }
 
-            SelectionChangedEventArgs selectionChangedEventArgs;
-
-            var selectedItem = this.longListSelector.SelectedItem as PickerItem<T>;
+            IList<object> removedItems;
+            IList<object> addedItems;
 
             if (this.SelectionMode == PickerSelectionMode.Single)
             {
-                var unselectedItem = e.RemovedItems[0] as PickerItem<T>;
-
-                selectedItem.IsSelected = true;
-                if (unselectedItem != null)
-                {
-                    unselectedItem.IsSelected = false;
-                    this.SelectedItems.Remove(unselectedItem.Item);
-                    selectionChangedEventArgs = new SelectionChangedEventArgs(new object[1] { unselectedItem.Item }, new object[1] { selectedItem.Item });
-                }
-                else
-                {
-                    selectionChangedEventArgs = new SelectionChangedEventArgs(new object[0], new object[1] { selectedItem.Item });
-                }
-                
-                this.SelectedItems.Add(selectedItem.Item);
+                // Single Selection mode
+                removedItems = ((IList<object>)e.RemovedItems)
+                                    .Where(item => item != null)
+                                    .ToList();
+                addedItems = ((IList<object>)e.AddedItems)
+                                    .Where(item => item != null)
+                                    .ToList();                
             }
             else
             {
-                selectedItem.IsSelected = !selectedItem.IsSelected;
-
-                if (selectedItem.IsSelected)
-                {
-                    this.SelectedItems.Add(selectedItem.Item);
-                    selectionChangedEventArgs = new SelectionChangedEventArgs(new object[0], new object[1] { selectedItem.Item });
-                }
-                else
-                {
-                    this.SelectedItems.Remove(selectedItem.Item);
-                    selectionChangedEventArgs = new SelectionChangedEventArgs(new object[1] { selectedItem.Item }, new object[0]);
-                }
+                // Multiple selection mode
+                var selectedItem = this.longListSelector.SelectedItem as PickerItem<T>;
+                addedItems = selectedItem.IsSelected ? new object[0] : new object[] { selectedItem };
+                removedItems = selectedItem.IsSelected ? new object[] { selectedItem } : new object[0];
 
                 // Reset selected item to null (no selection)
                 this.longListSelector.SelectedItem = null;
             }
 
-            this.SelectionChanged.RaiseEvent(this, selectionChangedEventArgs);
+            foreach (var item in removedItems)
+            {
+                var pickerItem = ((PickerItem<T>)item);
+                pickerItem.IsSelected = false;          
+                this.SelectedItems.Remove(pickerItem.Item);
+            }
+
+            foreach (var item in addedItems)
+            {
+                var pickerItem = ((PickerItem<T>)item);
+                pickerItem.IsSelected = true;
+                this.SelectedItems.Add(pickerItem.Item);
+            }
+
+            this.SelectionChanged.RaiseEvent(this, 
+                new SelectionChangedEventArgs(removedItems.Select(item => ((PickerItem<T>)item).Item).ToList(), addedItems.Select(item => ((PickerItem<T>)item).Item).ToList()));
         }
 
         protected void ClearSelection()
