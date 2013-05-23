@@ -147,14 +147,14 @@
                 <ControlTemplate TargetType="local:FriendPicker">
                     <SemanticZoom 
                         x:Name="PART_SemanticZoom"
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}"
-                        BorderThickness="{TemplateBinding BorderThickness}">
+                        Background="{TemplateBinding Background}">
                         <SemanticZoom.ZoomedInView>
                             <ListView 
                                 ItemsSource="{Binding}"
                                 SelectionMode="{Binding SelectionMode, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource PickerSelectionModeConverter}}"
                                 ItemTemplate="{StaticResource ZoomedInItemTemplate}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
                                 ScrollViewer.IsVerticalScrollChainingEnabled="False">
                                 <ListView.GroupStyle>
                                     <GroupStyle 
@@ -172,6 +172,8 @@
                                 ItemsSource="{Binding Path=CollectionGroups}"
                                 ItemTemplate="{StaticResource ZoomedOutItemTemplate}"
                                 SelectionMode="None"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
                                 ScrollViewer.IsVerticalScrollChainingEnabled="False"
                                 ScrollViewer.VerticalScrollBarVisibility="Hidden">
                                 <ListView.ItemsPanel>
