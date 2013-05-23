@@ -145,8 +145,6 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:FriendPicker">
-                        <!--Width="{TemplateBinding Width}"
-                        Height="{TemplateBinding Height}"-->
                     <SemanticZoom 
                         x:Name="PART_SemanticZoom"
                         Background="{TemplateBinding Background}"
