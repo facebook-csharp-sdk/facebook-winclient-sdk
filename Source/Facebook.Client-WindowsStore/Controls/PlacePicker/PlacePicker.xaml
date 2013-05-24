@@ -4,56 +4,45 @@
     xmlns:local="using:Facebook.Client.Controls">
 
     <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <local:PickerSelectionModeConverter x:Key="PickerSelectionModeConverter" />
+
+    <DataTemplate x:Name="ZoomedInItemTemplate">
+        <StackPanel Orientation="Horizontal" Margin="0,4">
+            <Image
+                Width="{Binding Parent.PictureSize.Width}"
+                Height="{Binding Parent.PictureSize.Height}"
+                Stretch="UniformToFill" 
+                Margin="0, 0, 10, 0"
+                Visibility="{Binding Parent.DisplayProfilePictures, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                Source="{Binding Item.ProfilePictureUrl}" />
+            <TextBlock
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top" 
+                Margin="5"
+                TextWrapping="Wrap" 
+                Text="{Binding Item.Name}"
+                Style="{StaticResource ItemTextStyle}" />
+        </StackPanel>
+    </DataTemplate>
 
     <Style TargetType="local:PlacePicker">
-        <Setter Property="Width" Value="400" />
-        <Setter Property="Height" Value="300" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:PlacePicker">
-                    <SemanticZoom x:Name="PART_SemanticZoom">
+                    <SemanticZoom x:Name="PART_SemanticZoom"
+                        Background="{TemplateBinding Background}">
                         <SemanticZoom.ZoomedInView>
                             <ListView 
-                                Width="{TemplateBinding Width}"
-                                Height="{TemplateBinding Height}"
-                                Background="{TemplateBinding Background}"
+                                ItemsSource="{Binding}"
+                                ItemTemplate="{StaticResource ZoomedInItemTemplate}"
+                                SelectionMode="{Binding SelectionMode, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource PickerSelectionModeConverter}}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                SelectionMode="{TemplateBinding SelectionMode}"
-                                ItemsSource="{Binding}">
-                                <ListView.ItemTemplate>
-                                    <DataTemplate>
-                                        <Grid>
-                                            <Grid.ColumnDefinitions>
-                                                <ColumnDefinition />
-                                                <ColumnDefinition />
-                                            </Grid.ColumnDefinitions>
-                                            <Image 
-                                                Width="{Binding Path=Parent.PictureSize.Height}" 
-                                                Height="{Binding Path=Parent.PictureSize.Height}" 
-                                                VerticalAlignment="Center" 
-                                                HorizontalAlignment="Center"
-                                                Visibility="{Binding Path=Parent.DisplayProfilePictures, Converter={StaticResource BooleanToVisibilityConverter}}"
-                                                Source="{Binding Item.ProfilePictureUrl}"/>
-                                            <StackPanel 
-                                                Grid.Column="1" 
-                                                VerticalAlignment="Center"
-                                                Margin="10,0,0,18" 
-                                                Orientation="Vertical">
-                                                <TextBlock 
-                                                    HorizontalAlignment="Left" 
-                                                    TextWrapping="Wrap" 
-                                                    Text="{Binding Item.Name}" 
-                                                    VerticalAlignment="Top" 
-                                                    FontSize="18" /> 
-                                            </StackPanel>
-                                        </Grid>
-                                    </DataTemplate>
-                                </ListView.ItemTemplate>
+                                ScrollViewer.IsVerticalScrollChainingEnabled="False">
                             </ListView>
                         </SemanticZoom.ZoomedInView>
                         <SemanticZoom.ZoomedOutView>
-                            <ListView>                                
+                            <ListView>
                             </ListView>
                         </SemanticZoom.ZoomedOutView>
                     </SemanticZoom>
