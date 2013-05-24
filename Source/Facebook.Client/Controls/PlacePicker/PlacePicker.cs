@@ -271,8 +271,9 @@
             {
                 placePicker.geoLocator.PositionChanged -= placePicker.OnPositionChanged;
                 placePicker.geoLocator = null;
-                await placePicker.RefreshData();
             }
+
+            await placePicker.RefreshData();
         }
 
         #endregion TrackLocation
