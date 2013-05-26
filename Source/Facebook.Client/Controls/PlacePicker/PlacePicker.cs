@@ -40,7 +40,8 @@
         private const int DefaultResultsLimit = 100;
         private const bool DefaultTrackLocation = false;
         private static readonly Size DefaultPictureSize = new Size(50, 50);
-        private static readonly LocationCoordinate DefaultLocationCoordinate = new LocationCoordinate(51.494338, -0.176759);
+        private const double DefaultLatitude = 51.494338;
+        private const double DefaultLongitude = -0.176759;
 
         #endregion Default Property Values
 
@@ -213,34 +214,55 @@
 
         #endregion RadiusInMeters
 
-        #region LocationCoordinate
+        #region Latitude
 
         /// <summary>
-        /// Gets or sets the location for which to search around.
+        /// Gets or sets the latitude of the location around which to retrieve place data.
         /// </summary>
-        public LocationCoordinate LocationCoordinate
+        public double Latitude
         {
-            get { return (LocationCoordinate)GetValue(LocationCoordinateProperty); }
-            set { this.SetValue(LocationCoordinateProperty, value); }
+            get { return (double)GetValue(LatitudeProperty); }
+            set { SetValue(LatitudeProperty, value); }
         }
 
         /// <summary>
-        /// Identifies the LocationCoordinate dependency property.
+        /// Identifies the Latitude dependency property.
         /// </summary>
-        public static readonly DependencyProperty LocationCoordinateProperty =
-            DependencyProperty.Register("LocationCoordinate", typeof(LocationCoordinate), typeof(PlacePicker), new PropertyMetadata(DefaultLocationCoordinate, OnLocationCoordinateChanged));
+        public static readonly DependencyProperty LatitudeProperty =
+            DependencyProperty.Register("Latitude", typeof(double), typeof(PlacePicker), new PropertyMetadata(DefaultLatitude, OnLatitudePropertyChanged));
 
-        private static async void OnLocationCoordinateChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static async void OnLatitudePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var placePicker = (PlacePicker)d;
-            var coordinate = (LocationCoordinate)e.NewValue;
-            if (coordinate != null)
-            {
-                await placePicker.RefreshData();
-            }
+            await placePicker.RefreshData();
+        }
+        
+        #endregion Latitude
+
+        #region Longitude
+
+        /// <summary>
+        /// Gets or sets the longitude of the location around which to retrieve place data.
+        /// </summary>
+        public double Longitude
+        {
+            get { return (double)GetValue(LongitudeProperty); }
+            set { SetValue(LongitudeProperty, value); }
         }
 
-        #endregion LocationCoordinate
+        /// <summary>
+        /// Identifies the Longitude dependency property.
+        /// </summary>
+        public static readonly DependencyProperty LongitudeProperty =
+            DependencyProperty.Register("Longitude", typeof(double), typeof(PlacePicker), new PropertyMetadata(DefaultLongitude, OnLongitudePropertyChanged));
+
+        private static async void OnLongitudePropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var placePicker = (PlacePicker)d;
+            await placePicker.RefreshData();
+        }
+        
+        #endregion Longitude
 
         #region TrackLocation
 
@@ -307,7 +329,7 @@
             {
                 try
                 {
-                    var currentLocation = this.TrackLocation ? await this.GetCurrentLocation() : this.LocationCoordinate;
+                    var currentLocation = this.TrackLocation ? await this.GetCurrentLocation() : new LocationCoordinate(this.Latitude, this.Longitude);
                     FacebookClient facebookClient = new FacebookClient(this.AccessToken);
 
                     dynamic parameters = new ExpandoObject();
@@ -359,14 +381,13 @@
             {
                 this.LoadFailed.RaiseEvent(this, new LoadFailedEventArgs("Error retrieving current location.", "Task was cancelled."));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                // this API can timeout, so no point breaking the code flow. Use
-                // default latitutde and longitude and continue on.
+                this.LoadFailed.RaiseEvent(this, new LoadFailedEventArgs("Error retrieving current location.", ex.Message));
             }
 
             // default location
-            return DefaultLocationCoordinate;
+            return new LocationCoordinate(DefaultLatitude, DefaultLongitude);
         }
 
         protected override IList GetData(IEnumerable<GraphPlace> items)
