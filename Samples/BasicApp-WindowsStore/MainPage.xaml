@@ -168,6 +168,8 @@
                                     <RowDefinition Height="50"/>
                                     <RowDefinition Height="50"/>
                                     <RowDefinition Height="50"/>
+                                    <RowDefinition Height="50"/>
+                                    <RowDefinition Height="50"/>
                                 </Grid.RowDefinitions>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="120"/>
@@ -179,6 +181,10 @@
                                 <TextBox Grid.Row="1" Grid.Column="1" Width="50" Height="20" x:Name="radius" Text="{Binding ElementName=placePicker, Path=RadiusInMeters, Mode=TwoWay}" HorizontalAlignment="Left"/>
                                 <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Track location:" VerticalAlignment="Center" />
                                 <CheckBox Grid.Row="2" Grid.Column="1" x:Name="trackLocation" IsChecked="{Binding ElementName=placePicker, Path=TrackLocation, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                                <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Latitude:" VerticalAlignment="Center" />
+                                <TextBox Grid.Row="3" Grid.Column="1" Width="200" Height="20" x:Name="latitude" Text="{Binding ElementName=placePicker, Path=Latitude, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                                <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Longitude:" VerticalAlignment="Center" />
+                                <TextBox Grid.Row="4" Grid.Column="1" Width="200" Height="20" x:Name="longitude" Text="{Binding ElementName=placePicker, Path=Longitude, Mode=TwoWay}" HorizontalAlignment="Left"/>
                             </Grid>
                         </Grid>
                     </FlipViewItem>
