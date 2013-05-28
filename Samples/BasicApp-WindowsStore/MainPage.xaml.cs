@@ -1,7 +1,8 @@
 ﻿namespace BasicApp
 {
-    using Facebook.Client.Controls;
+    using System;
     using System.Collections.Generic;
+    using Facebook.Client.Controls;
     using Windows.UI.Popups;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
@@ -71,15 +72,10 @@
             }
         }
 
-        private void OnPlacePickerLoadFailed(object sender, LoadFailedEventArgs e)
+        private async void OnPlacePickerLoadFailed(object sender, LoadFailedEventArgs e)
         {
             var msgbox = new MessageDialog(e.Reason, e.Description);
-            msgbox.ShowAsync();
-        }
-
-        private void SubmitSearch(object sender, RoutedEventArgs e)
-        {
-
+            await msgbox.ShowAsync();
         }
     }
 }

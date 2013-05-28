@@ -26,7 +26,7 @@
         /// </summary>
         /// <param name="user">The dynamic object representing the Facebook user.</param>
         public GraphUser(dynamic user)
-            : base((IDictionary<string, object>) user)
+            : base((IDictionary<string, object>)user)
         {
             if (user == null)
             {

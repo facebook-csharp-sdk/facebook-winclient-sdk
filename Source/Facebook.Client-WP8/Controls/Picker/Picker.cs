@@ -185,19 +185,20 @@
 
             foreach (var item in removedItems)
             {
-                var pickerItem = ((PickerItem<T>)item);
+                var pickerItem = (PickerItem<T>)item;
                 pickerItem.IsSelected = false;          
                 this.SelectedItems.Remove(pickerItem.Item);
             }
 
             foreach (var item in addedItems)
             {
-                var pickerItem = ((PickerItem<T>)item);
+                var pickerItem = (PickerItem<T>)item;
                 pickerItem.IsSelected = true;
                 this.SelectedItems.Add(pickerItem.Item);
             }
 
-            this.SelectionChanged.RaiseEvent(this, 
+            this.SelectionChanged.RaiseEvent(
+                this, 
                 new SelectionChangedEventArgs(removedItems.Select(item => ((PickerItem<T>)item).Item).ToList(), addedItems.Select(item => ((PickerItem<T>)item).Item).ToList()));
         }
 

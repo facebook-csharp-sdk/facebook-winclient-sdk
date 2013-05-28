@@ -39,9 +39,9 @@
         private const int DefaultRadiusInMeters = 1000;
         private const int DefaultResultsLimit = 100;
         private const bool DefaultTrackLocation = false;
-        private static readonly Size DefaultPictureSize = new Size(50, 50);
         private const double DefaultLatitude = 51.494338;
         private const double DefaultLongitude = -0.176759;
+        private static readonly Size DefaultPictureSize = new Size(50, 50);
 
         #endregion Default Property Values
 
@@ -222,7 +222,7 @@
         public double Latitude
         {
             get { return (double)GetValue(LatitudeProperty); }
-            set { SetValue(LatitudeProperty, value); }
+            set { this.SetValue(LatitudeProperty, value); }
         }
 
         /// <summary>
@@ -247,7 +247,7 @@
         public double Longitude
         {
             get { return (double)GetValue(LongitudeProperty); }
-            set { SetValue(LongitudeProperty, value); }
+            set { this.SetValue(LongitudeProperty, value); }
         }
 
         /// <summary>
