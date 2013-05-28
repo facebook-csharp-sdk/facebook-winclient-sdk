@@ -265,14 +265,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <PRIResource Include="..\Facebook.Client\Strings\en-US\Resources.resw">
-      <Link>Strings\en-US\Resources.resw</Link>
-      <SubType>Designer</SubType>
-    </PRIResource>
-    <PRIResource Include="..\Facebook.Client\Strings\es-AR\Resources.resw">
-      <Link>Strings\es-AR\Resources.resw</Link>
-    </PRIResource>
     <None Include="packages.config" />
+    <PRIResource Include="Strings\es\Resources.resw" />
+    <PRIResource Include="Strings\en\Resources.resw" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Images\fb_blank_place_profile_square.png" />
