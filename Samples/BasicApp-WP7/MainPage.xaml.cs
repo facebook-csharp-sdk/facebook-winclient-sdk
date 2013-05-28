@@ -16,16 +16,22 @@ namespace BasicApp
 {
     public partial class MainPage : PhoneApplicationPage
     {
+        private bool isAuthenticated = false;
         // Constructor
         public MainPage()
         {
             InitializeComponent();
+
             this.Loaded += MainPage_Loaded;
         }
 
         async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            await Authenticate();
+            if (!isAuthenticated)
+            {
+                isAuthenticated = true;
+                await Authenticate();
+            }
         }
 
         private FacebookSession session;

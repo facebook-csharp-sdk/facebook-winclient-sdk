@@ -27,10 +27,15 @@ namespace BasicApp
             this.InitializeComponent();
             this.Loaded += MainPage_Loaded;
         }
-
+		
+		private bool isAuthenticated = false;
         async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            await Authenticate();
+			if(!isAuthenticated)
+			{
+				isAuthenticated = true;
+				await Authenticate();
+			}
         }
 
         private FacebookSession sesion;
@@ -49,7 +54,8 @@ namespace BasicApp
                     message = "You must log in. Login Required";
                 }
 
-                //MessageBox.Show(message);
+                MessageDialog dialog = new MessageDialog(message);
+				dialog.showAsync();
             }
         }
 
