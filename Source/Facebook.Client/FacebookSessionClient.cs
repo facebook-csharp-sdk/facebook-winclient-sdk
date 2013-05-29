@@ -46,62 +46,35 @@ namespace Facebook.Client
             }
             this.AppId = appId;
 
-#if !(WINDOWS_PHONE)
-            SendAnalyticsWindows(this.AppId);
-#else
-            SendAnalyticsWindowsPhone(this.AppId);
-#endif
+            // Send the data point to Facebook
+            SendAnalytics(this.AppId);
         }
 
-
         private static bool AnalyticsSent = false;
-        private static object AnalyticsLock = new object();
-        
-#if !(WINDOWS_PHONE)
-        async private void SendAnalyticsWindows(string FacebookAppId = null)
+
+        private void SendAnalytics(string FacebookAppId = null)
         {
             try
             {
                 if (!AnalyticsSent)
                 {
                     AnalyticsSent = true;
+
+#if !(WINDOWS_PHONE)
+                    Version assemblyVersion = typeof(FacebookSessionClient).GetTypeInfo().Assembly.GetName().Version;
+#else
+                    Version assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+#endif
                     string instrumentationURL = String.Format("https://www.facebook.com/impression.php/?plugin=featured_resources&payload=%7B%22resource%22%3A%22microsoft_csharpsdk%22%2C%22appid%22%3A%22{0}%22%2C%22version%22%3A%22{1}%22%7D",
-                            FacebookAppId == null ? String.Empty : FacebookAppId, typeof(FacebookSessionClient).GetTypeInfo().Assembly.GetName().Version);
+                            FacebookAppId == null ? String.Empty : FacebookAppId, assemblyVersion);
                     
-                    // Send Analytics for Windows 8
-                    System.Net.Http.HttpClient httpClient = new System.Net.Http.HttpClient();
-                    var postResult = await httpClient.PostAsync(instrumentationURL, new System.Net.Http.StringContent(String.Empty));
-                    // examine postResult here to make sure you got back a gif file
+                    HttpHelper _helper = new HttpHelper(instrumentationURL);
+                    _helper.OpenReadAsync();
                 }
             }
             catch { } //ignore all errors
         }
 
-#else
-        private void SendAnalyticsWindowsPhone(string FacebookAppId = null)
-        {
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    if (!AnalyticsSent)
-                    {
-                        AnalyticsSent = true;
-                        string instrumentationURL = String.Format("https://www.facebook.com/impression.php/?plugin=featured_resources&payload=%7B%22resource%22%3A%22microsoft_csharpsdk%22%2C%22appid%22%3A%22{0}%22%2C%22version%22%3A%22{1}%22%7D",
-                                FacebookAppId == null ? String.Empty : FacebookAppId, Assembly.GetExecutingAssembly().GetName().Version);
-
-                        WebClient webClient = new WebClient();
-                        webClient.UploadStringCompleted += (s, e) => { /* Event handler for the post completion*/ };
-
-                        webClient.UploadStringAsync(new Uri(instrumentationURL, UriKind.RelativeOrAbsolute), "POST", String.Empty);
-
-                    }
-
-                }
-                catch { } //ignore all errors
-            });
-        }
-#endif
         public async Task<FacebookSession> LoginAsync()
         {
             return await LoginAsync(null, false);

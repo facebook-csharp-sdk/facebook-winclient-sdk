@@ -45,9 +45,6 @@
     <DocumentationFile>..\..\Bin\Release\wp71\Facebook.Client.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Facebook">
-      <HintPath>..\..\Samples\BasicApp-WP7\packages\Facebook.6.3.2\lib\wp71\Facebook.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Threading.Tasks">
       <HintPath>..\..\Samples\BasicApp-WP7\packages\Microsoft.Bcl.Async.1.0.14-rc\lib\sl4-windowsphone71\Microsoft.Threading.Tasks.dll</HintPath>
@@ -124,6 +121,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\facebook-csharp-sdk\Source\Facebook\Facebook-WP7.csproj">
+      <Project>{857E540C-0092-4590-A279-F98A6B77AC0A}</Project>
+      <Name>Facebook-WP7</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
