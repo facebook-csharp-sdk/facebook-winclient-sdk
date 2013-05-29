@@ -12,6 +12,7 @@ namespace Facebook.Client.Controls
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Threading.Tasks;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Data;
@@ -45,6 +46,25 @@ namespace Facebook.Client.Controls
         private SemanticZoom semanticZoom;
 
         #endregion Member variables
+
+        #region Events
+
+        /// <summary>
+        /// Occurs whenever a new item is about to be added to the list.
+        /// </summary>
+        public event EventHandler<DataItemRetrievedEventArgs<T>> DataItemRetrieved;
+
+        /// <summary>
+        /// Occurs when the items in the list have finished loading.
+        /// </summary>
+        public event EventHandler<DataReadyEventArgs<T>> LoadCompleted;
+
+        /// <summary>
+        /// Occurs whenever an error occurs while loading data.
+        /// </summary>
+        public event EventHandler<LoadFailedEventArgs> LoadFailed;
+
+        #endregion Events
 
         /// <summary>
         /// Initializes a new instance of the Picker class.
@@ -132,7 +152,7 @@ namespace Facebook.Client.Controls
         #region Items
 
         /// <summary>
-        /// Gets the list of currently selected items for the FriendPicker control.
+        /// Gets the list of currently selected items for the Picker control.
         /// </summary>
         public ObservableCollection<T> Items
         {
@@ -148,10 +168,29 @@ namespace Facebook.Client.Controls
 
         #endregion Items
 
+        #region SelectedItem
+
+        /// <summary>
+        /// Gets the currently selected item for the Picker control.
+        /// </summary>
+        public T SelectedItem
+        {
+            get { return (T)GetValue(SelectedItemProperty); }
+            private set { SetValue(SelectedItemProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the SelectedItem dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SelectedItemProperty =
+            DependencyProperty.Register("SelectedItem", typeof(T), typeof(Picker<T>), new PropertyMetadata(null));
+        
+        #endregion SelectedItem
+
         #region SelectedItems
 
         /// <summary>
-        /// Gets the list of currently selected items for the FriendPicker control.
+        /// Gets the list of currently selected items for the Picker control.
         /// </summary>
         public ObservableCollection<T> SelectedItems
         {
@@ -226,6 +265,9 @@ namespace Facebook.Client.Controls
                 this.SelectedItems.Add((T)item);
             }
 
+            this.SelectedItem = (T)addedItems.FirstOrDefault() 
+                                    ?? this.SelectedItems.FirstOrDefault();
+
             this.SelectionChanged.RaiseEvent(this, new SelectionChangedEventArgs(removedItems, addedItems));
         }
 
@@ -286,12 +328,49 @@ namespace Facebook.Client.Controls
             }
         }
 
+        protected async Task RefreshData()
+        {
+            this.Items.Clear();
+            this.SelectedItems.Clear();
+            this.SetValue(SelectedItemProperty, DependencyProperty.UnsetValue);
+
+            try
+            {
+                await LoadData();
+            }
+            catch (Exception ex)
+            {
+                // TODO: review the types of exception that should be caught here
+                this.LoadFailed.RaiseEvent(this, new LoadFailedEventArgs("Error loading data.", ex.Message));
+            }
+
+            this.SetDataSource(this.Items);
+            this.LoadCompleted.RaiseEvent(this, new DataReadyEventArgs<T>(this.Items.ToList()));
+        }
+
         protected virtual IEnumerable<T> GetDesignTimeData()
         {
             return null;
         }
 
+        protected void OnLoadCompleted(DataReadyEventArgs<T> args)
+        {
+            this.LoadCompleted.RaiseEvent(this, args);
+        }
+
+        protected void OnLoadFailed(LoadFailedEventArgs args)
+        {
+            this.LoadFailed.RaiseEvent(this, args);
+        }
+
+        protected bool OnDataItemRetrieved(DataItemRetrievedEventArgs<T> args, Func<DataItemRetrievedEventArgs<T>, bool> cancelInvocation)
+        {
+            return this.DataItemRetrieved.RaiseEvent(this, args, cancelInvocation);
+        }
+
         protected abstract IList GetData(IEnumerable<T> items);
+
+        protected abstract Task LoadData();
 
         #endregion Implementation
     }

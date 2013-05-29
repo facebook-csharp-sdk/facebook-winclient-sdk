@@ -41,6 +41,7 @@
         private const bool DefaultTrackLocation = false;
         private const double DefaultLatitude = 51.494338;
         private const double DefaultLongitude = -0.176759;
+        private const double DefaultMovementThreshold = 100.0;
         private static readonly Size DefaultPictureSize = new Size(50, 50);
 
         #endregion Default Property Values
@@ -48,6 +49,7 @@
         #region Member variables
 
         private Geolocator geoLocator;
+        private CancellationTokenSource cancelGeopositionOperation;
 
         #endregion Member variables
 
@@ -58,25 +60,6 @@
         {
             this.DefaultStyleKey = typeof(PlacePicker);
         }
-
-        #region Events
-
-        /// <summary>
-        /// Occurs whenever a new place is about to be added to the list.
-        /// </summary>
-        public event EventHandler<DataItemRetrievedEventArgs<GraphPlace>> PlaceRetrieved;
-
-        /// <summary>
-        /// Occurs when the list of places has finished loading.
-        /// </summary>
-        public event EventHandler<DataReadyEventArgs<GraphPlace>> LoadCompleted;
-
-        /// <summary>
-        /// Occurs whenever an error occurs while loading data.
-        /// </summary>
-        public event EventHandler<LoadFailedEventArgs> LoadFailed;
-
-        #endregion Events
 
         #region Properties
 
@@ -284,15 +267,26 @@
         private static async void OnTrackLocationPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
             var placePicker = (PlacePicker)d;
+
+            if ((placePicker.cancelGeopositionOperation != null) && (!placePicker.cancelGeopositionOperation.IsCancellationRequested))
+            {
+                placePicker.cancelGeopositionOperation.Cancel();
+            }
+
             if ((bool)e.NewValue)
             {
-                placePicker.geoLocator = new Geolocator();
+                if (placePicker.geoLocator == null)
+                {
+                    placePicker.geoLocator = new Geolocator();
+                    placePicker.geoLocator.MovementThreshold = DefaultMovementThreshold;
+                    placePicker.geoLocator.DesiredAccuracy = PositionAccuracy.High;
+                }
+
                 placePicker.geoLocator.PositionChanged += placePicker.OnPositionChanged;
             }
             else if (placePicker.geoLocator != null)
             {
                 placePicker.geoLocator.PositionChanged -= placePicker.OnPositionChanged;
-                placePicker.geoLocator = null;
             }
 
             await placePicker.RefreshData();
@@ -320,68 +314,64 @@
             });
         }
 
-        private async Task RefreshData()
+        protected override async Task LoadData()
         {
-            this.Items.Clear();
-            this.SelectedItems.Clear();
-
             if (!string.IsNullOrEmpty(this.AccessToken))
             {
-                try
+                var currentLocation = this.TrackLocation ? await this.GetCurrentLocation() : new LocationCoordinate(this.Latitude, this.Longitude);
+                FacebookClient facebookClient = new FacebookClient(this.AccessToken);
+
+                dynamic parameters = new ExpandoObject();
+                parameters.type = "place";
+                parameters.center = currentLocation.ToString();
+                parameters.distance = this.RadiusInMeters;
+                parameters.fields = this.DisplayFields;
+                if (!string.IsNullOrWhiteSpace(this.SearchText))
                 {
-                    var currentLocation = this.TrackLocation ? await this.GetCurrentLocation() : new LocationCoordinate(this.Latitude, this.Longitude);
-                    FacebookClient facebookClient = new FacebookClient(this.AccessToken);
-
-                    dynamic parameters = new ExpandoObject();
-                    parameters.type = "place";
-                    parameters.center = currentLocation.ToString();
-                    parameters.distance = this.RadiusInMeters;
-                    parameters.fields = this.DisplayFields;
-                    if (!string.IsNullOrWhiteSpace(this.SearchText))
-                    {
-                        parameters.q = this.SearchText;
-                    }
-
-                    dynamic placesTaskResult = await facebookClient.GetTaskAsync("/search", parameters);
-                    var data = (IEnumerable<dynamic>)placesTaskResult.data;
-                    foreach (var item in data)
-                    {
-                        var place = new GraphPlace(item);
-                        if (this.PlaceRetrieved.RaiseEvent(this, new DataItemRetrievedEventArgs<GraphPlace>(place), e => e.Exclude))
-                        {
-                            this.Items.Add(place);
-                        }
-                    }
+                    parameters.q = this.SearchText;
                 }
-                catch (Exception ex)
+
+                dynamic placesTaskResult = await facebookClient.GetTaskAsync("/search", parameters);
+                var data = (IEnumerable<dynamic>)placesTaskResult.data;
+                foreach (var item in data)
                 {
-                    // TODO: review the types of exception that can be caught here
-                    this.LoadFailed.RaiseEvent(this, new LoadFailedEventArgs("Error loading place data.", ex.Message));
+                    var place = new GraphPlace(item);
+                    if (this.OnDataItemRetrieved(new DataItemRetrievedEventArgs<GraphPlace>(place), e => e.Exclude))
+                    {
+                        this.Items.Add(place);
+                    }
                 }
             }
-
-            this.SetDataSource(this.Items);
-            this.LoadCompleted.RaiseEvent(this, new DataReadyEventArgs<GraphPlace>(this.Items.ToList()));
         }
 
         private async Task<LocationCoordinate> GetCurrentLocation()
         {
             try
             {
-                var position = await this.geoLocator.GetGeopositionAsync(new TimeSpan(0, 1, 0), new TimeSpan(0, 0, 0, 10));
+                if ((this.cancelGeopositionOperation != null) && (!this.cancelGeopositionOperation.IsCancellationRequested))
+                {
+                    this.cancelGeopositionOperation.Cancel();
+                }
+
+                this.cancelGeopositionOperation = new CancellationTokenSource(3000);
+                var position = await this.geoLocator.GetGeopositionAsync(new TimeSpan(0, 1, 0), new TimeSpan(0, 0, 0, 10)).AsTask(this.cancelGeopositionOperation.Token);
                 return new LocationCoordinate(position.Coordinate.Latitude, position.Coordinate.Longitude);
             }
             catch (System.UnauthorizedAccessException)
             {
-                this.LoadFailed.RaiseEvent(this, new LoadFailedEventArgs("Error retrieving current location.", "Location is disabled."));
+                this.OnLoadFailed(new LoadFailedEventArgs("Error retrieving current location.", "Location is disabled."));
             }
             catch (TaskCanceledException)
             {
-                this.LoadFailed.RaiseEvent(this, new LoadFailedEventArgs("Error retrieving current location.", "Task was cancelled."));
+                this.OnLoadFailed(new LoadFailedEventArgs("Error retrieving current location.", "Task was cancelled."));
             }
             catch (Exception ex)
             {
-                this.LoadFailed.RaiseEvent(this, new LoadFailedEventArgs("Error retrieving current location.", ex.Message));
+                this.OnLoadFailed(new LoadFailedEventArgs("Error retrieving current location.", ex.Message));
+            }
+            finally
+            {
+                this.cancelGeopositionOperation = null;
             }
 
             // default location

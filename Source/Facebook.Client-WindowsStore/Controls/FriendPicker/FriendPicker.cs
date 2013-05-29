@@ -35,25 +35,6 @@
             this.DefaultStyleKey = typeof(FriendPicker);
         }
 
-        #region Events
-
-        /// <summary>
-        /// Occurs whenever a new friend is about to be added to the list.
-        /// </summary>
-        public event EventHandler<DataItemRetrievedEventArgs<GraphUser>> DataItemRetrieved;
-
-        /// <summary>
-        /// Occurs when the list of friends has finished loading.
-        /// </summary>
-        public event EventHandler<DataReadyEventArgs<GraphUser>> LoadCompleted;
-
-        /// <summary>
-        /// Occurs whenever an error occurs while loading data.
-        /// </summary>
-        public event EventHandler<LoadFailedEventArgs> LoadFailed;
-
-        #endregion Events
-
         #region Properties
 
         #region AccessToken
@@ -207,18 +188,9 @@
 
         #region Implementation
 
-        private async Task RefreshData()
+        protected override async Task LoadData()
         {
-            this.Items.Clear();
-            this.SelectedItems.Clear();
-            this.SetDataSource(this.Items);
-
-            if (string.IsNullOrEmpty(this.AccessToken))
-            {
-                return;
-            }
-
-            try
+            if (!string.IsNullOrEmpty(this.AccessToken))
             {
                 FacebookClient facebookClient = new FacebookClient(this.AccessToken);
 
@@ -234,19 +206,11 @@
                 foreach (dynamic friend in data)
                 {
                     var user = new GraphUser(friend);
-                    if (this.DataItemRetrieved.RaiseEvent(this, new DataItemRetrievedEventArgs<GraphUser>(user), e => e.Exclude))
+                    if (this.OnDataItemRetrieved(new DataItemRetrievedEventArgs<GraphUser>(user), e => e.Exclude))
                     {
                         this.Items.Add(user);
                     }
                 }
-
-                this.SetDataSource(this.Items);
-                this.LoadCompleted.RaiseEvent(this, new DataReadyEventArgs<GraphUser>(this.Items.ToList()));
-            }
-            catch (Exception ex)
-            {
-                // TODO: review the types of exception that can be caught here
-                this.LoadFailed.RaiseEvent(this, new LoadFailedEventArgs("Error loading friend data.", ex.Message));
             }
         }
 

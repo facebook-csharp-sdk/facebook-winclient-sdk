@@ -5,6 +5,7 @@
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.Linq;
+    using System.Threading.Tasks;
     using System.Windows;
     using System.Windows.Controls;
     using Microsoft.Phone.Controls;
@@ -49,6 +50,21 @@
         /// Occurs when the current selection changes.
         /// </summary>
         public event EventHandler<SelectionChangedEventArgs> SelectionChanged;
+
+        /// <summary>
+        /// Occurs whenever a new item is about to be added to the list.
+        /// </summary>
+        public event EventHandler<DataItemRetrievedEventArgs<T>> DataItemRetrieved;
+
+        /// <summary>
+        /// Occurs when items in the the list have finished loading.
+        /// </summary>
+        public event EventHandler<DataReadyEventArgs<T>> LoadCompleted;
+
+        /// <summary>
+        /// Occurs whenever an error occurs while loading data.
+        /// </summary>
+        public event EventHandler<LoadFailedEventArgs> LoadFailed;
 
         #endregion Events
 
@@ -97,6 +113,25 @@
             DependencyProperty.Register("Items", typeof(ObservableCollection<T>), typeof(Picker<T>), null);
 
         #endregion Items
+
+        #region SelectedItem
+
+        /// <summary>
+        /// Gets the currently selected item for the Picker control.
+        /// </summary>
+        public T SelectedItem
+        {
+            get { return (T)GetValue(SelectedItemProperty); }
+            private set { SetValue(SelectedItemProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the SelectedItem dependency property.
+        /// </summary>
+        public static readonly DependencyProperty SelectedItemProperty =
+            DependencyProperty.Register("SelectedItem", typeof(T), typeof(Picker<T>), new PropertyMetadata(null));
+
+        #endregion SelectedItem
 
         #region SelectedItems
 
@@ -197,6 +232,9 @@
                 this.SelectedItems.Add(pickerItem.Item);
             }
 
+            this.SelectedItem = addedItems.Select(p => ((PickerItem<T>)p).Item).FirstOrDefault() 
+                                    ?? this.SelectedItems.FirstOrDefault();
+
             this.SelectionChanged.RaiseEvent(
                 this, 
                 new SelectionChangedEventArgs(removedItems.Select(item => ((PickerItem<T>)item).Item).ToList(), addedItems.Select(item => ((PickerItem<T>)item).Item).ToList()));
@@ -226,13 +264,50 @@
             }
         }
 
+        protected async Task RefreshData()
+        {
+            this.Items.Clear();
+            this.SelectedItems.Clear();
+            this.SetValue(SelectedItemProperty, null);
+
+            try
+            {
+                await LoadData();
+            }
+            catch (Exception ex)
+            {
+                // TODO: review the types of exception that should be caught here
+                this.LoadFailed.RaiseEvent(this, new LoadFailedEventArgs("Error loading data.", ex.Message));
+            }
+
+            this.SetDataSource(this.Items);
+            this.LoadCompleted.RaiseEvent(this, new DataReadyEventArgs<T>(this.Items.ToList()));
+        }
+
         protected virtual IEnumerable<T> GetDesignTimeData()
         {
             return null;
         }
 
+        protected void OnLoadCompleted(DataReadyEventArgs<T> args)
+        {
+            this.LoadCompleted.RaiseEvent(this, args);
+        }
+
+        protected void OnLoadFailed(LoadFailedEventArgs args)
+        {
+            this.LoadFailed.RaiseEvent(this, args);
+        }
+
+        protected bool OnDataItemRetrieved(DataItemRetrievedEventArgs<T> args, Func<DataItemRetrievedEventArgs<T>, bool> cancelInvocation)
+        {
+            return this.DataItemRetrieved.RaiseEvent(this, args, cancelInvocation);
+        }
+
         protected abstract IList GetData(IEnumerable<T> items);
 
+        protected abstract Task LoadData();
+        
         #endregion Implementation
     }
 }

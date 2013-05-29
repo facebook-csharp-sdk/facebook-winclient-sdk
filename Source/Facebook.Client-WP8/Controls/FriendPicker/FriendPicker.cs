@@ -48,25 +48,6 @@ namespace Facebook.Client.Controls
             this.DefaultStyleKey = typeof(FriendPicker);
         }
 
-        #region Events
-
-        /// <summary>
-        /// Occurs whenever a new friend is about to be added to the list.
-        /// </summary>
-        public event EventHandler<DataItemRetrievedEventArgs<GraphUser>> DataItemRetrieved;
-
-        /// <summary>
-        /// Occurs when the list of friends has finished loading.
-        /// </summary>
-        public event EventHandler<DataReadyEventArgs<GraphUser>> LoadCompleted;
-
-        /// <summary>
-        /// Occurs whenever an error occurs while loading data.
-        /// </summary>
-        public event EventHandler<LoadFailedEventArgs> LoadFailed;
-
-        #endregion Events
-
         #region Properties
 
         #region AccessToken
@@ -220,44 +201,30 @@ namespace Facebook.Client.Controls
 
         #region Implementation
 
-        private async Task RefreshData()
+        protected override async Task LoadData()
         {
-            this.Items.Clear();
-            this.SelectedItems.Clear();
-
             if (!string.IsNullOrEmpty(this.AccessToken))
             {
-                try
+                FacebookClient facebookClient = new FacebookClient(this.AccessToken);
+
+                string graphUrl = string.Format(
+                                        CultureInfo.InvariantCulture,
+                                        "/{0}/friends?fields={1}",
+                                        this.ProfileId,
+                                        this.DisplayFields);
+                dynamic friendsTaskResult = await facebookClient.GetTaskAsync(graphUrl);
+                var result = (IDictionary<string, object>)friendsTaskResult;
+                var data = (IEnumerable<object>)result["data"];
+
+                foreach (dynamic friend in data)
                 {
-                    FacebookClient facebookClient = new FacebookClient(this.AccessToken);
-
-                    string graphUrl = string.Format(
-                                            CultureInfo.InvariantCulture,
-                                            "/{0}/friends?fields={1}",
-                                            this.ProfileId,
-                                            this.DisplayFields);
-                    dynamic friendsTaskResult = await facebookClient.GetTaskAsync(graphUrl);
-                    var result = (IDictionary<string, object>)friendsTaskResult;
-                    var data = (IEnumerable<object>)result["data"];
-
-                    foreach (dynamic friend in data)
+                    var user = new GraphUser(friend);
+                    if (this.OnDataItemRetrieved(new DataItemRetrievedEventArgs<GraphUser>(user), e => e.Exclude))
                     {
-                        var user = new GraphUser(friend);
-                        if (this.DataItemRetrieved.RaiseEvent(this, new DataItemRetrievedEventArgs<GraphUser>(user), e => e.Exclude))
-                        {
-                            this.Items.Add(user);
-                        }
+                        this.Items.Add(user);
                     }
                 }
-                catch (Exception ex)
-                {
-                    // TODO: review the types of exception that can be caught here
-                    this.LoadFailed.RaiseEvent(this, new LoadFailedEventArgs("Error loading friend data.", ex.Message));
-                }
             }
-
-            this.SetDataSource(this.Items);
-            this.LoadCompleted.RaiseEvent(this, new DataReadyEventArgs<GraphUser>(this.Items.ToList()));
         }
 
         internal static string FormatDisplayName(GraphUser user, FriendPickerDisplayOrder displayOrder)
