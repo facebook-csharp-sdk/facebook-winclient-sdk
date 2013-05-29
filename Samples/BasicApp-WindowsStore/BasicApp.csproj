@@ -138,10 +138,11 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\facebook-csharp-sdk\Source\Facebook\Facebook-WindowsStore.csproj">
-      <Project>{4d5581cb-93c2-4925-a3a5-e17e5def09d9}</Project>
-      <Name>Facebook-WindowsStore</Name>
-    </ProjectReference>
+    <Reference Include="Facebook">
+      <HintPath>..\..\Source\packages\Facebook.6.4.0\lib\win8\Facebook.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\..\Source\Facebook.Client-WindowsStore\Facebook.Client-WindowsStore.csproj">
       <Project>{f7ffe744-7cc4-42c5-bf7b-a0f11ecf9722}</Project>
       <Name>Facebook.Client-WindowsStore</Name>

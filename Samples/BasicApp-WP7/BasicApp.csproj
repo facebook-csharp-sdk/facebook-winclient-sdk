@@ -50,6 +50,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Facebook">
+      <HintPath>packages\Facebook.6.3.2\lib\wp71\Facebook.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="Microsoft.Threading.Tasks">
@@ -109,10 +112,6 @@
     <Content Include="SplashScreenImage.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\facebook-csharp-sdk\Source\Facebook\Facebook-WP7.csproj">
-      <Project>{857E540C-0092-4590-A279-F98A6B77AC0A}</Project>
-      <Name>Facebook-WP7</Name>
-    </ProjectReference>
     <ProjectReference Include="..\..\Source\Facebook.Client-WP7\Facebook.Client-WP7.csproj">
       <Project>{31129945-5632-4DC7-8306-F3567CF2A157}</Project>
       <Name>Facebook.Client-WP7</Name>

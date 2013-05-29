@@ -133,23 +133,16 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClientSigningKey.snk" />
-    <None Include="packages.config" />
+    <Reference Include="Facebook, Version=6.0.10.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Facebook.6.4.0\lib\win8\Facebook.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\facebook-csharp-sdk\Source\Facebook\Facebook-WindowsStore.csproj">
-      <Project>{4d5581cb-93c2-4925-a3a5-e17e5def09d9}</Project>
-      <Name>Facebook-WindowsStore</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>
-  </PropertyGroup>
-  <PropertyGroup>
-    <SignAssembly>true</SignAssembly>
-  </PropertyGroup>
-  <PropertyGroup>
-    <AssemblyOriginatorKeyFile>ClientSigningKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\nuget.targets" />

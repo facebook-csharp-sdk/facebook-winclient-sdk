@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
-using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -55,8 +54,8 @@ namespace BasicApp
                     message = "You must log in. Login Required";
                 }
 
-                //MessageDialog dialog = new MessageDialog(message);
-                //dialog.showAsync();
+                MessageDialog dialog = new MessageDialog(message);
+				dialog.showAsync();
             }
         }
 
