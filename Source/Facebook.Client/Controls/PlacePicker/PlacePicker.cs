@@ -366,11 +366,9 @@
 
         private async Task<LocationCoordinate> GetCurrentLocation()
         {
-            CancellationTokenSource cts = new CancellationTokenSource();
-            CancellationToken token = cts.Token;
             try
             {
-                var position = await this.geoLocator.GetGeopositionAsync(new TimeSpan(0, 1, 0), new TimeSpan(0, 0, 0, 1)).AsTask(token);
+                var position = await this.geoLocator.GetGeopositionAsync(new TimeSpan(0, 1, 0), new TimeSpan(0, 0, 0, 10));
                 return new LocationCoordinate(position.Coordinate.Latitude, position.Coordinate.Longitude);
             }
             catch (System.UnauthorizedAccessException)
