@@ -339,11 +339,11 @@
                             <TextBlock
                                 Style="{StaticResource BasicTextStyle}" 
                                 VerticalAlignment="Top"
-                                Text="{Binding SelectedItems[0].Name, ElementName=placePicker}" />
+                                Text="{Binding SelectedItem.Name, ElementName=placePicker}" />
                             <TextBlock
                                 Style="{StaticResource BasicTextStyle}" 
                                 VerticalAlignment="Top"
-                                Text="{Binding SelectedItems[0].Location.Street, ElementName=placePicker}" />
+                                Text="{Binding SelectedItem.Location.Street, ElementName=placePicker}" />
                         </StackPanel>
 
                         <!-- latitude and longitude -->
