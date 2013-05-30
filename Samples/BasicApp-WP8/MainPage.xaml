@@ -41,6 +41,8 @@
             <Setter Property="HorizontalAlignment" Value="Right" />
             <Setter Property="Y2" Value="1" />
         </Style>
+
+        <local:CropModeToBooleanConverter xmlns:local="clr-namespace:BasicApp" x:Key="CropModeToBooleanConverter" />
     </phone:PhoneApplicationPage.Resources>
 
     <!--LayoutRoot is the root grid where all page content is placed-->
@@ -138,7 +140,96 @@
             <!--picture-->
             <phone:PivotItem Header="picture">
                 <Grid x:Name="profilePictureScenario">
-                    
+                    <Grid.RowDefinitions>
+                        <RowDefinition />
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+
+                    <facebookControls:ProfilePicture
+                        x:Name="picture"
+                        Width="200"
+                        Height="200"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top" />
+
+                    <!-- details section -->
+                    <Grid
+                        Grid.Row="1"
+                        Margin="20,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="120"/>
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+
+                        <!-- width and height-->
+                        <TextBlock 
+                            Grid.Row="0" Grid.Column="0" 
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Text="Width:" />
+                        <TextBox 
+                            x:Name="pictureWidth" 
+                            Grid.Row="0" Grid.Column="1"
+                            Margin="0"
+                            FontSize="16"
+                            BorderThickness="0"
+                            HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Center"
+                            Text="{Binding Width, ElementName=picture, Mode=TwoWay}" />
+                        <TextBlock
+                            Grid.Row="1" Grid.Column="0" 
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Text="Height:" />
+                        <TextBox
+                            x:Name="pictureHeight" 
+                            Grid.Row="1" Grid.Column="1"
+                            Margin="0"
+                            FontSize="16"
+                            BorderThickness="0"
+                            HorizontalAlignment="Stretch" 
+                            VerticalAlignment="Center"
+                            Text="{Binding Height, ElementName=picture, Mode=TwoWay}" />
+
+                        <!-- crop mode -->
+                        <TextBlock 
+                            Grid.Row="2" Grid.Column="0" 
+                            HorizontalAlignment="Right" 
+                            VerticalAlignment="Center"
+                            FontSize="16"
+                            Text="Crop mode:" />
+                        <RadioButton 
+                            Grid.Row="2" Grid.Column="1" 
+                            Margin="0,-15"
+                            FontSize="16"
+                            Content="Square"
+                            GroupName="CropMode"
+                            IsChecked="{Binding CropMode, ElementName=picture, Converter={StaticResource CropModeToBooleanConverter}, ConverterParameter=Square, Mode=TwoWay}" />
+                        <RadioButton 
+                            Grid.Row="3" Grid.Column="1" 
+                            Margin="0,-15"
+                            FontSize="16"
+                            Content="Original"
+                            GroupName="CropMode"
+                            IsChecked="{Binding CropMode, ElementName=picture, Converter={StaticResource CropModeToBooleanConverter}, ConverterParameter=Original, Mode=TwoWay}" />
+                        <RadioButton 
+                            Grid.Row="4" Grid.Column="1" 
+                            Margin="0,-15"
+                            FontSize="16"
+                            Content="Fill"
+                            GroupName="CropMode"
+                            IsChecked="{Binding CropMode, ElementName=picture, Converter={StaticResource CropModeToBooleanConverter}, ConverterParameter=Fill, Mode=TwoWay}" />
+                    </Grid>
                 </Grid>
             </phone:PivotItem>
             
