@@ -9,7 +9,7 @@ namespace Facebook.Client
     internal static class AsyncExtensions
     {
 
-        public static Task<object> GetTaskAsync(this FacebookClient client, string path, object parameters)
+        public static async Task<object> GetTaskAsync(this FacebookClient client, string path, object parameters)
         {
             var tcs = new TaskCompletionSource<object>();
             client.GetCompleted += (s, e) =>
@@ -21,6 +21,6 @@ namespace Facebook.Client
             client.GetAsync(path, parameters);
             return tcs.Task;
         }
-    }
 
+    }
 }
