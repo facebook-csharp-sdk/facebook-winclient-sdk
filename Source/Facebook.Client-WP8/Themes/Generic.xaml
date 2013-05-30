@@ -1,0 +1,13 @@
+<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Facebook.Client.Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="/Facebook.Client;component/Controls/LoginButton/LoginButton.xaml" />
+        <ResourceDictionary Source="/Facebook.Client;component/Controls/ProfilePicture/ProfilePicture.xaml" />
+        <ResourceDictionary Source="/Facebook.Client;component/Controls/FriendPicker/FriendPicker.xaml" />
+        <ResourceDictionary Source="/Facebook.Client;component/Controls/PlacePicker/PlacePicker.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>

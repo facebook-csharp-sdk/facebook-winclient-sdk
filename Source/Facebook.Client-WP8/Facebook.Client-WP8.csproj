@@ -20,6 +20,7 @@
     <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
+    <SupportedCultures>es</SupportedCultures>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -87,6 +88,87 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Facebook.Client\Controls\Converters\BooleanToVisibilityConverter.cs">
+      <Link>Controls\Converters\BooleanToVisibilityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Converters\ColorLuminosityConverter.cs">
+      <Link>Controls\Converters\ColorLuminosityConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Converters\HlsColor.cs">
+      <Link>Controls\Converters\HlsColor.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Converters\IsNullOrEmptyConverter.cs">
+      <Link>Controls\Converters\IsNullOrEmptyConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Converters\ScaleConverter.cs">
+      <Link>Controls\Converters\ScaleConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\DataItemRetrievedEventArgs.cs">
+      <Link>Controls\DataItemRetrievedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\DataReadyEventArgs.cs">
+      <Link>Controls\DataReadyEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Extensions\EventExtensions.cs">
+      <Link>Controls\Extensions\EventExtensions.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerDesignSupport.cs">
+      <Link>Controls\FriendPicker\FriendPickerDesignSupport.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerDisplayOrder.cs">
+      <Link>Controls\FriendPicker\FriendPickerDisplayOrder.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerItem.cs">
+      <Link>Controls\FriendPicker\FriendPickerItem.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\FriendPicker\FriendPickerSortOrder.cs">
+      <Link>Controls\FriendPicker\FriendPickerSortOrder.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\LoadFailedEventArgs.cs">
+      <Link>Controls\LoadFailedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\LoginButton\Audience.cs">
+      <Link>Controls\LoginButton\Audience.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\LoginButton\AuthenticationErrorEventArgs.cs">
+      <Link>Controls\LoginButton\AuthenticationErrorEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\LoginButton\FacebookSessionState.cs">
+      <Link>Controls\LoginButton\FacebookSessionState.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\LoginButton\LoginButton.cs">
+      <Link>Controls\LoginButton\LoginButton.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\LoginButton\SessionStateChangedEventArgs.cs">
+      <Link>Controls\LoginButton\SessionStateChangedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\LoginButton\UserInfoChangedEventArgs.cs">
+      <Link>Controls\LoginButton\UserInfoChangedEventArgs.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Picker\AlphaKeyGroup.cs">
+      <Link>Controls\Picker\AlphaKeyGroup.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Picker\PickerItem.cs">
+      <Link>Controls\Picker\PickerItem.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\Picker\PickerSelectionMode.cs">
+      <Link>Controls\Picker\PickerSelectionMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\PlacePicker\LocationCoordinate.cs">
+      <Link>Controls\PlacePicker\LocationCoordinate.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\PlacePicker\PlacePicker.cs">
+      <Link>Controls\PlacePicker\PlacePicker.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\PlacePicker\PlacePickerDesignSupport.cs">
+      <Link>Controls\PlacePicker\PlacePickerDesignSupport.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\ProfilePicture\CropMode.cs">
+      <Link>Controls\ProfilePicture\CropMode.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Controls\ProfilePicture\ProfilePicture.cs">
+      <Link>Controls\ProfilePicture\ProfilePicture.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\FacebookDialog.cs">
       <Link>FacebookDialog.cs</Link>
     </Compile>
@@ -109,6 +191,18 @@
     <Compile Include="..\Facebook.Client\FacebookWebDialog.cs">
       <Link>FacebookWebDialog.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\GraphLocation.cs">
+      <Link>GraphLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\GraphObject.cs">
+      <Link>GraphObject.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\GraphPlace.cs">
+      <Link>GraphPlace.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\GraphUser.cs">
+      <Link>GraphUser.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\PhoneWebAuthentication.cs">
       <Link>PhoneWebAuthentication.cs</Link>
     </Compile>
@@ -118,6 +212,14 @@
     </Compile>
     <Compile Include="..\Facebook.Client\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="Controls\Converters\ImageSourceUriConverter.cs" />
+    <Compile Include="Controls\FriendPicker\FriendPicker.cs" />
+    <Compile Include="Controls\Picker\Picker.cs" />
+    <Compile Include="Resources\AppResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -131,6 +233,26 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Controls\FriendPicker\FriendPicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\LoginButton\LoginButton.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PlacePicker\PlacePicker.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\ProfilePicture\ProfilePicture.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Facebook, Version=6.0.10.0, Culture=neutral, processorArchitecture=MSIL">
@@ -140,6 +262,20 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\fb_blank_profile_portrait.png" />
+    <EmbeddedResource Include="Images\fb_blank_profile_square.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\AppResources.es.resx" />
+    <EmbeddedResource Include="Resources\AppResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Images\fb_blank_place_profile_square.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).$(TargetFrameworkVersion).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />

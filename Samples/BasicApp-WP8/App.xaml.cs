@@ -1,26 +1,19 @@
-﻿using System;
-using System.Diagnostics;
-using System.Resources;
-using System.Windows;
-using System.Windows.Markup;
-using System.Windows.Navigation;
-using Microsoft.Phone.Controls;
-using Microsoft.Phone.Shell;
-using PhoneApp2.Resources;
-using Facebook.Client;
-
-namespace PhoneApp2
+﻿namespace PhoneApp2
 {
+    using System;
+    using System.Diagnostics;
+    using System.Resources;
+    using System.Windows;
+    using System.Windows.Markup;
+    using System.Windows.Navigation;
+    using Facebook.Client;
+    using Microsoft.Phone.Controls;
+    using Microsoft.Phone.Shell;
+    using PhoneApp2.Resources;
+
     public partial class App : Application
     {
-
-        public static FacebookSessionClient FacebookSessionClient = new FacebookSessionClient("427365490674294");
-
-        /// <summary>
-        /// Provides easy access to the root frame of the Phone Application.
-        /// </summary>
-        /// <returns>The root frame of the Phone Application.</returns>
-        public static PhoneApplicationFrame RootFrame { get; private set; }
+        ////public static FacebookSessionClient FacebookSessionClient = new FacebookSessionClient("427365490674294");
 
         /// <summary>
         /// Constructor for the Application object.
@@ -28,16 +21,16 @@ namespace PhoneApp2
         public App()
         {
             // Global handler for uncaught exceptions.
-            UnhandledException += Application_UnhandledException;
+            this.UnhandledException += this.Application_UnhandledException;
 
             // Standard XAML initialization
-            InitializeComponent();
+            this.InitializeComponent();
 
             // Phone-specific initialization
-            InitializePhoneApplication();
+            this.InitializePhoneApplication();
 
             // Language display initialization
-            InitializeLanguage();
+            this.InitializeLanguage();
 
             // Show graphics profiling information while debugging.
             if (Debugger.IsAttached)
@@ -45,20 +38,26 @@ namespace PhoneApp2
                 // Display the current frame rate counters.
                 Application.Current.Host.Settings.EnableFrameRateCounter = true;
 
-                // Show the areas of the app that are being redrawn in each frame.
-                //Application.Current.Host.Settings.EnableRedrawRegions = true;
+                //// Show the areas of the app that are being redrawn in each frame.
+                ////Application.Current.Host.Settings.EnableRedrawRegions = true;
 
-                // Enable non-production analysis visualization mode,
-                // which shows areas of a page that are handed off to GPU with a colored overlay.
-                //Application.Current.Host.Settings.EnableCacheVisualization = true;
+                //// Enable non-production analysis visualization mode,
+                //// which shows areas of a page that are handed off to GPU with a colored overlay.
+                ////Application.Current.Host.Settings.EnableCacheVisualization = true;
 
-                // Prevent the screen from turning off while under the debugger by disabling
-                // the application's idle detection.
-                // Caution:- Use this under debug mode only. Application that disables user idle detection will continue to run
-                // and consume battery power when the user is not using the phone.
+                //// Prevent the screen from turning off while under the debugger by disabling
+                //// the application's idle detection.
+                //// Caution:- Use this under debug mode only. Application that disables user idle detection will continue to run
+                //// and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
         }
+
+        /// <summary>
+        /// Provides easy access to the root frame of the Phone Application.
+        /// </summary>
+        /// <returns>The root frame of the Phone Application.</returns>
+        public static PhoneApplicationFrame RootFrame { get; private set; }
 
         // Code to execute when the application is launching (eg, from Start)
         // This code will not execute when the application is reactivated
@@ -112,33 +111,33 @@ namespace PhoneApp2
         // Do not add any additional code to this method
         private void InitializePhoneApplication()
         {
-            if (phoneApplicationInitialized)
+            if (this.phoneApplicationInitialized)
                 return;
 
             // Create the frame but don't set it as RootVisual yet; this allows the splash
             // screen to remain active until the application is ready to render.
             RootFrame = new PhoneApplicationFrame();
-            RootFrame.Navigated += CompleteInitializePhoneApplication;
+            RootFrame.Navigated += this.CompleteInitializePhoneApplication;
 
             // Handle navigation failures
-            RootFrame.NavigationFailed += RootFrame_NavigationFailed;
+            RootFrame.NavigationFailed += this.RootFrame_NavigationFailed;
 
             // Handle reset requests for clearing the backstack
-            RootFrame.Navigated += CheckForResetNavigation;
+            RootFrame.Navigated += this.CheckForResetNavigation;
 
             // Ensure we don't initialize again
-            phoneApplicationInitialized = true;
+            this.phoneApplicationInitialized = true;
         }
 
         // Do not add any additional code to this method
         private void CompleteInitializePhoneApplication(object sender, NavigationEventArgs e)
         {
             // Set the root visual to allow the application to render
-            if (RootVisual != RootFrame)
-                RootVisual = RootFrame;
+            if (this.RootVisual != RootFrame)
+                this.RootVisual = RootFrame;
 
             // Remove this handler since it is no longer needed
-            RootFrame.Navigated -= CompleteInitializePhoneApplication;
+            RootFrame.Navigated -= this.CompleteInitializePhoneApplication;
         }
 
         private void CheckForResetNavigation(object sender, NavigationEventArgs e)
@@ -146,13 +145,13 @@ namespace PhoneApp2
             // If the app has received a 'reset' navigation, then we need to check
             // on the next navigation to see if the page stack should be reset
             if (e.NavigationMode == NavigationMode.Reset)
-                RootFrame.Navigated += ClearBackStackAfterReset;
+                RootFrame.Navigated += this.ClearBackStackAfterReset;
         }
 
         private void ClearBackStackAfterReset(object sender, NavigationEventArgs e)
         {
             // Unregister the event so it doesn't get called again
-            RootFrame.Navigated -= ClearBackStackAfterReset;
+            RootFrame.Navigated -= this.ClearBackStackAfterReset;
 
             // Only clear the stack for 'new' (forward) and 'refresh' navigations
             if (e.NavigationMode != NavigationMode.New && e.NavigationMode != NavigationMode.Refresh)
@@ -161,7 +160,7 @@ namespace PhoneApp2
             // For UI consistency, clear the entire page stack
             while (RootFrame.RemoveBackEntry() != null)
             {
-                ; // do nothing
+                // do nothing
             }
         }
 
@@ -183,7 +182,6 @@ namespace PhoneApp2
         //     ResourceFlowDirection's value should be "RightToLeft"
         //
         // For more info on localizing Windows Phone apps see http://go.microsoft.com/fwlink/?LinkId=262072.
-        //
         private void InitializeLanguage()
         {
             try
@@ -209,10 +207,10 @@ namespace PhoneApp2
             }
             catch
             {
-                // If an exception is caught here it is most likely due to either
-                // ResourceLangauge not being correctly set to a supported language
-                // code or ResourceFlowDirection is set to a value other than LeftToRight
-                // or RightToLeft.
+                //// If an exception is caught here it is most likely due to either
+                //// ResourceLangauge not being correctly set to a supported language
+                //// code or ResourceFlowDirection is set to a value other than LeftToRight
+                //// or RightToLeft.
 
                 if (Debugger.IsAttached)
                 {

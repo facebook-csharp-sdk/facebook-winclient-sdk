@@ -4,6 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
     xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:facebookControls="clr-namespace:Facebook.Client.Controls;assembly=Facebook.Client"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
@@ -13,11 +14,40 @@
     SupportedOrientations="Portrait" Orientation="Portrait"
     shell:SystemTray.IsVisible="True">
 
+    <phone:PhoneApplicationPage.Resources>
+        <Style x:Key="FormLabel" BasedOn="{StaticResource PhoneTextBlockBase}" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style x:Key="FormField" BasedOn="{StaticResource PhoneTextBlockBase}" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style x:Key="GridLine" TargetType="Line">
+            <Setter Property="Stroke" Value="Gray" />
+            <Setter Property="Stretch" Value="Fill" />
+        </Style>
+
+        <Style x:Key="HorizontalGridLine" TargetType="Line" BasedOn="{StaticResource GridLine}">
+            <Setter Property="Grid.ColumnSpan" Value="2" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="X2" Value="1" />
+        </Style>
+
+        <Style x:Key="VerticalGridLine" TargetType="Line" BasedOn="{StaticResource GridLine}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Y2" Value="1" />
+        </Style>
+    </phone:PhoneApplicationPage.Resources>
+
     <!--LayoutRoot is the root grid where all page content is placed-->
     <Grid x:Name="LayoutRoot" Background="Transparent">
         <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
 
         <!-- LOCALIZATION NOTE:
@@ -38,17 +68,161 @@
             attributes to be drawn from the .resx file that matches the
             CurrentUICulture of the app at run time.
          -->
-
-        <!--TitlePanel contains the name of the application and page title-->
-        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28">
-            <TextBlock Text="MY APPLICATION" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>
-            <TextBlock Text="page name" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}"/>
+        
+        <StackPanel x:Name="welcomeText" Grid.Row="0" Opacity="100" Orientation="Vertical" VerticalAlignment="Center">
+            <TextBlock Text="FACEBOOK SDK FOR .NET" Style="{StaticResource PhoneTextTitle2Style}" />
+            <TextBlock Text="Log in to start"  Style="{StaticResource PhoneTextTitle3Style}" Margin="12,0,0,30"/>
         </StackPanel>
 
-        <!--ContentPanel - place additional content here-->
-        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0">
+        <!--Pivot Control-->
+        <phone:Pivot x:Name="contentPanel" Grid.Row="0" Opacity="0" Title="FACEBOOK SDK FOR .NET">
+            <!--Pivot item one-->
+            <phone:PivotItem Header="user info">
+                <Grid x:Name="userInfo" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="125" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Line Grid.Row="0" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="1" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="2" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="3" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="4" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="5" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="6" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="7" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="0" Grid.Column="0" Grid.RowSpan="8" Style="{StaticResource VerticalGridLine}"/>
 
-        </Grid>
+                    <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Name" />
+                    <TextBlock Grid.Row="0" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Name}" />
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FormLabel}" Text="User name" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding UserName}" />
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource FormLabel}" Text="First name" />
+                    <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding FirstName}" />
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Middle name" />
+                    <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding MiddleName}" />
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Last name" />
+                    <TextBlock Grid.Row="4" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding LastName}" />
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Birthday" />
+                    <TextBlock Grid.Row="5" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Birthday}" />
+
+                    <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Link" />
+                    <TextBlock Grid.Row="6" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Link}" />
+
+                    <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Location" />
+                    <TextBlock Grid.Row="7" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Location.City}" />
+                </Grid>
+            </phone:PivotItem>
+
+            <!--Pivot item two-->
+            <phone:PivotItem Header="friends">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="120" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox
+                            Margin="0,0,20,0"
+                            VerticalAlignment="top"
+                            x:Name="displayPicture"
+                            FontSize="20"
+                            Content="Picture"
+                            VerticalContentAlignment="Top"
+                            IsChecked="True" />
+                    
+                        <StackPanel 
+                            Orientation="Vertical"
+                            Margin="0,0,20,0" >
+                            <TextBlock Text="Selection:" />
+                            <ListBox
+                                x:Name="selectionMode" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Vertical">
+                            <TextBlock Text="Display:" />
+                            <ListBox 
+                                Grid.Column="1"
+                                Grid.RowSpan="2"
+                                x:Name="displayOrder" />
+                        </StackPanel>
+                    </StackPanel>
+
+                    <facebookControls:FriendPicker x:Name="friendPicker"
+                        Grid.Row="1"
+                        SelectionMode="{Binding SelectedItem, ElementName=selectionMode}"
+                        DisplayOrder="{Binding SelectedItem, ElementName=displayOrder}"
+                        DisplayProfilePictures="{Binding IsChecked, ElementName=displayPicture}"
+                        PictureSize="50,50"
+                        AccessToken="{Binding CurrentSession.AccessToken, ElementName=loginButton}" />
+                </Grid>
+            </phone:PivotItem>
+
+            <!--Pivot item three-->
+            <phone:PivotItem Header="places">
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="120" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    
+                    <Grid Grid.Row="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="60"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="140"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Row="0" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Search for:" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="0" Grid.Column="1" Width="200" Height="55" Padding="0,-4,0,0" FontSize="20" x:Name="searchText" Text="{Binding ElementName=placePicker, Path=SearchText, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Radius:" VerticalAlignment="Center" />
+                        <TextBox Grid.Row="1" Grid.Column="1" Width="200" Height="55" Padding="0,-4,0,0" FontSize="20" x:Name="radius" Text="{Binding ElementName=placePicker, Path=RadiusInMeters, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                    </Grid>
+                    <facebookControls:PlacePicker
+                        Grid.Row="1"
+                        x:Name="placePicker"
+                        SelectionMode="Multiple"
+                        DisplayProfilePictures="True"
+                        PictureSize="50,50"
+                        AccessToken="{Binding CurrentSession.AccessToken, ElementName=loginButton}" />                                       
+                </Grid>
+            </phone:PivotItem>
+        </phone:Pivot>
+
+        <StackPanel Grid.Row="1" Orientation="Vertical" HorizontalAlignment="Left" VerticalAlignment="Top" Width="170" Margin="0,23,0,0">
+            <facebookControls:ProfilePicture
+                    AccessToken="{Binding CurrentSession.AccessToken, ElementName=loginButton}" 
+                    ProfileId="{Binding CurrentSession.FacebookId, ElementName=loginButton}" />
+            <TextBlock Style="{StaticResource PhoneTextBlockBase}" TextWrapping="Wrap" TextAlignment="Center" Text="{Binding CurrentUser.Name, ElementName=loginButton}" />
+        </StackPanel>
+        
+        <facebookControls:LoginButton
+            x:Name="loginButton"
+            Grid.Row="1"
+            ApplicationId="427365490674294" 
+            UserInfoChanged="OnUserInfoChanged"
+            SessionStateChanged="OnSessionStateChanged"
+            HorizontalAlignment="Right"
+            VerticalAlignment="top"
+            Margin="0,23,20,0" />
 
         <!--Uncomment to see an alignment grid to help ensure your controls are
             aligned on common boundaries.  The image has a top margin of -32px to

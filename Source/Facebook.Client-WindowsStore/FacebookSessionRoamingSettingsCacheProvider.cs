@@ -75,6 +75,7 @@ namespace Facebook.Client
             composite["CurrentPermissions"] = string.Join(",", data.CurrentPermissions);
             composite["Expires"] = data.Expires.ToString();
             composite["FacebookId"] = data.FacebookId;
+            settings.Values[key] = composite;
         }
 
         public override void DeleteSessionData()
