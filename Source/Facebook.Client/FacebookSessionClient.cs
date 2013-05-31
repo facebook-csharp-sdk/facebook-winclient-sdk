@@ -22,6 +22,7 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 #if NETFX_CORE
@@ -43,7 +44,39 @@ namespace Facebook.Client
                 throw new ArgumentNullException("appId");
             }
             this.AppId = appId;
+
+            // Send analytics to Facebook
+            SendAnalytics(appId);
         }
+
+        private static bool AnalyticsSent = false;
+
+        private void SendAnalytics(string FacebookAppId = null)
+        {
+            try
+            {
+                if (!AnalyticsSent)
+                {
+                    AnalyticsSent = true;
+
+#if !(WINDOWS_PHONE)
+                    Version assemblyVersion = typeof(FacebookSessionClient).GetTypeInfo().Assembly.GetName().Version;
+#else
+                    Version assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+#endif
+                    string instrumentationURL = String.Format("https://www.facebook.com/impression.php/?plugin=featured_resources&payload=%7B%22resource%22%3A%22microsoft_csharpsdk%22%2C%22appid%22%3A%22{0}%22%2C%22version%22%3A%22{1}%22%7D",
+                            FacebookAppId == null ? String.Empty : FacebookAppId, assemblyVersion);
+
+                    HttpHelper helper = new HttpHelper(instrumentationURL);
+
+                    // setup the read completed event handler to dispose of the stream once the results are back
+                    helper.OpenReadCompleted += (o, e) => { if (e.Error != null) using (var stream = e.Result) { }; };
+                    helper.OpenReadAsync();
+                }
+            }
+            catch { } //ignore all errors
+        }
+
 
         public async Task<FacebookSession> LoginAsync()
         {
