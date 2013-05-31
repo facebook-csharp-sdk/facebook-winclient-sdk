@@ -1,7 +1,7 @@
-# Facebook SDK for Windows & Windows Phone
-The Facebook SDK for Windows & Windows Phone helps .Net developers build Windows Phone and Windows Store applications that integrate with Facebook.
+# Facebook C# SDK for Windows & Windows Phone
+The Facebook C# SDK for Windows & Windows Phone helps .NET developers build Windows Phone and Windows Store applications that integrate with Facebook.
 
-> **WARNING: The Facebook SDK for Windows & Windows Phone is currently considered alpha quality. The APIs will change and things will break as we move to v1.0.0.**
+> **WARNING: The Facebook C# SDK for Windows & Windows Phone is currently considered alpha quality. The APIs will change and things will break as we move to v1.0.0.**
 
 [Like us on Facebook at our official page](http://facebook.com/csharpsdk) or [Follow us on twitter @chsarpsdk](http://twitter.com/csharpsdk).
 
@@ -11,7 +11,7 @@ The Facebook SDK for Windows & Windows Phone helps .Net developers build Windows
 
     Install-Package Facebook.Client -pre
 
-*Binaries for Facebook SDK for Windows & Windows Phone are only distributed via nuget. For those using older versions of Visual Studio that does not support NuGet Package Manager, please download the [command line version of NuGet.exe](http://nuget.codeplex.com/releases/view/58939) and run the following
+*Binaries for Facebook C# SDK for Windows & Windows Phone are only distributed via nuget. For those using older versions of Visual Studio that does not support NuGet Package Manager, please download the [command line version of NuGet.exe](http://nuget.codeplex.com/releases/view/58939) and run the following
 command.*
 
     nuget install Facebook.Client -pre
@@ -31,12 +31,12 @@ Use [facebook.stackoverflow.com](http://facebook.stackoverflow.com) for help and
 [Facebook Change Log](https://developers.facebook.com/docs/changelog/)
 
 ## Features
-* NuGet Packages Available ([Facebook.Client](http://nuget.org/packages/Facebook.Client)
+* NuGet Packages Available ([Facebook.Client](http://nuget.org/packages/Facebook.Client))
 * Authentication Helpers
 
 ## Supported Platforms
 * Windows Store
-* Windows Phone 7.1 (Mango)
+* Windows Phone 7.1
 * Windows Phone 8
  
 ## Contribute

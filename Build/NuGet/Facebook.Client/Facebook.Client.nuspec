@@ -6,7 +6,7 @@
         <title/>
         <authors>Outercurve Foundation</authors>
         <owners>Nathan Totten, Prabir Shrestha</owners>
-        <description><![CDATA[The Facebook SDK for Windows & Windows Phone helps .Net developers build phone and Windows Store applications that integrate with Facebook.]]></description>
+        <description><![CDATA[The Facebook C# SDK for Windows & Windows Phone helps .NET developers build phone and Windows Store applications that integrate with Facebook.]]></description>
         <language>en-US</language>
         <licenseUrl>https://github.com/facebook-csharp-sdk/facebook-winclient-sdk/master/LICENSE.txt</licenseUrl>
         <projectUrl>https://github.com/facebook-csharp-sdk/facebook-winclient-sdk</projectUrl>
@@ -15,11 +15,11 @@
         <tags>Facebook fb</tags>
         <dependencies>
             <group>
-                <dependency id="Facebook" version="6.3" />
+                <dependency id="Facebook" version="6.4" />
             </group>
             <group targetFramework="wp71">
-                <dependency id="Facebook" version="6.3" />
-                <dependency id="Microsoft.Bcl.Async" />
+                <dependency id="Facebook" version="6.4" />
+                <dependency id="Microsoft.Bcl.Async" version="1.0" />
             </group>
         </dependencies>
     </metadata>
@@ -28,6 +28,11 @@
         <file src="..\..\..\Build\readme.txt" target = "readme.txt" />
         <file src="..\..\..\Bin\Release\win8\Facebook.Client.dll" target = "lib\win8" />
         <file src="..\..\..\Bin\Release\win8\Facebook.Client.xml" target = "lib\win8" />
+        <file src="..\..\..\Bin\Release\win8\Facebook.Client.pri" target = "lib\win8" />
+        <file src="..\..\..\Bin\Release\win8\FacebookDialogPage.xaml" target = "lib\win8\Facebook.Client" />
+        <file src="..\..\..\Bin\Release\win8\Controls\**" target = "lib\win8\Facebook.Client\Controls\" />
+        <file src="..\..\..\Bin\Release\win8\Themes\**" target = "lib\win8\Facebook.Client\Themes\" />
+        <file src="..\..\..\Source\Facebook.Client-WindowsStore\Images\**" target = "lib\win8\Facebook.Client\Images\" />
         <file src="..\..\..\Bin\Release\wp71\Facebook.Client.dll" target = "lib\wp71" />
         <file src="..\..\..\Bin\Release\wp71\Facebook.Client.xml" target = "lib\wp71" />
         <file src="..\..\..\Bin\Release\wp8\Facebook.Client.dll" target = "lib\wp8" />

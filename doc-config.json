@@ -1,0 +1,15 @@
+{
+  "projects" : [
+    {
+      "path": ".\\Source\\Facebook.Client-WindowsStore\\Facebook.Client-WindowsStore.csproj",
+      "id": "Windows Store"
+    },
+    {
+      "path": ".\\Source\\Facebook.Client-WP8\\Facebook.Client-WP8.csproj",
+      "id": "Windows Phone 8"
+    }
+  ],
+  "filteredNamespaces": [
+    "Facebook.Client",
+  ]
+}

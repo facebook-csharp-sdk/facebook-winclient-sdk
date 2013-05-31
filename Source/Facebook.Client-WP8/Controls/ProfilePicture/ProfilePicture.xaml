@@ -1,0 +1,33 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:Facebook.Client.Controls">
+
+    <local:ImageSourceUriConverter x:Key="ImageSourceUriConverter" />
+    
+    <Style TargetType="local:ProfilePicture">
+        <Setter Property="Width" Value="50" />
+        <Setter Property="Height" Value="50" />
+        <Setter Property="CropMode" Value="Square" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:ProfilePicture">
+                    <Border
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}"
+                        Width="{TemplateBinding Width}"
+                        Height="{TemplateBinding Height}"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center">
+                        <Image x:Name="PART_ProfilePicture"
+                                Stretch="Uniform"
+                                HorizontalAlignment="Center" 
+                                VerticalAlignment="Center"
+                                Source="{Binding ImageSource, Converter={StaticResource ImageSourceUriConverter}}" />
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>
