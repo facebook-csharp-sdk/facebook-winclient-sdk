@@ -3,7 +3,6 @@
 // you get a catastrophic failure:
 // See http://social.msdn.microsoft.com/Forums/en-US/winappswithcsharp/thread/6535656e-3293-4e0d-93b5-453864b95601
 // See http://stackoverflow.com/questions/9952574/semantic-zoom-control-throwing-exception-when-groups-are-empty?rq=1
-// See http://social.msdn.microsoft.com/Forums/en-US/winappswithcsharp/thread/6535656e-3293-4e0d-93b5-453864b95601
 // See http://stackoverflow.com/questions/14423536/semantic-zoom-catastrophic-failure-on-empty-group
 namespace Facebook.Client.Controls
 {
