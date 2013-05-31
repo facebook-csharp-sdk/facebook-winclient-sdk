@@ -224,7 +224,7 @@
     <Compile Include="Controls\Converters\SizeToGridCellConverter.cs" />
     <Compile Include="Controls\FriendPicker\FriendPicker.cs" />
     <Compile Include="Controls\FriendPicker\FriendPickerGroupTemplateSelector.cs" />
-    <Compile Include="Controls\FriendPicker\GroupTemplateSelector.cs" />
+    <Compile Include="Controls\Picker\GroupTemplateSelector.cs" />
     <Compile Include="Controls\FriendPicker\SortedLocaleGrouping.cs" />
     <Compile Include="Controls\Picker\Picker.cs" />
     <Compile Include="FacebookDialogPage.xaml.cs">
