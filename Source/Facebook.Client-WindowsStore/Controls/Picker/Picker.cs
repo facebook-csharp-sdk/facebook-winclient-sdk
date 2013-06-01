@@ -1,11 +1,4 @@
-﻿// BUG!!!!!!
-// If you are zoomed out in a semantic zoom control, and the last group is empty, if you tap it, 
-// you get a catastrophic failure:
-// See http://social.msdn.microsoft.com/Forums/en-US/winappswithcsharp/thread/6535656e-3293-4e0d-93b5-453864b95601
-// See http://stackoverflow.com/questions/9952574/semantic-zoom-control-throwing-exception-when-groups-are-empty?rq=1
-// See http://social.msdn.microsoft.com/Forums/en-US/winappswithcsharp/thread/6535656e-3293-4e0d-93b5-453864b95601
-// See http://stackoverflow.com/questions/14423536/semantic-zoom-catastrophic-failure-on-empty-group
-namespace Facebook.Client.Controls
+﻿namespace Facebook.Client.Controls
 {
     using System;
     using System.Collections;
@@ -42,7 +35,6 @@ namespace Facebook.Client.Controls
 
         #region Member variables
 
-        private bool isZoomedOut = false;
         private SemanticZoom semanticZoom;
 
         #endregion Member variables
@@ -222,22 +214,26 @@ namespace Facebook.Client.Controls
             if (this.semanticZoom != null)
             {
                 var view = this.semanticZoom.ZoomedInView as ListViewBase;
-                view.SelectionChanged -= this.OnSelectionChanged;
-                this.semanticZoom.ViewChangeCompleted -= this.OnSemanticZoomViewChangeCompleted;
+                if (view != null)
+                {
+                    view.SelectionChanged -= this.OnSelectionChanged;
+                }
+
                 this.semanticZoom.Tapped -= this.OnSemanticZoomTapped;
-                (this.semanticZoom.ZoomedOutView as Control).Tapped -= this.OnSemanticZoomOutViewTapped;
             }
 
             this.semanticZoom = this.GetTemplateChild(Picker<T>.PartSemanticZoom) as SemanticZoom;
             if (this.semanticZoom != null)
             {
                 var view = this.semanticZoom.ZoomedInView as ListViewBase;
-                view.SelectionChanged += this.OnSelectionChanged;
+                if (view != null)
+                {
+                    view.SelectionChanged += this.OnSelectionChanged;
+                }
+
                 this.semanticZoom.IsZoomOutButtonEnabled = false;
-                this.semanticZoom.ViewChangeCompleted += this.OnSemanticZoomViewChangeCompleted;
                 this.semanticZoom.Tapped += this.OnSemanticZoomTapped;
                 this.semanticZoom.Tag = this;
-                (this.semanticZoom.ZoomedOutView as Control).Tapped += this.OnSemanticZoomOutViewTapped;
             }
 
             if (Windows.ApplicationModel.DesignMode.DesignModeEnabled)
@@ -271,34 +267,22 @@ namespace Facebook.Client.Controls
             this.SelectionChanged.RaiseEvent(this, new SelectionChangedEventArgs(removedItems, addedItems));
         }
 
-        // TODO: this is a hack to prevent switching views whenever an empty group is clicked. 
-        // It is not completely effective. For example, it fails if you double-click a group, or click outside a group's area.
-        // Must find a better alternative.
-        private void OnSemanticZoomOutViewTapped(object sender, TappedRoutedEventArgs e)
-        {
-            var group = (e.OriginalSource as FrameworkElement).DataContext as AlphaKeyGroup<PickerItem<T>>;
-            if (group != null && !group.Any())
-            {
-                this.semanticZoom.IsZoomedInViewActive = false;
-                e.Handled = true;
-            }
-        }
-
         private void OnSemanticZoomTapped(object sender, TappedRoutedEventArgs e)
         {
-            if (!this.isZoomedOut && ((e.OriginalSource as FrameworkElement).DataContext is AlphaKeyGroup<PickerItem<T>>))
+            var group = (e.OriginalSource as FrameworkElement).DataContext as AlphaKeyGroup<PickerItem<T>>;
+            if (group != null)
             {
-                this.isZoomedOut = true;
-                this.semanticZoom.ToggleActiveView();
-                e.Handled = true;
-            }
-        }
-
-        private void OnSemanticZoomViewChangeCompleted(object sender, SemanticZoomViewChangedEventArgs e)
-        {
-            if (!e.IsSourceZoomedInView)
-            {
-                this.isZoomedOut = false;
+                if (this.semanticZoom.IsZoomedInViewActive)
+                {
+                    this.semanticZoom.ToggleActiveView();
+                    this.semanticZoom.CanChangeViews = false;
+                }
+                else if (group.Any())
+                {
+                    this.Focus(Windows.UI.Xaml.FocusState.Programmatic);
+                    this.semanticZoom.CanChangeViews = true;
+                    this.semanticZoom.ToggleActiveView();
+                }
             }
         }
 
