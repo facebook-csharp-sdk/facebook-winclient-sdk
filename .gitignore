@@ -43,6 +43,7 @@ Thumbs.db
 Working/
 Dist/
 packages/
+doc_output/
 NuGet.exe
 
 #Windows 8
