@@ -210,6 +210,7 @@ namespace Facebook.Client
             parameters["response_type"] = "token";
 #if WINDOWS_PHONE
             parameters["display"] = "touch";
+            parameters["mobile"] = true;
 #else
             parameters["display"] = "popup";
 #endif
