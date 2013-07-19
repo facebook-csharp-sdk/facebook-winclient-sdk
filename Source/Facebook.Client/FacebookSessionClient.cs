@@ -70,7 +70,7 @@ namespace Facebook.Client
                     HttpHelper helper = new HttpHelper(instrumentationURL);
 
                     // setup the read completed event handler to dispose of the stream once the results are back
-                    helper.OpenReadCompleted += (o, e) => { if (e.Error != null) using (var stream = e.Result) { }; };
+                    helper.OpenReadCompleted += (o, e) => { if (e.Error == null) using (var stream = e.Result) { }; };
                     helper.OpenReadAsync();
                 }
             }
