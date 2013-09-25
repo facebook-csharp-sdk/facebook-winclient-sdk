@@ -61,8 +61,8 @@ namespace Facebook.Client
 
 #if !(WINDOWS_PHONE)
                     Version assemblyVersion = typeof(FacebookSessionClient).GetTypeInfo().Assembly.GetName().Version;
-#else
-                    Version assemblyVersion = Assembly.GetExecutingAssembly().GetName().Version;
+#else                    
+                    string assemblyVersion = Assembly.GetExecutingAssembly().FullName.Split(',')[1].Split('=')[1];
 #endif
                     string instrumentationURL = String.Format("https://www.facebook.com/impression.php/?plugin=featured_resources&payload=%7B%22resource%22%3A%22microsoft_csharpsdk%22%2C%22appid%22%3A%22{0}%22%2C%22version%22%3A%22{1}%22%7D",
                             FacebookAppId == null ? String.Empty : FacebookAppId, assemblyVersion);
