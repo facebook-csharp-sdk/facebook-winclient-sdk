@@ -246,9 +246,14 @@
 
             if (this.longListSelector != null && this.longListSelector.ItemsSource != null)
             {
-                (this.longListSelector.ItemsSource as IEnumerable<AlphaKeyGroup<PickerItem<T>>>)
-                    .SelectMany(i => i)
-                    .Where(f => f.IsSelected)
+                var source = this.longListSelector.ItemsSource as IEnumerable<PickerItem<T>>;
+                if (source == null)
+                {
+                    source = (this.longListSelector.ItemsSource as IEnumerable<AlphaKeyGroup<PickerItem<T>>>)
+                        .SelectMany(i => i);
+                }
+
+                source.Where(f => f.IsSelected)
                     .ToList()
                     .ForEach(i => i.IsSelected = false);
 

@@ -33,7 +33,7 @@ namespace Facebook.Client.Controls
         private const string DefaultAccessToken = "";
         private const string DefaultProfileId = "me";
         private const string DefaultDisplayFields = "id,name,first_name,middle_name,last_name,picture";
-        private const FriendPickerDisplayOrder DefaultDisplayOrder = FriendPickerDisplayOrder.DisplayFirstNameFirst;
+        private const FriendPickerDisplayOrder DefaultDisplayOrder = FriendPickerDisplayOrder.DisplayLastNameFirst;
         private const FriendPickerSortOrder DefaultSortOrder = FriendPickerSortOrder.SortByFirstName;
         private const bool DefaultDisplayProfilePictures = true;
         private static readonly Size DefaultPictureSize = new Size(50, 50);
