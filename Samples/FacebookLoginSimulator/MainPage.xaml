@@ -1,0 +1,86 @@
+﻿<phone:PhoneApplicationPage x:Class="FacebookLoginSimulator.MainPage"
+                            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                            xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+                            xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+                            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                            mc:Ignorable="d"
+                            FontFamily="{StaticResource PhoneFontFamilyNormal}"
+                            FontSize="{StaticResource PhoneFontSizeNormal}"
+                            Foreground="{StaticResource PhoneForegroundBrush}"
+                            SupportedOrientations="Portrait"
+                            Orientation="Portrait"
+                            shell:SystemTray.IsVisible="True"
+                            shell:SystemTray.BackgroundColor="#191D24"
+                            shell:SystemTray.ForegroundColor="WhiteSmoke">
+
+    <!--LayoutRoot is the root grid where all page content is placed-->
+    <Grid x:Name="LayoutRoot"
+          Background="{StaticResource FacebookBlue}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"
+                           MinHeight="85" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!--TitlePanel contains the name of the application and page title-->
+        <StackPanel x:Name="TitlePanel"
+                    Grid.Row="0"
+                    Margin="12,17,0,4">
+            <Image Source="/Assets/FacebookDevelopersLogo.png"
+                   HorizontalAlignment="Center"
+                   Margin="12,0"
+                   Stretch="UniformToFill"
+                   Width="135" />
+            <TextBlock Text="Login Simulator"
+                       Style="{StaticResource PhoneTextNormalStyle}"
+                       Margin="12,0"
+                       Foreground="White"
+                       HorizontalAlignment="Center"
+                       FontFamily="Segoe WP Semibold"
+                       FontSize="21.333" />
+        </StackPanel>
+
+        <!--ContentPanel - place additional content here-->
+        <Grid x:Name="ContentPanel"
+              Grid.Row="1"
+              Margin="12,0,12,0">
+            <StackPanel Orientation="Vertical">
+                <TextBlock Text="Access Token:"
+                           Foreground="White"
+                           Style="{StaticResource PhoneTextNormalStyle}" />
+                <TextBox x:Name="AccessTokenBox"
+                         Style="{StaticResource DefaultTextBoxStyle}" />
+                <TextBlock Text="Expires In (seconds):"
+                           Foreground="White"
+                           Style="{StaticResource PhoneTextNormalStyle}" />
+                <TextBox x:Name="AccessTokenExpiresInBox"
+                         Style="{StaticResource DefaultTextBoxStyle}"
+                         Text="7200"/>
+                <TextBlock Text="These are some of the common responses from Facebook. This should not be treated as a complete list."
+                           TextWrapping="Wrap"
+                           Foreground="White"
+                           Style="{StaticResource PhoneTextNormalStyle}" />
+                <StackPanel Orientation="Horizontal">
+                    <Button Content="success"
+                            x:Name="SuccessButton"
+                            Style="{StaticResource DefaultButtonStyle}"
+                            Click="SuccessButton_OnClick"
+                            Width="228" />
+                    <Button Content="access denied"
+                            x:Name="AccessDeniedButton"
+                            Style="{StaticResource DefaultButtonStyle}"
+                            Click="AccessDeniedButton_OnClick"
+                            Width="228" />
+                </StackPanel>
+                <Button Content="no network"
+                        x:Name="NoNetworkButton"
+                        Style="{StaticResource DefaultButtonStyle}"
+                        Click="NoNetworkButton_OnClick"
+                        HorizontalAlignment="Stretch"/>
+            </StackPanel>
+        </Grid>
+    </Grid>
+
+</phone:PhoneApplicationPage>
