@@ -85,11 +85,22 @@ namespace Facebook.Client
                 throw new NotImplementedException("This method does not support authentication options other than 'None'.");
             }
 
-            PhoneApplicationFrame rootFrame = Application.Current.RootVisual as PhoneApplicationFrame;
+            bool delegateToUI = false;
+            PhoneApplicationFrame rootFrame = null;
 
-            if (rootFrame == null)
+            // Trying to do this in current thread. If not possible, try do to on UI thread.
+            try
             {
-                throw new InvalidOperationException();
+                rootFrame = Application.Current.RootVisual as PhoneApplicationFrame;
+
+                if (rootFrame == null)
+                {
+                    throw new InvalidOperationException();
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                delegateToUI = true;
             }
 
             WebAuthenticationBroker.StartUri = startUri;
@@ -97,7 +108,24 @@ namespace Facebook.Client
             WebAuthenticationBroker.AuthenticationInProgress = true;
 
             // Navigate to the login page.
-            rootFrame.Navigate(new Uri("/Facebook.Client;component/loginpage.xaml", UriKind.Relative));
+            if (!delegateToUI)
+            {
+                rootFrame.Navigate(new Uri("/Facebook.Client;component/loginpage.xaml", UriKind.Relative));
+            }
+            else
+            {
+                Deployment.Current.Dispatcher.BeginInvoke(() =>
+                {
+                    rootFrame = Application.Current.RootVisual as PhoneApplicationFrame;
+
+                    if (rootFrame == null)
+                    {
+                        return;
+                    }
+
+                    rootFrame.Navigate(new Uri("/Facebook.Client;component/loginpage.xaml", UriKind.Relative));
+                });
+            }
 
             Task<WebAuthenticationResult> task = Task<WebAuthenticationResult>.Factory.StartNew(() =>
             {
