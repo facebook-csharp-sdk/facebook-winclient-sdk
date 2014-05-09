@@ -46,6 +46,7 @@ namespace Facebook.Client
             this.AppId = appId;
 
             // Send analytics to Facebook
+            //** This should be optional as it affects the privacy status of any app consumingthis framework
             SendAnalytics(appId);
         }
 
