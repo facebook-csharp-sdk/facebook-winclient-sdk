@@ -415,7 +415,7 @@
             <!--Login Button-->
             <facebookControls:LoginButton x:Name="loginButton" 
                 Grid.Row="2"
-                ApplicationId="427365490674294"
+                ApplicationId="540541885996234"
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 UserInfoChanged="OnUserInfoChanged" 

@@ -40,7 +40,16 @@ namespace Facebook.Client
 
         public static void Navigate(AppLink appLink)
         {
-
+            if (appLink != null)
+            {
+                foreach (var target in appLink.Targets)
+                {
+                    if (target.Platform == Platform.WindowsPhone)
+                    {
+                        Windows.System.Launcher.LaunchUriAsync(new Uri(target.Uri));
+                    }
+                }
+            }
         }
 
         // static method - navigate in background 1. takes applink, 2. takes source url and resolver,  3. sring url and resolver 4. navigate in bkground with default resolver and URL 5. navigate in background with default resolver and string 

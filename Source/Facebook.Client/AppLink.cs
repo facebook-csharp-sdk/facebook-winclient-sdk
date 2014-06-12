@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Windows.UI.WebUI;
 
 namespace Facebook.Client
 {
 
     public class Target
-    {     
+    {
+        public Platform Platform { get; set; }
+
         // url that we have to launch for the platform
-        public Uri Uri { get; set; }
+        public string Uri { get; set; }
 
         // app name that we have to show for the back button in the target app
         public string Name { get; set; }
@@ -23,13 +24,13 @@ namespace Facebook.Client
     public class AppLink
     {
         // source url
-        public Uri SourceUri { get; set; }
+        public string SourceUri { get; set; }
         
         // list of targets
         public List<Target> Targets { get; set; } 
 
         // fallback web url
-        public Uri FallbackUri { get; set; }
+        public string FallbackUri { get; set; }
     }
 
     public enum NavigationResult
@@ -37,6 +38,13 @@ namespace Facebook.Client
         Failed,
         Web,
         Application
+    }
+
+    public enum Platform
+    {
+        WindowsPhone,
+        Windows,
+        Universal
     }
 
     public class Bolts

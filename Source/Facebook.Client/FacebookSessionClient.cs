@@ -28,7 +28,7 @@ using System.Threading.Tasks;
 #if NETFX_CORE
 using Windows.Security.Authentication.Web;
 #endif
-
+using Facebook;
 namespace Facebook.Client
 {
     public class FacebookSessionClient
