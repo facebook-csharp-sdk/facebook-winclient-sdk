@@ -109,6 +109,15 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Facebook.Client\AppLink.cs">
+      <Link>AppLink.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\AppLinkNavigation.cs">
+      <Link>AppLinkNavigation.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\AppLinkResolver.cs">
+      <Link>AppLinkResolver.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\Controls\Converters\BooleanToVisibilityConverter.cs">
       <Link>Controls\Converters\BooleanToVisibilityConverter.cs</Link>
     </Compile>
@@ -220,9 +229,6 @@
     <Compile Include="..\Facebook.Client\GraphUser.cs">
       <Link>GraphUser.cs</Link>
     </Compile>
-    <Compile Include="AppLink.cs" />
-    <Compile Include="AppLinkNavigation.cs" />
-    <Compile Include="AppLinkResolver.cs" />
     <Compile Include="Controls\Converters\PickerSelectionModeConverter.cs" />
     <Compile Include="Controls\Converters\SizeToGridCellConverter.cs" />
     <Compile Include="Controls\FriendPicker\FriendPicker.cs" />

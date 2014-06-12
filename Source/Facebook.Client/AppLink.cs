@@ -39,11 +39,6 @@ namespace Facebook.Client
         Application
     }
 
-
-
-    
-
-
     public class Bolts
     {
         // provides version
