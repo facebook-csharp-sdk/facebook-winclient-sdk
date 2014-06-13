@@ -101,7 +101,8 @@ namespace Facebook.Client
         /// </summary>
         private void BrowserControl_Navigating(object sender, NavigatingEventArgs e)
         {
-            if (e.Uri == WebAuthenticationBroker.EndUri)
+            //Updated to test only Absolute path as parameters will always be different
+            if (e.Uri.AbsolutePath == WebAuthenticationBroker.EndUri.AbsolutePath)
             {
                 responseData = e.Uri.ToString();
                 responseStatus = WebAuthenticationStatus.Success;

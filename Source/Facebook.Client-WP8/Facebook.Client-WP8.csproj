@@ -27,7 +27,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\Bin\Debug\wp8\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE;</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;SILVERLIGHT;WINDOWS_PHONE;WP8</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -38,7 +38,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Bin\Release\wp8\</OutputPath>
-    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE</DefineConstants>
+    <DefineConstants>TRACE;SILVERLIGHT;WINDOWS_PHONE;WP8</DefineConstants>
     <NoStdLib>true</NoStdLib>
     <NoConfig>true</NoConfig>
     <ErrorReport>prompt</ErrorReport>
@@ -107,7 +107,7 @@
       <Link>Controls\DataItemRetrievedEventArgs.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\Controls\DataReadyEventArgs.cs">
-      <Link>Controls\DataReadyEventArgs.cs</Link>
+      <Link>DataReadyEventArgs.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\Controls\Extensions\EventExtensions.cs">
       <Link>Controls\Extensions\EventExtensions.cs</Link>
@@ -213,6 +213,7 @@
     <Compile Include="..\Facebook.Client\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="AppAuthenticationHelper.cs" />
     <Compile Include="Controls\Converters\ImageSourceUriConverter.cs" />
     <Compile Include="Controls\FriendPicker\FriendPicker.cs" />
     <Compile Include="Controls\Picker\Picker.cs" />

@@ -40,6 +40,6 @@ namespace Facebook.Client
         public DateTime Expires { get; set; }
         public string FacebookId { get; set; }
         public List<string> CurrentPermissions { get; set; }
-
+        public string State { get; set; }
     }
 }

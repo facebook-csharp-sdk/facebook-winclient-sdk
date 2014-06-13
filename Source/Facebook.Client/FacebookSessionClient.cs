@@ -46,6 +46,7 @@ namespace Facebook.Client
             this.AppId = appId;
 
             // Send analytics to Facebook
+            //** This should be optional as it affects the privacy status of any app consumingthis framework
             SendAnalytics(appId);
         }
 
@@ -77,6 +78,22 @@ namespace Facebook.Client
             catch { } //ignore all errors
         }
 
+#if WP8
+        public void LoginWithApp()
+        {
+            LoginWithApp(null);
+        }
+
+        public void LoginWithApp(string permissions)
+        {
+            LoginWithApp(permissions, null);
+        }
+
+        public void LoginWithApp(string permissions, string state)
+        {
+            AppAuthenticationHelper.AuthenticateWithApp(this.AppId, permissions, state);
+        }
+#endif
 
         public async Task<FacebookSession> LoginAsync()
         {
@@ -225,8 +242,5 @@ namespace Facebook.Client
             var client = new FacebookClient();
             return client.GetLoginUrl(parameters);
         }
-
-
-
     }
 }
