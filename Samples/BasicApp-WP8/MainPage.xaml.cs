@@ -24,9 +24,9 @@ namespace PhoneApp2
             //resolver.AppLinkObtainedEvent += AppLinkObtainedEvent;
             //resolver.GetAppLinkFromUrlInBackground(new Uri("http://pratapgarh.com/fbtest/al.html"));
 
-            var appLink = await (new FacebookAppLinkResolver()).GetAppLinkAsync("CAACEdEose0cBAHFYX1jgGzeBZBLSNNO6ZBkUsFJrtnvAOC5k5r0FBfG6uqKztVgydqQWSSCYK8cGx8qpInuAZBfDhh2fjh0rGPWNtMVSZBEgn02p5n0MIgN4nvZAUXG1ehdyC955OVLeYvb3XbzDmZBT2ZBRXUnaHWtsHvEpqnodlMNocU9efy2oLLaUndH7dEZD", "http://pratapgarh.com/fbtest/al.html");
+            var appLink = await AppLinkNavigation.DefaultResolver.GetAppLinkAsync("CAACEdEose0cBAIGx6bM7QtKqnpjapVkCXFVbAsIgCoZAQ7ENWi2RJrZCLmbH8yvXKoQ3pLtjHG9mlgiRkot75Mi9RU3h5o7vGVsFbdUbqRxL8kkXvJZAxonALl1IXITDJyWZAkCY0epbah7Agdb5LPTT81Re5bga2X9oZByqAMutELpflNZB8Nt0oVjYHv3T2xBy80UZCTSYgZDZD", "http://pratapgarh.com/fbtest/al.html");
 
-            AppLinkNavigation.Navigate(appLink);
+            AppLinkNavigation.NavigateAsync(appLink);
         }
 
         private void AppLinkObtainedEvent(AppLink appLink)

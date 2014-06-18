@@ -8,6 +8,6 @@ namespace Facebook.Client
 {
     public interface AppLinkResolver
     {
-
+        Task<AppLink> GetAppLinkAsync(string accessToken, string sourceUrl);
     }
 }

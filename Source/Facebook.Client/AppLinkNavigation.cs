@@ -24,7 +24,22 @@ namespace Facebook.Client
 
         // setDEfaultResolver
         // getDefaultResolver
-        public AppLinkResolver DefaultResolver { get; set; }
+
+        private static AppLinkResolver _appLinkResolver = new FacebookAppLinkResolver();
+
+        public static AppLinkResolver DefaultResolver
+        {
+            get { return _appLinkResolver; }
+            set
+            {
+                if (value == null)
+                {
+                    throw new ArgumentNullException("The default resolver cannot be null");
+                }
+
+                _appLinkResolver = value;
+            }
+        }
 
         // synchronous navigate - no parameters          - instanced
         public void Navigate()
@@ -38,39 +53,39 @@ namespace Facebook.Client
 
         }
 
-        public static void Navigate(AppLink appLink)
+        async public static void NavigateAsync(AppLink appLink)
         {
+            string navigationLinkUrl = String.Empty;
+
             if (appLink != null)
             {
                 foreach (var target in appLink.Targets)
                 {
+#if WINDOWS_PHONE
                     if (target.Platform == Platform.WindowsPhone)
                     {
-                        Windows.System.Launcher.LaunchUriAsync(new Uri(target.Uri));
+                        navigationLinkUrl = target.Uri;
+                        break;
                     }
+#else
+                    if (target.Platform == Platform.Windows)
+                    {
+                        navigationLinkUrl = target.Uri;
+                        break;
+                    }
+#endif
+
                 }
             }
-        }
 
-        // static method - navigate in background 1. takes applink, 2. takes source url and resolver,  3. sring url and resolver 4. navigate in bkground with default resolver and URL 5. navigate in background with default resolver and string 
-        public static void Navigate(String sourceUrl, AppLinkResolver resolver)
-        {
-
-        }
-
-        public static void Navigate(Uri sourceUrl, AppLinkResolver resolver)
-        {
-
-        }
-
-        public async static void NavigateAsync(String sourceUrl, AppLinkResolver resolver)
-        {
-
-        }
-
-        public async static void NavigateAsync(Uri sourceUrl, AppLinkResolver resolver)
-        {
-
+            if (!String.IsNullOrEmpty(navigationLinkUrl))
+            {
+                await Windows.System.Launcher.LaunchUriAsync(new Uri(navigationLinkUrl));
+            }
+            else
+            {
+                await Windows.System.Launcher.LaunchUriAsync(new Uri(appLink.FallbackUri));
+            }
         }
     }
 }
