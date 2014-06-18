@@ -9,86 +9,38 @@ namespace Facebook.Client
 {
     public class FacebookAppLinkResolver : AppLinkResolver
     {
-        //public Task<AppLink> _GetAppLinkAsync(string accessToken, string sourceUrl)
-        //{
-        //    var tcs = new TaskCompletionSource<AppLink>();
-
-        //    String finalUrl = String.Format("https://graph.facebook.com/v2.0/?ids={0}&type=al&access_token={1}&fields=windows,windows_phone,windows_universal", sourceUrl, accessToken);
-
-        //    var client = new WebClient();
-        //    client.DownloadStringCompleted += (s, e) =>
-        //    {
-        //        if (e.Error == null)
-        //        {
-        //            //tcs.SetResult(JsonConvert.DeserializeObject<AppLink>(e.Result));
-        //            AppLinkObject appLinkObject = ParseAppLinkData(e.Result);
-        //            List<Target> targets = new List<Target> ();
-        //            targets.Add(new Target { Uri = appLinkObject.Windows[0].Url, Platform = Platform.Windows, Name = appLinkObject.Windows[0].AppName });
-        //            targets.Add(new Target { Uri = appLinkObject.WindowsPhone[0].Url, Platform = Platform.WindowsPhone, Name = appLinkObject.WindowsPhone[0].AppName });
-        //            targets.Add(new Target { Uri = appLinkObject.WindowsUniversal[0].Url, Platform = Platform.Universal, Name = appLinkObject.WindowsUniversal[0].AppName });
-
-        //            tcs.SetResult(new AppLink {SourceUri =  appLinkObject.Id, FallbackUri = appLinkObject.Id, Targets = targets});
-        //        }
-        //        else
-        //        {
-        //            tcs.SetException(e.Error);
-        //        }
-        //    };
-
-        //    client.DownloadStringAsync(new Uri(finalUrl));
-
-        //    return tcs.Task;
-        //}
-
-
         async public Task<AppLink> GetAppLinkAsync(string accessToken, string sourceUrl)
         {
             FacebookClient _client = new FacebookClient(accessToken);
-
             
             String finalUrl = String.Format("https://graph.facebook.com/v2.0/?ids={0}&type=al&fields=windows,windows_phone,windows_universal", sourceUrl);
             dynamic appLinkData = await _client.GetTaskAsync(finalUrl);
-
-            var outerShell = appLinkData[sourceUrl];
-            var windowsObject = outerShell["windows"];
-            var windowsPhoneObject = outerShell["windows_phone"];
-            var universalProject = outerShell["windows_universal"];
-
             List<Target> targets = new List<Target>();
-            targets.Add(new Target { Uri = windowsObject[0]["url"], Platform = Platform.Windows, Name = windowsObject[0]["app_name"] });
-            targets.Add(new Target { Uri = windowsPhoneObject[0]["url"], Platform = Platform.WindowsPhone, Name = windowsPhoneObject[0]["app_name"] });
-            targets.Add(new Target { Uri = universalProject[0]["url"], Platform = Platform.Universal, Name = universalProject[0]["app_name"] });
+
+            var outerShell = (IDictionary<string, object>)appLinkData[sourceUrl];
+            if (outerShell.ContainsKey("windows"))
+            {
+                var windowsArray = (IEnumerable<object>)outerShell["windows"];
+                var windowsObject = (IDictionary<string, object>)(windowsArray.First());
+                targets.Add(new Target { Uri = (string)windowsObject["url"], Platform = Platform.Windows, Name = (string)windowsObject["app_name"] });
+            }
+
+            if (outerShell.ContainsKey("windows_phone"))
+            {
+                var windowsPhoneArray = (IEnumerable<object>)outerShell["windows_phone"];
+                var windowsPhoneObject = (IDictionary<string, object>)(windowsPhoneArray.First());
+                targets.Add(new Target { Uri = (string)windowsPhoneObject["url"], Platform = Platform.WindowsPhone, Name = (string)windowsPhoneObject["app_name"] });
+            }
+
+            if (outerShell.ContainsKey("windows_universal"))
+            {
+                var universalArray = (IEnumerable<object>)outerShell["windows_universal"];
+                var universalObject = (IDictionary<string, object>)(universalArray.First());
+                targets.Add(new Target { Uri = (string)universalObject["url"], Platform = Platform.Universal, Name = (string)universalObject["app_name"] });
+            }
 
             return new AppLink {SourceUri =  sourceUrl, FallbackUri = sourceUrl, Targets = targets};
         }
-
-
-    //    public AppLinkObject ParseAppLinkData(string jsonString)
-    //    {
-    //        var o = JObject.Parse(jsonString);
-
-    //        //var x = o.SelectToken("windows");
-
-    //        foreach (JToken child in o.Children())
-    //        {
-    //            foreach (JToken grandChild in child)
-    //            {
-    //                //foreach (JToken grandGrandChild in grandChild)
-    //                //{
-    //                //    var property = grandGrandChild as JProperty;
-    //                //    if (property != null)
-    //                //    {
-    //                //        Console.WriteLine(property.Name + property.Value);
-    //                //    }
-    //                //}
-    //                AppLinkObject obj = JsonConvert.DeserializeObject<AppLinkObject>(grandChild.ToString());
-
-    //                return obj;
-    //            }
-    //        }
-
-    //        return null;
-    //    }
     }
 
 

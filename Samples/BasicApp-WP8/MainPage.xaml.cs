@@ -20,13 +20,9 @@ namespace PhoneApp2
 
         async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            //WebViewAppLinkResolver resolver = new WebViewAppLinkResolver();
-            //resolver.AppLinkObtainedEvent += AppLinkObtainedEvent;
-            //resolver.GetAppLinkFromUrlInBackground(new Uri("http://pratapgarh.com/fbtest/al.html"));
+            var appLink = await AppLinkNavigation.DefaultResolver.GetAppLinkAsync("CAACEdEose0cBABrWgt0lnLOgfLfDqGtlSnnQLfyTUIGCvkuuvacaEOn1tU2p519hH2ZAKeNVRp4FMeBAKG3Jn9HhXQHQkoMvyS5yVoEjpukZC7aIUWdyWuyZB9cqV7ugGt5E7QiZAYuYZAep1AR3UGZBbfCRVnDcpwiu8SEkJwIHUUc84iAjMFY32xVHfPuaSzCVppyvhmxgZDZD", "http://pratapgarh.com/fbtest/al.html");
 
-            var appLink = await AppLinkNavigation.DefaultResolver.GetAppLinkAsync("CAACEdEose0cBAIGx6bM7QtKqnpjapVkCXFVbAsIgCoZAQ7ENWi2RJrZCLmbH8yvXKoQ3pLtjHG9mlgiRkot75Mi9RU3h5o7vGVsFbdUbqRxL8kkXvJZAxonALl1IXITDJyWZAkCY0epbah7Agdb5LPTT81Re5bga2X9oZByqAMutELpflNZB8Nt0oVjYHv3T2xBy80UZCTSYgZDZD", "http://pratapgarh.com/fbtest/al.html");
-
-            AppLinkNavigation.NavigateAsync(appLink);
+            await AppLinkNavigation.NavigateAsync(appLink);
         }
 
         private void AppLinkObtainedEvent(AppLink appLink)

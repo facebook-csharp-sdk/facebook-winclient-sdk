@@ -8,25 +8,14 @@ namespace Facebook.Client
 {
     public class AppLinkNavigation
     {
-        // private static defaultResolver - you set this to what you want - by default the WebViewResolver
-
-        // enum - navigationResult {failed, web, app}
-
-        // roughly equivalent to http request i.e. URL + header + query parameters + body (referer)
-        // getAppLink - get the app link object association with this request
         public AppLink AppLink { get; set; }
 
-        // getAppLinkData - the raw JSON data
         public Dictionary<object, object> AppLinkData { get; set; }
 
         // getExtra - closure - opaque blob
         public Dictionary<object, object> Extra { get; set; }
 
-        // setDEfaultResolver
-        // getDefaultResolver
-
         private static AppLinkResolver _appLinkResolver = new FacebookAppLinkResolver();
-
         public static AppLinkResolver DefaultResolver
         {
             get { return _appLinkResolver; }
@@ -41,19 +30,7 @@ namespace Facebook.Client
             }
         }
 
-        // synchronous navigate - no parameters          - instanced
-        public void Navigate()
-        {
-        }
-
-        // sync navigate - that takes a applink parameter           - static, navigate baesd on supplied data
-
-        public static void Navigate(String Url)
-        {
-
-        }
-
-        async public static void NavigateAsync(AppLink appLink)
+        async public static Task<bool> NavigateAsync(AppLink appLink)
         {
             string navigationLinkUrl = String.Empty;
 
@@ -74,7 +51,6 @@ namespace Facebook.Client
                         break;
                     }
 #endif
-
                 }
             }
 
@@ -86,6 +62,8 @@ namespace Facebook.Client
             {
                 await Windows.System.Launcher.LaunchUriAsync(new Uri(appLink.FallbackUri));
             }
+
+            return false;
         }
     }
 }
