@@ -56,10 +56,12 @@ namespace Facebook.Client
 
             if (!String.IsNullOrEmpty(navigationLinkUrl))
             {
+                // If we found a platform specific app link, launch it
                 await Windows.System.Launcher.LaunchUriAsync(new Uri(navigationLinkUrl));
             }
             else
             {
+                // no platform specific applink was found, launch the fallback url
                 await Windows.System.Launcher.LaunchUriAsync(new Uri(appLink.FallbackUri));
             }
 
