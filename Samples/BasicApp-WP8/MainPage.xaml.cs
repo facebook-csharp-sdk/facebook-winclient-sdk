@@ -20,9 +20,8 @@ namespace PhoneApp2
 
         async void MainPage_Loaded(object sender, RoutedEventArgs e)
         {
-            var appLink = await AppLinkNavigation.DefaultResolver.GetAppLinkAsync("CAACEdEose0cBABrWgt0lnLOgfLfDqGtlSnnQLfyTUIGCvkuuvacaEOn1tU2p519hH2ZAKeNVRp4FMeBAKG3Jn9HhXQHQkoMvyS5yVoEjpukZC7aIUWdyWuyZB9cqV7ugGt5E7QiZAYuYZAep1AR3UGZBbfCRVnDcpwiu8SEkJwIHUUc84iAjMFY32xVHfPuaSzCVppyvhmxgZDZD", "http://pratapgarh.com/fbtest/al.html");
-
-            await AppLinkNavigation.NavigateAsync(appLink);
+            //var appLink = await AppLinkNavigation.DefaultResolver.GetAppLinkAsync("<insert access token here>", "http://pratapgarh.com/fbtest/al.html");
+            //await AppLinkNavigation.NavigateAsync(appLink);
         }
 
         private void AppLinkObtainedEvent(AppLink appLink)

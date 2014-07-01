@@ -1,4 +1,6 @@
-﻿namespace BasicApp
+﻿using Facebook.Client;
+
+namespace BasicApp
 {
     using System;
     using System.Collections.Generic;
@@ -17,13 +19,15 @@
         {
             this.InitializeComponent();
             this.currentItem = this.welcomeText;
-            ////this.Loaded += MainPage_Loaded;
+            this.Loaded += MainPage_Loaded;
         }
 
-        ////async void MainPage_Loaded(object sender, RoutedEventArgs e)
-        ////{
-        ////    await Authenticate();
-        ////}
+        async void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            //var appLink = await AppLinkNavigation.DefaultResolver.GetAppLinkAsync("<insert access token here>", "http://pratapgarh.com/fbtest/al.html");
+            //await AppLinkNavigation.NavigateAsync(appLink);
+
+        }
 
         ////private FacebookSession sesion;
         ////private async System.Threading.Tasks.Task Authenticate()

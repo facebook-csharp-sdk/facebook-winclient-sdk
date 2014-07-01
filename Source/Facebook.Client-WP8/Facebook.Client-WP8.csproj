@@ -178,6 +178,9 @@
     <Compile Include="..\Facebook.Client\Controls\ProfilePicture\ProfilePicture.cs">
       <Link>Controls\ProfilePicture\ProfilePicture.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\FacebookAppLinkResolver.cs">
+      <Link>FacebookAppLinkResolver.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\FacebookDialog.cs">
       <Link>FacebookDialog.cs</Link>
     </Compile>
@@ -225,7 +228,6 @@
     <Compile Include="Controls\Converters\ImageSourceUriConverter.cs" />
     <Compile Include="Controls\FriendPicker\FriendPicker.cs" />
     <Compile Include="Controls\Picker\Picker.cs" />
-    <Compile Include="FacebookAppLinkResolver.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
