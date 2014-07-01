@@ -1,4 +1,6 @@
-﻿namespace PhoneApp2
+﻿using Facebook.Client;
+
+namespace PhoneApp2
 {
     using System;
     using System.Windows;
@@ -11,9 +13,22 @@
         // Constructor
         public MainPage()
         {
-            this.InitializeComponent();            
+            this.InitializeComponent();
+
+            this.Loaded += MainPage_Loaded;
         }
 
+        async void MainPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            //var appLink = await AppLinkNavigation.DefaultResolver.GetAppLinkAsync("<insert access token here>", "http://pratapgarh.com/fbtest/al.html");
+            //await AppLinkNavigation.NavigateAsync(appLink);
+        }
+
+        private void AppLinkObtainedEvent(AppLink appLink)
+        {
+            // do something with applink
+            int x = 10;
+        }
         private void OnSessionStateChanged(object sender, Facebook.Client.Controls.SessionStateChangedEventArgs e)
         {
             this.welcomeText.Opacity = (e.SessionState == FacebookSessionState.Opened) ? 0 : 100;

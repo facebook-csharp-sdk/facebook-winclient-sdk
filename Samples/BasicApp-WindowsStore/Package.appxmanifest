@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest">
-  <Identity Name="b99925e1-8853-4b21-a8ef-5090924eef12" Publisher="CN=ntotten" Version="1.0.0.0" />
+  <Identity Name="b99925e1-8853-4b21-a8ef-5090924eef12" Publisher="CN=Sanjeevd" Version="1.0.0.0" />
   <Properties>
     <DisplayName>BasicApp</DisplayName>
     <PublisherDisplayName>ntotten</PublisherDisplayName>
@@ -18,7 +18,7 @@
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="BasicApp.App">
       <VisualElements DisplayName="BasicApp" Logo="Assets\Logo.png" SmallLogo="Assets\SmallLogo.png" Description="BasicApp" ForegroundText="light" BackgroundColor="#464646">
-        <DefaultTile ShowName="allLogos" />
+        <DefaultTile ShowName="logoOnly" />
         <SplashScreen Image="Assets\SplashScreen.png" />
       </VisualElements>
     </Application>

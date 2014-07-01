@@ -88,6 +88,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Facebook.Client\AppLink.cs">
+      <Link>AppLink.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\AppLinkNavigation.cs">
+      <Link>AppLinkNavigation.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\AppLinkResolver.cs">
+      <Link>AppLinkResolver.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\Controls\Converters\BooleanToVisibilityConverter.cs">
       <Link>Controls\Converters\BooleanToVisibilityConverter.cs</Link>
     </Compile>
@@ -168,6 +177,9 @@
     </Compile>
     <Compile Include="..\Facebook.Client\Controls\ProfilePicture\ProfilePicture.cs">
       <Link>Controls\ProfilePicture\ProfilePicture.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\FacebookAppLinkResolver.cs">
+      <Link>FacebookAppLinkResolver.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\FacebookDialog.cs">
       <Link>FacebookDialog.cs</Link>
