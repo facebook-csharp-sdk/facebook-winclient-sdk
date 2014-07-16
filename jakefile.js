@@ -52,6 +52,14 @@ namespace('build', function () {
             targets: ['Build']
         })
     }, { async: true })
+	
+	desc('Build Windows Universal binaries')
+    task('universal', ['assemblyinfo:facebook'], function () {
+        msbuild({
+            file: 'Source/Facebook.ClientUniversal.sln',
+            targets: ['Build']
+        })
+    }, { async: true })
 
     desc('Build Windows Phone 7.1 binaries')
     task('wp71', ['assemblyinfo:facebook'], function () {
@@ -69,7 +77,7 @@ namespace('build', function () {
         })
     }, { async: true })
 
-    task('all', ['build:wp71', 'build:wp8', 'build:winstore'])
+    task('all', ['build:wp71', 'build:wp8', 'build:winstore', 'build:universal'])
 
     //task('mono', function (xbuildPath) {
     //    msbuild({
@@ -92,6 +100,13 @@ namespace('clean', function () {
             targets: ['Clean']
         })
     }, { async: true })
+	
+	task('universal', function () {
+        msbuild({
+            file: 'Source/Facebook.ClientUniversal.sln',
+            targets: ['Clean']
+        })
+    }, { async: true })
 
     task('wp71', function () {
         msbuild({
@@ -107,7 +122,7 @@ namespace('clean', function () {
         })
     }, { async: true })
 
-    task('all', ['clean:wp71', 'clean:wp8', 'clean:winstore'])
+    task('all', ['clean:wp71', 'clean:wp8', 'clean:winstore', 'clean:universal'])
 
 })
 

@@ -1,6 +1,8 @@
-﻿namespace Facebook.Client
+﻿using System.Xml;
+using Windows.Storage;
+
+namespace Facebook.Client
 {
-    using Microsoft.Xna.Framework;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -10,7 +12,11 @@
     using System.Threading.Tasks;
     using System.Xml.Linq;
     using Windows.System;
+    using Facebook;
 
+#if WP8
+        using Microsoft.Xna.Framework;
+#endif
     public static class AppAuthenticationHelper
     {
         #region Constants
@@ -59,9 +65,9 @@
         /// <returns>
         ///   <c>true</c> if the specified uri is a Facebook login uri
         /// </returns>
-        public static bool IsFacebookLoginResponse(Uri uri)
+        async public static Task<bool> IsFacebookLoginResponse(Uri uri)
         {
-            var schemeName = GetFacebookLoginCallbackSchemeName();
+            var schemeName = await GetFacebookLoginCallbackSchemeName();
             return uri.ToString().ToLowerInvariant().Contains(schemeName.ToLowerInvariant());
         }
 
@@ -118,9 +124,10 @@
         /// Gets the scheme name registered by the calling app for facebook login
         /// </summary>
         /// <returns>The deep link scheme name for facebook login</returns>
-        internal static string GetFacebookLoginCallbackSchemeName()
+        async internal static Task<string> GetFacebookLoginCallbackSchemeName()
         {
-            return GetFilteredManifestAppAttributeValue("Protocol", "Name", "msft-");
+            string result = await GetFilteredManifestAppAttributeValue("Protocol", "Name", "msft-");
+            return result;
         }
 
         /// <summary>
@@ -138,9 +145,16 @@
         /// <returns>
         /// Attribute value, or empty string if no match found
         /// </returns>
-        internal static string GetFilteredManifestAppAttributeValue(string node, string attribute, string prefix)
+        internal async static Task<string> GetFilteredManifestAppAttributeValue(string node, string attribute, string prefix)
         {
+#if WINDOWS_UNIVERSAL
+            var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///FacebookConfig.xml"));
+            using (Stream strm = await file.OpenStreamForReadAsync())
+#endif
+
+#if WP8
             using (Stream strm = TitleContainer.OpenStream("WMAppManifest.xml"))
+#endif
             {
                 var xml = XElement.Load(strm);
                 var filteredAttributeValue = (from app in xml.Descendants(node)
@@ -173,10 +187,10 @@
         /// <param name="appId">The application id for which the user needs to be authenticated.</param>
         /// <param name="permissions">List of permissions that are being requested.</param>
         /// <param name="state">The state, this will be passed back in the response</param>
-        internal static async void AuthenticateWithApp(string appId, string permissions, string state)
+        internal static async Task AuthenticateWithApp(string appId, string permissions, string state)
         {
             var redirectUri = AppAuthenticationHelper.GetFacebookLoginCallbackSchemeName() + "://authorize";
-            string uriString = string.Format(AppAuthenticationHelper.FacebookConnectUriTemplate, appId, permissions, redirectUri, HttpUtility.UrlEncode(state == null ? string.Empty : state));
+            string uriString = string.Format(AppAuthenticationHelper.FacebookConnectUriTemplate, appId, permissions, redirectUri, HttpHelper.UrlEncode(state == null ? string.Empty : state));
             await Launcher.LaunchUriAsync(new Uri(uriString));
         }
 
@@ -210,7 +224,7 @@
                 string[] pair = keyValuePairs[i].Split(new[] { '=' });
                 if (pair[0].ToLowerInvariant() == key.ToLowerInvariant())
                 {
-                    return HttpUtility.UrlDecode(pair[1]);
+                    return HttpHelper.UrlDecode(pair[1]);
                 }
             }
 

@@ -5,7 +5,7 @@
         <version>$version$</version>
         <title/>
         <authors>Outercurve Foundation</authors>
-        <owners>Nathan Totten, Prabir Shrestha</owners>
+        <owners>Sanjeev Dwivedi, Prabir Shrestha</owners>
         <description><![CDATA[The Facebook SDK for Windows & Windows Phone helps .Net developers build phone and Windows Store applications that integrate with Facebook.]]></description>
         <language>en-US</language>
         <licenseUrl>https://github.com/facebook-csharp-sdk/facebook-winclient-sdk/master/LICENSE.txt</licenseUrl>
@@ -28,6 +28,10 @@
         <file src="..\..\..\Build\readme.txt" target = "readme.txt" />
         <file src="..\..\..\Bin\Release\win8\Facebook.Client.dll" target = "lib\win8" />
         <file src="..\..\..\Bin\Release\win8\Facebook.Client.xml" target = "lib\win8" />
+		<file src="..\..\..\Bin\Release\win81\Facebook.Client.dll" target = "lib\win81" />
+        <file src="..\..\..\Bin\Release\win81\Facebook.Client.xml" target = "lib\win81" />
+		<file src="..\..\..\Bin\Release\win81\Facebook.Client.dll" target = "lib\wpa81" />
+        <file src="..\..\..\Bin\Release\win81\Facebook.Client.xml" target = "lib\wpa81" />
         <file src="..\..\..\Bin\Release\wp71\Facebook.Client.dll" target = "lib\wp71" />
         <file src="..\..\..\Bin\Release\wp71\Facebook.Client.xml" target = "lib\wp71" />
         <file src="..\..\..\Bin\Release\wp8\Facebook.Client.dll" target = "lib\wp8" />
