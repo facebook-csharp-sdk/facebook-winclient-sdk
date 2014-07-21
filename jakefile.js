@@ -1,3 +1,5 @@
+// You WILL need to set the VisualStudioVersion variable to 12.0 on bash command prompt
+// $ export VisualStudioVersion=12.0
 var fs = require('fs'),
     path = require('path'),
     exec = require('child_process').exec,
