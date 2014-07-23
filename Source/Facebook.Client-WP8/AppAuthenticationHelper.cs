@@ -189,8 +189,8 @@ namespace Facebook.Client
         /// <param name="state">The state, this will be passed back in the response</param>
         internal static async Task AuthenticateWithApp(string appId, string permissions, string state)
         {
-            var redirectUri = AppAuthenticationHelper.GetFacebookLoginCallbackSchemeName() + "://authorize";
-            string uriString = string.Format(AppAuthenticationHelper.FacebookConnectUriTemplate, appId, permissions, redirectUri, HttpHelper.UrlEncode(state == null ? string.Empty : state));
+            var redirectUri = await GetFacebookLoginCallbackSchemeName() + "://authorize";
+            string uriString = string.Format(FacebookConnectUriTemplate, appId, permissions, redirectUri, HttpHelper.UrlEncode(state == null ? string.Empty : state));
             await Launcher.LaunchUriAsync(new Uri(uriString));
         }
 
