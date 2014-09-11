@@ -9,6 +9,7 @@ namespace BasicAppAuthentication
     using System.Windows.Navigation;
     using Facebook.Client;
     using System.Net;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// Implements the URI mapper for this application
@@ -27,8 +28,10 @@ namespace BasicAppAuthentication
         /// <returns>Navigation Uri within this app</returns>
         public override Uri MapUri(Uri uri)
         {
+            bool response =  Task.Run(() => AppAuthenticationHelper.IsFacebookLoginResponse(uri)).Result;
+
             // if URI is a facebook login response, handle the deep link (once per invocation)
-            if (AppAuthenticationHelper.IsFacebookLoginResponse(uri))
+            if (response)
             {
                 FacebookSession session = new FacebookSession();
 

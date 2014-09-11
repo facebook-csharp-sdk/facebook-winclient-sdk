@@ -95,6 +95,23 @@ namespace Facebook.Client
         }
 #endif
 
+#if WINDOWS_UNIVERSAL
+        async public Task LoginWithApp()
+        {
+            await LoginWithApp(null);
+        }
+
+        async public Task LoginWithApp(string permissions)
+        {
+            await LoginWithApp(permissions, null);
+        }
+
+        async public Task LoginWithApp(string permissions, string state)
+        {
+            await AppAuthenticationHelper.AuthenticateWithApp(this.AppId, permissions, state);
+        }
+#endif
+
         public async Task<FacebookSession> LoginAsync()
         {
             return await LoginAsync(null, false);

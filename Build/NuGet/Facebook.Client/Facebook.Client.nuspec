@@ -5,7 +5,7 @@
         <version>$version$</version>
         <title/>
         <authors>Outercurve Foundation</authors>
-        <owners>Nathan Totten, Prabir Shrestha</owners>
+        <owners>Sanjeev Dwivedi, Prabir Shrestha</owners>
         <description><![CDATA[The Facebook C# SDK for Windows & Windows Phone helps .NET developers build phone and Windows Store applications that integrate with Facebook.]]></description>
         <language>en-US</language>
         <licenseUrl>https://github.com/facebook-csharp-sdk/facebook-winclient-sdk/master/LICENSE.txt</licenseUrl>
@@ -33,9 +33,22 @@
         <file src="..\..\..\Bin\Release\win8\Controls\**" target = "lib\win8\Facebook.Client\Controls\" />
         <file src="..\..\..\Bin\Release\win8\Themes\**" target = "lib\win8\Facebook.Client\Themes\" />
         <file src="..\..\..\Source\Facebook.Client-WindowsStore\Images\**" target = "lib\win8\Facebook.Client\Images\" />
+
         <file src="..\..\..\Bin\Release\wp71\Facebook.Client.dll" target = "lib\wp71" />
         <file src="..\..\..\Bin\Release\wp71\Facebook.Client.xml" target = "lib\wp71" />
+        
         <file src="..\..\..\Bin\Release\wp8\Facebook.Client.dll" target = "lib\wp8" />
         <file src="..\..\..\Bin\Release\wp8\Facebook.Client.xml" target = "lib\wp8" />
+
+
+        <file src="..\..\..\Bin\Release\win81\Facebook.Client.dll" target = "lib\portable-win81+wpa81" />
+        <file src="..\..\..\Bin\Release\win81\Facebook.Client.xml" target = "lib\portable-win81+wpa81" />
+        <file src="..\..\..\Bin\Release\win81\Facebook.Client.xr.xml" target = "lib\portable-win81+wpa81\Facebook.Client" />
+        <file src="..\..\..\Bin\Release\win81\Facebook.Client.pri" target = "lib\portable-win81+wpa81" />
+        <file src="..\..\..\Bin\Release\win81\FacebookDialogPage.xbf" target = "lib\portable-win81+wpa81\Facebook.Client" />
+        <file src="..\..\..\Bin\Release\win81\Controls\**" target = "lib\portable-win81+wpa81\Facebook.Client\Controls\" />
+        <file src="..\..\..\Bin\Release\win81\Themes\**" target = "lib\portable-win81+wpa81\Facebook.Client\Themes\" />
+        <file src="..\..\..\Source\Facebook.Client-WindowsStore\Images\**" target = "lib\portable-win81+wpa81\Facebook.Client\Images\" />
+
     </files>
 </package>
