@@ -1,5 +1,6 @@
 ﻿using System.Xml;
 using Windows.Storage;
+using Microsoft.Phone.Maps.Services;
 
 namespace Facebook.Client
 {
@@ -21,6 +22,7 @@ namespace Facebook.Client
     {
         #region Constants
 
+        private const int MaxTokenLifeTime = 60;
         /// <summary>
         ///     Defines the key for access token in the query string representation
         /// </summary>
@@ -56,6 +58,7 @@ namespace Facebook.Client
         /// </summary>
         private const string StateKey = "state";
 
+        private const string EncodedLaunchUri = "encodedLaunchUri";
         #endregion
 
         /// <summary>
@@ -97,12 +100,24 @@ namespace Facebook.Client
                 // parse out string values
                 session.AccessToken = GetQueryStringValueFromUri(queryString, AccessTokenKey);
                 session.State = GetQueryStringValueFromUri(queryString, StateKey);
-
+                //var encodedLaunchUri = GetQueryStringValueFromUri(queryString, EncodedLaunchUri);
+                //if (!String.IsNullOrEmpty(encodedLaunchUri))
+                //{
+                //    //session.AppId = encodedLaunchUri.Substring(2); // ignore the fb
+                //    var index = encodedLaunchUri.IndexOf(":", StringComparison.InvariantCulture);
+                //    var appId = encodedLaunchUri.Substring(2, index - 2);
+                //    if (!String.IsNullOrEmpty(appId))
+                //    {
+                //    }
+                //}
+                
                 // parse out other types
                 long expiresInValue;
+                DateTime now = DateTime.UtcNow;
                 if (long.TryParse(GetQueryStringValueFromUri(queryString, ExpiresInKey), out expiresInValue))
                 {
-                    session.Expires = DateTime.UtcNow + TimeSpan.FromSeconds(expiresInValue);
+                    session.Expires = now + TimeSpan.FromSeconds(expiresInValue);
+                    session.Issued = now - (TimeSpan.FromDays(MaxTokenLifeTime) - TimeSpan.FromSeconds(expiresInValue));
                 }
             }
             else
@@ -171,6 +186,26 @@ namespace Facebook.Client
             }
         }
 
+
+        internal async static Task<string> GetFacebookConfigValue(string node, string attribute)
+        {
+            var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///FacebookConfig.xml"));
+            using (Stream strm = await file.OpenStreamForReadAsync())
+            {
+                var xml = XElement.Load(strm);
+                var filteredAttributeValue = (from app in xml.Descendants(node)
+                                              let xAttribute = app.Attribute(attribute)
+                                              where xAttribute != null
+                                              select xAttribute.Value).FirstOrDefault();
+
+                if (string.IsNullOrWhiteSpace(filteredAttributeValue))
+                {
+                    return string.Empty;
+                }
+
+                return filteredAttributeValue;
+            }
+        }
         /// <summary>
         /// Authenticates via app to app communication with the Facebook app
         /// </summary>
