@@ -19,7 +19,7 @@
     </UserControl.Resources>
     
     <Grid x:Name="LayoutRoot" Background="{StaticResource PhoneDisabledBrush}">
-        <phone:WebBrowser x:Name="dialogWebBrowser" IsScriptEnabled="True" Margin="15,15,0,0"/>
+        <phone:WebBrowser x:Name="dialogWebBrowser" IsScriptEnabled="True" Margin="15"/>
         <Button x:Name="closeDialogButton" HorizontalAlignment="Left" Height="30" VerticalAlignment="Top" Width="30" Style="{StaticResource CircleWithCrossButtonKey}" Click="CloseDialogButton_OnClick" />
     </Grid>
 </UserControl>

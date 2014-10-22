@@ -30,8 +30,12 @@ using System.Threading.Tasks;
 #if NETFX_CORE
 using Windows.Security.Authentication.Web;
 #endif
+using System.Windows;
+using System.Windows.Controls.Primitives;
 using Windows.System;
 using Facebook;
+using Facebook.Client.Controls.WebDialog;
+
 namespace Facebook.Client
 {
     public enum FacebookLoginBehavior
@@ -42,7 +46,13 @@ namespace Facebook.Client
 #if WINDOWS_UNIVERSAL
         LoginBehaviorAppwithMobileInternetFallback
 #endif
+    }
 
+    public enum FacebookWebDialog
+    {
+        AppRequests,
+        Feed,
+        Pay
     }
 
     public delegate void FacebookAuthenticationDelegate(FacebookSession session);
@@ -138,6 +148,58 @@ namespace Facebook.Client
         }
 #endif
 
+        public static void ShowAppRequestsDialog()
+        {
+            Popup dialogPopup = new Popup();
+
+            var webDialog = new WebDialogUserControl();
+            
+            webDialog.ParentControlPopup = dialogPopup;
+            dialogPopup.Child = webDialog;
+
+            // Set where the popup will show up on the screen.
+            dialogPopup.VerticalOffset = 40;
+            dialogPopup.HorizontalOffset = 0;
+
+            dialogPopup.Height = Application.Current.Host.Content.ActualHeight - 40;
+            dialogPopup.Width = Application.Current.Host.Content.ActualWidth;
+
+            webDialog.Height = dialogPopup.Height;
+            webDialog.Width = dialogPopup.Width;
+
+
+            webDialog.ShowAppRequestsDialog();
+
+            // Open the popup.
+            dialogPopup.IsOpen = true;
+        }
+
+        public static void ShowFeedDialog()
+        {
+            Popup dialogPopup = new Popup();
+
+            var webDialog = new WebDialogUserControl();
+
+            webDialog.ParentControlPopup = dialogPopup;
+            dialogPopup.Child = webDialog;
+
+            // Set where the popup will show up on the screen.
+            dialogPopup.VerticalOffset = 40;
+            dialogPopup.HorizontalOffset = 0;
+
+            dialogPopup.Height = Application.Current.Host.Content.ActualHeight - 40;
+            dialogPopup.Width = Application.Current.Host.Content.ActualWidth;
+
+            webDialog.Height = dialogPopup.Height;
+            webDialog.Width = dialogPopup.Width;
+
+
+            webDialog.ShowFeedDialog();
+
+            // Open the popup.
+            dialogPopup.IsOpen = true;
+        }
+
         public async Task<FacebookSession> LoginAsync()
         {
             return await LoginAsync(null, false);
@@ -198,25 +260,25 @@ namespace Facebook.Client
         public async static  Task CheckAndExtendTokenIfNeeded()
         {
             // get the existing token
-            //if (String.IsNullOrEmpty(CurrentSession.AccessToken))
-            //{
-            //    // If there is no token, do nothing
-            //    return;
-            //}
-
-            //// check if its issue date is over 24 hours and if so, renew it
-            //if (DateTime.UtcNow - CurrentSession.Issued > TimeSpan.FromHours(18)) // one day 
+            if (String.IsNullOrEmpty(CurrentSession.AccessToken))
             {
-                HttpClient client = new HttpClient();
+                // If there is no token, do nothing
+                return;
+            }
+
+            // check if its issue date is over 24 hours and if so, renew it
+            if (DateTime.UtcNow - CurrentSession.Issued > TimeSpan.FromHours(24)) // one day 
+            {
+                var client = new HttpClient();
                 String tokenExtendUri = "https://graph.facebook.com/v2.1";
                 client.BaseAddress = new Uri(tokenExtendUri);
 
-                HttpRequestMessage request = new HttpRequestMessage();
+                var request = new HttpRequestMessage();
 
-                MultipartFormDataContent mfdc = new MultipartFormDataContent();
+                var mfdc = new MultipartFormDataContent();
                 mfdc.Add(new StringContent("540541885996234"), name: "batch_app_id");
 
-                String extensionString = "[{\"method\":\"GET\",\"relative_url\":\"oauth\\/access_token?sdk=ios&grant_type=fb_extend_sso_token&access_token=" + CurrentSession.AccessToken + "&sdk=ios\"}]";
+                String extensionString = "[{\"method\":\"GET\",\"relative_url\":\"oauth\\/access_token?grant_type=fb_extend_sso_token&access_token=" + CurrentSession.AccessToken + "\"}]";
                 mfdc.Add(new StringContent(extensionString), name: "batch");
 
                 HttpResponseMessage response = await client.PostAsync(tokenExtendUri, mfdc);
@@ -233,16 +295,16 @@ namespace Facebook.Client
                 {
                     // the API succeeded
                     var body = (IDictionary<string, object>) SimpleJson.DeserializeObject((string) dictionary["body"]);
-                    string access_token = (string) body["access_token"];
+                    var access_token = (string) body["access_token"];
                     var expires_at = (long) body["expires_at"];
 
-                    FacebookSession session = new FacebookSession();
+                    var session = new FacebookSession();
                     // token extension failed...
                     session.AccessToken = access_token;
 
                     // parse out other types
                     long expiresInValue;
-                    DateTime now = DateTime.UtcNow;
+                    var now = DateTime.UtcNow;
                     session.Expires = now + TimeSpan.FromSeconds(expires_at);
                     session.Issued = now - (TimeSpan.FromDays(60) - TimeSpan.FromSeconds(expires_at));
                     session.AppId = AppId;
