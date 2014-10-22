@@ -21,6 +21,7 @@
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
     <SupportedCultures>es</SupportedCultures>
+    <ExpressionBlendVersion>12.0.50320.0</ExpressionBlendVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -181,13 +182,6 @@
     <Compile Include="..\Facebook.Client\FacebookAppLinkResolver.cs">
       <Link>FacebookAppLinkResolver.cs</Link>
     </Compile>
-    <Compile Include="..\Facebook.Client\FacebookDialog.cs">
-      <Link>FacebookDialog.cs</Link>
-    </Compile>
-    <Compile Include="..\Facebook.Client\FacebookDialogPage.xaml.cs">
-      <Link>FacebookDialogPage.xaml.cs</Link>
-      <DependentUpon>FacebookDialogPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="..\Facebook.Client\FacebookSession.cs">
       <Link>FacebookSession.cs</Link>
     </Compile>
@@ -199,9 +193,6 @@
     </Compile>
     <Compile Include="..\Facebook.Client\FacebookSessionIsolatedStorageCacheProvider.cs">
       <Link>FacebookSessionIsolatedStorageCacheProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\Facebook.Client\FacebookWebDialog.cs">
-      <Link>FacebookWebDialog.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\GraphLocation.cs">
       <Link>GraphLocation.cs</Link>
@@ -229,6 +220,10 @@
     <Compile Include="Controls\Converters\ImageSourceUriConverter.cs" />
     <Compile Include="Controls\FriendPicker\FriendPicker.cs" />
     <Compile Include="Controls\Picker\Picker.cs" />
+    <Compile Include="Controls\WebDialog\WebDialogUserControl.xaml.cs">
+      <DependentUpon>WebDialogUserControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="FacebookUriMapper.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -236,11 +231,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Include="..\Facebook.Client\FacebookDialogPage.xaml">
-      <Link>FacebookDialogPage.xaml</Link>
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="..\Facebook.Client\LoginPage.xaml">
       <Link>LoginPage.xaml</Link>
       <SubType>Designer</SubType>
@@ -261,6 +251,19 @@
     <Page Include="Controls\ProfilePicture\ProfilePicture.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\WebDialog\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\WebDialog\WebDialogUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Properties\DesignTimeResources.xaml" Condition="'$(DesignTime)'=='true' OR ('$(SolutionPath)'!='' AND Exists('$(SolutionPath)') AND '$(BuildingInsideVisualStudio)'!='true' AND '$(BuildingInsideExpressionBlend)'!='true')">
+      <Generator>MSBuild:MarkupCompilePass1</Generator>
+      <SubType>Designer</SubType>
+      <ContainsDesignTimeResources>true</ContainsDesignTimeResources>
     </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -285,12 +288,35 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Facebook">
-      <HintPath>..\packages\Facebook.6.6.0\lib\wp8\Facebook.dll</HintPath>
+    <Reference Include="Microsoft.Phone" />
+    <Reference Include="Microsoft.Phone.Interop" />
+    <Reference Include="System" />
+    <Reference Include="System.Net.Http">
+      <HintPath>..\..\Samples\SafariSample\packages\Microsoft.Net.Http.2.2.28\lib\sl4-windowsphone71\System.Net.Http.dll</HintPath>
     </Reference>
+    <Reference Include="System.Net.Http.Extensions">
+      <HintPath>..\..\Samples\SafariSample\packages\Microsoft.Net.Http.2.2.28\lib\sl4-windowsphone71\System.Net.Http.Extensions.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Net.Http.Primitives">
+      <HintPath>..\..\Samples\SafariSample\packages\Microsoft.Net.Http.2.2.28\lib\sl4-windowsphone71\System.Net.Http.Primitives.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\facebook-csharp-sdk\Source\Facebook\Facebook-WP8.csproj">
+      <Project>{857e540c-0092-4590-a279-f98a6b77ac0a}</Project>
+      <Name>Facebook-WP8</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <ProjectExtensions />
+  <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
+  <Import Project="..\..\Samples\SafariSample\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\..\Samples\SafariSample\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
+    <Error Condition="!Exists('..\..\Samples\SafariSample\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
+    <Error Condition="Exists('..\..\Samples\SafariSample\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

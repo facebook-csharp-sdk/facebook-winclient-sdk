@@ -236,7 +236,8 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Facebook">
-      <HintPath>c:\Users\sanjeevd\documents\visual studio 2013\Projects\packages\Facebook.6.6.0\lib\portable-win81+wpa81\Facebook.dll</HintPath>
+      <HintPath>c:\users\sanjeevd\documents\visual studio 2013\Projects\packages\Facebook.6.6.0\lib\portable-win81+wpa81\Facebook.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
