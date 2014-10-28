@@ -16,19 +16,19 @@ namespace Facebook.Client
 
             try
             {
-                FacebookSession session = new FacebookSession();
+                AccessTokenData session = new AccessTokenData();
                 session.ParseQueryString(HttpUtility.UrlDecode(uri.ToString()));
                 if (!String.IsNullOrEmpty(session.AccessToken))
                 {
                     var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
                     task.Wait();
                     session.AppId = task.Result;
-                    FacebookSessionClient.CurrentSession = session;
+                    Session.CurrentSession = session;
 
                     // trigger the event handler with the session
-                    if (FacebookSessionClient.OnFacebookAuthenticationFinished != null)
+                    if (Session.OnFacebookAuthenticationFinished != null)
                     {
-                        FacebookSessionClient.OnFacebookAuthenticationFinished(session);
+                        Session.OnFacebookAuthenticationFinished(session);
                     }
                 }
             }

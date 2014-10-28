@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FacebookSession.cs" company="The Outercurve Foundation">
+// <copyright file="AccessTokenData.cs" company="The Outercurve Foundation">
 //    Copyright (c) 2011, The Outercurve Foundation. 
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,11 +26,10 @@ using System.Threading.Tasks;
 
 namespace Facebook.Client
 {
-    [assembly: TypeForwardedToAttribute(typeof(FacebookSessionData))]
-    public class FacebookSession
+    public class AccessTokenData
     {
 
-        public FacebookSession()
+        public AccessTokenData()
         {
             this.CurrentPermissions = new List<string>();
         }

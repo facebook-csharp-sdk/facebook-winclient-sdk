@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FacebookSessionClient.cs" company="The Outercurve Foundation">
+// <copyright file="Session.cs" company="The Outercurve Foundation">
 //    Copyright (c) 2011, The Outercurve Foundation. 
 //
 //    Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,12 +56,12 @@ namespace Facebook.Client
         Pay
     }
 
-    public delegate void FacebookAuthenticationDelegate(FacebookSession session);
+    public delegate void FacebookAuthenticationDelegate(AccessTokenData session);
 
-    public class FacebookSessionClient
+    public class Session
     {
         // don't want this class instantiated without an app ID
-        public FacebookSessionClient()
+        public Session()
         {
            
         }
@@ -72,18 +72,18 @@ namespace Facebook.Client
         public static string AppId { get; private set; }
         public bool LoginInProgress { get; set; }
 
-        private static FacebookSession _currentSession = null;
+        private static AccessTokenData _currentSession = null;
         private static bool firstRun = true;
-        public static FacebookSession CurrentSession 
+        public static AccessTokenData CurrentSession 
         {
             get
             {
                 if (firstRun)
                 {
-                    FacebookSession tmpSession = FacebookSessionCacheProvider.Current.GetSessionData();
+                    AccessTokenData tmpSession = FacebookSessionCacheProvider.Current.GetSessionData();
                     if (tmpSession == null)
                     {
-                        _currentSession = new FacebookSession();
+                        _currentSession = new AccessTokenData();
                     }
                     else
                     {
@@ -103,8 +103,7 @@ namespace Facebook.Client
             }
         }
 
-        [ObsoleteAttribute("This constructor is obsolete. Define Facebook AppID in FacebookConfig.xml and use the no parameter constructor", false)]
-        public FacebookSessionClient(string appId)
+        public Session(string appId)
         {
             if (String.IsNullOrEmpty(appId))
             {
@@ -202,12 +201,12 @@ namespace Facebook.Client
             dialogPopup.IsOpen = true;
         }
 
-        public async Task<FacebookSession> LoginAsync()
+        public async Task<AccessTokenData> LoginAsync()
         {
             return await LoginAsync(null, false);
         }
 
-        public async Task<FacebookSession> LoginAsync(string permissions)
+        public async Task<AccessTokenData> LoginAsync(string permissions)
         {
             return await LoginAsync(permissions, false);
         }
@@ -286,7 +285,7 @@ namespace Facebook.Client
                     var access_token = (string) body["access_token"];
                     var expires_at = (long) body["expires_at"];
 
-                    var session = new FacebookSession();
+                    var session = new AccessTokenData();
                     // token extension failed...
                     session.AccessToken = access_token;
 
@@ -309,7 +308,7 @@ namespace Facebook.Client
 
         }
 
-        internal async Task<FacebookSession> LoginAsync(string permissions, bool force)
+        internal async Task<AccessTokenData> LoginAsync(string permissions, bool force)
         {
             if (this.LoginInProgress)
             {
@@ -332,7 +331,7 @@ namespace Facebook.Client
                     var result = await client.GetTaskAsync("me", parameters);
                     var dict = (IDictionary<string, object>)result;
 
-                    session = new FacebookSession
+                    session = new AccessTokenData
                     {
                         AccessToken = authResult.AccessToken,
                         Expires = authResult.Expires,

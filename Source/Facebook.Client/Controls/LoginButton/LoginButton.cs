@@ -42,8 +42,8 @@
         private const Audience DefaultDefaultAudience = Audience.None;
         private const string DefaultPermissions = "";
         private const bool DefaultFetchUserInfo = true;
-        private const FacebookSession DefaultCurrentSession = null;
-        private const FacebookSession DefaultCurrentUser = null;
+        private const AccessTokenData DefaultCurrentSession = null;
+        private const AccessTokenData DefaultCurrentUser = null;
         private static readonly CornerRadius DefaultCornerRadius = new CornerRadius(0);
 
         #endregion Default Property Values
@@ -51,7 +51,7 @@
         #region Member variables
 
         private Button loginButton;
-        private FacebookSessionClient facebookSessionClient;
+        private Session _session;
 
         #endregion Member variables
 
@@ -108,7 +108,7 @@
         {
             var target = (LoginButton)d;
             var applicationId = (string)e.NewValue;
-            target.facebookSessionClient = string.IsNullOrWhiteSpace(applicationId) ? null : new FacebookSessionClient(applicationId);
+            target._session = string.IsNullOrWhiteSpace(applicationId) ? null : new Session(applicationId);
         }
 
         #endregion ApplicationId
@@ -180,9 +180,9 @@
         /// <summary>
         /// Gets the current active session.
         /// </summary>
-        public FacebookSession CurrentSession
+        public AccessTokenData CurrentSession
         {
-            get { return (FacebookSession)GetValue(CurrentSessionProperty); }
+            get { return (AccessTokenData)GetValue(CurrentSessionProperty); }
             private set { this.SetValue(CurrentSessionProperty, value); }
         }
 
@@ -190,7 +190,7 @@
         /// Identifies the CurrentSession dependency property.
         /// </summary>
         public static readonly DependencyProperty CurrentSessionProperty =
-            DependencyProperty.Register("CurrentSession", typeof(FacebookSession), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultCurrentSession, OnCurrentSessionPropertyChanged));
+            DependencyProperty.Register("CurrentSession", typeof(AccessTokenData), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultCurrentSession, OnCurrentSessionPropertyChanged));
 
         private static void OnCurrentSessionPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -304,7 +304,7 @@
 
                 // TODO: using Permissions for the time being until we decide how 
                 // to handle separate ReadPermissions and PublishPermissions
-                var session = await this.facebookSessionClient.LoginAsync(permissions ?? this.Permissions);
+                var session = await this._session.LoginAsync(permissions ?? this.Permissions);
 
                 // initialize current session
                 this.CurrentSession = session;
@@ -348,7 +348,7 @@
 
         private void LogOut()
         {
-            this.facebookSessionClient.Logout();
+            this._session.Logout();
             this.CurrentSession = null;
             this.CurrentUser = null;
             this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Closed));

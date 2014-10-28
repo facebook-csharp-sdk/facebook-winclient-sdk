@@ -38,26 +38,26 @@ namespace SafariSample
             //        "https://m.facebook.com/v1.0/dialog/oauth?redirect_uri=fb540541885996234%3A%2F%2Fauthorize&display=touch&state=%7B%220is_active_session%22%3A1%2C%22is_open_session%22%3A1%2C%22com.facebook.sdk_client_state%22%3A1%2C%223_method%22%3A%22browser_auth%22%7D&scope=email%2Cbasic_info&type=user_agent&client_id=540541885996234&ret=login&sdk=ios&ext=1413580961&hash=Aeb0Q3uVJ6pgMh4C&refsrc=https%3A%2F%2Fm.facebook.com%2Flogin.php&refid=9&_rdr",
             //        UriKind.RelativeOrAbsolute);
             //Launcher.LaunchUriAsync(uri);
-            var client = new FacebookSessionClient("540541885996234");
+            var client = new Session("540541885996234");
             client.LoginWithBehavior("email,basic_info", FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly);
         }
 
         async private void extendTokenButton_Click(object sender, RoutedEventArgs e)
         {
-           await FacebookSessionClient.CheckAndExtendTokenIfNeeded();
+           await Session.CheckAndExtendTokenIfNeeded();
 
         }
 
         async private void graphCallButton_Click(object sender, RoutedEventArgs e)
         {
-            FacebookClient fb = new FacebookClient(FacebookSessionClient.CurrentSession.AccessToken);
+            FacebookClient fb = new FacebookClient(Session.CurrentSession.AccessToken);
 
             dynamic friendsTaskResult = await fb.GetTaskAsync("/me/friends");
         }
 
         private void showDialogButton_Click(object sender, RoutedEventArgs e)
         {
-            FacebookSessionClient.ShowAppRequestsDialog();
+            Session.ShowAppRequestsDialog();
         }
 
         // Sample code for building a localized ApplicationBar
@@ -77,7 +77,7 @@ namespace SafariSample
         //}
         private void ShowFeedDialogButton_OnClick(object sender, RoutedEventArgs e)
         {
-            FacebookSessionClient.ShowFeedDialog();
+            Session.ShowFeedDialog();
         }
     }
 }

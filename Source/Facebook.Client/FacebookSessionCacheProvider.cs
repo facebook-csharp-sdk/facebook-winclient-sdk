@@ -32,9 +32,9 @@ namespace Facebook.Client
             current = provider;
         }
 
-        public abstract FacebookSession GetSessionData();
+        public abstract AccessTokenData GetSessionData();
 
-        public abstract void SaveSessionData(FacebookSession data);
+        public abstract void SaveSessionData(AccessTokenData data);
 
         public abstract void DeleteSessionData();
 

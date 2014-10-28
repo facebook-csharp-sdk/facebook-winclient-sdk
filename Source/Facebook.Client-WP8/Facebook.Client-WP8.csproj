@@ -89,6 +89,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Facebook.Client\AccessTokenData.cs">
+      <Link>AccessTokenData.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\AppLink.cs">
       <Link>AppLink.cs</Link>
     </Compile>
@@ -182,14 +185,8 @@
     <Compile Include="..\Facebook.Client\FacebookAppLinkResolver.cs">
       <Link>FacebookAppLinkResolver.cs</Link>
     </Compile>
-    <Compile Include="..\Facebook.Client\FacebookSession.cs">
-      <Link>FacebookSession.cs</Link>
-    </Compile>
     <Compile Include="..\Facebook.Client\FacebookSessionCacheProvider.cs">
       <Link>FacebookSessionCacheProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\Facebook.Client\FacebookSessionClient.cs">
-      <Link>FacebookSessionClient.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\FacebookSessionIsolatedStorageCacheProvider.cs">
       <Link>FacebookSessionIsolatedStorageCacheProvider.cs</Link>
@@ -216,6 +213,9 @@
     <Compile Include="..\Facebook.Client\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\Session.cs">
+      <Link>Session.cs</Link>
+    </Compile>
     <Compile Include="AppAuthenticationHelper.cs" />
     <Compile Include="Controls\Converters\ImageSourceUriConverter.cs" />
     <Compile Include="Controls\FriendPicker\FriendPicker.cs" />
@@ -223,7 +223,6 @@
     <Compile Include="Controls\WebDialog\WebDialogUserControl.xaml.cs">
       <DependentUpon>WebDialogUserControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FacebookSessionData.cs" />
     <Compile Include="FacebookUriMapper.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -289,6 +288,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Facebook, Version=6.0.10.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Samples\SafariSample\packages\Facebook.6.8.0\lib\wp8\Facebook.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Interop" />
     <Reference Include="System" />
@@ -303,12 +306,6 @@
       <HintPath>..\..\Samples\SafariSample\packages\Microsoft.Net.Http.2.2.28\lib\sl4-windowsphone71\System.Net.Http.Primitives.dll</HintPath>
       <Private>True</Private>
     </Reference>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\facebook-csharp-sdk\Source\Facebook\Facebook-WP8.csproj">
-      <Project>{857e540c-0092-4590-a279-f98a6b77ac0a}</Project>
-      <Name>Facebook-WP8</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\$(TargetFrameworkIdentifier)\$(TargetFrameworkVersion)\Microsoft.$(TargetFrameworkIdentifier).CSharp.targets" />
   <ProjectExtensions />

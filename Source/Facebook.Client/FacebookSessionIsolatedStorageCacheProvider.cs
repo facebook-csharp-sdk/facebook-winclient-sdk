@@ -33,7 +33,7 @@ namespace Facebook.Client
     {
         private const string fileName = "FACEBOOK_SESSION";
 
-        public override FacebookSession GetSessionData()
+        public override AccessTokenData GetSessionData()
         {
             var store = IsolatedStorageFile.GetUserStoreForApplication();
             if (!store.FileExists(fileName))
@@ -41,18 +41,18 @@ namespace Facebook.Client
                 return null;
             }
 
-            FacebookSession data;
-            var serializer = new XmlSerializer(typeof(FacebookSession));
+            AccessTokenData data;
+            var serializer = new XmlSerializer(typeof(AccessTokenData));
             using (var stream = store.OpenFile(fileName, System.IO.FileMode.Open))
             {
-                data = serializer.Deserialize(stream) as FacebookSession;
+                data = serializer.Deserialize(stream) as AccessTokenData;
             }
             return data;
         }
 
-        public override void SaveSessionData(FacebookSession data)
+        public override void SaveSessionData(AccessTokenData data)
         {
-            var serializer = new XmlSerializer(typeof(FacebookSession));
+            var serializer = new XmlSerializer(typeof(AccessTokenData));
             var store = IsolatedStorageFile.GetUserStoreForApplication();
             using (var stream = store.OpenFile(fileName, FileMode.Create))
             {

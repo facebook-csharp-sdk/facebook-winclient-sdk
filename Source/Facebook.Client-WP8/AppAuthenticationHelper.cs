@@ -75,12 +75,12 @@ namespace Facebook.Client
         }
 
         /// <summary>
-        /// Initializes a new instance of the FacebookSession class from a query string with key/value pairs
+        /// Initializes a new instance of the AccessTokenData class from a query string with key/value pairs
         /// </summary>
         /// <param name="queryString">
         /// Query to parse
         /// </param>
-        public static void ParseQueryString(this FacebookSession session, string queryString)
+        public static void ParseQueryString(this AccessTokenData session, string queryString)
         {
             if (string.IsNullOrWhiteSpace(queryString))
             {
