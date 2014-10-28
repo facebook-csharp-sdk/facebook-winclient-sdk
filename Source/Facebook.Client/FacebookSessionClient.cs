@@ -23,6 +23,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
@@ -102,6 +103,7 @@ namespace Facebook.Client
             }
         }
 
+        [ObsoleteAttribute("This constructor is obsolete. Define Facebook AppID in FacebookConfig.xml and use the no parameter constructor", false)]
         public FacebookSessionClient(string appId)
         {
             if (String.IsNullOrEmpty(appId))
@@ -220,8 +222,12 @@ namespace Facebook.Client
                     Uri uri =
                         new Uri(
                             String.Format(
-                                "https://m.facebook.com/v1.0/dialog/oauth?redirect_uri={0}%3A%2F%2Fauthorize&display=touch&state=%7B%220is_active_session%22%3A1%2C%22is_open_session%22%3A1%2C%22com.facebook.sdk_client_state%22%3A1%2C%223_method%22%3A%22browser_auth%22%7D&scope=email%2Cbasic_info&type=user_agent&client_id={1}&ret=login&sdk=ios&ext=1413580961&hash=Aeb0Q3uVJ6pgMh4C&refsrc=https%3A%2F%2Fm.facebook.com%2Flogin.php&refid=9&_rdr",
-                                String.Format("fb{0}", appId), appId), UriKind.Absolute);
+                                "https://m.facebook.com/v1.0/dialog/oauth?redirect_uri={0}%3A%2F%2Fauthorize&display=touch&state=%7B%220is_active_session%22%3A1%2C%22is_open_session%22%3A1%2C%22com.facebook.sdk_client_state%22%3A1%2C%223_method%22%3A%22browser_auth%22%7D&scope={2}&type=user_agent&client_id={1}",
+                                String.Format("fb{0}", appId), appId, permissions), UriKind.Absolute);
+                    //String relativeUrl = String.Format(
+                    //    "redirect_uri={0}://authorize&display=touch&state={{\"0is_active_session\":1,\"is_open_session\":1,\"com.facebook.sdk_client_state\":1,\"3_method\":\"browser_auth\"}}&scope={2}&type=user_agent&client_id={1}",
+                    //    String.Format("fb{0}", appId), appId, permissions);
+                    //Uri uri = new Uri("https://m.facebook.com/v1.0/dialog/oauth?" + HttpUtility.HtmlEncode(relativeUrl), UriKind.Absolute);
                     Launcher.LaunchUriAsync(uri);
                     break;
                 }
@@ -238,24 +244,6 @@ namespace Facebook.Client
                 }
             }
         }
-
-        /*
-         * Token Extension trace from Facebook
-            User-Agent: FacebookiOSSDK.3.17.1
-            Content-Type: multipart/form-data; boundary=3i2ndDfv2rTHiSisAbouNdArYfORhtTPEefj3q2f
-        
-
-            --3i2ndDfv2rTHiSisAbouNdArYfORhtTPEefj3q2f
-            Content-Disposition: form-data; name="batch_app_id"
-
-            540541885996234
-            --3i2ndDfv2rTHiSisAbouNdArYfORhtTPEefj3q2f
-            Content-Disposition: form-data; name="batch"
-
-           [{"method":"GET","relative_url":"oauth\/access_token?sdk=ios&grant_type=fb_extend_sso_token&access_token=CAAHrnrcZA3MoBALWrjPGIniC0SyBnLr6KWjFgZA4ZC0W5X6CRLVipoH5ZCQo62F1jTcjOwmJlrSW3gjFQsWMzJzHafaROj2cZAw9l26FDmqgKTG5hetZA2QZAmETsXZA90qKXWXvOBUToC7KDFIOZAlndcJpARDb7ZAhZAMbr3QzZAGgbq6CwqRllLAc4nZCZC9a8qAbIZD&sdk=ios"}]
-
-           --3i2ndDfv2rTHiSisAbouNdArYfORhtTPEefj3q2
-        */
 
         public async static  Task CheckAndExtendTokenIfNeeded()
         {

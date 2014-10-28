@@ -39,7 +39,7 @@ namespace SafariSample
             //        UriKind.RelativeOrAbsolute);
             //Launcher.LaunchUriAsync(uri);
             var client = new FacebookSessionClient("540541885996234");
-            client.LoginWithBehavior("", FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly);
+            client.LoginWithBehavior("email,basic_info", FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly);
         }
 
         async private void extendTokenButton_Click(object sender, RoutedEventArgs e)

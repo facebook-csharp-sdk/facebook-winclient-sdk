@@ -223,6 +223,7 @@
     <Compile Include="Controls\WebDialog\WebDialogUserControl.xaml.cs">
       <DependentUpon>WebDialogUserControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FacebookSessionData.cs" />
     <Compile Include="FacebookUriMapper.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
