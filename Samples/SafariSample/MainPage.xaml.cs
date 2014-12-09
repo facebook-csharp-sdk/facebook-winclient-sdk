@@ -39,7 +39,7 @@ namespace SafariSample
             //        UriKind.RelativeOrAbsolute);
             //Launcher.LaunchUriAsync(uri);
             var client = new Session("540541885996234");
-            client.LoginWithBehavior("email,basic_info", FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly);
+            client.LoginWithBehavior("email,public_profile,user_friends", FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly);
         }
 
         async private void extendTokenButton_Click(object sender, RoutedEventArgs e)
@@ -50,14 +50,14 @@ namespace SafariSample
 
         async private void graphCallButton_Click(object sender, RoutedEventArgs e)
         {
-            FacebookClient fb = new FacebookClient(Session.CurrentSession.AccessToken);
+            FacebookClient fb = new FacebookClient(Session.ActiveSession.CurrentAccessTokenData.AccessToken);
 
             dynamic friendsTaskResult = await fb.GetTaskAsync("/me/friends");
         }
 
         private void showDialogButton_Click(object sender, RoutedEventArgs e)
         {
-            Session.ShowAppRequestsDialog();
+            Session.ShowAppRequestsDialog(null);
         }
 
         // Sample code for building a localized ApplicationBar
@@ -78,6 +78,11 @@ namespace SafariSample
         private void ShowFeedDialogButton_OnClick(object sender, RoutedEventArgs e)
         {
             Session.ShowFeedDialog();
+        }
+
+        private void ShowRequestWithBrowserButton_Click(object sender, RoutedEventArgs e)
+        {
+            WebDialogUserControl.ShowAppRequestDialogViaBrowser();
         }
     }
 }

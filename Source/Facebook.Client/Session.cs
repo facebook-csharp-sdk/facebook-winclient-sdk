@@ -49,6 +49,12 @@ namespace Facebook.Client
 #endif
     }
 
+    public enum WebDialogResult
+    {
+        WebDialogResultDialogCompleted,
+        WebDialogResultDialogNotCompleted
+    };
+
     public enum FacebookWebDialog
     {
         AppRequests,
@@ -58,29 +64,53 @@ namespace Facebook.Client
 
     public delegate void FacebookAuthenticationDelegate(AccessTokenData session);
 
+    public delegate void WebDialogFinishedDelegate(WebDialogResult result);
+
     public class Session
     {
         // don't want this class instantiated without an app ID
-        public Session()
+        private Session()
         {
-           
+            
         }
 
+        [ObsoleteAttribute("This method is obsolete and will be removed. Supply the App ID in the FacebookConfig.xml.", false)]
+        public Session(string appId)
+        {
+            if (String.IsNullOrEmpty(appId))
+            {
+                throw new ArgumentNullException("appId");
+            }
+            AppId = appId;
+
+            // Also save it as part of the static session object
+            CurrentAccessTokenData.AppId = appId;
+        }
+
+        public static Session ActiveSession = new Session();
 
         public static FacebookAuthenticationDelegate OnFacebookAuthenticationFinished;
-
-        public static string AppId { get; private set; }
+        
+        /// <summary>
+        /// Facebook AppId. This is if for some reason, you want to override the value supplied in the FacebookConfig.xml
+        /// </summary>
+        public static string AppId { get; set; }
         public bool LoginInProgress { get; set; }
 
-        private static AccessTokenData _currentSession = null;
-        private static bool firstRun = true;
-        public static AccessTokenData CurrentSession 
+
+        private AccessTokenData _currentSession = null;
+        private bool firstRun = true;
+
+        /// <summary>
+        /// The Access Token information for the last time the app ran
+        /// </summary>
+        public AccessTokenData CurrentAccessTokenData 
         {
             get
             {
                 if (firstRun)
                 {
-                    AccessTokenData tmpSession = FacebookSessionCacheProvider.Current.GetSessionData();
+                    AccessTokenData tmpSession = AccessTokenDataCacheProvider.Current.GetSessionData();
                     if (tmpSession == null)
                     {
                         _currentSession = new AccessTokenData();
@@ -99,57 +129,47 @@ namespace Facebook.Client
             set
             {
                 _currentSession = value;
-                FacebookSessionCacheProvider.Current.SaveSessionData(_currentSession);
+                AccessTokenDataCacheProvider.Current.SaveSessionData(_currentSession);
             }
         }
 
-        public Session(string appId)
-        {
-            if (String.IsNullOrEmpty(appId))
-            {
-                throw new ArgumentNullException("appId");
-            }
-            AppId = appId;
 
-            // Also save it as part of the static session object
-            CurrentSession.AppId = appId;
-        }
 
 #if WP8
-        public void LoginWithApp()
+        internal void LoginWithApp()
         {
             LoginWithApp(null);
         }
 
-        public void LoginWithApp(string permissions)
+        internal void LoginWithApp(string permissions)
         {
             LoginWithApp(permissions, null);
         }
 
-        public void LoginWithApp(string permissions, string state)
+        internal void LoginWithApp(string permissions, string state)
         {
             AppAuthenticationHelper.AuthenticateWithApp(AppId, permissions, state);
         }
 #endif
 
 #if WINDOWS_UNIVERSAL
-        async public Task LoginWithApp()
+        async internal Task LoginWithApp()
         {
             await LoginWithApp(null);
         }
 
-        async public Task LoginWithApp(string permissions)
+        async internal Task LoginWithApp(string permissions)
         {
             await LoginWithApp(permissions, null);
         }
 
-        async public Task LoginWithApp(string permissions, string state)
+        async internal Task LoginWithApp(string permissions, string state)
         {
             await AppAuthenticationHelper.AuthenticateWithApp(this.AppId, permissions, state);
         }
 #endif
 
-        public static void ShowAppRequestsDialog()
+        public static void ShowAppRequestsDialog(WebDialogFinishedDelegate callback)
         {
             Popup dialogPopup = new Popup();
 
@@ -169,7 +189,7 @@ namespace Facebook.Client
             webDialog.Width = dialogPopup.Width;
 
 
-            webDialog.ShowAppRequestsDialog();
+            webDialog.ShowAppRequestsDialog(callback);
 
             // Open the popup.
             dialogPopup.IsOpen = true;
@@ -201,113 +221,19 @@ namespace Facebook.Client
             dialogPopup.IsOpen = true;
         }
 
-        public async Task<AccessTokenData> LoginAsync()
+        [ObsoleteAttribute("This method is obsolete and will be removed. Use the LoginWithBehavior method", false)]
+        internal async Task<AccessTokenData> LoginAsync()
         {
             return await LoginAsync(null, false);
         }
 
-        public async Task<AccessTokenData> LoginAsync(string permissions)
+        [ObsoleteAttribute("This method is obsolete and will be removed. Use the LoginWithBehavior method", false)]
+        internal async Task<AccessTokenData> LoginAsync(string permissions)
         {
             return await LoginAsync(permissions, false);
         }
 
-        async public void LoginWithBehavior(string permissions, FacebookLoginBehavior behavior)
-        {
-            switch (behavior)
-            {
-                case FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly:
-                {
-                    String appId = await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId");
-                    Uri uri =
-                        new Uri(
-                            String.Format(
-                                "https://m.facebook.com/v1.0/dialog/oauth?redirect_uri={0}%3A%2F%2Fauthorize&display=touch&state=%7B%220is_active_session%22%3A1%2C%22is_open_session%22%3A1%2C%22com.facebook.sdk_client_state%22%3A1%2C%223_method%22%3A%22browser_auth%22%7D&scope={2}&type=user_agent&client_id={1}",
-                                String.Format("fb{0}", appId), appId, permissions), UriKind.Absolute);
-                    //String relativeUrl = String.Format(
-                    //    "redirect_uri={0}://authorize&display=touch&state={{\"0is_active_session\":1,\"is_open_session\":1,\"com.facebook.sdk_client_state\":1,\"3_method\":\"browser_auth\"}}&scope={2}&type=user_agent&client_id={1}",
-                    //    String.Format("fb{0}", appId), appId, permissions);
-                    //Uri uri = new Uri("https://m.facebook.com/v1.0/dialog/oauth?" + HttpUtility.HtmlEncode(relativeUrl), UriKind.Absolute);
-                    Launcher.LaunchUriAsync(uri);
-                    break;
-                }
-                case FacebookLoginBehavior.LoginBehaviorWebViewOnly:
-                {
-                    // TODO: What to do here? LoginAsync returns inproc. Login with IE returns out of proc?
-                    // LoginAsync()
-                    break;
-                }
-                case FacebookLoginBehavior.LoginBehaviorApplicationOnly:
-                {
-                    // LoginWithApp
-                    break;
-                }
-            }
-        }
-
-        public async static  Task CheckAndExtendTokenIfNeeded()
-        {
-            // get the existing token
-            if (String.IsNullOrEmpty(CurrentSession.AccessToken))
-            {
-                // If there is no token, do nothing
-                return;
-            }
-
-            // check if its issue date is over 24 hours and if so, renew it
-            if (DateTime.UtcNow - CurrentSession.Issued > TimeSpan.FromHours(24)) // one day 
-            {
-                var client = new HttpClient();
-                String tokenExtendUri = "https://graph.facebook.com/v2.1";
-                client.BaseAddress = new Uri(tokenExtendUri);
-
-                var request = new HttpRequestMessage();
-
-                var mfdc = new MultipartFormDataContent();
-                mfdc.Add(new StringContent("540541885996234"), name: "batch_app_id");
-
-                String extensionString = "[{\"method\":\"GET\",\"relative_url\":\"oauth\\/access_token?grant_type=fb_extend_sso_token&access_token=" + CurrentSession.AccessToken + "\"}]";
-                mfdc.Add(new StringContent(extensionString), name: "batch");
-
-                HttpResponseMessage response = await client.PostAsync(tokenExtendUri, mfdc);
-                String resultContent = await response.Content.ReadAsStringAsync();
-
-                var result = SimpleJson.DeserializeObject(resultContent);
-
-                // extract the access token and save it in the session
-                var data = (List<object>)result;
-
-                var dictionary = (IDictionary<string, object>)data[0];
-                var code = (long)dictionary["code"];
-                if (code == 200)
-                {
-                    // the API succeeded
-                    var body = (IDictionary<string, object>) SimpleJson.DeserializeObject((string) dictionary["body"]);
-                    var access_token = (string) body["access_token"];
-                    var expires_at = (long) body["expires_at"];
-
-                    var session = new AccessTokenData();
-                    // token extension failed...
-                    session.AccessToken = access_token;
-
-                    // parse out other types
-                    long expiresInValue;
-                    var now = DateTime.UtcNow;
-                    session.Expires = now + TimeSpan.FromSeconds(expires_at);
-                    session.Issued = now - (TimeSpan.FromDays(60) - TimeSpan.FromSeconds(expires_at));
-                    session.AppId = AppId;
-
-                    // Assign the session object over, this saves it to the disk as well.
-                    CurrentSession = session;
-                }
-                else
-                {
-
-                }
-            }
-
-
-        }
-
+        [ObsoleteAttribute("This method is obsolete and will be removed. Use the LoginWithBehavior method", false)]
         internal async Task<AccessTokenData> LoginAsync(string permissions, bool force)
         {
             if (this.LoginInProgress)
@@ -318,7 +244,7 @@ namespace Facebook.Client
             this.LoginInProgress = true;
             try
             {
-                var session = FacebookSessionCacheProvider.Current.GetSessionData();
+                var session = AccessTokenDataCacheProvider.Current.GetSessionData();
                 if (session == null)
                 {
                     // Authenticate
@@ -337,7 +263,7 @@ namespace Facebook.Client
                         Expires = authResult.Expires,
                         FacebookId = (string)dict["id"],
                     };
-                  
+
                 }
                 else
                 {
@@ -371,17 +297,126 @@ namespace Facebook.Client
                 }
 
                 // Save session data
-                FacebookSessionCacheProvider.Current.SaveSessionData(session);
-                CurrentSession = session;
+                AccessTokenDataCacheProvider.Current.SaveSessionData(session);
+                CurrentAccessTokenData = session;
             }
             finally
             {
                 this.LoginInProgress = false;
             }
 
-            return CurrentSession;
+            return CurrentAccessTokenData;
         }
 
+
+        async public void LoginWithBehavior(string permissions, FacebookLoginBehavior behavior)
+        {
+            switch (behavior)
+            {
+                case FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly:
+                {
+                    String appId = await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId");
+                    Uri uri =
+                        new Uri(
+                            String.Format(
+                                "https://m.facebook.com/v2.1/dialog/oauth?redirect_uri={0}%3A%2F%2Fauthorize&display=touch&state=%7B%220is_active_session%22%3A1%2C%22is_open_session%22%3A1%2C%22com.facebook.sdk_client_state%22%3A1%2C%223_method%22%3A%22browser_auth%22%7D&scope={2}&type=user_agent&client_id={1}&sdk=ios",
+                                String.Format("fb{0}", appId), appId, permissions), UriKind.Absolute);
+                    
+                    //Uri uri = new Uri("https://m.facebook.com/v2.1/dialog/oauth?redirect_uri=fb540541885996234%3A%2F%2Fauthorize&display=touch&state=%7B%22is_open_session%22%3Atrue%2C%22is_active_session%22%3Atrue%2C%220_auth_logger_id%22%3A%223E012DE9-4A33-4D99-93BF-8204097D332D%22%2C%22com.facebook.sdk_client_state%22%3Atrue%2C%223_method%22%3A%22browser_auth%22%7D&scope&response_type=token%2Csigned_request&return_scopes=true&client_id=540541885996234&ret=login&sdk=ios&ext=1414545471&hash=AeaujKzjQ4JmQYld&refsrc=https%3A%2F%2Fm.facebook.com%2Flogin.php&refid=9&_rdr", UriKind.Absolute);
+
+                    //String relativeUrl = String.Format(
+                    //    "redirect_uri={0}://authorize&display=touch&state={{\"0is_active_session\":1,\"is_open_session\":1,\"com.facebook.sdk_client_state\":1,\"3_method\":\"browser_auth\"}}&scope={2}&type=user_agent&client_id={1}",
+                    //    String.Format("fb{0}", appId), appId, permissions);
+                    //Uri uri = new Uri("https://m.facebook.com/v1.0/dialog/oauth?" + HttpUtility.HtmlEncode(relativeUrl), UriKind.Absolute);
+                    Launcher.LaunchUriAsync(uri);
+                    break;
+                }
+                case FacebookLoginBehavior.LoginBehaviorWebViewOnly:
+                {
+                    // TODO: What to do here? LoginAsync returns inproc. Login with IE returns out of proc?
+                    var result = await LoginAsync(permissions);
+                    
+                    // when the results are available, launch the event handler
+                    OnFacebookAuthenticationFinished(result);
+                    break;
+                }
+                case FacebookLoginBehavior.LoginBehaviorApplicationOnly:
+                {
+                    LoginWithApp(permissions);
+                    break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// TODO: Extend an SSO token daily. This should be an internal method
+        /// </summary>
+        /// <returns></returns>
+        public async static  Task CheckAndExtendTokenIfNeeded()
+        {
+            // get the existing token
+            if (String.IsNullOrEmpty(ActiveSession.CurrentAccessTokenData.AccessToken))
+            {
+                // If there is no token, do nothing
+                return;
+            }
+
+            // check if its issue date is over 24 hours and if so, renew it
+            if (DateTime.UtcNow - ActiveSession.CurrentAccessTokenData.Issued > TimeSpan.FromHours(24)) // one day 
+            {
+                var client = new HttpClient();
+                String tokenExtendUri = "https://graph.facebook.com/v2.1";
+                client.BaseAddress = new Uri(tokenExtendUri);
+
+                var request = new HttpRequestMessage();
+
+                var mfdc = new MultipartFormDataContent();
+                mfdc.Add(new StringContent("540541885996234"), name: "batch_app_id");
+
+                String extensionString = "[{\"method\":\"GET\",\"relative_url\":\"oauth\\/access_token?grant_type=fb_extend_sso_token&access_token=" + ActiveSession.CurrentAccessTokenData.AccessToken + "\"}]";
+                mfdc.Add(new StringContent(extensionString), name: "batch");
+
+                HttpResponseMessage response = await client.PostAsync(tokenExtendUri, mfdc);
+                String resultContent = await response.Content.ReadAsStringAsync();
+
+                var result = SimpleJson.DeserializeObject(resultContent);
+
+                // extract the access token and save it in the session
+                var data = (List<object>)result;
+
+                var dictionary = (IDictionary<string, object>)data[0];
+                var code = (long)dictionary["code"];
+                if (code == 200)
+                {
+                    // the API succeeded
+                    var body = (IDictionary<string, object>) SimpleJson.DeserializeObject((string) dictionary["body"]);
+                    var access_token = (string) body["access_token"];
+                    var expires_at = (long) body["expires_at"];
+
+                    var session = new AccessTokenData();
+                    // token extension failed...
+                    session.AccessToken = access_token;
+
+                    // parse out other types
+                    long expiresInValue;
+                    var now = DateTime.UtcNow;
+                    session.Expires = now + TimeSpan.FromSeconds(expires_at);
+                    session.Issued = now - (TimeSpan.FromDays(60) - TimeSpan.FromSeconds(expires_at));
+                    session.AppId = AppId;
+
+                    // Assign the session object over, this saves it to the disk as well.
+                    ActiveSession.CurrentAccessTokenData = session;
+                }
+                else
+                {
+                     // return an error?? Since this is token extension, maybe we should wait until the token is finally expired before throwing an error.
+                }
+            }
+
+
+        }
+
+        
         /// <summary>
         /// Log a user out of Facebook.
         /// </summary>
@@ -390,11 +425,11 @@ namespace Facebook.Client
         {
             try
             {
-                FacebookSessionCacheProvider.Current.DeleteSessionData();
+                AccessTokenDataCacheProvider.Current.DeleteSessionData();
             }
             finally
             {
-                CurrentSession = null;
+                CurrentAccessTokenData = null;
             }
         }
 

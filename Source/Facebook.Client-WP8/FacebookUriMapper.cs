@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Navigation;
 using System.Net;
+using Microsoft.Phone.Controls;
 
 namespace Facebook.Client
 {
@@ -23,7 +25,7 @@ namespace Facebook.Client
                     var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
                     task.Wait();
                     session.AppId = task.Result;
-                    Session.CurrentSession = session;
+                    Session.ActiveSession.CurrentAccessTokenData = session;
 
                     // trigger the event handler with the session
                     if (Session.OnFacebookAuthenticationFinished != null)

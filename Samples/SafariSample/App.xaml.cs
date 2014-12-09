@@ -125,9 +125,22 @@ namespace SafariSample
             // Handle reset requests for clearing the backstack
             RootFrame.Navigated += CheckForResetNavigation;
 
+            // TODO: (cancel navigation for Facebook protocol navigation)
+            // RootFrame.Navigating += RootFrame_Navigating;
             // Ensure we don't initialize again
             phoneApplicationInitialized = true;
         }
+
+        // TODO: (cancel navigation for Facebook protocol navigation)
+        //void RootFrame_Navigating(object sender, NavigatingCancelEventArgs e)
+        //{
+        //    // cancel any navigation for facebook protocol activation
+        //    var fbProtocolMatch = String.Format("/Protocol?encodedLaunchUri=fb{0}", "540541885996234");
+        //    if (e.Uri.ToString().StartsWith(fbProtocolMatch))
+        //    {
+        //        e.Cancel = true;
+        //    }
+        //}
 
         // Do not add any additional code to this method
         private void CompleteInitializePhoneApplication(object sender, NavigationEventArgs e)

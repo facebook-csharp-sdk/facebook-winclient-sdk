@@ -52,8 +52,9 @@
             <Button x:Name="graphCallButton" Content="Make Graph Call" HorizontalAlignment="Left" Margin="48,155,0,0" Grid.Row="1" VerticalAlignment="Top" Width="322" Click="graphCallButton_Click"/>
             <Button x:Name="showDialogButton" Content="Show Requests dialog" HorizontalAlignment="Left" Margin="48,232,0,0" Grid.Row="1" VerticalAlignment="Top" Width="322" Click="showDialogButton_Click"/>
             <Button x:Name="showFeedDialogButton" Content="Show Feed Dialog" HorizontalAlignment="Left" Margin="48,309,0,0" Grid.Row="1" VerticalAlignment="Top" Width="322" Click="ShowFeedDialogButton_OnClick"/>
-
+            <Button x:Name="ShowRequestWithBrowserButton"  Content="Show Request via Browser" HorizontalAlignment="Left" Margin="48,386,0,0" Grid.Row="1" VerticalAlignment="Top" Width="319" Click="ShowRequestWithBrowserButton_Click"/>
         </Grid>
+        
 
         <!--Uncomment to see an alignment grid to help ensure your controls are
             aligned on common boundaries.  The image has a top margin of -32px to
