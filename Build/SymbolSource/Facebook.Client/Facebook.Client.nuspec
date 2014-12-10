@@ -17,19 +17,12 @@
             <group>
                 <dependency id="Facebook" version="6.4" />
             </group>
-            <group targetFramework="wp71">
-                <dependency id="Facebook" version="6.4" />
-                <dependency id="Microsoft.Bcl.Async" version="1.0" />
-            </group>
         </dependencies>
     </metadata>
     <files>
         <file src="..\..\..\LICENSE.txt" target = "LICENSE.txt" />
         <file src="..\..\..\Build\readme.txt" target = "readme.txt" />
         
-        <file src="..\..\..\Bin\Release\wp71\Facebook.Client.dll" target = "lib\wp71" />
-        <file src="..\..\..\Bin\Release\wp71\Facebook.Client.xml" target = "lib\wp71" />
-
         <file src="..\..\..\Bin\Release\wp8\Facebook.Client.dll" target = "lib\wp8" />
         <file src="..\..\..\Bin\Release\wp8\Facebook.Client.xml" target = "lib\wp8" />
 
