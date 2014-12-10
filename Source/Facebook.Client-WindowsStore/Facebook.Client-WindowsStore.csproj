@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\Bin\Debug\win8\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFX_CORE;</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS80</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\Bin\Debug\win8\Facebook.Client.xml</DocumentationFile>
@@ -109,6 +109,9 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\Facebook.Client\AccessTokenData.cs">
+      <Link>AccessTokenData.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\AppLink.cs">
       <Link>AppLink.cs</Link>
     </Compile>
@@ -208,17 +211,8 @@
     <Compile Include="..\Facebook.Client\FacebookDialog.cs">
       <Link>FacebookDialog.cs</Link>
     </Compile>
-    <Compile Include="..\Facebook.Client\FacebookSession.cs">
-      <Link>FacebookSession.cs</Link>
-    </Compile>
     <Compile Include="..\Facebook.Client\FacebookSessionCacheProvider.cs">
       <Link>FacebookSessionCacheProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\Facebook.Client\FacebookSessionClient.cs">
-      <Link>FacebookSessionClient.cs</Link>
-    </Compile>
-    <Compile Include="..\Facebook.Client\FacebookWebDialog.cs">
-      <Link>FacebookWebDialog.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\GraphLocation.cs">
       <Link>GraphLocation.cs</Link>
@@ -231,6 +225,9 @@
     </Compile>
     <Compile Include="..\Facebook.Client\GraphUser.cs">
       <Link>GraphUser.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Session.cs">
+      <Link>Session.cs</Link>
     </Compile>
     <Compile Include="Controls\Converters\PickerSelectionModeConverter.cs" />
     <Compile Include="Controls\Converters\SizeToGridCellConverter.cs" />

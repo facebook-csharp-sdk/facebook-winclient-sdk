@@ -28,14 +28,25 @@ using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+
+#if WINDOWS80
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls.Primitives;
+#endif
+
 #if NETFX_CORE
 using Windows.Security.Authentication.Web;
 #endif
 using System.Windows;
+
+#if WP8 || WINDOWS_PHONE
+using Facebook.Client.Controls.WebDialog;
 using System.Windows.Controls.Primitives;
+#endif
+
 using Windows.System;
 using Facebook;
-using Facebook.Client.Controls.WebDialog;
+
 
 namespace Facebook.Client
 {
@@ -135,7 +146,7 @@ namespace Facebook.Client
 
 
 
-#if WP8
+#if WP8 || WINDOWS_PHONE
         internal void LoginWithApp()
         {
             LoginWithApp(null);
@@ -165,10 +176,11 @@ namespace Facebook.Client
 
         async internal Task LoginWithApp(string permissions, string state)
         {
-            await AppAuthenticationHelper.AuthenticateWithApp(this.AppId, permissions, state);
+            await AppAuthenticationHelper.AuthenticateWithApp(Session.AppId, permissions, state);
         }
 #endif
 
+#if WP8 || WINDOWS_PHONE
         public static void ShowAppRequestsDialog(WebDialogFinishedDelegate callback)
         {
             Popup dialogPopup = new Popup();
@@ -221,6 +233,7 @@ namespace Facebook.Client
             dialogPopup.IsOpen = true;
         }
 
+#endif
         [ObsoleteAttribute("This method is obsolete and will be removed. Use the LoginWithBehavior method", false)]
         internal async Task<AccessTokenData> LoginAsync()
         {
@@ -313,6 +326,7 @@ namespace Facebook.Client
         {
             switch (behavior)
             {
+#if WP8 || WINDOWS_PHONE
                 case FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly:
                 {
                     String appId = await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId");
@@ -331,6 +345,7 @@ namespace Facebook.Client
                     Launcher.LaunchUriAsync(uri);
                     break;
                 }
+#endif
                 case FacebookLoginBehavior.LoginBehaviorWebViewOnly:
                 {
                     // TODO: What to do here? LoginAsync returns inproc. Login with IE returns out of proc?
@@ -340,11 +355,13 @@ namespace Facebook.Client
                     OnFacebookAuthenticationFinished(result);
                     break;
                 }
+#if WP8 || WINDOWS_PHONE
                 case FacebookLoginBehavior.LoginBehaviorApplicationOnly:
                 {
                     LoginWithApp(permissions);
                     break;
                 }
+#endif
             }
         }
 
@@ -463,7 +480,7 @@ namespace Facebook.Client
             parameters["client_id"] = AppId;
             parameters["redirect_uri"] = "https://www.facebook.com/connect/login_success.html";
             parameters["response_type"] = "token";
-#if WINDOWS_PHONE
+#if WP8 || WINDOWS_PHONE
             parameters["display"] = "touch";
             parameters["mobile"] = true;
 #else

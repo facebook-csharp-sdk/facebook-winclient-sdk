@@ -78,6 +78,9 @@
     <Compile Include="..\Facebook.Client-WP8\AppAuthenticationHelper.cs">
       <Link>AppAuthenticationHelper.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\AccessTokenData.cs">
+      <Link>AccessTokenData.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\AppLink.cs">
       <Link>AppLink.cs</Link>
     </Compile>
@@ -177,17 +180,8 @@
     <Compile Include="..\Facebook.Client\FacebookDialog.cs">
       <Link>FacebookDialog.cs</Link>
     </Compile>
-    <Compile Include="..\Facebook.Client\FacebookSession.cs">
-      <Link>FacebookSession.cs</Link>
-    </Compile>
     <Compile Include="..\Facebook.Client\FacebookSessionCacheProvider.cs">
       <Link>FacebookSessionCacheProvider.cs</Link>
-    </Compile>
-    <Compile Include="..\Facebook.Client\FacebookSessionClient.cs">
-      <Link>FacebookSessionClient.cs</Link>
-    </Compile>
-    <Compile Include="..\Facebook.Client\FacebookWebDialog.cs">
-      <Link>FacebookWebDialog.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\GraphLocation.cs">
       <Link>GraphLocation.cs</Link>
@@ -203,6 +197,9 @@
     </Compile>
     <Compile Include="..\Facebook.Client\Properties\AssemblyInfo.cs">
       <Link>Properties\AssemblyInfo.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\Session.cs">
+      <Link>Session.cs</Link>
     </Compile>
     <Compile Include="Controls\Converters\PickerSelectionModeConverter.cs" />
     <Compile Include="Controls\Converters\SizeToGridCellConverter.cs" />

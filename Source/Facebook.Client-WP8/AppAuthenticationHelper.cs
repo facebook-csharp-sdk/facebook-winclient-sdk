@@ -1,6 +1,9 @@
 ﻿using System.Xml;
 using Windows.Storage;
+
+#if WP8
 using Microsoft.Phone.Maps.Services;
+#endif
 
 namespace Facebook.Client
 {

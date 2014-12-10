@@ -10,7 +10,7 @@ using Windows.Storage;
 namespace Facebook.Client
 {
 
-    public class FacebookSessionRoamingSettingsCacheProvider : FacebookSessionCacheProvider
+    public class FacebookSessionRoamingSettingsCacheProvider : AccessTokenDataCacheProvider
     {
         private const string key = "FACEBOOK_SESSION";
 
@@ -31,7 +31,7 @@ namespace Facebook.Client
         // If we update the SDK and the data format changes, we should automatically migrate to prevent
         // app crashes and poor user experience (i.e. forced to login after app updates).
 
-        public override FacebookSession GetSessionData()
+        public override AccessTokenData GetSessionData()
         {
             var settings = ApplicationData.Current.RoamingSettings;
             var composite = (ApplicationDataCompositeValue)settings.Values[key];
@@ -41,7 +41,7 @@ namespace Facebook.Client
                 return null;
             }
 
-            var session = new FacebookSession
+            var session = new AccessTokenData
             {
                 AccessToken = (string)composite["AccessToken"],
                 FacebookId = (string)composite["FacebookId"],
@@ -67,7 +67,7 @@ namespace Facebook.Client
             return session;
         }
 
-        public override void SaveSessionData(FacebookSession data)
+        public override void SaveSessionData(AccessTokenData data)
         {
             var settings = ApplicationData.Current.RoamingSettings;
             var composite = new ApplicationDataCompositeValue();
