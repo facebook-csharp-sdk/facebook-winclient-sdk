@@ -1,6 +1,6 @@
-﻿using SafariSample.Resources;
+﻿using FullSampleWP8.Resources;
 
-namespace SafariSample
+namespace FullSampleWP8
 {
     /// <summary>
     /// Provides access to string resources.

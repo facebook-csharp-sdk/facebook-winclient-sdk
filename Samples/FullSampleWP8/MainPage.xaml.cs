@@ -12,10 +12,10 @@ using Facebook.Client;
 using Facebook.Client.Controls.WebDialog;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using SafariSample.Resources;
+using FullSampleWP8.Resources;
 using System.Windows.Controls.Primitives;
 
-namespace SafariSample
+namespace FullSampleWP8
 {
     public partial class MainPage : PhoneApplicationPage
     {

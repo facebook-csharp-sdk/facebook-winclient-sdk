@@ -5,11 +5,11 @@ using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
 using Facebook.Client;
+using FullSampleWP8.Resources;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
-using SafariSample.Resources;
 
-namespace SafariSample
+namespace FullSampleWP8
 {
     public partial class App : Application
     {

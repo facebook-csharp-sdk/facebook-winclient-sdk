@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Navigation;
 using Facebook;
 
-namespace SafariSample
+namespace FullSampleWP8
 {
     //class CustomUriMapper : UriMapperBase
     //{

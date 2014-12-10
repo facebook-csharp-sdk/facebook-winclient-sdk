@@ -2,7 +2,7 @@
 
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US"/>
-  <App xmlns="" ProductID="{bb9e8411-1d8d-4d3f-a83d-038fca9e7e6d}" Title="SafariSample" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal"  Author="SafariSample author" Description="Sample description" Publisher="SafariSample" PublisherID="{46c12d39-d735-4d45-9d14-992361bb9608}">
+  <App xmlns="" ProductID="{bb9e8411-1d8d-4d3f-a83d-038fca9e7e6d}" Title="FullSampleWP8" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal"  Author="FullSampleWP8 author" Description="Sample description" Publisher="FullSampleWP8" PublisherID="{46c12d39-d735-4d45-9d14-992361bb9608}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING"/>
@@ -15,12 +15,12 @@
       <DefaultTask  Name ="_default" NavigationPage="MainPage.xaml"/>
     </Tasks>
     <Tokens>
-      <PrimaryToken TokenID="SafariSampleToken" TaskName="_default">
+      <PrimaryToken TokenID="FullSampleWP8Token" TaskName="_default">
         <TemplateFlip>
           <SmallImageURI IsRelative="true" IsResource="false">Assets\Tiles\FlipCycleTileSmall.png</SmallImageURI>
           <Count>0</Count>
           <BackgroundImageURI IsRelative="true" IsResource="false">Assets\Tiles\FlipCycleTileMedium.png</BackgroundImageURI>
-          <Title>SafariSample</Title>
+          <Title>FullSampleWP8</Title>
           <BackContent></BackContent>
           <BackBackgroundImageURI></BackBackgroundImageURI>
           <BackTitle></BackTitle>
