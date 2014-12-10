@@ -17,10 +17,6 @@
             <group>
                 <dependency id="Facebook" version="6.4" />
             </group>
-            <group targetFramework="wp71">
-                <dependency id="Facebook" version="6.4" />
-                <dependency id="Microsoft.Bcl.Async" version="1.0" />
-            </group>
         </dependencies>
     </metadata>
     <files>
@@ -33,9 +29,6 @@
         <file src="..\..\..\Bin\Release\win8\Controls\**" target = "lib\win8\Facebook.Client\Controls\" />
         <file src="..\..\..\Bin\Release\win8\Themes\**" target = "lib\win8\Facebook.Client\Themes\" />
         <file src="..\..\..\Source\Facebook.Client-WindowsStore\Images\**" target = "lib\win8\Facebook.Client\Images\" />
-
-        <file src="..\..\..\Bin\Release\wp71\Facebook.Client.dll" target = "lib\wp71" />
-        <file src="..\..\..\Bin\Release\wp71\Facebook.Client.xml" target = "lib\wp71" />
         
         <file src="..\..\..\Bin\Release\wp8\Facebook.Client.dll" target = "lib\wp8" />
         <file src="..\..\..\Bin\Release\wp8\Facebook.Client.xml" target = "lib\wp8" />
