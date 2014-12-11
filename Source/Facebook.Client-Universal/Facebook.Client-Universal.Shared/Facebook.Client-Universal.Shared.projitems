@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>ee957bbc-7963-4ca5-88f8-4750849a3d9a</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Facebook.Client_Universal</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="..\..\Facebook.Client-WP8\AppAuthenticationHelper.cs">
+      <Link>AppAuthenticationHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\AccessTokenData.cs">
+      <Link>AccessTokenData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\AppLink.cs">
+      <Link>AppLink.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\AppLinkNavigation.cs">
+      <Link>AppLinkNavigation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\AppLinkResolver.cs">
+      <Link>AppLinkResolver.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\FacebookAppLinkResolver.cs">
+      <Link>FacebookAppLinkResolver.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\FacebookDialog.cs">
+      <Link>FacebookDialog.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\FacebookSessionCacheProvider.cs">
+      <Link>FacebookSessionCacheProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\GraphLocation.cs">
+      <Link>GraphLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\GraphObject.cs">
+      <Link>GraphObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\GraphPlace.cs">
+      <Link>GraphPlace.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\GraphUser.cs">
+      <Link>GraphUser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\Session.cs">
+      <Link>Session.cs</Link>
+    </Compile>
+  </ItemGroup>
+</Project>
