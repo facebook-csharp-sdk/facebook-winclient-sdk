@@ -7,7 +7,7 @@
     using Windows.UI.Xaml.Data;
     using Windows.UI.Xaml.Media;
 #endif
-#if WINDOWS_PHONE
+#if WP8
     using System.Globalization;
     using System.Windows.Data;
     using System.Windows.Media;
@@ -29,7 +29,7 @@
         /// <returns>A converted value.</returns>
         public object Convert(object value, Type targetType, object parameter, string language)
 #endif
-#if WINDOWS_PHONE
+#if WP8
         /// <summary>
         /// Converts the color of the supplied brush changing its luminosity by the given factor.
         /// </summary>
@@ -76,7 +76,7 @@
         /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
 #endif
-#if WINDOWS_PHONE
+#if WP8
         /// <summary>
         /// Not implemented.
         /// </summary>

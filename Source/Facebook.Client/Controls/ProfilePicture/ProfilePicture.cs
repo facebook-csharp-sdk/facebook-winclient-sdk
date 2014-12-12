@@ -9,7 +9,7 @@
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Media;
 #endif
-#if WINDOWS_PHONE
+#if WP8
     using System;
     using System.Globalization;
     using System.Windows;
@@ -137,7 +137,7 @@
 #if NETFX_CORE
         protected override void OnApplyTemplate()
 #endif
-#if WINDOWS_PHONE
+#if WP8
         public override void OnApplyTemplate()
 #endif
         {
@@ -229,7 +229,7 @@
 
             return string.Format(CultureInfo.InvariantCulture, "ms-appx:///{0}/Images/{1}", libraryName, imageName);
 #endif
-#if WINDOWS_PHONE
+#if WP8
             return string.Format(CultureInfo.InvariantCulture, "/Images/{0}", imageName);
 #endif
         }

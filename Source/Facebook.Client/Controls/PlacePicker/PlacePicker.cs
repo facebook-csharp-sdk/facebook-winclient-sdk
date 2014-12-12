@@ -13,7 +13,7 @@
     using Windows.UI.Core;
     using Windows.UI.Xaml;
 #endif
-#if WINDOWS_PHONE
+#if WP8
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -305,7 +305,7 @@
                 CoreDispatcherPriority.Normal,
                 async () =>
 #endif
-#if WINDOWS_PHONE
+#if WP8
             this.Dispatcher.BeginInvoke(
                 async () =>
 #endif

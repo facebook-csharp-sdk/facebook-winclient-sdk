@@ -29,7 +29,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-#if WINDOWS80
+#if WINDOWS80 || WINDOWS_PHONE
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 #endif
@@ -39,7 +39,7 @@ using Windows.Security.Authentication.Web;
 #endif
 using System.Windows;
 
-#if WP8 || WINDOWS_PHONE
+#if WP8
 using Facebook.Client.Controls.WebDialog;
 using System.Windows.Controls.Primitives;
 #endif
@@ -163,24 +163,24 @@ namespace Facebook.Client
         }
 #endif
 
-#if WINDOWS_UNIVERSAL
-        async internal Task LoginWithApp()
-        {
-            await LoginWithApp(null);
-        }
+//#if WINDOWS_UNIVERSAL
+//        async internal Task LoginWithApp()
+//        {
+//            await LoginWithApp(null);
+//        }
 
-        async internal Task LoginWithApp(string permissions)
-        {
-            await LoginWithApp(permissions, null);
-        }
+//        async internal Task LoginWithApp(string permissions)
+//        {
+//            await LoginWithApp(permissions, null);
+//        }
 
-        async internal Task LoginWithApp(string permissions, string state)
-        {
-            await AppAuthenticationHelper.AuthenticateWithApp(Session.AppId, permissions, state);
-        }
-#endif
+//        async internal Task LoginWithApp(string permissions, string state)
+//        {
+//            await AppAuthenticationHelper.AuthenticateWithApp(Session.AppId, permissions, state);
+//        }
+//#endif
 
-#if WP8 || WINDOWS_PHONE
+#if WP8
         public static void ShowAppRequestsDialog(WebDialogFinishedDelegate callback)
         {
             Popup dialogPopup = new Popup();

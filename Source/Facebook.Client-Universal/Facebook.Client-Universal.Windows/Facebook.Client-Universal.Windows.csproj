@@ -25,9 +25,9 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\..\Bin\Debug\WindowsUniversal\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UNIVERSAL</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UNIVERSAL;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
     <GenerateLibraryLayout>false</GenerateLibraryLayout>
     <DocumentationFile>..\..\..\Bin\Debug\WindowsUniversal\Facebook.Client.XML</DocumentationFile>
   </PropertyGroup>
@@ -36,7 +36,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\..\Bin\Release\WindowsUniversal\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UNIVERSAL</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UNIVERSAL;WINDOWS</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\..\Bin\Release\WindowsUniversal\Facebook.Client.XML</DocumentationFile>

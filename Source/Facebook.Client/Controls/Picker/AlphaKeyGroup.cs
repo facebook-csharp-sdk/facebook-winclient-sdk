@@ -5,7 +5,7 @@
     using System.Globalization;
     using System.Linq;
 #endif
-#if WINDOWS_PHONE
+#if WP8
     using System.Collections.Generic;
     using System.Globalization;
     using System.Linq;

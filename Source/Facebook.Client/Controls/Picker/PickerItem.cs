@@ -4,7 +4,7 @@
     using System.ComponentModel;
     using Windows.UI.Xaml;
 #endif
-#if WINDOWS_PHONE
+#if WP8
     using System.ComponentModel;
     using System.Windows;
 #endif

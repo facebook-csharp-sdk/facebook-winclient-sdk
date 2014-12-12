@@ -11,7 +11,7 @@ namespace Facebook.Client.Controls
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
 #endif
-#if WINDOWS_PHONE
+#if WP8
     using System;
     using System.Collections;
     using System.Collections.Generic;

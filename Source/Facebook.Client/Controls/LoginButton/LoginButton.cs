@@ -10,7 +10,7 @@
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
 #endif
-#if WINDOWS_PHONE
+#if WP8
     using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
@@ -263,7 +263,7 @@
 #if NETFX_CORE
         protected override void OnApplyTemplate()
 #endif
-#if WINDOWS_PHONE
+#if WP8
         public override void OnApplyTemplate()
 #endif
         {
@@ -371,7 +371,7 @@
             var resourceName = this.CurrentSession == null ? "Caption_OpenSession" : "Caption_CloseSession";
             var caption = loader.GetString(resourceName);
 #endif
-#if WINDOWS_PHONE
+#if WP8
             var caption = this.CurrentSession == null ? AppResources.LoginButtonCaptionOpenSession : AppResources.LoginButtonCaptionCloseSession;
 #endif
             this.SetValue(CaptionProperty, caption);
