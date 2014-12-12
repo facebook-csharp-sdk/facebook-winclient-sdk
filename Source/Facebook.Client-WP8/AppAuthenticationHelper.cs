@@ -165,7 +165,7 @@ namespace Facebook.Client
         /// </returns>
         internal async static Task<string> GetFilteredManifestAppAttributeValue(string node, string attribute, string prefix)
         {
-#if WINDOWS_UNIVERSAL || WINDOWS_PHONE81
+#if WINDOWS_UNIVERSAL
             var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri("ms-appx:///FacebookConfig.xml"));
             using (Stream strm = await file.OpenStreamForReadAsync())
 #endif

@@ -58,7 +58,7 @@ namespace('build', function () {
 	desc('Build Windows Universal binaries')
     task('universal', ['assemblyinfo:facebook'], function () {
         msbuild({
-            file: 'Source/Facebook.Client-Universal-WinPhone.sln',
+            file: 'Source/Facebook.Client-Universal.sln',
             targets: ['Build']
         })
     }, { async: true })
@@ -89,7 +89,7 @@ namespace('clean', function () {
 	
 	task('universal', function () {
         msbuild({
-            file: 'Source/Facebook.Client-Universal-WinPhone.sln',
+            file: 'Source/Facebook.Client-Universal.sln',
             targets: ['Clean']
         })
     }, { async: true })
