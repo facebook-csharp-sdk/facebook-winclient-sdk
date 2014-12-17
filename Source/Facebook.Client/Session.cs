@@ -321,12 +321,11 @@ namespace Facebook.Client
             return CurrentAccessTokenData;
         }
 
-
         async public void LoginWithBehavior(string permissions, FacebookLoginBehavior behavior)
         {
             switch (behavior)
             {
-#if WP8 || WINDOWS_PHONE
+#if (WP8 || WINDOWS_PHONE)
                 case FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly:
                 {
                     String appId = await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId");

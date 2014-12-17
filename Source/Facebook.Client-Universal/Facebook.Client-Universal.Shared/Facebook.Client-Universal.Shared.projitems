@@ -6,9 +6,10 @@
     <SharedGUID>ee957bbc-7963-4ca5-88f8-4750849a3d9a</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Facebook.Client_Universal</Import_RootNamespace>
+    <Import_RootNamespace>Facebook.Client</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)LifecycleHelper.cs" />
     <Compile Include="..\..\Facebook.Client-WP8\AppAuthenticationHelper.cs">
       <Link>AppAuthenticationHelper.cs</Link>
     </Compile>

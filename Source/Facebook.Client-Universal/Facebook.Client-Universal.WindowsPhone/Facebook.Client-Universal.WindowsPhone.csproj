@@ -26,7 +26,7 @@
     <OutputPath>..\..\..\Bin\Debug\WindowsPhoneUniversal\</OutputPath>
     <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UNIVERSAL;WINDOWS_PHONE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
     <DocumentationFile>..\..\..\Bin\Debug\WindowsPhoneUniversal\Facebook.Client.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
@@ -36,7 +36,7 @@
     <OutputPath>..\..\..\Bin\Release\WindowsPhoneUniversal\</OutputPath>
     <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UNIVERSAL;WINDOWS_PHONE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
+    <WarningLevel>0</WarningLevel>
     <DocumentationFile>..\..\..\Bin\Release\WindowsPhoneUniversal\Facebook.Client.XML</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
