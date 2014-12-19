@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\Bin\Debug\win8\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS80</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UNIVERSAL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\Bin\Debug\win8\Facebook.Client.xml</DocumentationFile>
@@ -31,7 +31,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Bin\Release\win8\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UNIVERSAL</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\Bin\Release\win8\Facebook.Client.xml</DocumentationFile>
@@ -111,6 +111,9 @@
   <ItemGroup>
     <Compile Include="..\Facebook.Client\AccessTokenData.cs">
       <Link>AccessTokenData.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\AppAuthenticationHelper.cs">
+      <Link>AppAuthenticationHelper.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\AppLink.cs">
       <Link>AppLink.cs</Link>

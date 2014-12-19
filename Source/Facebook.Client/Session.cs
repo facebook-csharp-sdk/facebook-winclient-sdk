@@ -79,20 +79,18 @@ namespace Facebook.Client
 
     public class Session
     {
-        // don't want this class instantiated without an app ID
-        private Session()
+        public Session()
         {
-            
+            // Initialize the ActiveSession etc. right here
         }
 
         [ObsoleteAttribute("This method is obsolete and will be removed. Supply the App ID in the FacebookConfig.xml.", false)]
-        public Session(string appId)
+        internal Session(string appId)
         {
             if (String.IsNullOrEmpty(appId))
             {
                 throw new ArgumentNullException("appId");
             }
-            AppId = appId;
 
             // Also save it as part of the static session object
             CurrentAccessTokenData.AppId = appId;
@@ -101,15 +99,18 @@ namespace Facebook.Client
         public static Session ActiveSession = new Session();
 
         public static FacebookAuthenticationDelegate OnFacebookAuthenticationFinished;
-        
+
         /// <summary>
         /// Facebook AppId. This is if for some reason, you want to override the value supplied in the FacebookConfig.xml
         /// </summary>
-        public static string AppId { get; set; }
+        public static string AppId
+        {
+            get { return Session.ActiveSession.CurrentAccessTokenData.AppId; }
+        }
         public bool LoginInProgress { get; set; }
 
 
-        private AccessTokenData _currentSession = null;
+        private AccessTokenData _currentAccessTokenData = null;
         private bool firstRun = true;
 
         /// <summary>
@@ -124,23 +125,23 @@ namespace Facebook.Client
                     AccessTokenData tmpSession = AccessTokenDataCacheProvider.Current.GetSessionData();
                     if (tmpSession == null)
                     {
-                        _currentSession = new AccessTokenData();
+                        _currentAccessTokenData = new AccessTokenData();
                     }
                     else
                     {
-                        _currentSession = tmpSession;
+                        _currentAccessTokenData = tmpSession;
                     }
 
                     firstRun = false;
                 }
 
-                return _currentSession;
+                return _currentAccessTokenData;
             }
 
             set
             {
-                _currentSession = value;
-                AccessTokenDataCacheProvider.Current.SaveSessionData(_currentSession);
+                _currentAccessTokenData = value;
+                AccessTokenDataCacheProvider.Current.SaveSessionData(_currentAccessTokenData);
             }
         }
 
@@ -335,12 +336,6 @@ namespace Facebook.Client
                                 "https://m.facebook.com/v2.1/dialog/oauth?redirect_uri={0}%3A%2F%2Fauthorize&display=touch&state=%7B%220is_active_session%22%3A1%2C%22is_open_session%22%3A1%2C%22com.facebook.sdk_client_state%22%3A1%2C%223_method%22%3A%22browser_auth%22%7D&scope={2}&type=user_agent&client_id={1}&sdk=ios",
                                 String.Format("fb{0}", appId), appId, permissions), UriKind.Absolute);
                     
-                    //Uri uri = new Uri("https://m.facebook.com/v2.1/dialog/oauth?redirect_uri=fb540541885996234%3A%2F%2Fauthorize&display=touch&state=%7B%22is_open_session%22%3Atrue%2C%22is_active_session%22%3Atrue%2C%220_auth_logger_id%22%3A%223E012DE9-4A33-4D99-93BF-8204097D332D%22%2C%22com.facebook.sdk_client_state%22%3Atrue%2C%223_method%22%3A%22browser_auth%22%7D&scope&response_type=token%2Csigned_request&return_scopes=true&client_id=540541885996234&ret=login&sdk=ios&ext=1414545471&hash=AeaujKzjQ4JmQYld&refsrc=https%3A%2F%2Fm.facebook.com%2Flogin.php&refid=9&_rdr", UriKind.Absolute);
-
-                    //String relativeUrl = String.Format(
-                    //    "redirect_uri={0}://authorize&display=touch&state={{\"0is_active_session\":1,\"is_open_session\":1,\"com.facebook.sdk_client_state\":1,\"3_method\":\"browser_auth\"}}&scope={2}&type=user_agent&client_id={1}",
-                    //    String.Format("fb{0}", appId), appId, permissions);
-                    //Uri uri = new Uri("https://m.facebook.com/v1.0/dialog/oauth?" + HttpUtility.HtmlEncode(relativeUrl), UriKind.Absolute);
                     Launcher.LaunchUriAsync(uri);
                     break;
                 }
@@ -364,6 +359,7 @@ namespace Facebook.Client
             }
         }
 
+#if WP8 || WINDOWS_PHONE
         /// <summary>
         /// TODO: Extend an SSO token daily. This should be an internal method
         /// </summary>
@@ -387,7 +383,9 @@ namespace Facebook.Client
                 var request = new HttpRequestMessage();
 
                 var mfdc = new MultipartFormDataContent();
-                mfdc.Add(new StringContent("540541885996234"), name: "batch_app_id");
+                var _appId = await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId");
+
+                mfdc.Add(new StringContent(_appId), name: "batch_app_id");
 
                 String extensionString = "[{\"method\":\"GET\",\"relative_url\":\"oauth\\/access_token?grant_type=fb_extend_sso_token&access_token=" + ActiveSession.CurrentAccessTokenData.AccessToken + "\"}]";
                 mfdc.Add(new StringContent(extensionString), name: "batch");
@@ -409,19 +407,19 @@ namespace Facebook.Client
                     var access_token = (string) body["access_token"];
                     var expires_at = (long) body["expires_at"];
 
-                    var session = new AccessTokenData();
+                    var accessTokenData = new AccessTokenData();
                     // token extension failed...
-                    session.AccessToken = access_token;
+                    accessTokenData.AccessToken = access_token;
 
                     // parse out other types
                     long expiresInValue;
                     var now = DateTime.UtcNow;
-                    session.Expires = now + TimeSpan.FromSeconds(expires_at);
-                    session.Issued = now - (TimeSpan.FromDays(60) - TimeSpan.FromSeconds(expires_at));
-                    session.AppId = AppId;
+                    accessTokenData.Expires = now + TimeSpan.FromSeconds(expires_at);
+                    accessTokenData.Issued = now - (TimeSpan.FromDays(60) - TimeSpan.FromSeconds(expires_at));
+                    accessTokenData.AppId = _appId;
 
-                    // Assign the session object over, this saves it to the disk as well.
-                    ActiveSession.CurrentAccessTokenData = session;
+                    // Assign the accessTokenData object over, this saves it to the disk as well.
+                    ActiveSession.CurrentAccessTokenData = accessTokenData;
                 }
                 else
                 {
@@ -432,7 +430,8 @@ namespace Facebook.Client
 
         }
 
-        
+#endif // END TOKEN EXTENSION
+
         /// <summary>
         /// Log a user out of Facebook.
         /// </summary>

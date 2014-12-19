@@ -23,7 +23,7 @@
       </m3:VisualElements>
       <Extensions>
         <Extension Category="windows.protocol">
-          <Protocol Name="fb540541885996234" />
+          <Protocol Name="fb128970323969586" />
         </Extension>
       </Extensions>
     </Application>

@@ -45,6 +45,7 @@ namespace Facebook.Client
             {
                 AccessToken = (string)composite["AccessToken"],
                 FacebookId = (string)composite["FacebookId"],
+                AppId = (string)composite["AppId"]
             };
 
             var expires = (string)composite["Expires"];
@@ -56,6 +57,17 @@ namespace Facebook.Client
                     session.Expires = date;
                 }
             }
+
+            var issued = (string)composite["Issued"];
+            if (!string.IsNullOrEmpty(issued))
+            {
+                DateTime date;
+                if (DateTime.TryParse(issued, out date))
+                {
+                    session.Issued = date;
+                }
+            }
+
 
             var perms = (string)composite["CurrentPermissions"];
             if (!string.IsNullOrEmpty(perms))
@@ -72,8 +84,10 @@ namespace Facebook.Client
             var settings = ApplicationData.Current.RoamingSettings;
             var composite = new ApplicationDataCompositeValue();
             composite["AccessToken"] = data.AccessToken;
+            composite["AppId"] = data.AppId;
             composite["CurrentPermissions"] = string.Join(",", data.CurrentPermissions);
             composite["Expires"] = data.Expires.ToString();
+            composite["Issued"] = data.Issued.ToString();
             composite["FacebookId"] = data.FacebookId;
             settings.Values[key] = composite;
         }

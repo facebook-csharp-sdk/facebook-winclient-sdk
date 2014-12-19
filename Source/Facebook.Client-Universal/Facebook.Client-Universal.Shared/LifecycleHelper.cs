@@ -8,7 +8,7 @@ using Facebook;
 
 namespace Facebook.Client
 {
-    class LifecycleHelper
+    public class LifecycleHelper
     {
 #if WINDOWS_UNIVERSAL
         public static void FacebookAuthenticationReceived(ProtocolActivatedEventArgs protocolArgs)
@@ -21,25 +21,25 @@ namespace Facebook.Client
             // parse and fill out the token data
             try
             {
-                AccessTokenData session = new AccessTokenData();
-                session.ParseQueryString(Facebook.HttpHelper.UrlDecode(protocolArgs.Uri.ToString()));
-                if (!String.IsNullOrEmpty(session.AccessToken))
+                AccessTokenData tokenData = new AccessTokenData();
+                tokenData.ParseQueryString(Facebook.HttpHelper.UrlDecode(protocolArgs.Uri.ToString()));
+                if (!String.IsNullOrEmpty(tokenData.AccessToken))
                 {
                     var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
                     task.Wait();
-                    session.AppId = task.Result;
-                    Session.ActiveSession.CurrentAccessTokenData = session;
+                    tokenData.AppId = task.Result;
+                    Session.ActiveSession.CurrentAccessTokenData = tokenData;
 
                     // trigger the event handler with the session
                     if (Session.OnFacebookAuthenticationFinished != null)
                     {
-                        Session.OnFacebookAuthenticationFinished(session);
+                        Session.OnFacebookAuthenticationFinished(tokenData);
                     }
                 }
             }
             catch (Facebook.FacebookOAuthException exc)
             {
-
+                  // TODO: (sanjeevd) catch appropriately
             }
         }
 #endif
