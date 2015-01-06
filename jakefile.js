@@ -56,13 +56,21 @@ namespace('build', function () {
     }, { async: true })
 	
 	desc('Build Windows Universal binaries')
-    task('universal', ['assemblyinfo:facebook'], function () {
+    task('windows_universal', ['assemblyinfo:facebook'], function () {
         msbuild({
-            file: 'Source/Facebook.Client-Universal.sln',
+            file: 'Source/Facebook.Client-Universal/Facebook.Client-Universal.Windows/Facebook.Client-Universal.Windows.sln',
             targets: ['Build']
         })
     }, { async: true })
 
+    desc('Build Windows Phone Universal binaries')
+    task('phone_universal', ['assemblyinfo:facebook'], function () {
+        msbuild({
+            file: 'Source/Facebook.Client-Universal/Facebook.Client-Universal.WindowsPhone/Facebook.Client-Universal.WindowsPhone.sln',
+            targets: ['Build']
+        })
+    }, { async: true })
+    
     desc('Build Windows Phone 8 binaries')
     task('wp8', ['assemblyinfo:facebook'], function () {
         msbuild({
@@ -71,7 +79,7 @@ namespace('build', function () {
         })
     }, { async: true })
 
-    task('all', ['build:wp8', 'build:winstore', 'build:universal'])
+    task('all', ['build:wp8', 'build:winstore', 'build:windows_universal', 'build:phone_universal'])
 
 
 })
@@ -86,10 +94,18 @@ namespace('clean', function () {
             targets: ['Clean']
         })
     }, { async: true })
-	
-	task('universal', function () {
+
+    task('windows_universal', ['assemblyinfo:facebook'], function () {
         msbuild({
-            file: 'Source/Facebook.Client-Universal.sln',
+            file: 'Source/Facebook.Client-Universal/Facebook.Client-Universal.Windows/Facebook.Client-Universal.Windows.sln',
+            targets: ['Clean']
+        })
+    }, { async: true })
+
+
+    task('phone_universal', ['assemblyinfo:facebook'], function () {
+        msbuild({
+            file: 'Source/Facebook.Client-Universal/Facebook.Client-Universal.WindowsPhone/Facebook.Client-Universal.WindowsPhone.sln',
             targets: ['Clean']
         })
     }, { async: true })
@@ -101,7 +117,7 @@ namespace('clean', function () {
         })
     }, { async: true })
 
-    task('all', ['clean:wp8', 'clean:winstore', 'clean:universal'])
+    task('all', ['clean:wp8', 'clean:winstore', 'clean:windows_universal', 'clean:phone_universal'])
 
 })
 

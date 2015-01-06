@@ -108,6 +108,21 @@
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="..\..\Facebook.Client\AccessTokenData.cs">
+      <Link>AccessTokenData.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\AppAuthenticationHelper.cs">
+      <Link>AppAuthenticationHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\AppLink.cs">
+      <Link>AppLink.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\AppLinkNavigation.cs">
+      <Link>AppLinkNavigation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\AppLinkResolver.cs">
+      <Link>AppLinkResolver.cs</Link>
+    </Compile>
     <Compile Include="..\..\Facebook.Client\Controls\Converters\BooleanToVisibilityConverter.cs">
       <Link>Controls\Converters\BooleanToVisibilityConverter.cs</Link>
     </Compile>
@@ -192,6 +207,33 @@
     <Compile Include="..\..\Facebook.Client\Controls\ProfilePicture\ProfilePicture.cs">
       <Link>Controls\ProfilePicture\ProfilePicture.cs</Link>
     </Compile>
+    <Compile Include="..\..\Facebook.Client\FacebookAppLinkResolver.cs">
+      <Link>FacebookAppLinkResolver.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\FacebookDialog.cs">
+      <Link>FacebookDialog.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\FacebookSessionCacheProvider.cs">
+      <Link>FacebookSessionCacheProvider.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\GraphLocation.cs">
+      <Link>GraphLocation.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\GraphObject.cs">
+      <Link>GraphObject.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\GraphPlace.cs">
+      <Link>GraphPlace.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\GraphUser.cs">
+      <Link>GraphUser.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\LifecycleHelper.cs">
+      <Link>LifecycleHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\Session.cs">
+      <Link>Session.cs</Link>
+    </Compile>
     <Compile Include="Controls\Converters\PickerSelectionModeConverter.cs" />
     <Compile Include="Controls\Converters\SizeToGridCellConverter.cs" />
     <Compile Include="Controls\FriendPicker\FriendPicker.cs" />
@@ -204,11 +246,6 @@
     </Compile>
     <Compile Include="FacebookSessionRoamingSettingsCacheProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Facebook">
-      <HintPath>..\..\packages\Facebook.6.8.0\lib\win8\Facebook.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -247,6 +284,12 @@
     <Content Include="Images\fb_blank_profile_portrait.png" />
     <Content Include="Images\fb_blank_profile_square.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Facebook">
+      <HintPath>packages\Facebook.6.6.0\lib\win8\Facebook.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
   </PropertyGroup>
@@ -256,7 +299,6 @@
   <PropertyGroup>
     <AssemblyOriginatorKeyFile>SharedKey.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
-  <Import Project="..\Facebook.Client-Universal.Shared\Facebook.Client-Universal.Shared.projitems" Label="Shared" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
   <Import Project="$(SolutionDir)\.nuget\NuGet.targets" Condition="Exists('$(SolutionDir)\.nuget\NuGet.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
