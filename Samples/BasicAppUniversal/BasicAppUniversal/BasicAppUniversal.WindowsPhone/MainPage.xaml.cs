@@ -59,7 +59,7 @@ namespace BasicAppUniversal
 
         private void showDialogButton_Click(object sender, RoutedEventArgs e)
         {
-            //Session.ShowAppRequestsDialog(null);
+            Session.ShowAppRequestsDialog(null);
         }
 
         // Sample code for building a localized ApplicationBar

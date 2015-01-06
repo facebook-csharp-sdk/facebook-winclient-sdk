@@ -39,13 +39,22 @@ using Windows.Security.Authentication.Web;
 #endif
 using System.Windows;
 
-#if WP8
+#if WP8 || WINDOWS_PHONE
 using Facebook.Client.Controls.WebDialog;
+#endif
+
+#if WINDOWS_UNIVERSAL
+using Windows.UI.Xaml.Controls.Primitives;
+#endif
+
+#if WP8
 using System.Windows.Controls.Primitives;
 #endif
 
 using Windows.System;
 using Facebook;
+
+using Windows.Graphics.Display;
 
 
 namespace Facebook.Client
@@ -181,7 +190,7 @@ namespace Facebook.Client
 //        }
 //#endif
 
-#if WP8
+#if WP8 || WINDOWS_PHONE
         public static void ShowAppRequestsDialog(WebDialogFinishedDelegate callback)
         {
             Popup dialogPopup = new Popup();
@@ -195,9 +204,17 @@ namespace Facebook.Client
             dialogPopup.VerticalOffset = 40;
             dialogPopup.HorizontalOffset = 0;
 
+
+#if WP8
             dialogPopup.Height = Application.Current.Host.Content.ActualHeight - 40;
             dialogPopup.Width = Application.Current.Host.Content.ActualWidth;
+#endif
 
+#if WINDOWS_PHONE
+            //var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
+            dialogPopup.Height = Window.Current.Bounds.Height;// * scaleFactor - 40;
+            dialogPopup.Width = Window.Current.Bounds.Width;// * scaleFactor;
+#endif
             webDialog.Height = dialogPopup.Height;
             webDialog.Width = dialogPopup.Width;
 
@@ -221,8 +238,16 @@ namespace Facebook.Client
             dialogPopup.VerticalOffset = 40;
             dialogPopup.HorizontalOffset = 0;
 
+#if WP8
             dialogPopup.Height = Application.Current.Host.Content.ActualHeight - 40;
             dialogPopup.Width = Application.Current.Host.Content.ActualWidth;
+#endif
+
+#if WINDOWS_PHONE
+            var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
+            dialogPopup.Height = Window.Current.Bounds.Height * scaleFactor - 40;
+            dialogPopup.Width = Window.Current.Bounds.Width * scaleFactor;
+#endif
 
             webDialog.Height = dialogPopup.Height;
             webDialog.Width = dialogPopup.Width;

@@ -175,6 +175,9 @@
     <Compile Include="Controls\FriendPicker\SortedLocaleGrouping.cs" />
     <Compile Include="Controls\Picker\GroupTemplateSelector.cs" />
     <Compile Include="Controls\Picker\Picker.cs" />
+    <Compile Include="Controls\WebDialog\WebDialogUserControl.xaml.cs">
+      <DependentUpon>WebDialogUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="FacebookDialogPage.xaml.cs">
       <DependentUpon>FacebookDialogPage.xaml</DependentUpon>
     </Compile>
@@ -209,6 +212,14 @@
     <Page Include="Controls\ProfilePicture\ProfilePicture.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\WebDialog\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\WebDialog\WebDialogUserControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="FacebookDialogPage.xaml">
       <Generator>MSBuild:Compile</Generator>
