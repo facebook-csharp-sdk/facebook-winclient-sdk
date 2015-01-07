@@ -11,11 +11,18 @@ namespace Facebook.Client
     public class LifecycleHelper
     {
 #if WINDOWS_UNIVERSAL
+        public static DismissDialogDelegate OnDialogDismissed;
         public static void FacebookAuthenticationReceived(ProtocolActivatedEventArgs protocolArgs)
         {
             if (protocolArgs == null)
             {
                 throw new ArgumentNullException("protocolArgs");
+            }
+
+            // If this invocation is because of a dialog dismissal, dismiss the dialog
+            if (OnDialogDismissed != null)
+            {
+                OnDialogDismissed(protocolArgs.Uri);
             }
 
             // parse and fill out the token data

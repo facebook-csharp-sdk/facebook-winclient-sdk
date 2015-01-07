@@ -27,19 +27,17 @@ namespace Facebook.Client.Controls.WebDialog
         public WebDialogUserControl()
         {
             this.InitializeComponent();
-
-            //dialogWebBrowser.Navigating += DialogWebBrowserOnNavigating;
-            dialogWebBrowser.NavigationStarting += DialogWebBrowserOnNavigating;
         }
 
-        private void DialogWebBrowserOnNavigating(WebView sender, WebViewNavigationStartingEventArgs navigatingEventArgs)
+        private void DismissDialogWhenDone(Uri navigationUri)
         {
             if (ParentControlPopup != null)
             {
+                var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
+                task.Wait();
                 // cancel the navigation when we successfully hit the send
-                if (navigatingEventArgs.Uri.ToString().StartsWith("fbconnect"))
+                if (navigationUri.ToString().StartsWith(String.Format("fb{0}", task.Result)))
                 {
-                    navigatingEventArgs.Cancel = true;
                     ParentControlPopup.IsOpen = false;
                 }
 
@@ -61,6 +59,10 @@ namespace Facebook.Client.Controls.WebDialog
                 OnDialogFinished += callback;
             }
 
+            // Remove all dialog dismiss delegates since only one dialog can be active at one point of time.
+            LifecycleHelper.OnDialogDismissed = null;
+            LifecycleHelper.OnDialogDismissed += DismissDialogWhenDone;
+
             var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
             task.Wait();
             //Uri uri =
@@ -68,7 +70,7 @@ namespace Facebook.Client.Controls.WebDialog
             //        String.Format(
             //            "https://m.facebook.com/v2.1/dialog/apprequests?access_token={0}&redirect_uri=fbconnect%3A%2F%2Fsuccess&app_id={1}&message=YOUR_MESSAGE_HERE&display=touch",
             //            Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result));
-            dialogWebBrowser.Navigate(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/apprequests?access_token={0}&redirect_uri=fbconnect%3A%2F%2Fsuccess&app_id={1}&message=YOUR_MESSAGE_HERE&display=touch", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result)));
+            dialogWebBrowser.Navigate(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/apprequests?access_token={0}&redirect_uri=fb{2}%3A%2F%2Fsuccess&app_id={1}&message=YOUR_MESSAGE_HERE&display=touch", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result, task.Result)));
         }
 
 
@@ -76,13 +78,16 @@ namespace Facebook.Client.Controls.WebDialog
         {
             var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
             task.Wait();
-            Launcher.LaunchUriAsync(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/apprequests?access_token={0}&redirect_uri=fb540541885996234%3A%2F%2Fsuccess&app_id={1}&message=YOUR_MESSAGE_HERE&display=touch", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result)));
+            Launcher.LaunchUriAsync(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/apprequests?access_token={0}&redirect_uri=fb{2}%3A%2F%2Fsuccess&app_id={1}&message=YOUR_MESSAGE_HERE&display=touch", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result, task.Result)));
         }
         public void ShowFeedDialog()
         {
+            LifecycleHelper.OnDialogDismissed = null;
+            LifecycleHelper.OnDialogDismissed += DismissDialogWhenDone;
+
             var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
             task.Wait();
-            dialogWebBrowser.Navigate(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/feed?access_token={0}&redirect_uri=fbconnect%3A%2F%2Fsuccess&app_id={1}&display=touch", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result)));
+            dialogWebBrowser.Navigate(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/feed?access_token={0}&redirect_uri=fb{2}%3A%2F%2Fsuccess&app_id={1}&display=touch", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result, task.Result)));
         }
 
         private void CloseDialogButton_OnClick(object sender, RoutedEventArgs e)

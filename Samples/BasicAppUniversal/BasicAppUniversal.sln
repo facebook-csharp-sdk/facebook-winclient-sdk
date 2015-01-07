@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4C865A
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Client-Universal.WindowsPhone", "..\..\Source\Facebook.Client-Universal\Facebook.Client-Universal.WindowsPhone\Facebook.Client-Universal.WindowsPhone.csproj", "{76FB752F-8AB8-41BC-A188-CF66B4D42940}"
+EndProject
 Global
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		BasicAppUniversal\BasicAppUniversal.Shared\BasicAppUniversal.Shared.projitems*{dd63cda7-4fc5-450b-8c78-81cd9a4259fc}*SharedItemsImports = 13
@@ -79,6 +81,20 @@ Global
 		{84542693-00E9-4727-859D-F22160FDA759}.Release|x86.ActiveCfg = Release|x86
 		{84542693-00E9-4727-859D-F22160FDA759}.Release|x86.Build.0 = Release|x86
 		{84542693-00E9-4727-859D-F22160FDA759}.Release|x86.Deploy.0 = Release|x86
+		{76FB752F-8AB8-41BC-A188-CF66B4D42940}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{76FB752F-8AB8-41BC-A188-CF66B4D42940}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{76FB752F-8AB8-41BC-A188-CF66B4D42940}.Debug|ARM.ActiveCfg = Debug|ARM
+		{76FB752F-8AB8-41BC-A188-CF66B4D42940}.Debug|ARM.Build.0 = Debug|ARM
+		{76FB752F-8AB8-41BC-A188-CF66B4D42940}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{76FB752F-8AB8-41BC-A188-CF66B4D42940}.Debug|x86.ActiveCfg = Debug|x86
+		{76FB752F-8AB8-41BC-A188-CF66B4D42940}.Debug|x86.Build.0 = Debug|x86
+		{76FB752F-8AB8-41BC-A188-CF66B4D42940}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{76FB752F-8AB8-41BC-A188-CF66B4D42940}.Release|Any CPU.Build.0 = Release|Any CPU
+		{76FB752F-8AB8-41BC-A188-CF66B4D42940}.Release|ARM.ActiveCfg = Release|ARM
+		{76FB752F-8AB8-41BC-A188-CF66B4D42940}.Release|ARM.Build.0 = Release|ARM
+		{76FB752F-8AB8-41BC-A188-CF66B4D42940}.Release|x64.ActiveCfg = Release|Any CPU
+		{76FB752F-8AB8-41BC-A188-CF66B4D42940}.Release|x86.ActiveCfg = Release|x86
+		{76FB752F-8AB8-41BC-A188-CF66B4D42940}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

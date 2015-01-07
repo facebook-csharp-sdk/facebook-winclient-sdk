@@ -112,13 +112,15 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Facebook.6.6.0\lib\portable-win81+wpa81\Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="Facebook.Client, Version=0.9.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Facebook.Client.0.9.1-alpha\lib\wpa81\Facebook.Client.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Source\Facebook.Client-Universal\Facebook.Client-Universal.WindowsPhone\Facebook.Client-Universal.WindowsPhone.csproj">
+      <Project>{76fb752f-8ab8-41bc-a188-cf66b4d42940}</Project>
+      <Name>Facebook.Client-Universal.WindowsPhone</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

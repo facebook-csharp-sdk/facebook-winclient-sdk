@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Navigation;
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
 using Facebook;
 using Facebook.Client;
+using Facebook.Client.Controls.WebDialog;
 
 namespace BasicAppUniversal
 {
@@ -79,12 +80,12 @@ namespace BasicAppUniversal
         //}
         private void ShowFeedDialogButton_OnClick(object sender, RoutedEventArgs e)
         {
-            //Session.ShowFeedDialog();
+            Session.ShowFeedDialog();
         }
 
         private void ShowRequestWithBrowserButton_Click(object sender, RoutedEventArgs e)
         {
-            //WebDialogUserControl.ShowAppRequestDialogViaBrowser();
+            WebDialogUserControl.ShowAppRequestDialogViaBrowser();
         }
     
         /// <summary>

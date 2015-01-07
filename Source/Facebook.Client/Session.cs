@@ -86,6 +86,8 @@ namespace Facebook.Client
 
     public delegate void WebDialogFinishedDelegate(WebDialogResult result);
 
+    public delegate void DismissDialogDelegate(Uri uri);
+
     public class Session
     {
         public Session()
@@ -211,9 +213,8 @@ namespace Facebook.Client
 #endif
 
 #if WINDOWS_PHONE
-            //var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
-            dialogPopup.Height = Window.Current.Bounds.Height;// * scaleFactor - 40;
-            dialogPopup.Width = Window.Current.Bounds.Width;// * scaleFactor;
+            dialogPopup.Height = Window.Current.Bounds.Height - 40;
+            dialogPopup.Width = Window.Current.Bounds.Width;
 #endif
             webDialog.Height = dialogPopup.Height;
             webDialog.Width = dialogPopup.Width;
@@ -244,9 +245,8 @@ namespace Facebook.Client
 #endif
 
 #if WINDOWS_PHONE
-            var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
-            dialogPopup.Height = Window.Current.Bounds.Height * scaleFactor - 40;
-            dialogPopup.Width = Window.Current.Bounds.Width * scaleFactor;
+            dialogPopup.Height = Window.Current.Bounds.Height - 40;
+            dialogPopup.Width = Window.Current.Bounds.Width;
 #endif
 
             webDialog.Height = dialogPopup.Height;
