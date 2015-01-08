@@ -32,6 +32,11 @@ namespace Facebook.Client
                     {
                         Session.OnFacebookAuthenticationFinished(session);
                     }
+
+                    if (Session.OnLoginButtonDone != null)
+                    {
+                        Session.OnLoginButtonDone();
+                    }
                 }
             }
             catch (Facebook.FacebookOAuthException exc)

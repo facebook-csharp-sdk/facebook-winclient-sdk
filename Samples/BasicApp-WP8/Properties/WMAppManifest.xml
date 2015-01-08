@@ -4,7 +4,7 @@
   <Languages xmlns="">
     <Language code="es" />
   </Languages>
-  <App xmlns="" ProductID="{adfe95c2-8dfe-41c4-9939-38e446617945}" Title="PhoneApp2" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="PhoneApp2 author" Description="Sample description" Publisher="PhoneApp2" PublisherID="{069df4bd-8b89-41a1-af78-64b826a6d1ec}">
+  <App xmlns="" ProductID="{bb9e8411-1d8d-4d3f-a83d-038fca9e7e6d}" Title="PhoneApp2" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="PhoneApp2 author" Description="Sample description" Publisher="PhoneApp2" PublisherID="{46c12d39-d735-4d45-9d14-992361bb9608}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
@@ -37,6 +37,9 @@
         </TemplateFlip>
       </PrimaryToken>
     </Tokens>
+    <Extensions>
+        <Protocol Name="fb540541885996234" NavUriFragment="encodedLaunchUri=%s" TaskID="_default" />
+    </Extensions>
     <ScreenResolutions>
       <ScreenResolution Name="ID_RESOLUTION_WVGA" />
       <ScreenResolution Name="ID_RESOLUTION_WXGA" />

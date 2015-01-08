@@ -61,6 +61,13 @@
         public LoginButton()
         {
             this.DefaultStyleKey = typeof(LoginButton);
+
+            this.Loaded += LoginButton_Loaded;
+        }
+
+        void LoginButton_Loaded(object sender, RoutedEventArgs e)
+        {
+            PreloadUserInformation();
         }
 
         #region Events
@@ -175,12 +182,12 @@
         
         #endregion FetchUserInfo
 
-        #region CurrentSession
+        #region LoginButtonTokenData
 
         /// <summary>
         /// Gets the current active session.
         /// </summary>
-        public AccessTokenData CurrentSession
+        public AccessTokenData LoginButtonTokenData
         {
             get { return (AccessTokenData)GetValue(CurrentSessionProperty); }
             private set { this.SetValue(CurrentSessionProperty, value); }
@@ -198,7 +205,7 @@
             target.UpdateSession();
         }
 
-        #endregion CurrentSession
+        #endregion LoginButtonTokenData
 
         #region CurrentUser
 
@@ -286,13 +293,33 @@
 
         private async void OnLoginButtonClicked(object sender, RoutedEventArgs e)
         {
-            if (this.CurrentSession == null)
+            if (String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken))
             {
+                Session.OnLoginButtonDone += PreloadUserInformation;
                 await this.LogIn();
             }
             else
             {
                 this.LogOut();
+            }
+        }
+
+        internal async void PreloadUserInformation()
+        {
+            if (!String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
+            {
+                this.LoginButtonTokenData = Session.ActiveSession.CurrentAccessTokenData;
+                this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Opened));
+
+                // retrieve information about the current user
+                if (this.FetchUserInfo)
+                {
+                    FacebookClient client = new FacebookClient(Session.ActiveSession.CurrentAccessTokenData.AccessToken);
+                    dynamic result = await client.GetTaskAsync("me");
+                    this.CurrentUser = new GraphUser(result);
+                    var userInfo = new UserInfoChangedEventArgs(this.CurrentUser);
+                    this.UserInfoChanged.RaiseEvent(this, userInfo);
+                }
             }
         }
 
@@ -302,24 +329,8 @@
             {
                 this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Opening));
 
-                // TODO: using Permissions for the time being until we decide how 
-                // to handle separate ReadPermissions and PublishPermissions
-                var session = await this._session.LoginAsync(permissions ?? this.Permissions);
-
-                // initialize current session
-                this.CurrentSession = session;
-                this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Opened));
-
-                // retrieve information about the current user
-                if (this.FetchUserInfo)
-                {
-                    FacebookClient client = new FacebookClient(session.AccessToken);
-
-                    dynamic result = await client.GetTaskAsync("me");
-                    this.CurrentUser = new GraphUser(result);
-                    var userInfo = new UserInfoChangedEventArgs(this.CurrentUser);
-                    this.UserInfoChanged.RaiseEvent(this, userInfo);
-                }
+                this._session.LoginWithBehavior(permissions ?? this.Permissions,
+                        FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly);
             }
             catch (ArgumentNullException error)
             {
@@ -349,7 +360,7 @@
         private void LogOut()
         {
             this._session.Logout();
-            this.CurrentSession = null;
+            this.LoginButtonTokenData = null;
             this.CurrentUser = null;
             this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Closed));
         }
@@ -362,19 +373,29 @@
             this.UpdateButtonCaption();
         }
 
-        private void UpdateButtonCaption()
+        async private void UpdateButtonCaption()
         {
 #if NETFX_CORE
             var libraryName = typeof(LoginButton).GetTypeInfo().Assembly.GetName().Name;
             var name = string.Format(CultureInfo.InvariantCulture, "{0}/Resources/LoginButton", libraryName);
             var loader = new ResourceLoader(name);
-            var resourceName = this.CurrentSession == null ? "Caption_OpenSession" : "Caption_CloseSession";
+            var resourceName = String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken)? "Caption_OpenSession" : "Caption_CloseSession";
             var caption = loader.GetString(resourceName);
 #endif
 #if WP8
-            var caption = this.CurrentSession == null ? AppResources.LoginButtonCaptionOpenSession : AppResources.LoginButtonCaptionCloseSession;
+            this.LoginButtonTokenData = Session.ActiveSession.CurrentAccessTokenData;
+            var caption = this.LoginButtonTokenData.AccessToken == null ? AppResources.LoginButtonCaptionOpenSession : AppResources.LoginButtonCaptionCloseSession;
 #endif
             this.SetValue(CaptionProperty, caption);
+
+            //if (this.FetchUserInfo)
+            //{
+            //    FacebookClient client = new FacebookClient(Session.ActiveSession.CurrentAccessTokenData.AccessToken);
+            //    dynamic result = await client.GetTaskAsync("me");
+            //    this.CurrentUser = new GraphUser(result);
+            //    var userInfo = new UserInfoChangedEventArgs(this.CurrentUser);
+            //    this.UserInfoChanged.RaiseEvent(this, userInfo);
+            //}
         }
 
         #endregion Implementation

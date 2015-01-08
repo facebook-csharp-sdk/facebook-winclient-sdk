@@ -103,5 +103,10 @@ namespace BasicAppUniversal
             // If you are using the NavigationHelper provided by some templates,
             // this event is handled for you.
         }
+
+        private void ShowUiContrrolsButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            
+        }
     }
 }

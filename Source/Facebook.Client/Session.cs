@@ -88,6 +88,8 @@ namespace Facebook.Client
 
     public delegate void DismissDialogDelegate(Uri uri);
 
+    internal delegate void LoginButtonFinishedDelegate();
+
     public class Session
     {
         public Session()
@@ -110,6 +112,7 @@ namespace Facebook.Client
         public static Session ActiveSession = new Session();
 
         public static FacebookAuthenticationDelegate OnFacebookAuthenticationFinished;
+        internal static LoginButtonFinishedDelegate OnLoginButtonDone;
 
         /// <summary>
         /// Facebook AppId. This is if for some reason, you want to override the value supplied in the FacebookConfig.xml
