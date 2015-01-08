@@ -309,7 +309,6 @@
             if (!String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
             {
                 this.LoginButtonTokenData = Session.ActiveSession.CurrentAccessTokenData;
-                this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Opened));
 
                 // retrieve information about the current user
                 if (this.FetchUserInfo)
@@ -317,9 +316,13 @@
                     FacebookClient client = new FacebookClient(Session.ActiveSession.CurrentAccessTokenData.AccessToken);
                     dynamic result = await client.GetTaskAsync("me");
                     this.CurrentUser = new GraphUser(result);
+                    Session.ActiveSession.CurrentAccessTokenData.FacebookId = this.CurrentUser.Id;
+                    AccessTokenDataCacheProvider.Current.SaveSessionData(Session.ActiveSession.CurrentAccessTokenData);
                     var userInfo = new UserInfoChangedEventArgs(this.CurrentUser);
                     this.UserInfoChanged.RaiseEvent(this, userInfo);
                 }
+
+                this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Opened));
             }
         }
 

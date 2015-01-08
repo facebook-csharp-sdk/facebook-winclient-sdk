@@ -49,6 +49,16 @@
         public ProfilePicture()
         {
             this.DefaultStyleKey = typeof(ProfilePicture);
+
+            this.Loaded += ProfilePicture_Loaded;
+        }
+
+        void ProfilePicture_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
+            {
+                this.ProfileId = Session.ActiveSession.CurrentAccessTokenData.FacebookId;
+            }
         }
 
         #region AccessToken
@@ -160,10 +170,21 @@
             return base.ArrangeOverride(finalSize);
         }
 
-        private void LoadPicture()
+        async private void LoadPicture()
         {
             string profilePictureUrl;
 
+            // TODO: (sanjeevd) A bit of a hack. The picture control should be shown only when the user is logged in.
+            // Needs fixing
+            if (Session.ActiveSession.CurrentAccessTokenData != null &&
+                Session.ActiveSession.CurrentAccessTokenData.AccessToken != null &&
+                this.ProfileId == null &&
+                Session.ActiveSession.CurrentAccessTokenData.AppId == null)
+            {
+                FacebookClient client = new FacebookClient(Session.ActiveSession.CurrentAccessTokenData.AccessToken);
+                dynamic result = await client.GetTaskAsync("me");
+                this.ProfileId = (new GraphUser(result)).Id;
+            }
             if (string.IsNullOrEmpty(this.ProfileId))
             {
                 profilePictureUrl = ProfilePicture.GetBlankProfilePictureUrl(this.CropMode == CropMode.Square);
