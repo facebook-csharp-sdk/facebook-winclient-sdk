@@ -106,7 +106,7 @@ namespace BasicAppUniversal
 
         private void ShowUiContrrolsButton_OnClick(object sender, RoutedEventArgs e)
         {
-            
+            Frame.Navigate(typeof (ControlsTest));
         }
     }
 }

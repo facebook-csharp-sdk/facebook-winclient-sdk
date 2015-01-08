@@ -68,6 +68,7 @@
         void LoginButton_Loaded(object sender, RoutedEventArgs e)
         {
             PreloadUserInformation();
+            //this.UpdateButtonCaption();
         }
 
         #region Events
@@ -285,14 +286,16 @@
             if (this.loginButton != null)
             {
                 this.loginButton.Click += this.OnLoginButtonClicked;
+                
                 this.loginButton.DataContext = this;
             }
 
-            this.UpdateButtonCaption();
+
         }
 
         private async void OnLoginButtonClicked(object sender, RoutedEventArgs e)
         {
+            this.LoginButtonTokenData = Session.ActiveSession.CurrentAccessTokenData;
             if (String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken))
             {
                 Session.OnLoginButtonDone += PreloadUserInformation;
@@ -332,8 +335,16 @@
             {
                 this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Opening));
 
+#if WINDOWS
+                 this._session.LoginWithBehavior(permissions ?? this.Permissions,
+                        FacebookLoginBehavior.LoginBehaviorWebAuthenticationBroker);
+#endif
+
+#if WP8 || WINDOWS_PHONE
+
                 this._session.LoginWithBehavior(permissions ?? this.Permissions,
                         FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly);
+#endif
             }
             catch (ArgumentNullException error)
             {
@@ -379,17 +390,18 @@
         async private void UpdateButtonCaption()
         {
 #if NETFX_CORE
-            var libraryName = typeof(LoginButton).GetTypeInfo().Assembly.GetName().Name;
-            var name = string.Format(CultureInfo.InvariantCulture, "{0}/Resources/LoginButton", libraryName);
-            var loader = new ResourceLoader(name);
-            var resourceName = String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken)? "Caption_OpenSession" : "Caption_CloseSession";
-            var caption = loader.GetString(resourceName);
+            //var libraryName = typeof(LoginButton).GetTypeInfo().Assembly.GetName().Name;
+            //var name = string.Format(CultureInfo.InvariantCulture, "{0}/Resources/LoginButton", libraryName);
+            //var loader = new ResourceLoader(name);
+            //var resourceName = String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken)? "Caption_OpenSession" : "Caption_CloseSession";
+            //var caption = loader.GetString(resourceName);
+            var caption = String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken) ? "LogOut" : "Login";
 #endif
 #if WP8
             this.LoginButtonTokenData = Session.ActiveSession.CurrentAccessTokenData;
             var caption = this.LoginButtonTokenData.AccessToken == null ? AppResources.LoginButtonCaptionOpenSession : AppResources.LoginButtonCaptionCloseSession;
 #endif
-            this.SetValue(CaptionProperty, caption);
+            //this.SetValue(CaptionProperty, caption);
 
             //if (this.FetchUserInfo)
             //{

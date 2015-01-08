@@ -64,9 +64,8 @@ namespace Facebook.Client
         LoginBehaviorApplicationOnly,
         LoginBehaviorMobileInternetExplorerOnly,
         LoginBehaviorWebViewOnly,
-#if WINDOWS_UNIVERSAL
-        LoginBehaviorAppwithMobileInternetFallback
-#endif
+        LoginBehaviorAppwithMobileInternetFallback,
+        LoginBehaviorWebAuthenticationBroker
     }
 
     public enum WebDialogResult
@@ -368,6 +367,7 @@ namespace Facebook.Client
                     break;
                 }
 #endif
+                case FacebookLoginBehavior.LoginBehaviorWebAuthenticationBroker:
                 case FacebookLoginBehavior.LoginBehaviorWebViewOnly:
                 {
                     // TODO: What to do here? LoginAsync returns inproc. Login with IE returns out of proc?
@@ -480,7 +480,7 @@ namespace Facebook.Client
         {
             // Use WebAuthenticationBroker to launch server side OAuth flow
 
-            Uri startUri = this.GetLoginUrl(permissions);
+            Uri startUri = await this.GetLoginUrl(permissions);
             Uri endUri = new Uri("https://www.facebook.com/connect/login_success.html");
 
             var result = await WebAuthenticationBroker.AuthenticateAsync(options, startUri, endUri);
@@ -500,10 +500,12 @@ namespace Facebook.Client
             return authResult;
         }
 
-        private Uri GetLoginUrl(string permissions)
+        private async Task<Uri> GetLoginUrl(string permissions)
         {
             var parameters = new Dictionary<string, object>();
-            parameters["client_id"] = AppId;
+
+            String appId = await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId");
+            parameters["client_id"] = appId;
             parameters["redirect_uri"] = "https://www.facebook.com/connect/login_success.html";
             parameters["response_type"] = "token";
 #if WP8 || WINDOWS_PHONE
