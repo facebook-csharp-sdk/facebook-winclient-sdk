@@ -11,13 +11,22 @@
 
     <Grid>
 
-        <!-- login control -->
+        <Controls:FriendPicker 
+        x:Name="friendPicker" 
+        AccessToken="{Binding LoginButtonTokenData.AccessToken, ElementName=loginButton}"
+        Margin="0,0"
+            Height="100"
+            Width="100"
+            />
+        
+
+            <!-- login control -->
         <Controls:LoginButton 
                 x:Name="loginButton" 
-                Grid.Row="2" 
-                Margin="5"
+                Margin="0,580,10,10"
                 HorizontalAlignment="Right" 
                 ApplicationId="540541885996234" 
                  />
+        
     </Grid>
 </Page>
