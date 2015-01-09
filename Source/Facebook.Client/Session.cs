@@ -374,7 +374,10 @@ namespace Facebook.Client
                     var result = await LoginAsync(permissions);
                     
                     // when the results are available, launch the event handler
-                    OnFacebookAuthenticationFinished(result);
+                    if (OnFacebookAuthenticationFinished != null)
+                    {
+                        OnFacebookAuthenticationFinished(result);
+                    }
                     break;
                 }
 #if WP8 || WINDOWS_PHONE
