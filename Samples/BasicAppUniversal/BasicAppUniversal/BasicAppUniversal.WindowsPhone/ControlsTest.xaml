@@ -13,7 +13,7 @@
 
         <Controls:FriendPicker 
         x:Name="friendPicker" 
-        AccessToken="{Binding LoginButtonTokenData.AccessToken, ElementName=loginButton}"
+        AccessToken="{Binding Session.ActiveSession.CurrentAccessTokenData.AccessToken}"
         Margin="0,0"
             Height="100"
             Width="100"

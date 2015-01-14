@@ -27,6 +27,13 @@ namespace BasicApp
             //var appLink = await AppLinkNavigation.DefaultResolver.GetAppLinkAsync("<insert access token here>", "http://pratapgarh.com/fbtest/al.html");
             //await AppLinkNavigation.NavigateAsync(appLink);
 
+            if (Session.ActiveSession != null && Session.ActiveSession.CurrentAccessTokenData != null &&
+                !String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
+            {
+                OnSessionStateChanged(this, new SessionStateChangedEventArgs(FacebookSessionState.Opened));
+            }
+            //OnSessionStateChanged
+
         }
 
         ////private FacebookSession sesion;

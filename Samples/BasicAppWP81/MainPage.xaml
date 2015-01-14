@@ -213,7 +213,7 @@
                 </Grid>
 
                 <!--FriendPicker-->
-                <Grid x:Name="friendPickerScenario" Opacity="0">
+                <Grid x:Name="friendPickerScenario" Opacity="100" Background="Red">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition/>
                         <ColumnDefinition/>
@@ -222,7 +222,8 @@
                     <facebookControls:FriendPicker 
                         x:Name="friendPicker"
                         DisplayFields="id,name,first_name,middle_name,last_name,picture,location" 
-                        AccessToken="{Binding CurrentSession.AccessToken, ElementName=loginButton}" />
+                        AccessToken="{Binding CurrentSession.AccessToken, ElementName=loginButton}" 
+                        Background="Green"/>
 
                     <!-- details section -->
                     <Grid

@@ -17,9 +17,8 @@ using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
-using Facebook.Client;
 
-namespace BasicApp
+namespace App1
 {
     /// <summary>
     /// Provides application-specific behavior to supplement the default Application class.
@@ -92,7 +91,7 @@ namespace BasicApp
                 // When the navigation stack isn't restored navigate to the first page,
                 // configuring the new page by passing required information as a navigation
                 // parameter
-                if (!rootFrame.Navigate(typeof(BlankPage1), e.Arguments))
+                if (!rootFrame.Navigate(typeof(MainPage), e.Arguments))
                 {
                     throw new Exception("Failed to create initial page");
                 }
@@ -100,13 +99,6 @@ namespace BasicApp
 
             // Ensure the current window is active
             Window.Current.Activate();
-        }
-
-        protected override void OnActivated(IActivatedEventArgs args)
-        {
-            base.OnActivated(args);
-            var protocolArgs = args as ProtocolActivatedEventArgs;
-            LifecycleHelper.FacebookAuthenticationReceived(protocolArgs);
         }
 
         /// <summary>
