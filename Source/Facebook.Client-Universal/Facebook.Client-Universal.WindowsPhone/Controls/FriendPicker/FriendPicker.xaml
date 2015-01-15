@@ -59,7 +59,7 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
-                        <Grid Background="Fuchsia">
+                        <Grid>
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
@@ -153,8 +153,7 @@
                                 SelectionMode="{Binding SelectionMode, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource PickerSelectionModeConverter}}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                ScrollViewer.IsVerticalScrollChainingEnabled="False"
-                                Background="Gold">
+                                ScrollViewer.IsVerticalScrollChainingEnabled="False">
                                 <ListView.GroupStyle>
                                     <GroupStyle 
                                         HidesIfEmpty="True" 
@@ -171,6 +170,7 @@
                                 ItemsSource="{Binding Path=CollectionGroups}"
                                 ItemTemplate="{StaticResource ZoomedOutItemTemplate}"
                                 SelectionMode="None"
+                                Background="Black"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
                                 ScrollViewer.IsVerticalScrollChainingEnabled="False"
