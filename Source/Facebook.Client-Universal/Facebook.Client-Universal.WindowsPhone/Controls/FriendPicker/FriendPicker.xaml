@@ -12,27 +12,27 @@
     <local:PickerSelectionModeConverter x:Key="PickerSelectionModeConverter" />
 
     <DataTemplate x:Name="GroupTemplate">
-        <Border 
+        <Border Margin="5" Padding="5"
             Background="{Binding Tag.GroupHeaderBackground, ElementName=PART_SemanticZoom}"
-            Width="{Binding ElementName=PART_SemanticZoom, Converter={StaticResource SizeToGridCellConverter}, ConverterParameter=True}" 
-            Height="{Binding ElementName=PART_SemanticZoom, Converter={StaticResource SizeToGridCellConverter}, ConverterParameter=False}">
+            Width="82" Height="82" HorizontalAlignment="Left">
             <TextBlock 
                 Margin="10"
                 Foreground="{Binding Tag.GroupHeaderForeground, ElementName=PART_SemanticZoom}"
                 Text="{Binding Key}"
+                FontSize="48" Padding="6" 
                 Style="{StaticResource GroupHeaderTextStyle}" />
         </Border>
     </DataTemplate>
 
     <DataTemplate x:Name="EmptyGroupTemplate">
-        <Border 
-            Background="Gray" 
-            Width="{Binding ElementName=PART_SemanticZoom, Converter={StaticResource SizeToGridCellConverter}, ConverterParameter=True}" 
-            Height="{Binding ElementName=PART_SemanticZoom, Converter={StaticResource SizeToGridCellConverter}, ConverterParameter=False}">
+        <Border Margin="5" Padding="5" 
+            Width="82" Height="82" HorizontalAlignment="Left"
+            Background="Gray"> 
             <TextBlock
                 Margin="10"
                 Foreground="{Binding Tag.GroupHeaderForeground, ElementName=PART_SemanticZoom}"
                 Text="{Binding Key}"
+                FontSize="48" Padding="6" 
                 Style="{StaticResource GroupHeaderTextStyle}" />
         </Border>
     </DataTemplate>
@@ -59,7 +59,7 @@
                         Background="{TemplateBinding Background}"
                         BorderBrush="{TemplateBinding BorderBrush}"
                         BorderThickness="{TemplateBinding BorderThickness}">
-                        <Grid>
+                        <Grid Background="Fuchsia">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="*" />
@@ -80,7 +80,8 @@
                                 ItemsSource="{Binding GroupItems}"
                                 IsTabStop="False"
                                 TabNavigation="Once"
-                                TabIndex="1">
+                                TabIndex="1"
+                                Background="FloralWhite">
                                 <ItemsControl.ItemContainerTransitions>
                                     <TransitionCollection>
                                         <AddDeleteThemeTransition />
@@ -152,7 +153,8 @@
                                 SelectionMode="{Binding SelectionMode, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource PickerSelectionModeConverter}}"
                                 BorderBrush="{TemplateBinding BorderBrush}"
                                 BorderThickness="{TemplateBinding BorderThickness}"
-                                ScrollViewer.IsVerticalScrollChainingEnabled="False">
+                                ScrollViewer.IsVerticalScrollChainingEnabled="False"
+                                Background="Gold">
                                 <ListView.GroupStyle>
                                     <GroupStyle 
                                         HidesIfEmpty="True" 

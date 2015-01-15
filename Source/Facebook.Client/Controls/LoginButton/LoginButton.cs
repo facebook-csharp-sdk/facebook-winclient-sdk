@@ -65,10 +65,10 @@
             this.Loaded += LoginButton_Loaded;
         }
 
-        void LoginButton_Loaded(object sender, RoutedEventArgs e)
+        async void LoginButton_Loaded(object sender, RoutedEventArgs e)
         {
-            PreloadUserInformation();
-            //this.UpdateButtonCaption();
+            await  PreloadUserInformation();
+            UpdateButtonCaption();
         }
 
         #region Events
@@ -282,6 +282,12 @@
                 this.loginButton.Click -= this.OnLoginButtonClicked;
             }
 
+            this.LoginButtonTokenData = Session.ActiveSession.CurrentAccessTokenData;
+            if (String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken))
+            {
+                PreloadUserInformation();
+            }
+
             this.loginButton = this.GetTemplateChild(PartLoginButton) as Button;
             if (this.loginButton != null)
             {
@@ -298,8 +304,9 @@
             this.LoginButtonTokenData = Session.ActiveSession.CurrentAccessTokenData;
             if (String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken))
             {
-                Session.OnLoginButtonDone += PreloadUserInformation;
+                //Session.OnLoginButtonDone += PreloadUserInformation;
                 await this.LogIn();
+                await PreloadUserInformation();
             }
             else
             {
@@ -307,7 +314,7 @@
             }
         }
 
-        internal async void PreloadUserInformation()
+        internal async Task PreloadUserInformation()
         {
             if (!String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
             {
@@ -380,14 +387,14 @@
         }
 
         private static readonly DependencyProperty CaptionProperty =
-            DependencyProperty.Register("Caption", typeof(string), typeof(LoginButton), new PropertyMetadata(string.Empty));
+            DependencyProperty.Register("Caption", typeof(string), typeof(LoginButton), new PropertyMetadata("Login"));
 
         private void UpdateSession()
         {
             this.UpdateButtonCaption();
         }
 
-        async private void UpdateButtonCaption()
+        private void UpdateButtonCaption()
         {
 #if NETFX_CORE
             //var libraryName = typeof(LoginButton).GetTypeInfo().Assembly.GetName().Name;
@@ -395,13 +402,18 @@
             //var loader = new ResourceLoader(name);
             //var resourceName = String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken)? "Caption_OpenSession" : "Caption_CloseSession";
             //var caption = loader.GetString(resourceName);
-            var caption = String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken) ? "LogOut" : "Login";
+            this.LoginButtonTokenData = Session.ActiveSession.CurrentAccessTokenData;
+            var caption = this.LoginButtonTokenData != null && !String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken) ? "LogOut" : "Login";
+            if (this.LoginButtonTokenData != null && !String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken))
+            {               
+                this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Opened));
+                
+            }
 #endif
 #if WP8
-            this.LoginButtonTokenData = Session.ActiveSession.CurrentAccessTokenData;
             var caption = this.LoginButtonTokenData.AccessToken == null ? AppResources.LoginButtonCaptionOpenSession : AppResources.LoginButtonCaptionCloseSession;
 #endif
-            //this.SetValue(CaptionProperty, caption);
+            this.SetValue(CaptionProperty, caption);
 
             //if (this.FetchUserInfo)
             //{

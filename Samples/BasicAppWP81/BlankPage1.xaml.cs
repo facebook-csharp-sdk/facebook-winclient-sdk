@@ -54,6 +54,7 @@ namespace BasicApp
         {
             int x = 1;
             this.MyFriendPicker.AccessToken = Session.ActiveSession.CurrentAccessTokenData.AccessToken;
+            //this.MyPlacePicker.AccessToken = Session.ActiveSession.CurrentAccessTokenData.AccessToken;
             //this.MyFriendPicker.Items.RemoveAt(0);
         }
     }
