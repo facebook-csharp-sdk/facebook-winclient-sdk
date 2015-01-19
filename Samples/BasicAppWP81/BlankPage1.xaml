@@ -13,13 +13,13 @@
 
         <Controls:FriendPicker 
             x:Name="MyFriendPicker"
-            HorizontalAlignment="Left" Margin="22,24,0,0" VerticalAlignment="Top" Height="485" Width="357"/>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="22,523,0,0" VerticalAlignment="Top" Click="Button_Click"/>
+            HorizontalAlignment="Left" Margin="22,24,0,0" VerticalAlignment="Top" Height="243" Width="357"/>
+        <Button Content="Button" HorizontalAlignment="Left" Margin="22,523,0,0" VerticalAlignment="Top" Click="Button_Click" RenderTransformOrigin="0.508,1.228"/>
         <Controls:LoginButton HorizontalAlignment="Left" Margin="211,546,0,0" VerticalAlignment="Top" Height="57"
                               ApplicationId="123"/>
-        <!--<Controls:PlacePicker
+        <Controls:PlacePicker
             x:Name="MyPlacePicker"
-            HorizontalAlignment="Left" Margin="22,230,0,0" VerticalAlignment="Top" Height="199" Width="357"/>-->
+            HorizontalAlignment="Left" Margin="22,286,0,0" VerticalAlignment="Top" Height="199" Width="357"/>
 
     </Grid>
 </Page>

@@ -54,14 +54,6 @@ namespace('build', function () {
             targets: ['Build']
         })
     }, { async: true })
-	
-	desc('Build Windows Universal binaries')
-    task('windows_universal', ['assemblyinfo:facebook'], function () {
-        msbuild({
-            file: 'Source/Facebook.Client-Universal/Facebook.Client-Universal.Windows/Facebook.Client-Universal.Windows.sln',
-            targets: ['Build']
-        })
-    }, { async: true })
 
     desc('Build Windows Phone Universal binaries')
     task('phone_universal', ['assemblyinfo:facebook'], function () {
@@ -79,7 +71,7 @@ namespace('build', function () {
         })
     }, { async: true })
 
-    task('all', ['build:wp8', 'build:winstore', 'build:windows_universal', 'build:phone_universal'])
+    task('all', ['build:wp8', 'build:winstore', 'build:phone_universal'])
 
 
 })
@@ -91,13 +83,6 @@ namespace('clean', function () {
     task('winstore', function () {
         msbuild({
             file: 'Source/Facebook.Client-WindowsStore.sln',
-            targets: ['Clean']
-        })
-    }, { async: true })
-
-    task('windows_universal', ['assemblyinfo:facebook'], function () {
-        msbuild({
-            file: 'Source/Facebook.Client-Universal/Facebook.Client-Universal.Windows/Facebook.Client-Universal.Windows.sln',
             targets: ['Clean']
         })
     }, { async: true })
@@ -117,7 +102,7 @@ namespace('clean', function () {
         })
     }, { async: true })
 
-    task('all', ['clean:wp8', 'clean:winstore', 'clean:windows_universal', 'clean:phone_universal'])
+    task('all', ['clean:wp8', 'clean:winstore', 'clean:phone_universal'])
 
 })
 

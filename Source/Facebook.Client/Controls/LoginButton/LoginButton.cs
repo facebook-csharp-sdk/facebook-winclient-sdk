@@ -68,7 +68,8 @@
         async void LoginButton_Loaded(object sender, RoutedEventArgs e)
         {
             await  PreloadUserInformation();
-            UpdateButtonCaption();
+            UpdateButtonCaption(this.LoginButtonTokenData != null && !String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken) ? LoginStatus.LoggedIn : LoginStatus.LoggedOut); ;
+            Session.OnSessionStateChanged += UpdateButtonCaption;
         }
 
         #region Events
@@ -116,7 +117,7 @@
         {
             var target = (LoginButton)d;
             var applicationId = (string)e.NewValue;
-            target._session = string.IsNullOrWhiteSpace(applicationId) ? null : new Session(applicationId);
+            target._session = Session.ActiveSession;
         }
 
         #endregion ApplicationId
@@ -391,10 +392,10 @@
 
         private void UpdateSession()
         {
-            this.UpdateButtonCaption();
+            UpdateButtonCaption(this.LoginButtonTokenData != null && !String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken) ? LoginStatus.LoggedIn : LoginStatus.LoggedOut); ;
         }
 
-        private void UpdateButtonCaption()
+        private void UpdateButtonCaption(LoginStatus status)
         {
 #if NETFX_CORE
             //var libraryName = typeof(LoginButton).GetTypeInfo().Assembly.GetName().Name;
@@ -403,7 +404,8 @@
             //var resourceName = String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken)? "Caption_OpenSession" : "Caption_CloseSession";
             //var caption = loader.GetString(resourceName);
             this.LoginButtonTokenData = Session.ActiveSession.CurrentAccessTokenData;
-            var caption = this.LoginButtonTokenData != null && !String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken) ? "LogOut" : "Login";
+            //var caption = this.LoginButtonTokenData != null && !String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken) ? "LogOut" : "Login";
+            var caption = status == LoginStatus.LoggedIn ? "LogOut" : "Login";
             if (this.LoginButtonTokenData != null && !String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken))
             {               
                 this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Opened));

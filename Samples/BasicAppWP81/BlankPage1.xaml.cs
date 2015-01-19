@@ -52,10 +52,8 @@ namespace BasicApp
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            int x = 1;
             this.MyFriendPicker.AccessToken = Session.ActiveSession.CurrentAccessTokenData.AccessToken;
-            //this.MyPlacePicker.AccessToken = Session.ActiveSession.CurrentAccessTokenData.AccessToken;
-            //this.MyFriendPicker.Items.RemoveAt(0);
+            this.MyPlacePicker.AccessToken = Session.ActiveSession.CurrentAccessTokenData.AccessToken;
         }
     }
 }

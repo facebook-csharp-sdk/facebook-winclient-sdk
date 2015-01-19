@@ -25,6 +25,7 @@ namespace Facebook.Client
                 OnDialogDismissed(protocolArgs.Uri);
             }
 
+
             // parse and fill out the token data
             try
             {
@@ -41,6 +42,11 @@ namespace Facebook.Client
                     if (Session.OnFacebookAuthenticationFinished != null)
                     {
                         Session.OnFacebookAuthenticationFinished(tokenData);
+                    }
+
+                    if (Session.OnSessionStateChanged != null)
+                    {
+                        Session.OnSessionStateChanged(LoginStatus.LoggedIn);
                     }
                 }
             }

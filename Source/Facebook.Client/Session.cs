@@ -81,13 +81,19 @@ namespace Facebook.Client
         Pay
     }
 
+    internal enum LoginStatus
+    {
+        LoggedIn,
+        LoggedOut
+    }
+
     public delegate void FacebookAuthenticationDelegate(AccessTokenData session);
 
     public delegate void WebDialogFinishedDelegate(WebDialogResult result);
 
     public delegate void DismissDialogDelegate(Uri uri);
 
-    internal delegate void LoginButtonFinishedDelegate();
+    internal delegate void SessionStateChanged(LoginStatus status);
 
     public class Session
     {
@@ -111,7 +117,7 @@ namespace Facebook.Client
         public static Session ActiveSession = new Session();
 
         public static FacebookAuthenticationDelegate OnFacebookAuthenticationFinished;
-        internal static LoginButtonFinishedDelegate OnLoginButtonDone;
+        internal static SessionStateChanged OnSessionStateChanged;
 
         /// <summary>
         /// Facebook AppId. This is if for some reason, you want to override the value supplied in the FacebookConfig.xml
@@ -154,6 +160,17 @@ namespace Facebook.Client
             set
             {
                 _currentAccessTokenData = value;
+                if (value == null)
+                {
+                    AccessTokenDataCacheProvider.Current.DeleteSessionData();
+                    if (Session.OnSessionStateChanged != null)
+                    {
+                        OnSessionStateChanged(LoginStatus.LoggedOut);
+                    }
+
+                    return;
+                }
+
                 AccessTokenDataCacheProvider.Current.SaveSessionData(_currentAccessTokenData);
             }
         }
@@ -472,6 +489,10 @@ namespace Facebook.Client
             try
             {
                 AccessTokenDataCacheProvider.Current.DeleteSessionData();
+                if (Session.OnSessionStateChanged != null)
+                {
+                    OnSessionStateChanged(LoginStatus.LoggedOut);
+                }
             }
             finally
             {

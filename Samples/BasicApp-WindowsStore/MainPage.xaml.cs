@@ -56,6 +56,11 @@ namespace BasicApp
         /// property is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
+            if (Session.ActiveSession.CurrentAccessTokenData != null &&
+                !String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
+            {
+                this.friendPicker.AccessToken = Session.ActiveSession.CurrentAccessTokenData.AccessToken;
+            }
         }
 
         private UIElement currentItem;

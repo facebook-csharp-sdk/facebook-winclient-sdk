@@ -33,6 +33,25 @@
             : base()
         {
             this.DefaultStyleKey = typeof(FriendPicker);
+
+            this.Loaded += FriendPicker_Loaded;
+        }
+
+        void FriendPicker_Loaded(object sender, RoutedEventArgs e)
+        {
+            Session.OnSessionStateChanged += UpdateWithLoginStatus;
+        }
+
+        internal void UpdateWithLoginStatus(LoginStatus status)
+        {
+            if (status == LoginStatus.LoggedIn)
+            {
+                AccessToken = Session.ActiveSession.CurrentAccessTokenData.AccessToken;
+            }
+            else
+            {
+                AccessToken = null;
+            }
         }
 
         #region Properties

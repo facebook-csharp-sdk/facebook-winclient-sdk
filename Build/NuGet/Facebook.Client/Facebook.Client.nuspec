@@ -44,17 +44,6 @@
         <file src="..\..\..\Bin\Release\WindowsPhoneUniversal\Controls\**" target = "lib\wpa81\Facebook.Client\Controls\" />
         <file src="..\..\..\Bin\Release\WindowsPhoneUniversal\Themes\**" target = "lib\wpa81\Facebook.Client\Themes\" />
         <file src="..\..\..\Source\Facebook.Client-WindowsStore\Images\**" target = "lib\wpa81\Facebook.Client\Images\" />
-        
-        <!-- Windows 8.1+ -->
-        <file src="..\..\..\Bin\Release\WindowsUniversal\Facebook.Client.dll" target = "lib\win81" />
-        <file src="..\..\..\Bin\Release\WindowsUniversal\Facebook.Client.pdb" target = "lib\win81" />
-        <file src="..\..\..\Bin\Release\WindowsUniversal\Facebook.Client.xml" target = "lib\win81" />
-        <file src="..\..\..\Bin\Release\WindowsUniversal\Facebook.Client.xr.xml" target = "lib\win81\Facebook.Client" />
-        <file src="..\..\..\Bin\Release\WindowsUniversal\Facebook.Client.pri" target = "lib\win81" />
-        <file src="..\..\..\Bin\Release\WindowsUniversal\FacebookDialogPage.xbf" target = "lib\win81\Facebook.Client" />
-        <file src="..\..\..\Bin\Release\WindowsUniversal\Controls\**" target = "lib\win81\Facebook.Client\Controls\" />
-        <file src="..\..\..\Bin\Release\WindowsUniversal\Themes\**" target = "lib\win81\Facebook.Client\Themes\" />
-        <file src="..\..\..\Source\Facebook.Client-WindowsStore\Images\**" target = "lib\win81\Facebook.Client\Images\" />
 
     </files>
 </package>

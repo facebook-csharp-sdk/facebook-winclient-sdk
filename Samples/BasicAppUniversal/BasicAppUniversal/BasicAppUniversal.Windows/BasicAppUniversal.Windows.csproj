@@ -122,6 +122,7 @@
     <Content Include="Assets\SmallLogo.scale-100.png" />
     <Content Include="Assets\SplashScreen.scale-100.png" />
     <Content Include="Assets\StoreLogo.scale-100.png" />
+    <Content Include="FacebookConfig.xml" />
   </ItemGroup>
   <ItemGroup>
     <Page Include="MainPage.xaml">
@@ -134,10 +135,12 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Facebook.6.6.0\lib\win8\Facebook.dll</HintPath>
     </Reference>
-    <Reference Include="Facebook.Client, Version=0.9.1.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\packages\Facebook.Client.0.9.1-alpha\lib\win81\Facebook.Client.dll</HintPath>
-    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Source\Facebook.Client-WindowsStore\Facebook.Client-WindowsStore.csproj">
+      <Project>{f7ffe744-7cc4-42c5-bf7b-a0f11ecf9722}</Project>
+      <Name>Facebook.Client-WindowsStore</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
