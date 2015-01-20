@@ -213,13 +213,27 @@
     <Compile Include="..\..\Facebook.Client\Session.cs">
       <Link>Session.cs</Link>
     </Compile>
-    <Compile Include="Controls\Converters\PickerSelectionModeConverter.cs" />
-    <Compile Include="Controls\Converters\SizeToGridCellConverter.cs" />
-    <Compile Include="Controls\FriendPicker\FriendPicker.cs" />
-    <Compile Include="Controls\FriendPicker\FriendPickerGroupTemplateSelector.cs" />
-    <Compile Include="Controls\FriendPicker\SortedLocaleGrouping.cs" />
-    <Compile Include="Controls\Picker\GroupTemplateSelector.cs" />
-    <Compile Include="Controls\Picker\Picker.cs" />
+    <Compile Include="..\..\Facebook.Client\Universal\Controls\Converters\PickerSelectionModeConverter.cs">
+      <Link>Controls\Converters\PickerSelectionModeConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\Universal\Controls\Converters\SizeToGridCellConverter.cs">
+      <Link>Controls\Converters\SizeToGridCellConverter.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\Universal\Controls\FriendPicker\FriendPicker.cs">
+      <Link>Controls\FriendPicker\FriendPicker.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\Universal\Controls\FriendPicker\FriendPickerGroupTemplateSelector.cs">
+      <Link>Controls\FriendPicker\FriendPickerGroupTemplateSelector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\Universal\Controls\FriendPicker\SortedLocaleGrouping.cs">
+      <Link>Controls\FriendPicker\SortedLocaleGrouping.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\Universal\Controls\Picker\GroupTemplateSelector.cs">
+      <Link>Controls\Picker\GroupTemplateSelector.cs</Link>
+    </Compile>
+    <Compile Include="..\..\Facebook.Client\Universal\Controls\Picker\Picker.cs">
+      <Link>Controls\Picker\Picker.cs</Link>
+    </Compile>
     <Compile Include="Controls\WebDialog\WebDialogUserControl.xaml.cs">
       <DependentUpon>WebDialogUserControl.xaml</DependentUpon>
     </Compile>
