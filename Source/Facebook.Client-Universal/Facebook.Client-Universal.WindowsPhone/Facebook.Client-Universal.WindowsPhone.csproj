@@ -192,6 +192,9 @@
     <Compile Include="..\..\Facebook.Client\FacebookSessionCacheProvider.cs">
       <Link>FacebookSessionCacheProvider.cs</Link>
     </Compile>
+    <Compile Include="..\..\Facebook.Client\FacebookSessionLocalSettingsCacheProvider.cs">
+      <Link>FacebookSessionLocalSettingsCacheProvider.cs</Link>
+    </Compile>
     <Compile Include="..\..\Facebook.Client\GraphLocation.cs">
       <Link>GraphLocation.cs</Link>
     </Compile>
@@ -223,7 +226,6 @@
     <Compile Include="FacebookDialogPage.xaml.cs">
       <DependentUpon>FacebookDialogPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FacebookSessionRoamingSettingsCacheProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

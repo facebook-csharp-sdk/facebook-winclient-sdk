@@ -10,7 +10,7 @@ using Windows.Storage;
 namespace Facebook.Client
 {
 
-    public class FacebookSessionRoamingSettingsCacheProvider : AccessTokenDataCacheProvider
+    public class FacebookSessionLocalSettingsCacheProvider : AccessTokenDataCacheProvider
     {
         private const string key = "FACEBOOK_SESSION";
 
@@ -31,9 +31,9 @@ namespace Facebook.Client
         // If we update the SDK and the data format changes, we should automatically migrate to prevent
         // app crashes and poor user experience (i.e. forced to login after app updates).
 
-        public override AccessTokenData GetSessionData()
+        public override  AccessTokenData GetSessionData()
         {
-            var settings = ApplicationData.Current.RoamingSettings;
+            var settings = ApplicationData.Current.LocalSettings;
             var composite = (ApplicationDataCompositeValue)settings.Values[key];
             
             if (composite == null)
@@ -45,6 +45,7 @@ namespace Facebook.Client
             {
                 AccessToken = (string)composite["AccessToken"],
                 FacebookId = (string)composite["FacebookId"],
+                AppId = (string)composite["AppId"]
             };
 
             var expires = (string)composite["Expires"];
@@ -56,6 +57,17 @@ namespace Facebook.Client
                     session.Expires = date;
                 }
             }
+
+            var issued = (string)composite["Issued"];
+            if (!string.IsNullOrEmpty(issued))
+            {
+                DateTime date;
+                if (DateTime.TryParse(issued, out date))
+                {
+                    session.Issued = date;
+                }
+            }
+
 
             var perms = (string)composite["CurrentPermissions"];
             if (!string.IsNullOrEmpty(perms))
@@ -69,18 +81,20 @@ namespace Facebook.Client
 
         public override void SaveSessionData(AccessTokenData data)
         {
-            var settings = ApplicationData.Current.RoamingSettings;
+            var settings = ApplicationData.Current.LocalSettings;
             var composite = new ApplicationDataCompositeValue();
             composite["AccessToken"] = data.AccessToken;
+            composite["AppId"] = data.AppId;
             composite["CurrentPermissions"] = string.Join(",", data.CurrentPermissions);
             composite["Expires"] = data.Expires.ToString();
+            composite["Issued"] = data.Issued.ToString();
             composite["FacebookId"] = data.FacebookId;
             settings.Values[key] = composite;
         }
 
         public override void DeleteSessionData()
         {
-            var settings = ApplicationData.Current.RoamingSettings;
+            var settings = ApplicationData.Current.LocalSettings;
             if (settings.Values.ContainsKey(key))
             {
                 settings.Values.Remove(key);

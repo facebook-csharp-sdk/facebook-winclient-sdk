@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
@@ -36,6 +37,21 @@ namespace BasicApp
         {
             this.InitializeComponent();
             this.Suspending += this.OnSuspending;
+
+            TaskScheduler.UnobservedTaskException += TaskScheduler_UnobservedTaskException;
+
+            // ensure general app exceptions are handled
+            UnhandledException += App_UnhandledException;
+        }
+
+        void App_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            e.Handled = true;
+        }
+
+        static void TaskScheduler_UnobservedTaskException(object sender, UnobservedTaskExceptionEventArgs e)
+        {
+            e.SetObserved();
         }
 
         /// <summary>
@@ -109,6 +125,7 @@ namespace BasicApp
             var protocolArgs = args as ProtocolActivatedEventArgs;
             LifecycleHelper.FacebookAuthenticationReceived(protocolArgs);
         }
+
 
         /// <summary>
         /// Restores the content transitions after the app has launched.

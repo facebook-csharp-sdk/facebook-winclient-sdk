@@ -26,7 +26,7 @@ namespace Facebook.Client
 #if WP8
                         current = new AccessTokenDataIsolatedStorageCacheProvider();
 #else
-                    current = new FacebookSessionRoamingSettingsCacheProvider();
+                    current = new FacebookSessionLocalSettingsCacheProvider();
 #endif
                     }
 

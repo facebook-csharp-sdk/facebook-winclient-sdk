@@ -51,7 +51,6 @@
         #region Member variables
 
         private Button loginButton;
-        private Session _session;
 
         #endregion Member variables
 
@@ -68,7 +67,7 @@
         async void LoginButton_Loaded(object sender, RoutedEventArgs e)
         {
             await  PreloadUserInformation();
-            UpdateButtonCaption(this.LoginButtonTokenData != null && !String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken) ? LoginStatus.LoggedIn : LoginStatus.LoggedOut); ;
+            UpdateButtonCaption(Session.ActiveSession.CurrentAccessTokenData != null && !String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken) ? LoginStatus.LoggedIn : LoginStatus.LoggedOut); ;
             Session.OnSessionStateChanged += UpdateButtonCaption;
         }
 
@@ -96,31 +95,6 @@
 
         #region Properties
 
-        #region ApplicationId
-
-        /// <summary>
-        /// Gets or sets the application ID to be used to open the session.
-        /// </summary>
-        public string ApplicationId
-        {
-            get { return (string)GetValue(ApplicationIdProperty); }
-            set { this.SetValue(ApplicationIdProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the ApplicationId dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ApplicationIdProperty =
-            DependencyProperty.Register("ApplicationId", typeof(string), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultApplicationId, OnApplicationIdPropertyChanged));
-
-        private static void OnApplicationIdPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var target = (LoginButton)d;
-            var applicationId = (string)e.NewValue;
-            target._session = Session.ActiveSession;
-        }
-
-        #endregion ApplicationId
 
         #region DefaultAudience
 
@@ -184,17 +158,7 @@
         
         #endregion FetchUserInfo
 
-        #region LoginButtonTokenData
-
-        /// <summary>
-        /// Gets the current active session.
-        /// </summary>
-        public AccessTokenData LoginButtonTokenData
-        {
-            get { return (AccessTokenData)GetValue(CurrentSessionProperty); }
-            private set { this.SetValue(CurrentSessionProperty, value); }
-        }
-
+        #region UpdateCaption
         /// <summary>
         /// Identifies the CurrentSession dependency property.
         /// </summary>
@@ -207,7 +171,7 @@
             target.UpdateSession();
         }
 
-        #endregion LoginButtonTokenData
+        #endregion UpdateCaption
 
         #region CurrentUser
 
@@ -283,8 +247,7 @@
                 this.loginButton.Click -= this.OnLoginButtonClicked;
             }
 
-            this.LoginButtonTokenData = Session.ActiveSession.CurrentAccessTokenData;
-            if (String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken))
+            if (String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
             {
                 PreloadUserInformation();
             }
@@ -302,8 +265,7 @@
 
         private async void OnLoginButtonClicked(object sender, RoutedEventArgs e)
         {
-            this.LoginButtonTokenData = Session.ActiveSession.CurrentAccessTokenData;
-            if (String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken))
+            if (String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
             {
                 //Session.OnLoginButtonDone += PreloadUserInformation;
                 await this.LogIn();
@@ -319,8 +281,6 @@
         {
             if (!String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
             {
-                this.LoginButtonTokenData = Session.ActiveSession.CurrentAccessTokenData;
-
                 // retrieve information about the current user
                 if (this.FetchUserInfo)
                 {
@@ -344,13 +304,13 @@
                 this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Opening));
 
 #if WINDOWS
-                 this._session.LoginWithBehavior(permissions ?? this.Permissions,
+                 Session.ActiveSession.LoginWithBehavior(permissions ?? this.Permissions,
                         FacebookLoginBehavior.LoginBehaviorWebAuthenticationBroker);
 #endif
 
 #if WP8 || WINDOWS_PHONE
 
-                this._session.LoginWithBehavior(permissions ?? this.Permissions,
+                Session.ActiveSession.LoginWithBehavior(permissions ?? this.Permissions,
                         FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly);
 #endif
             }
@@ -381,8 +341,7 @@
 
         private void LogOut()
         {
-            this._session.Logout();
-            this.LoginButtonTokenData = null;
+            Session.ActiveSession.Logout();
             this.CurrentUser = null;
             this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Closed));
         }
@@ -392,7 +351,7 @@
 
         private void UpdateSession()
         {
-            UpdateButtonCaption(this.LoginButtonTokenData != null && !String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken) ? LoginStatus.LoggedIn : LoginStatus.LoggedOut); ;
+            UpdateButtonCaption(Session.ActiveSession.CurrentAccessTokenData != null && !String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken) ? LoginStatus.LoggedIn : LoginStatus.LoggedOut); ;
         }
 
         private void UpdateButtonCaption(LoginStatus status)
@@ -403,17 +362,16 @@
             //var loader = new ResourceLoader(name);
             //var resourceName = String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken)? "Caption_OpenSession" : "Caption_CloseSession";
             //var caption = loader.GetString(resourceName);
-            this.LoginButtonTokenData = Session.ActiveSession.CurrentAccessTokenData;
             //var caption = this.LoginButtonTokenData != null && !String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken) ? "LogOut" : "Login";
             var caption = status == LoginStatus.LoggedIn ? "LogOut" : "Login";
-            if (this.LoginButtonTokenData != null && !String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken))
+            if (Session.ActiveSession.CurrentAccessTokenData != null && !String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
             {               
                 this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Opened));
                 
             }
 #endif
 #if WP8
-            var caption = this.LoginButtonTokenData.AccessToken == null ? AppResources.LoginButtonCaptionOpenSession : AppResources.LoginButtonCaptionCloseSession;
+            var caption = Session.ActiveSession.CurrentAccessTokenData.AccessToken == null ? AppResources.LoginButtonCaptionOpenSession : AppResources.LoginButtonCaptionCloseSession;
 #endif
             this.SetValue(CaptionProperty, caption);
 

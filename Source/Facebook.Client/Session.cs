@@ -496,7 +496,8 @@ namespace Facebook.Client
             }
             finally
             {
-                CurrentAccessTokenData = null;
+                CurrentAccessTokenData.AccessToken = null;
+                CurrentAccessTokenData.CurrentPermissions = null;
             }
         }
 
