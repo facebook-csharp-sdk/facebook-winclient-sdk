@@ -12,6 +12,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{71F0E0
 		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BasicApp-Win81-Universal", "..\..\..\Samples\BasicApp-Win81-Universal\BasicApp-Win81-Universal.csproj", "{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +42,30 @@ Global
 		{3A681113-CB0E-4712-8827-F35F67F29C5F}.Release|x64.Build.0 = Release|x64
 		{3A681113-CB0E-4712-8827-F35F67F29C5F}.Release|x86.ActiveCfg = Release|x86
 		{3A681113-CB0E-4712-8827-F35F67F29C5F}.Release|x86.Build.0 = Release|x86
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Debug|ARM.ActiveCfg = Debug|ARM
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Debug|ARM.Build.0 = Debug|ARM
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Debug|ARM.Deploy.0 = Debug|ARM
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Debug|x64.ActiveCfg = Debug|x64
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Debug|x64.Build.0 = Debug|x64
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Debug|x64.Deploy.0 = Debug|x64
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Debug|x86.ActiveCfg = Debug|x86
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Debug|x86.Build.0 = Debug|x86
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Debug|x86.Deploy.0 = Debug|x86
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Release|ARM.ActiveCfg = Release|ARM
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Release|ARM.Build.0 = Release|ARM
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Release|ARM.Deploy.0 = Release|ARM
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Release|x64.ActiveCfg = Release|x64
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Release|x64.Build.0 = Release|x64
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Release|x64.Deploy.0 = Release|x64
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Release|x86.ActiveCfg = Release|x86
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Release|x86.Build.0 = Release|x86
+		{EFFB77FE-CF17-4A1F-B83F-D7DC3D8CF4C2}.Release|x86.Deploy.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

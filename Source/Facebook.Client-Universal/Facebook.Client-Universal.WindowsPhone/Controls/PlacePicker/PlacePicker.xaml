@@ -3,6 +3,10 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Facebook.Client.Controls">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../../Common/StandardStyles.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
     <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
     <local:PickerSelectionModeConverter x:Key="PickerSelectionModeConverter" />
 

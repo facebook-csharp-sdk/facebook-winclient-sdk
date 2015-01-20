@@ -6,6 +6,10 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
 
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../../Common/StandardStyles.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+    
     <local:ScaleConverter x:Key="ScaleConverter" />
     <local:SizeToGridCellConverter x:Key="SizeToGridCellConverter" />
     <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
