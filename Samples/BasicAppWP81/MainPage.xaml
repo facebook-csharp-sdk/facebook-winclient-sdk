@@ -54,8 +54,7 @@
             <!--Profile Picture-->
             <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" Width="100">
                 <facebookControls:ProfilePicture                                         
-                    AccessToken="{Binding CurrentSession.AccessToken, ElementName=loginButton}" 
-                    ProfileId="{Binding CurrentSession.FacebookId, ElementName=loginButton}" />
+                    AccessToken="{Binding CurrentSession.AccessToken, ElementName=loginButton}" />
                 <TextBlock Style="{StaticResource BasicTextStyle}" TextWrapping="Wrap" TextAlignment="Center" Text="{Binding CurrentUser.Name, ElementName=loginButton}" />
             </StackPanel>
 

@@ -395,6 +395,11 @@ namespace Facebook.Client
                     {
                         OnFacebookAuthenticationFinished(result);
                     }
+
+                    if (OnSessionStateChanged != null)
+                    {
+                        OnSessionStateChanged(LoginStatus.LoggedIn);
+                    }
                     break;
                 }
 #if WP8 || WINDOWS_PHONE
@@ -489,15 +494,18 @@ namespace Facebook.Client
             try
             {
                 AccessTokenDataCacheProvider.Current.DeleteSessionData();
-                if (Session.OnSessionStateChanged != null)
-                {
-                    OnSessionStateChanged(LoginStatus.LoggedOut);
-                }
+
             }
             finally
             {
                 CurrentAccessTokenData.AccessToken = null;
                 CurrentAccessTokenData.CurrentPermissions = null;
+                CurrentAccessTokenData.FacebookId = null;
+
+                if (Session.OnSessionStateChanged != null)
+                {
+                    OnSessionStateChanged(LoginStatus.LoggedOut);
+                }
             }
         }
 

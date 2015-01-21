@@ -64,9 +64,9 @@
             this.Loaded += LoginButton_Loaded;
         }
 
-        async void LoginButton_Loaded(object sender, RoutedEventArgs e)
+        void LoginButton_Loaded(object sender, RoutedEventArgs e)
         {
-            await  PreloadUserInformation();
+            //await  PreloadUserInformation();
             UpdateButtonCaption(Session.ActiveSession.CurrentAccessTokenData != null && !String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken) ? LoginStatus.LoggedIn : LoginStatus.LoggedOut); ;
             Session.OnSessionStateChanged += UpdateButtonCaption;
         }
@@ -247,10 +247,10 @@
                 this.loginButton.Click -= this.OnLoginButtonClicked;
             }
 
-            if (String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
-            {
-                PreloadUserInformation();
-            }
+            //if (String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
+            //{
+            //    PreloadUserInformation();
+            //}
 
             this.loginButton = this.GetTemplateChild(PartLoginButton) as Button;
             if (this.loginButton != null)
@@ -267,35 +267,30 @@
         {
             if (String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
             {
-                //Session.OnLoginButtonDone += PreloadUserInformation;
                 await this.LogIn();
-                await PreloadUserInformation();
             }
             else
             {
                 this.LogOut();
+                this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Closed));
             }
         }
 
-        internal async Task PreloadUserInformation()
-        {
-            if (!String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
-            {
-                // retrieve information about the current user
-                if (this.FetchUserInfo)
-                {
-                    FacebookClient client = new FacebookClient(Session.ActiveSession.CurrentAccessTokenData.AccessToken);
-                    dynamic result = await client.GetTaskAsync("me");
-                    this.CurrentUser = new GraphUser(result);
-                    Session.ActiveSession.CurrentAccessTokenData.FacebookId = this.CurrentUser.Id;
-                    AccessTokenDataCacheProvider.Current.SaveSessionData(Session.ActiveSession.CurrentAccessTokenData);
-                    var userInfo = new UserInfoChangedEventArgs(this.CurrentUser);
-                    this.UserInfoChanged.RaiseEvent(this, userInfo);
-                }
+        //internal async Task PreloadUserInformation()
+        //{
+        //    if (!String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
+        //    {
+        //        FacebookClient client = new FacebookClient(Session.ActiveSession.CurrentAccessTokenData.AccessToken);
+        //        dynamic result = await client.GetTaskAsync("me");
+        //        this.CurrentUser = new GraphUser(result);
+        //        Session.ActiveSession.CurrentAccessTokenData.FacebookId = this.CurrentUser.Id;
+        //        AccessTokenDataCacheProvider.Current.SaveSessionData(Session.ActiveSession.CurrentAccessTokenData);
+        //        var userInfo = new UserInfoChangedEventArgs(this.CurrentUser);
+        //        this.UserInfoChanged.RaiseEvent(this, userInfo);
 
-                this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Opened));
-            }
-        }
+        //        this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Opened));
+        //    }
+        //}
 
         private async Task LogIn(string permissions = null)
         {
@@ -306,6 +301,7 @@
 #if WINDOWS
                  Session.ActiveSession.LoginWithBehavior(permissions ?? this.Permissions,
                         FacebookLoginBehavior.LoginBehaviorWebAuthenticationBroker);
+
 #endif
 
 #if WP8 || WINDOWS_PHONE

@@ -59,8 +59,26 @@
         public PlacePicker()
         {
             this.DefaultStyleKey = typeof(PlacePicker);
+
+            this.Loaded += PlacePicker_Loaded;
         }
 
+        void PlacePicker_Loaded(object sender, RoutedEventArgs e)
+        {
+            Session.OnSessionStateChanged += UpdateWithLoginStatus;
+        }
+
+        internal void UpdateWithLoginStatus(LoginStatus status)
+        {
+            if (status == LoginStatus.LoggedIn)
+            {
+                AccessToken = Session.ActiveSession.CurrentAccessTokenData.AccessToken;
+            }
+            else
+            {
+                AccessToken = null;
+            }
+        }
         #region Properties
 
         #region AccessToken

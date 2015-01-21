@@ -1,4 +1,6 @@
-﻿namespace Facebook.Client.Controls
+﻿using System.Threading.Tasks;
+
+namespace Facebook.Client.Controls
 {
 #if NETFX_CORE
     using System;
@@ -53,14 +55,38 @@
             this.Loaded += ProfilePicture_Loaded;
         }
 
-        void ProfilePicture_Loaded(object sender, RoutedEventArgs e)
+        async void ProfilePicture_Loaded(object sender, RoutedEventArgs e)
         {
+            Session.OnSessionStateChanged += UpdateFacebookId;
+
             if (!String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
             {
-                this.ProfileId = Session.ActiveSession.CurrentAccessTokenData.FacebookId;
+                await PreloadUserInformation();
+                this.LoadPicture();
             }
         }
 
+        async private void UpdateFacebookId(LoginStatus status)
+        {
+            if (status == LoginStatus.LoggedIn)
+            {
+                await PreloadUserInformation();
+            }
+
+            this.LoadPicture();
+        }
+
+        internal async Task PreloadUserInformation()
+        {
+            if (!String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
+            {
+                FacebookClient client = new FacebookClient(Session.ActiveSession.CurrentAccessTokenData.AccessToken);
+                dynamic result = await client.GetTaskAsync("me");
+                
+                Session.ActiveSession.CurrentAccessTokenData.FacebookId = (new GraphUser(result)).Id;
+                AccessTokenDataCacheProvider.Current.SaveSessionData(Session.ActiveSession.CurrentAccessTokenData);
+            }
+        }
         #region AccessToken
         
         /// <summary>
@@ -80,32 +106,6 @@
         
         #endregion AccessToken
         
-        #region ProfileId
-
-        /// <summary>
-        /// The Facebook ID of the user, place or object for which a picture should be fetched and displayed.
-        /// </summary>
-        /// <remarks>
-        /// The control displays a blank profile (silhouette) picture if this property is null or empty.
-        /// </remarks>
-        public string ProfileId
-        {
-            get { return (string)GetValue(ProfileIdProperty); }
-            set { this.SetValue(ProfileIdProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the ProfileId dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ProfileIdProperty =
-            DependencyProperty.Register("ProfileId", typeof(string), typeof(ProfilePicture), new PropertyMetadata(ProfilePicture.DefaultProfileId, OnProfileIdPropertyChanged));
-
-        private static void OnProfileIdPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((ProfilePicture)d).LoadPicture();
-        }
-
-        #endregion ProfileId
 
         #region CropMode
         
@@ -174,18 +174,7 @@
         {
             string profilePictureUrl;
 
-            // TODO: (sanjeevd) A bit of a hack. The picture control should be shown only when the user is logged in.
-            // Needs fixing
-            if (Session.ActiveSession.CurrentAccessTokenData != null &&
-                Session.ActiveSession.CurrentAccessTokenData.AccessToken != null &&
-                this.ProfileId == null &&
-                Session.ActiveSession.CurrentAccessTokenData.AppId == null)
-            {
-                FacebookClient client = new FacebookClient(Session.ActiveSession.CurrentAccessTokenData.AccessToken);
-                dynamic result = await client.GetTaskAsync("me");
-                this.ProfileId = (new GraphUser(result)).Id;
-            }
-            if (string.IsNullOrEmpty(this.ProfileId))
+            if (string.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.FacebookId))
             {
                 profilePictureUrl = ProfilePicture.GetBlankProfilePictureUrl(this.CropMode == CropMode.Square);
             }
@@ -213,7 +202,7 @@
                                         CultureInfo.InvariantCulture,
                                         "{0}/{1}/picture?width={2}&height={3}",
                                         GraphApiUrl,
-                                        this.ProfileId,
+                                        Session.ActiveSession.CurrentAccessTokenData.FacebookId,
                                         size,
                                         size);
             }
@@ -223,7 +212,7 @@
                                         CultureInfo.InvariantCulture,
                                         "{0}/{1}/picture?width={2}&height={3}",
                                         GraphApiUrl,
-                                        this.ProfileId,
+                                        Session.ActiveSession.CurrentAccessTokenData.FacebookId,
                                         this.Width,
                                         this.Height);
             }

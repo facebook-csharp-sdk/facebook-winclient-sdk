@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Windows.ApplicationModel.Activation;
 using System.Net;
 using Facebook;
+using Facebook.Client.Controls;
 
 namespace Facebook.Client
 {

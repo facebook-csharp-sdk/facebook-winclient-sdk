@@ -30,7 +30,7 @@ namespace BasicApp
             this.Loaded += BlankPage1_Loaded;
         }
 
-        void BlankPage1_Loaded(object sender, RoutedEventArgs e)
+        private void BlankPage1_Loaded(object sender, RoutedEventArgs e)
         {
 
             //foreach (var x in FriendPickerDesignSupport.DesignData)
@@ -38,7 +38,7 @@ namespace BasicApp
             //    MyFriendPicker.Opacity = 100;
             //    MyFriendPicker.Items.Add(x);
             //}
-            
+
         }
 
         /// <summary>
@@ -48,12 +48,6 @@ namespace BasicApp
         /// This parameter is typically used to configure the page.</param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.MyFriendPicker.AccessToken = Session.ActiveSession.CurrentAccessTokenData.AccessToken;
-            this.MyPlacePicker.AccessToken = Session.ActiveSession.CurrentAccessTokenData.AccessToken;
         }
     }
 }
