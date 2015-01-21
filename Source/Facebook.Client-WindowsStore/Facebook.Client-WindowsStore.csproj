@@ -235,9 +235,11 @@
     <Compile Include="..\Facebook.Client\Session.cs">
       <Link>Session.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\Universal\Controls\FriendPicker\FriendPicker.cs">
+      <Link>Controls\FriendPicker\FriendPicker.cs</Link>
+    </Compile>
     <Compile Include="Controls\Converters\PickerSelectionModeConverter.cs" />
     <Compile Include="Controls\Converters\SizeToGridCellConverter.cs" />
-    <Compile Include="Controls\FriendPicker\FriendPicker.cs" />
     <Compile Include="Controls\FriendPicker\FriendPickerGroupTemplateSelector.cs" />
     <Compile Include="Controls\Picker\GroupTemplateSelector.cs" />
     <Compile Include="Controls\FriendPicker\SortedLocaleGrouping.cs" />
