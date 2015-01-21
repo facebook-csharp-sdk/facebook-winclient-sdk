@@ -145,6 +145,8 @@ namespace Facebook.Client
                     if (tmpSession == null)
                     {
                         _currentAccessTokenData = new AccessTokenData();
+                        _currentAccessTokenData.AccessToken = String.Empty;
+                        _currentAccessTokenData.FacebookId = String.Empty;
                     }
                     else
                     {

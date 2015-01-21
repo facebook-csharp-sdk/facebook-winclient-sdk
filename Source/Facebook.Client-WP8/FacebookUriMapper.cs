@@ -33,9 +33,9 @@ namespace Facebook.Client
                         Session.OnFacebookAuthenticationFinished(session);
                     }
 
-                    if (Session.OnLoginButtonDone != null)
+                    if (Session.OnSessionStateChanged != null)
                     {
-                        Session.OnLoginButtonDone();
+                        Session.OnSessionStateChanged(LoginStatus.LoggedIn);
                     }
                 }
             }
@@ -44,7 +44,7 @@ namespace Facebook.Client
 
             }
             
-            return new Uri("/MainPage.xaml", UriKind.Relative);
+            return new Uri("/Page1.xaml", UriKind.Relative);
         }
     }
 }

@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
@@ -40,6 +41,12 @@ namespace Facebook.Client
         {
             lock (_fileLock)
             {
+                if (DesignerProperties.IsInDesignTool)
+                {
+                    // return dummy data for the design view
+                    return new AccessTokenData() { AccessToken = "", FacebookId = "" };
+                }
+
                 var store = IsolatedStorageFile.GetUserStoreForApplication();
                 if (!store.FileExists(fileName))
                 {
