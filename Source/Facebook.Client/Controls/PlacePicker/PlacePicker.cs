@@ -65,8 +65,10 @@
 
         void PlacePicker_Loaded(object sender, RoutedEventArgs e)
         {
+            // Sign up for the session state change 
             Session.OnSessionStateChanged += UpdateWithLoginStatus;
 
+            // If a session is already open and the access token is valid, reload the control
             if (Session.ActiveSession.CurrentAccessTokenData.AccessToken != null)
             {
                 AccessToken = Session.ActiveSession.CurrentAccessTokenData.AccessToken;

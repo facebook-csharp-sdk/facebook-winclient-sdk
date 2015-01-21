@@ -144,12 +144,13 @@
                                                     VerticalAlignment="Center" 
                                                     TextWrapping="Wrap"
                                                     TextAlignment="Center"
-                                                    Text="Login"
                                                     FontSize="{Binding RelativeSource={RelativeSource TemplatedParent}, 
                                                                         Path=Width,
                                                                         Converter={StaticResource ScaleConverter},
-                                                                        ConverterParameter=0.11}"/>
-                                                <!--Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DataContext.Caption}"-->
+                                                                        ConverterParameter=0.11}"
+                                                    Text="{Binding RelativeSource={RelativeSource TemplatedParent}, Path=DataContext.Caption}"
+                                                    />
+                                                
                                                 
                                             </Grid>
                                         </ContentPresenter>

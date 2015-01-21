@@ -353,12 +353,6 @@
         private void UpdateButtonCaption(LoginStatus status)
         {
 #if NETFX_CORE
-            //var libraryName = typeof(LoginButton).GetTypeInfo().Assembly.GetName().Name;
-            //var name = string.Format(CultureInfo.InvariantCulture, "{0}/Resources/LoginButton", libraryName);
-            //var loader = new ResourceLoader(name);
-            //var resourceName = String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken)? "Caption_OpenSession" : "Caption_CloseSession";
-            //var caption = loader.GetString(resourceName);
-            //var caption = this.LoginButtonTokenData != null && !String.IsNullOrEmpty(this.LoginButtonTokenData.AccessToken) ? "LogOut" : "Login";
             var caption = status == LoginStatus.LoggedIn ? "LogOut" : "Login";
             if (Session.ActiveSession.CurrentAccessTokenData != null && !String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
             {               
@@ -370,15 +364,6 @@
             var caption = Session.ActiveSession.CurrentAccessTokenData.AccessToken == null ? AppResources.LoginButtonCaptionOpenSession : AppResources.LoginButtonCaptionCloseSession;
 #endif
             this.SetValue(CaptionProperty, caption);
-
-            //if (this.FetchUserInfo)
-            //{
-            //    FacebookClient client = new FacebookClient(Session.ActiveSession.CurrentAccessTokenData.AccessToken);
-            //    dynamic result = await client.GetTaskAsync("me");
-            //    this.CurrentUser = new GraphUser(result);
-            //    var userInfo = new UserInfoChangedEventArgs(this.CurrentUser);
-            //    this.UserInfoChanged.RaiseEvent(this, userInfo);
-            //}
         }
 
         #endregion Implementation
