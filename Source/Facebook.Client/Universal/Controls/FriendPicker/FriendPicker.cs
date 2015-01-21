@@ -40,6 +40,10 @@
         void FriendPicker_Loaded(object sender, RoutedEventArgs e)
         {
             Session.OnSessionStateChanged += UpdateWithLoginStatus;
+            if (Session.ActiveSession.CurrentAccessTokenData.AccessToken != null)
+            {
+                AccessToken = Session.ActiveSession.CurrentAccessTokenData.AccessToken;
+            }
         }
 
         internal void UpdateWithLoginStatus(LoginStatus status)
