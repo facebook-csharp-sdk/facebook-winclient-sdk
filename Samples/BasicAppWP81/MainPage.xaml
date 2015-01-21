@@ -1,0 +1,424 @@
+﻿<Page
+    x:Class="BasicApp.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BasicApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:facebookControls="using:Facebook.Client.Controls"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <Style x:Key="FormLabel" BasedOn="{StaticResource ItemTextStyle}" TargetType="TextBlock">
+            <Setter Property="HorizontalAlignment" Value="Right"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style x:Key="FormField" BasedOn="{StaticResource ItemTextStyle}" TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <Style x:Key="GridLine" TargetType="Line">
+            <Setter Property="Stroke" Value="Gray" />
+            <Setter Property="Stretch" Value="Fill" />
+        </Style>
+
+        <Style x:Key="HorizontalGridLine" TargetType="Line" BasedOn="{StaticResource GridLine}">
+            <Setter Property="Grid.ColumnSpan" Value="2" />
+            <Setter Property="VerticalAlignment" Value="Bottom" />
+            <Setter Property="X2" Value="1" />
+        </Style>
+
+        <Style x:Key="VerticalGridLine" TargetType="Line" BasedOn="{StaticResource GridLine}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+            <Setter Property="Y2" Value="1" />
+        </Style>
+    
+        <Style x:Name="MenuItem" TargetType="RadioButton" BasedOn="{StaticResource TextRadioButtonStyle}">
+            <Setter Property="FontSize" Value="32" />
+        </Style>
+
+        <local:CropModeToBooleanConverter x:Key="CropModeToBooleanConverter" />
+    </Page.Resources>
+
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+        <Grid Margin="40">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="60" />
+            </Grid.RowDefinitions>
+
+            <!--Profile Picture-->
+            <StackPanel Grid.Row="0" Orientation="Vertical" HorizontalAlignment="Right" VerticalAlignment="Top" Width="100">
+                <facebookControls:ProfilePicture                                         
+                    AccessToken="{Binding CurrentSession.AccessToken, ElementName=loginButton}" />
+                <TextBlock Style="{StaticResource BasicTextStyle}" TextWrapping="Wrap" TextAlignment="Center" Text="{Binding CurrentUser.Name, ElementName=loginButton}" />
+            </StackPanel>
+
+            <!--Welcome Text-->
+            <StackPanel x:Name="welcomeText" 
+                        Opacity="100"
+                        Grid.Row="1" Orientation="Vertical" VerticalAlignment="Center">
+                <TextBlock Text="FACEBOOK SDK FOR .NET" Style="{StaticResource HeaderTextStyle}" Margin="0,0,0,30"/>
+                <TextBlock Text="Log in to start" Style="{StaticResource SubheaderTextStyle}" />
+            </StackPanel>
+
+            <Grid x:Name="ContentPanel" Grid.Row="1" Opacity="0">
+                <!--Main Menu-->
+                <StackPanel Orientation="Horizontal" Margin="10,-100,10,10" HorizontalAlignment="Left" VerticalAlignment="Top">
+                    <RadioButton x:Name="user" Checked="OnItemSelected" GroupName="menu" Content="user" Style="{StaticResource MenuItem}"/>
+                    <RadioButton x:Name="picture" Checked="OnItemSelected" GroupName="menu" Content="picture" Style="{StaticResource MenuItem}"/>
+                    <RadioButton x:Name="friends" Checked="OnItemSelected" GroupName="menu" Content="friends" Style="{StaticResource MenuItem}"/>
+                    <RadioButton x:Name="places" Checked="OnItemSelected" GroupName="menu" Content="places" Style="{StaticResource MenuItem}"/>
+                </StackPanel>
+                
+                <!--User Info-->
+                <Grid x:Name="userInfo" Opacity="0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="50" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                        <RowDefinition Height="40" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="150" />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+                    <Line Grid.Row="1" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="2" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="3" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="4" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="5" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="6" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="7" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="8" Style="{StaticResource HorizontalGridLine}"/>
+                    <Line Grid.Row="1" Grid.Column="0" Grid.RowSpan="8" Style="{StaticResource VerticalGridLine}"/>
+
+                    <TextBlock Grid.Row="0" Grid.ColumnSpan="2" Text="User Information" Style="{StaticResource SubheaderTextStyle}" HorizontalAlignment="Left" />
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Name" />
+                    <TextBlock Grid.Row="1" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Name}" />
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Style="{StaticResource FormLabel}" Text="User name" />
+                    <TextBlock Grid.Row="2" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding UserName}" />
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Style="{StaticResource FormLabel}" Text="First name" />
+                    <TextBlock Grid.Row="3" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding FirstName}" />
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Middle name" />
+                    <TextBlock Grid.Row="4" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding MiddleName}" />
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Last name" />
+                    <TextBlock Grid.Row="5" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding LastName}" />
+
+                    <TextBlock Grid.Row="6" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Birthday" />
+                    <TextBlock Grid.Row="6" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Birthday}" />
+
+                    <TextBlock Grid.Row="7" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Link" />
+                    <TextBlock Grid.Row="7" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Link}" />
+
+                    <TextBlock Grid.Row="8" Grid.Column="0" Style="{StaticResource FormLabel}" Text="Location" />
+                    <TextBlock Grid.Row="8" Grid.Column="1" Style="{StaticResource FormField}" Text="{Binding Location.City}" />
+                </Grid>
+
+                <!--ProfilePicture-->
+                <Grid x:Name="profilePictureScenario" Opacity="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <facebookControls:ProfilePicture
+                        x:Name="profilePicture"
+                        Width="200"
+                        Height="200"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Top" />
+
+                    <!-- details section -->
+                    <Grid
+                        Grid.Column="1"
+                        Margin="20,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition Height="Auto"/>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="100"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- width and height-->
+                        <TextBlock 
+                            Grid.Row="0" Grid.Column="0" 
+                            Style="{StaticResource BasicTextStyle}" 
+                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Text="Width:" />
+                        <TextBox 
+                            x:Name="pictureWidth" 
+                            Grid.Row="0" Grid.Column="1"
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            Text="{Binding Width, ElementName=profilePicture, Mode=TwoWay}" />
+                        <TextBlock
+                            Grid.Row="1" Grid.Column="0" 
+                            Style="{StaticResource BasicTextStyle}" 
+                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Text="Height:" />
+                        <TextBox
+                            x:Name="pictureHeight" 
+                            Grid.Row="1" Grid.Column="1"
+                            Margin="10"
+                            VerticalAlignment="Center"
+                            Text="{Binding Height, ElementName=profilePicture, Mode=TwoWay}" />
+                        
+                        <!-- crop mode -->
+                        <TextBlock 
+                            Grid.Row="2" Grid.Column="0" 
+                            Style="{StaticResource BasicTextStyle}" 
+                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Text="Crop mode:" />
+                        <RadioButton 
+                            Grid.Row="2" Grid.Column="1" 
+                            Margin="6,4"
+                            Content="Square"
+                            GroupName="CropMode"
+                            IsChecked="{Binding CropMode, ElementName=profilePicture, Converter={StaticResource CropModeToBooleanConverter}, ConverterParameter=Square, Mode=TwoWay}" />
+                        <RadioButton 
+                            Grid.Row="3" Grid.Column="1" 
+                            Margin="6,4"
+                            Content="Original"
+                            GroupName="CropMode"
+                            IsChecked="{Binding CropMode, ElementName=profilePicture, Converter={StaticResource CropModeToBooleanConverter}, ConverterParameter=Original, Mode=TwoWay}" />
+                        <RadioButton 
+                            Grid.Row="4" Grid.Column="1" 
+                            Margin="6,4"
+                            Content="Fill"
+                            GroupName="CropMode"
+                            IsChecked="{Binding CropMode, ElementName=profilePicture, Converter={StaticResource CropModeToBooleanConverter}, ConverterParameter=Fill, Mode=TwoWay}" />
+                    </Grid>
+                </Grid>
+
+                <!--FriendPicker-->
+                <Grid x:Name="friendPickerScenario" Opacity="100" Background="Red">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <facebookControls:FriendPicker 
+                        x:Name="friendPicker"
+                        DisplayFields="id,name,first_name,middle_name,last_name,picture,location" 
+                        AccessToken="{Binding CurrentSession.AccessToken, ElementName=loginButton}" 
+                        Background="Green"/>
+
+                    <!-- details section -->
+                    <Grid
+                        Grid.Column="1"
+                        Margin="20,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="80"/>
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- display pictures -->
+                        <TextBlock 
+                            Grid.Row="0" Grid.Column="0" 
+                            Style="{StaticResource BasicTextStyle}" 
+                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Text="Display pictures:" />
+                        <CheckBox 
+                            x:Name="displayPictures" 
+                            Grid.Row="0" Grid.Column="1"
+                            Margin="10,0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding DisplayProfilePictures, ElementName=friendPicker, Mode=TwoWay}" />
+
+                        <!-- display order -->
+                        <TextBlock 
+                            Grid.Row="1" Grid.Column="0" 
+                            Margin="0"
+                            Style="{StaticResource BasicTextStyle}" 
+                            HorizontalAlignment="Right" VerticalAlignment="Top"
+                            Text="Display order:" />
+                        <StackPanel Orientation="Vertical"                        
+                            Grid.Row="1" Grid.Column="1"
+                            Margin="10,0"
+                            VerticalAlignment="Top">
+                            <RadioButton 
+                                x:Name="DisplayFirstNameFirst"
+                                Content="first name, last name" 
+                                GroupName="DisplayOrder" 
+                                Checked="OnDisplayOrderSelected" />
+                            <RadioButton 
+                                x:Name="DisplayLastNameFirst"
+                                Content="last name, first name" 
+                                GroupName="DisplayOrder" 
+                                IsChecked="True"
+                                Checked="OnDisplayOrderSelected" />
+                        </StackPanel>
+
+                        <!-- current selection -->
+                        <TextBlock 
+                            Grid.Row="2" Grid.Column="0" 
+                            Style="{StaticResource BasicTextStyle}" 
+                            HorizontalAlignment="Right" VerticalAlignment="Top"
+                            Text="Selected friends:" />
+                        <ListView 
+                            Grid.Row="2" Grid.Column="1" 
+                            Margin="8,-6"
+                            VerticalAlignment="Top"
+                            SelectionMode="None"
+                            ItemsSource="{Binding SelectedItems, ElementName=friendPicker}">
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Vertical">
+                                        <TextBlock Text="{Binding Name}" Style="{StaticResource ItemTextStyle}" FontSize="18" />
+                                        <TextBlock Text="{Binding Location.City}" Style="{StaticResource ItemTextStyle}" FontSize="12" />
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                        </ListView>
+                    </Grid>
+                </Grid>
+
+                <!--PlacePicker-->
+                <Grid x:Name="placePickerScenario" Opacity="0">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition/>
+                        <ColumnDefinition/>
+                    </Grid.ColumnDefinitions>
+
+                    <facebookControls:PlacePicker 
+                        x:Name="placePicker" 
+                        SelectionMode="Single" 
+                        AccessToken="{Binding CurrentSession.AccessToken, ElementName=loginButton}" LoadFailed="OnPlacePickerLoadFailed" />
+
+                    <!-- details section -->
+                    <Grid
+                        Grid.Column="1"
+                        Margin="20,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="100"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                            <RowDefinition Height="50"/>
+                        </Grid.RowDefinitions>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- current selection -->
+                        <TextBlock 
+                            Grid.Row="0" Grid.Column="0"
+                            Style="{StaticResource BasicTextStyle}" 
+                            HorizontalAlignment="Right" VerticalAlignment="Top"
+                            Text="You have selected:" />
+                        <StackPanel
+                            Grid.Row="0" Grid.Column="1" Margin="10,0" Orientation="Vertical">
+                            <TextBlock
+                                Style="{StaticResource BasicTextStyle}" 
+                                VerticalAlignment="Top"
+                                Text="{Binding SelectedItem.Name, ElementName=placePicker}" />
+                            <TextBlock
+                                Style="{StaticResource BasicTextStyle}" 
+                                VerticalAlignment="Top"
+                                Text="{Binding SelectedItem.Location.Street, ElementName=placePicker}" />
+                        </StackPanel>
+
+                        <!-- latitude and longitude -->
+                        <TextBlock 
+                            Grid.Row="1" Grid.Column="0" 
+                            Style="{StaticResource BasicTextStyle}" 
+                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Text="Latitude:" />
+                        <TextBox 
+                            x:Name="latitude" 
+                            Grid.Row="1" Grid.Column="1" 
+                            Height="25" Margin="10,0"
+                            VerticalAlignment="Center"
+                            Text="{Binding ElementName=placePicker, Path=Latitude, Mode=TwoWay}" />
+                        <TextBlock 
+                            Grid.Row="2" Grid.Column="0" 
+                            Style="{StaticResource BasicTextStyle}" 
+                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Text="Longitude:" />
+                        <TextBox 
+                            x:Name="longitude" 
+                            Grid.Row="2" Grid.Column="1" 
+                            Height="25" Margin="10,0"
+                            VerticalAlignment="Center"
+                            Text="{Binding ElementName=placePicker, Path=Longitude, Mode=TwoWay}" />
+
+                        <!-- search radius -->
+                        <TextBlock
+                            Grid.Row="3" Grid.Column="0" 
+                            Style="{StaticResource BasicTextStyle}" 
+                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Text="Radius:" />
+                        <TextBox 
+                            x:Name="radius" 
+                            Grid.Row="3" Grid.Column="1" 
+                            Height="25" Margin="10,0"
+                            VerticalAlignment="Center"
+                            Text="{Binding ElementName=placePicker, Path=RadiusInMeters, Mode=TwoWay}" />
+
+                        <!-- location tracking -->
+                        <TextBlock
+                            Grid.Row="4" Grid.Column="0" 
+                            Style="{StaticResource BasicTextStyle}" 
+                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Text="Track location:" />
+                        <CheckBox 
+                            x:Name="trackLocation" 
+                            Grid.Row="4" Grid.Column="1" 
+                            Margin="6,0"
+                            VerticalAlignment="Center"
+                            IsChecked="{Binding ElementName=placePicker, Path=TrackLocation, Mode=TwoWay}" />
+
+                        <!-- search text -->
+                        <TextBlock 
+                            Grid.Row="5" Grid.Column="0" 
+                            Style="{StaticResource BasicTextStyle}" 
+                            HorizontalAlignment="Right" VerticalAlignment="Center"
+                            Text="Search for:" />
+                        <TextBox 
+                            x:Name="searchText" 
+                            Grid.Row="5" Grid.Column="1" 
+                            Height="25" Margin="10,0"
+                            VerticalAlignment="Center"
+                            Text="{Binding ElementName=placePicker, Path=SearchText, Mode=TwoWay}" />
+                    </Grid>
+                </Grid>
+            </Grid>
+            
+            <!--Login Button-->
+            <facebookControls:LoginButton x:Name="loginButton" 
+                Grid.Row="2"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                UserInfoChanged="OnUserInfoChanged" 
+                SessionStateChanged="OnSessionStateChanged" Permissions="user_birthday" />
+        </Grid>
+    </Grid>
+</Page>

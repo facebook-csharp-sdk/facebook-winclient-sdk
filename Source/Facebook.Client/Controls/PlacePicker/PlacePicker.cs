@@ -13,7 +13,7 @@
     using Windows.UI.Core;
     using Windows.UI.Xaml;
 #endif
-#if WINDOWS_PHONE
+#if WP8
     using System;
     using System.Collections;
     using System.Collections.Generic;
@@ -59,8 +59,33 @@
         public PlacePicker()
         {
             this.DefaultStyleKey = typeof(PlacePicker);
+
+            this.Loaded += PlacePicker_Loaded;
         }
 
+        void PlacePicker_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Sign up for the session state change 
+            Session.OnSessionStateChanged += UpdateWithLoginStatus;
+
+            // If a session is already open and the access token is valid, reload the control
+            if (Session.ActiveSession.CurrentAccessTokenData.AccessToken != null)
+            {
+                AccessToken = Session.ActiveSession.CurrentAccessTokenData.AccessToken;
+            }
+        }
+
+        internal void UpdateWithLoginStatus(LoginStatus status)
+        {
+            if (status == LoginStatus.LoggedIn)
+            {
+                AccessToken = Session.ActiveSession.CurrentAccessTokenData.AccessToken;
+            }
+            else
+            {
+                AccessToken = null;
+            }
+        }
         #region Properties
 
         #region AccessToken
@@ -305,7 +330,7 @@
                 CoreDispatcherPriority.Normal,
                 async () =>
 #endif
-#if WINDOWS_PHONE
+#if WP8
             this.Dispatcher.BeginInvoke(
                 async () =>
 #endif

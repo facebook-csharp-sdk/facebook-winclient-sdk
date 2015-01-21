@@ -51,6 +51,8 @@
                 //// and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
+
+            RootFrame.UriMapper = new FacebookUriMapper();
         }
 
         /// <summary>

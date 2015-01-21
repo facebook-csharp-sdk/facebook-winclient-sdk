@@ -1,0 +1,57 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Facebook.Client.Controls">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../../Common/StandardStyles.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <local:PickerSelectionModeConverter x:Key="PickerSelectionModeConverter" />
+
+    <DataTemplate x:Name="ZoomedInItemTemplate">
+        <StackPanel Orientation="Horizontal" Margin="0,4">
+            <Image
+                Width="{Binding Parent.PictureSize.Width}"
+                Height="{Binding Parent.PictureSize.Height}"
+                Stretch="UniformToFill" 
+                Margin="0, 0, 10, 0"
+                Visibility="{Binding Parent.DisplayProfilePictures, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                Source="{Binding Item.ProfilePictureUrl}" />
+            <TextBlock
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top" 
+                Margin="5"
+                TextWrapping="Wrap" 
+                Text="{Binding Item.Name}"
+                Style="{StaticResource ItemTextStyle}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <Style TargetType="local:PlacePicker">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:PlacePicker">
+                    <SemanticZoom x:Name="PART_SemanticZoom"
+                        Background="{TemplateBinding Background}">
+                        <SemanticZoom.ZoomedInView>
+                            <ListView 
+                                ItemsSource="{Binding}"
+                                ItemTemplate="{StaticResource ZoomedInItemTemplate}"
+                                SelectionMode="{Binding SelectionMode, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource PickerSelectionModeConverter}}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                ScrollViewer.IsVerticalScrollChainingEnabled="False">
+                            </ListView>
+                        </SemanticZoom.ZoomedInView>
+                        <SemanticZoom.ZoomedOutView>
+                            <ListView>
+                            </ListView>
+                        </SemanticZoom.ZoomedOutView>
+                    </SemanticZoom>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

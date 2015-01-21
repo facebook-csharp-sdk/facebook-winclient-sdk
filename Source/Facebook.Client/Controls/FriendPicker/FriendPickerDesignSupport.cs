@@ -6,7 +6,7 @@
     /// <summary>
     /// Provides design time support for the FriendPicker control.
     /// </summary>
-    internal class FriendPickerDesignSupport
+    public class FriendPickerDesignSupport
     {
         private static List<GraphUser> data;
 

@@ -1,0 +1,201 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Facebook.Client.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="../../Common/StandardStyles.xaml" />
+    </ResourceDictionary.MergedDictionaries>
+
+    <local:ScaleConverter x:Key="ScaleConverter" />
+    <local:SizeToGridCellConverter x:Key="SizeToGridCellConverter" />
+    <local:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
+    <local:PickerSelectionModeConverter x:Key="PickerSelectionModeConverter" />
+
+    <DataTemplate x:Name="GroupTemplate">
+        <Border Margin="5" Padding="5"
+            Background="{Binding Tag.GroupHeaderBackground, ElementName=PART_SemanticZoom}"
+            Width="82" Height="82" HorizontalAlignment="Left">
+            <TextBlock 
+                Margin="10"
+                Foreground="{Binding Tag.GroupHeaderForeground, ElementName=PART_SemanticZoom}"
+                Text="{Binding Key}"
+                FontSize="48" Padding="6" 
+                Style="{StaticResource GroupHeaderTextStyle}" />
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Name="EmptyGroupTemplate">
+        <Border Margin="5" Padding="5" 
+            Width="82" Height="82" HorizontalAlignment="Left"
+            Background="Gray"> 
+            <TextBlock
+                Margin="10"
+                Foreground="{Binding Tag.GroupHeaderForeground, ElementName=PART_SemanticZoom}"
+                Text="{Binding Key}"
+                FontSize="48" Padding="6" 
+                Style="{StaticResource GroupHeaderTextStyle}" />
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Key="ZoomedOutItemTemplate">
+        <ContentControl
+            DataContext="{Binding Group}"
+            Content="{Binding DataContext, RelativeSource={RelativeSource Mode=Self}}">
+            <ContentControl.ContentTemplateSelector>
+                <local:FriendPickerGroupTemplateSelector
+                    GroupTemplate="{StaticResource GroupTemplate}"
+                    EmptyGroupTemplate="{StaticResource EmptyGroupTemplate}" />
+            </ContentControl.ContentTemplateSelector>
+        </ContentControl>
+    </DataTemplate>
+
+    <!--see http://msdn.microsoft.com/library/windows/apps/jj709917.aspx-->
+    <Style x:Key="GroupItemStyle" TargetType="GroupItem">
+        <Setter Property="IsTabStop" Value="False" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="GroupItem">
+                    <Border 
+                        Background="{TemplateBinding Background}"
+                        BorderBrush="{TemplateBinding BorderBrush}"
+                        BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <ContentControl 
+                                x:Name="HeaderContent"
+                                Content="{TemplateBinding Content}"
+                                ContentTransitions="{TemplateBinding ContentTransitions}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                ContentTemplateSelector="{TemplateBinding ContentTemplateSelector}"
+                                Margin="{TemplateBinding Padding}"
+                                TabIndex="0"
+                                IsTabStop="False"
+                                HorizontalContentAlignment="Stretch" />
+                            <ItemsControl 
+                                x:Name="ItemsControl" 
+                                Grid.Row="1"
+                                ItemsSource="{Binding GroupItems}"
+                                IsTabStop="False"
+                                TabNavigation="Once"
+                                TabIndex="1"
+                                Background="FloralWhite">
+                                <ItemsControl.ItemContainerTransitions>
+                                    <TransitionCollection>
+                                        <AddDeleteThemeTransition />
+                                        <ContentThemeTransition />
+                                        <ReorderThemeTransition />
+                                        <EntranceThemeTransition IsStaggeringEnabled="False" />
+                                    </TransitionCollection>
+                                </ItemsControl.ItemContainerTransitions>
+                            </ItemsControl>
+                        </Grid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <DataTemplate x:Name="GroupHeaderTemplate">
+        <Border
+            HorizontalAlignment="Stretch"
+            BorderBrush="{Binding Tag.GroupHeaderBackground, ElementName=PART_SemanticZoom}"
+            Margin="4,0,18,0"
+            BorderThickness="0,0,0,1">
+            <Border
+                MinWidth="50" 
+                HorizontalAlignment="Left"
+                Background="{Binding Tag.GroupHeaderBackground, ElementName=PART_SemanticZoom}">
+                <TextBlock
+                        Text="{Binding Key}" 
+                        Margin="10"
+                        Foreground="{Binding Tag.GroupHeaderForeground, ElementName=PART_SemanticZoom}"
+                        VerticalAlignment="Center" 
+                        HorizontalAlignment="Center"
+                        Style="{StaticResource GroupHeaderTextStyle}" />
+            </Border>
+        </Border>
+    </DataTemplate>
+
+    <DataTemplate x:Name="ZoomedInItemTemplate">
+        <StackPanel Orientation="Horizontal" Margin="0,4">
+            <Image
+                Width="{Binding Parent.PictureSize.Width}"
+                Height="{Binding Parent.PictureSize.Height}"
+                Stretch="UniformToFill" 
+                Margin="0, 0, 10, 0"
+                Visibility="{Binding Parent.DisplayProfilePictures, Converter={StaticResource BooleanToVisibilityConverter}}" 
+                Source="{Binding Item.ProfilePictureUrl}" />
+            <TextBlock
+                HorizontalAlignment="Left" 
+                VerticalAlignment="Top" 
+                Margin="5"
+                TextWrapping="Wrap" 
+                Text="{Binding DisplayName}"
+                Style="{StaticResource ItemTextStyle}" />
+        </StackPanel>
+    </DataTemplate>
+
+    <Style TargetType="local:FriendPicker">
+        <Setter Property="GroupHeaderForeground" Value="White" />
+        <Setter Property="GroupHeaderBackground" Value="#FF25A1DB" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:FriendPicker">
+                    <SemanticZoom x:Name="PART_SemanticZoom"
+                        Background="{TemplateBinding Background}">
+                        <SemanticZoom.ZoomedInView>
+                            <ListView 
+                                ItemsSource="{Binding}"
+                                ItemTemplate="{StaticResource ZoomedInItemTemplate}"
+                                SelectionMode="{Binding SelectionMode, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource PickerSelectionModeConverter}}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                ScrollViewer.IsVerticalScrollChainingEnabled="False">
+                                <ListView.GroupStyle>
+                                    <GroupStyle 
+                                        HidesIfEmpty="True" 
+                                        ContainerStyle="{StaticResource GroupItemStyle}"
+                                        HeaderTemplate="{StaticResource GroupHeaderTemplate}">
+                                    </GroupStyle>
+                                </ListView.GroupStyle>
+                            </ListView>
+                        </SemanticZoom.ZoomedInView>
+
+                        <SemanticZoom.ZoomedOutView>
+                            <ListView 
+                                Padding="-1"
+                                ItemsSource="{Binding Path=CollectionGroups}"
+                                ItemTemplate="{StaticResource ZoomedOutItemTemplate}"
+                                SelectionMode="None"
+                                Background="Black"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                ScrollViewer.IsVerticalScrollChainingEnabled="False"
+                                ScrollViewer.VerticalScrollBarVisibility="Hidden">
+                                <ListView.ItemsPanel>
+                                    <ItemsPanelTemplate>
+                                        <WrapGrid Orientation="Horizontal" />
+                                    </ItemsPanelTemplate>
+                                </ListView.ItemsPanel>
+                                <ListView.ItemContainerStyle>
+                                    <Style TargetType="ListViewItem">
+                                        <Setter Property="Margin" Value="0" />
+                                        <Setter Property="Padding" Value="0" />
+                                        <Setter Property="BorderThickness" Value="0" />
+                                    </Style>
+                                </ListView.ItemContainerStyle>
+                            </ListView>
+                        </SemanticZoom.ZoomedOutView>
+                    </SemanticZoom>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

@@ -38,7 +38,7 @@ namespace Facebook.Client
             {
                 foreach (var target in appLink.Targets)
                 {
-#if WINDOWS_PHONE
+#if WP8
                     if (target.Platform == Platform.WindowsPhone)
                     {
                         navigationLinkUrl = target.Uri;

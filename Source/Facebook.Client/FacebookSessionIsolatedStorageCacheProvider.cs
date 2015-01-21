@@ -19,6 +19,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.IO.IsolatedStorage;
 using System.Linq;
@@ -29,43 +30,62 @@ using System.Xml.Serialization;
 
 namespace Facebook.Client
 {
-    public class FacebookSessionIsolatedStorageCacheProvider : FacebookSessionCacheProvider
+    public class AccessTokenDataIsolatedStorageCacheProvider : AccessTokenDataCacheProvider
     {
         private const string fileName = "FACEBOOK_SESSION";
+        private static readonly object _fileLock = new object();
 
-        public override FacebookSession GetSessionData()
+        // all access to the file should be via a lock to avoid race conditions and 
+        // data corruption
+        public override AccessTokenData GetSessionData()
         {
-            var store = IsolatedStorageFile.GetUserStoreForApplication();
-            if (!store.FileExists(fileName))
+            lock (_fileLock)
             {
-                return null;
-            }
+                if (DesignerProperties.IsInDesignTool)
+                {
+                    // return dummy data for the design view
+                    return new AccessTokenData() { AccessToken = "", FacebookId = "" };
+                }
 
-            FacebookSession data;
-            var serializer = new XmlSerializer(typeof(FacebookSession));
-            using (var stream = store.OpenFile(fileName, System.IO.FileMode.Open))
-            {
-                data = serializer.Deserialize(stream) as FacebookSession;
+                var store = IsolatedStorageFile.GetUserStoreForApplication();
+                if (!store.FileExists(fileName))
+                {
+                    return null;
+                }
+
+                AccessTokenData data;
+                var serializer = new XmlSerializer(typeof (AccessTokenData));
+                using (var stream = store.OpenFile(fileName, System.IO.FileMode.Open))
+                {
+                    data = serializer.Deserialize(stream) as AccessTokenData;
+                }
+
+                return data;
             }
-            return data;
         }
 
-        public override void SaveSessionData(FacebookSession data)
+        public override void SaveSessionData(AccessTokenData data)
         {
-            var serializer = new XmlSerializer(typeof(FacebookSession));
-            var store = IsolatedStorageFile.GetUserStoreForApplication();
-            using (var stream = store.OpenFile(fileName, FileMode.Create))
+            lock (_fileLock)
             {
-                serializer.Serialize(stream, data);
+                var serializer = new XmlSerializer(typeof(AccessTokenData));
+                var store = IsolatedStorageFile.GetUserStoreForApplication();
+                using (var stream = store.OpenFile(fileName, FileMode.Create))
+                {
+                    serializer.Serialize(stream, data);
+                }
             }
         }
 
         public override void DeleteSessionData()
         {
-            var store = IsolatedStorageFile.GetUserStoreForApplication();
-            if (store.FileExists(fileName))
+            lock (_fileLock)
             {
-                store.DeleteFile(fileName);
+                var store = IsolatedStorageFile.GetUserStoreForApplication();
+                if (store.FileExists(fileName))
+                {
+                    store.DeleteFile(fileName);
+                }
             }
         }
     }

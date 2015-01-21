@@ -6,35 +6,43 @@ using System.Threading.Tasks;
 
 namespace Facebook.Client
 {
-    public abstract class FacebookSessionCacheProvider
+    public abstract class AccessTokenDataCacheProvider
     {
 
-        private static FacebookSessionCacheProvider current;
+        private static readonly object _fileLock = new object();
 
-        public static FacebookSessionCacheProvider Current
+        private static AccessTokenDataCacheProvider current;
+
+        public static AccessTokenDataCacheProvider Current
         {
             get
             {
-                if (current == null)
+                // even though the internal variable is static, we are not really initializing it 
+                // till the first access. This can potentially lead to a race condition. Lock to avoid that
+                lock (_fileLock)
                 {
-#if WINDOWS_PHONE
-                    current = new FacebookSessionIsolatedStorageCacheProvider();
+                    if (current == null)
+                    {
+#if WP8
+                        current = new AccessTokenDataIsolatedStorageCacheProvider();
 #else
-                    current = new FacebookSessionRoamingSettingsCacheProvider();
+                    current = new FacebookSessionLocalSettingsCacheProvider();
 #endif
+                    }
+
+                    return current;
                 }
-                return current;
             }
         }
 
-        public static void SetCacheProvider(FacebookSessionCacheProvider provider)
+        public static void SetCacheProvider(AccessTokenDataCacheProvider provider)
         {
             current = provider;
         }
 
-        public abstract FacebookSession GetSessionData();
+        public abstract AccessTokenData GetSessionData();
 
-        public abstract void SaveSessionData(FacebookSession data);
+        public abstract void SaveSessionData(AccessTokenData data);
 
         public abstract void DeleteSessionData();
 
