@@ -361,7 +361,7 @@
             }
 #endif
 #if WP8
-            var caption = Session.ActiveSession.CurrentAccessTokenData.AccessToken == null ? AppResources.LoginButtonCaptionOpenSession : AppResources.LoginButtonCaptionCloseSession;
+            var caption = String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken) ? AppResources.LoginButtonCaptionOpenSession : AppResources.LoginButtonCaptionCloseSession;
 #endif
             this.SetValue(CaptionProperty, caption);
         }

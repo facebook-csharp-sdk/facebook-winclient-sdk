@@ -1,4 +1,6 @@
-﻿namespace Facebook.Client.Controls
+﻿using System.Windows;
+
+namespace Facebook.Client.Controls
 {
     using System;
     using System.Collections;
@@ -7,7 +9,10 @@
     using System.Linq;
     using System.Threading.Tasks;
     using Windows.Foundation;
+
+#if WINDOWS_PHONE || WINDOWS
     using Windows.UI.Xaml;
+#endif
 
     /// <summary>
     /// Shows a user interface that can be used to select Facebook friends.

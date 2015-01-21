@@ -216,9 +216,11 @@
     <Compile Include="..\Facebook.Client\Session.cs">
       <Link>Session.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\Universal\Controls\FriendPicker\FriendPicker.cs">
+      <Link>Controls\FriendPicker\FriendPicker.cs</Link>
+    </Compile>
     <Compile Include="AppAuthenticationHelper.cs" />
     <Compile Include="Controls\Converters\ImageSourceUriConverter.cs" />
-    <Compile Include="Controls\FriendPicker\FriendPicker.cs" />
     <Compile Include="Controls\Picker\Picker.cs" />
     <Compile Include="Controls\WebDialog\WebDialogUserControl.xaml.cs">
       <DependentUpon>WebDialogUserControl.xaml</DependentUpon>
