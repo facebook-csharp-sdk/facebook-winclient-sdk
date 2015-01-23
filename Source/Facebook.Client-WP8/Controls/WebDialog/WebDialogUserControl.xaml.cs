@@ -28,7 +28,7 @@ namespace Facebook.Client.Controls.WebDialog
         {
             if (ParentControlPopup != null)
             {
-                // cancel the navigation when we successfully hit the send
+                // cancel the navigation when we successfully hit the send or when the login dialog finishes with a login
                 if (navigatingEventArgs.Uri.ToString().StartsWith("fbconnect"))
                 {
                     navigatingEventArgs.Cancel = true;
@@ -55,11 +55,6 @@ namespace Facebook.Client.Controls.WebDialog
 
             var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
             task.Wait();
-            //Uri uri =
-            //    new Uri(
-            //        String.Format(
-            //            "https://m.facebook.com/v2.1/dialog/apprequests?access_token={0}&redirect_uri=fbconnect%3A%2F%2Fsuccess&app_id={1}&message=YOUR_MESSAGE_HERE&display=touch",
-            //            Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result));
             dialogWebBrowser.Navigate(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/apprequests?access_token={0}&redirect_uri=fbconnect%3A%2F%2Fsuccess&app_id={1}&message=YOUR_MESSAGE_HERE&display=touch", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result)));
 
             
@@ -85,6 +80,13 @@ namespace Facebook.Client.Controls.WebDialog
             {
                 ParentControlPopup.IsOpen = false;
             }
+        }
+
+        public void LoginViaWebview(Uri startUri)
+        {
+            var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
+            task.Wait();
+            dialogWebBrowser.Navigate(startUri);
         }
     }
 }

@@ -87,7 +87,12 @@ namespace FullSampleWP8
 
         private void ShowRequestWithBrowserButton_Click(object sender, RoutedEventArgs e)
         {
-            WebDialogUserControl.ShowAppRequestDialogViaBrowser();
+            //WebDialogUserControl.lo();
+
+            Session.ActiveSession.LoginWithBehavior("email,public_profile,user_friends", FacebookLoginBehavior.LoginBehaviorWebViewOnly);
+
         }
+
+
     }
 }

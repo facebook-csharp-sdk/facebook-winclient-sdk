@@ -11,8 +11,13 @@ namespace Facebook.Client
 {
     public class LifecycleHelper
     {
-#if WINDOWS_UNIVERSAL
+
         public static DismissDialogDelegate OnDialogDismissed;
+#if WP8
+        
+#endif
+
+#if WINDOWS_UNIVERSAL
         public static void FacebookAuthenticationReceived(ProtocolActivatedEventArgs protocolArgs)
         {
             if (protocolArgs == null)

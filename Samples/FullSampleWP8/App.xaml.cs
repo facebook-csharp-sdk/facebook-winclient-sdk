@@ -56,6 +56,8 @@ namespace FullSampleWP8
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
+            Session.OnFacebookAuthenticationFinished += OnFacebookAuthenticationFinished;
+
             RootFrame.UriMapper = new FacebookUriMapper();
         }
 
@@ -93,6 +95,10 @@ namespace FullSampleWP8
             }
         }
 
+        private void OnFacebookAuthenticationFinished(AccessTokenData session)
+        {
+
+        }
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
