@@ -128,6 +128,8 @@ namespace Facebook.Client
         }
         public bool LoginInProgress { get; set; }
 
+        public string RedirectPageOnSuccess = "MainPage.xaml";
+
 
         private AccessTokenData _currentAccessTokenData = null;
         private bool firstRun = true;

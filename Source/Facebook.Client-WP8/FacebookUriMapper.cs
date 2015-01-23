@@ -44,7 +44,7 @@ namespace Facebook.Client
 
             }
             
-            return new Uri("/Page1.xaml", UriKind.Relative);
+            return new Uri("/" + Session.ActiveSession.RedirectPageOnSuccess, UriKind.Relative);
         }
     }
 }
