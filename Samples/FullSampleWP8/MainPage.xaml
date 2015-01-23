@@ -45,14 +45,21 @@
         <Grid x:Name="ContentPanel" Grid.Row="1" Margin="24,0,0,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="27*"/>
-                <RowDefinition Height="229*"/>
+                <RowDefinition Height="27*"/>
+                <RowDefinition Height="27*"/>
+                <RowDefinition Height="27*"/>
+                <RowDefinition Height="27*"/>
+                <RowDefinition Height="27*"/>
+                <RowDefinition Height="27*"/>
             </Grid.RowDefinitions>
-            <Button Content="Login via Internet Explorer" HorizontalAlignment="Left" Margin="48,1,0,0" VerticalAlignment="Top" Click="Button_Click" Grid.Row="1"/>
-            <Button x:Name="extendTokenButton"  Content="Extend Token" HorizontalAlignment="Left" Margin="48,78,0,0" Grid.Row="1" VerticalAlignment="Top" Width="322" Click="extendTokenButton_Click"/>
-            <Button x:Name="graphCallButton" Content="Make Graph Call" HorizontalAlignment="Left" Margin="48,155,0,0" Grid.Row="1" VerticalAlignment="Top" Width="322" Click="graphCallButton_Click"/>
-            <Button x:Name="showDialogButton" Content="Show Requests dialog" HorizontalAlignment="Left" Margin="48,232,0,0" Grid.Row="1" VerticalAlignment="Top" Width="322" Click="showDialogButton_Click"/>
-            <Button x:Name="showFeedDialogButton" Content="Show Feed Dialog" HorizontalAlignment="Left" Margin="48,309,0,0" Grid.Row="1" VerticalAlignment="Top" Width="322" Click="ShowFeedDialogButton_OnClick"/>
-            <Button x:Name="ShowRequestWithBrowserButton"  Content="Show Request via Browser" HorizontalAlignment="Left" Margin="48,386,0,0" Grid.Row="1" VerticalAlignment="Top" Width="319" Click="ShowRequestWithBrowserButton_Click"/>
+            <Button Content="Login via Internet Explorer" HorizontalAlignment="Center"  VerticalAlignment="Center" Click="Button_Click" Grid.Row="0"/>
+            <Button x:Name="loginViaWebView"  Content="Login via Webview" HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Center" Width="319" Click="ShowRequestWithBrowserButton_Click"/>
+            <Button x:Name="extendTokenButton"  Content="Extend Token" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Width="322" Click="extendTokenButton_Click"/>
+            <Button x:Name="graphCallButton" Content="Make Graph Call" HorizontalAlignment="Center"  Grid.Row="3" VerticalAlignment="Center" Width="322" Click="graphCallButton_Click"/>
+            <Button x:Name="showDialogButton" Content="Show Requests dialog" HorizontalAlignment="Center"  Grid.Row="4" VerticalAlignment="Center" Width="322" Click="showDialogButton_Click"/>
+            <Button x:Name="showFeedDialogButton" Content="Show Feed Dialog" HorizontalAlignment="Center"  Grid.Row="5" VerticalAlignment="Center" Width="322" Click="ShowFeedDialogButton_OnClick"/>
+            <Button x:Name="ShowRequestWithBrowserButton"  Content="Show Request via Browser" HorizontalAlignment="Center"  Grid.Row="6" VerticalAlignment="Center" Width="319" Click="ShowRequestWithBrowserButton_Click"/>
+            
         </Grid>
         
 

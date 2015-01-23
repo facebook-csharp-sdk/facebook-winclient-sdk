@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.ServiceModel.Channels;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -45,7 +46,8 @@ namespace FullSampleWP8
         async private void extendTokenButton_Click(object sender, RoutedEventArgs e)
         {
            await Session.CheckAndExtendTokenIfNeeded();
-
+            MessageBox.Show("Token extended. New expiry at: " +
+                            Session.ActiveSession.CurrentAccessTokenData.Expires.ToString());
         }
 
         async private void graphCallButton_Click(object sender, RoutedEventArgs e)
@@ -53,6 +55,9 @@ namespace FullSampleWP8
             FacebookClient fb = new FacebookClient(Session.ActiveSession.CurrentAccessTokenData.AccessToken);
 
             dynamic friendsTaskResult = await fb.GetTaskAsync("/me/friends");
+
+            MessageBox.Show("Graph Request for /me/friends: " +
+                friendsTaskResult.ToString());
         }
 
         private void showDialogButton_Click(object sender, RoutedEventArgs e)
