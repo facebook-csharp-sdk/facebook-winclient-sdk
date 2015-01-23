@@ -32,6 +32,13 @@ namespace BasicApp_Win81_Universal
         {
             this.InitializeComponent();
             this.Suspending += OnSuspending;
+
+            this.UnhandledException += this.Application_UnhandledException;
+        }
+
+        private void Application_UnhandledException(object sender, UnhandledExceptionEventArgs e)
+        {
+            
         }
 
         /// <summary>

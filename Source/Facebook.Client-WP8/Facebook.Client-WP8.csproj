@@ -226,7 +226,11 @@
       <DependentUpon>WebDialogUserControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="FacebookUriMapper.cs" />
-    <Compile Include="Resources\AppResources.Designer.cs" />
+    <Compile Include="Resources\AppResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppResources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="..\Facebook.Client\LoginPage.xaml">

@@ -45,7 +45,7 @@ namespace BasicApp_Win81_Universal
         private void showDialogButton_Click(object sender, RoutedEventArgs e)
         {
             this.dialogWebView.Visibility = Visibility.Visible;
-            this.dialogWebView.Navigate(new Uri("https://facebook.com/dialog/apprequests?display=popup&app_id=540541885996234&message=YOUR_MESSAGE_HERE!&redirect_uri=https://pratapgarh.com&access_token=" + Session.ActiveSession.CurrentAccessTokenData.AccessToken, UriKind.Absolute));
+            this.dialogWebView.Navigate(new Uri("https://facebook.com/v2.1/dialog/apprequests?display=popup&app_id=540541885996234&message=YOUR_MESSAGE_HERE!&redirect_uri=https://pratapgarh.com&access_token=" + Session.ActiveSession.CurrentAccessTokenData.AccessToken, UriKind.Absolute));
         }
     }
 }

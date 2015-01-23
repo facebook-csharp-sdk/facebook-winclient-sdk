@@ -52,7 +52,6 @@
             <Button x:Name="showDialogButton" Content="Show Requests dialog" HorizontalAlignment="Left"  Grid.Row="3" VerticalAlignment="Bottom" Width="322" Click="showDialogButton_Click" />
             <Button x:Name="showFeedDialogButton" Content="Show Feed Dialog" HorizontalAlignment="Left"  Grid.Row="4" VerticalAlignment="Bottom" Width="322" Click="ShowFeedDialogButton_OnClick" />
             <Button x:Name="ShowRequestWithBrowserButton"  Content="Show Request via Browser" HorizontalAlignment="Left"  Grid.Row="5" VerticalAlignment="Bottom" Width="319" Click="ShowRequestWithBrowserButton_Click" />
-            <Button x:Name="ShowUiContrrolsButton"  Content="Show Controls" HorizontalAlignment="Left"  Grid.Row="6" VerticalAlignment="Bottom" Width="319" Click="ShowUiContrrolsButton_OnClick" />
         </Grid>
 
 

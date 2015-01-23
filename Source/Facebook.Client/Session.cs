@@ -128,7 +128,7 @@ namespace Facebook.Client
         }
         public bool LoginInProgress { get; set; }
 
-        public string RedirectPageOnSuccess = "MainPage.xaml";
+        internal string RedirectPageOnSuccess = "MainPage.xaml";
 
 
         private AccessTokenData _currentAccessTokenData = null;
@@ -156,6 +156,20 @@ namespace Facebook.Client
                     }
 
                     firstRun = false;
+                }
+
+                if (_currentAccessTokenData != null)
+                {
+                    if (!String.IsNullOrEmpty(_currentAccessTokenData.AccessToken)
+                        && _currentAccessTokenData.Expires < DateTime.UtcNow)
+                    {
+                        _currentAccessTokenData.AccessToken = String.Empty;
+                        _currentAccessTokenData.CurrentPermissions = new List<string>();
+                        _currentAccessTokenData.Expires = DateTime.MinValue;
+                        _currentAccessTokenData.FacebookId = String.Empty;
+                        _currentAccessTokenData.Issued = DateTime.MinValue;
+
+                    }
                 }
 
                 return _currentAccessTokenData;
@@ -388,22 +402,37 @@ namespace Facebook.Client
                     break;
                 }
 #endif
-                case FacebookLoginBehavior.LoginBehaviorWebAuthenticationBroker:
                 case FacebookLoginBehavior.LoginBehaviorWebViewOnly:
                 {
-                    // TODO: What to do here? LoginAsync returns inproc. Login with IE returns out of proc?
-                    var result = await LoginAsync(permissions);
-                    
-                    // when the results are available, launch the event handler
-                    if (OnFacebookAuthenticationFinished != null)
+                    throw new NotImplementedException("API not yet implemented");
+                    break;
+                }
+                case FacebookLoginBehavior.LoginBehaviorWebAuthenticationBroker:
+
+                {
+                    try
                     {
-                        OnFacebookAuthenticationFinished(result);
+                        // TODO: What to do here? LoginAsync returns inproc. Login with IE returns out of proc?
+                        var result = await LoginAsync(permissions);
+                        // when the results are available, launch the event handler
+                        if (OnFacebookAuthenticationFinished != null)
+                        {
+                            OnFacebookAuthenticationFinished(result);
+                        }
+
+                        if (OnSessionStateChanged != null)
+                        {
+                            OnSessionStateChanged(LoginStatus.LoggedIn);
+                        }
+                    }
+                    catch (FacebookOAuthException e)
+                    {
+                        if (OnSessionStateChanged != null)
+                        {
+                            OnSessionStateChanged(LoginStatus.LoggedOut);
+                        }
                     }
 
-                    if (OnSessionStateChanged != null)
-                    {
-                        OnSessionStateChanged(LoginStatus.LoggedIn);
-                    }
                     break;
                 }
 #if WP8 || WINDOWS_PHONE
@@ -525,11 +554,11 @@ namespace Facebook.Client
 
             if (result.ResponseStatus == WebAuthenticationStatus.ErrorHttp)
             {
-                throw new InvalidOperationException();
+                throw new HttpRequestException("An Http error happened. Error Code: " + result.ResponseStatus.ToString());
             }
             else if (result.ResponseStatus == WebAuthenticationStatus.UserCancel)
             {
-                throw new InvalidOperationException();
+                throw new FacebookOAuthException("Facebook.Client: User cancelled login in WebAuthBroker");
             }
 
             var client = new FacebookClient();
