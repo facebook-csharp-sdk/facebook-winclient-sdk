@@ -230,6 +230,13 @@ namespace Facebook.Client
 //#endif
 
 #if WP8 || WINDOWS_PHONE
+
+        public static void ShowAppRequetsDialogViaBrowser()
+        {
+            // TODO: Setup callback
+            WebDialogUserControl.ShowAppRequestDialogViaBrowser();
+        }
+
         public static void ShowAppRequestsDialog(WebDialogFinishedDelegate callback)
         {
             Popup dialogPopup = new Popup();

@@ -234,6 +234,9 @@
     <Compile Include="..\..\Facebook.Client\Universal\Controls\Picker\Picker.cs">
       <Link>Controls\Picker\Picker.cs</Link>
     </Compile>
+    <Compile Include="..\..\Facebook.Client\WebviewAuthentication.cs">
+      <Link>WebviewAuthentication.cs</Link>
+    </Compile>
     <Compile Include="Controls\WebDialog\WebDialogUserControl.xaml.cs">
       <DependentUpon>WebDialogUserControl.xaml</DependentUpon>
     </Compile>

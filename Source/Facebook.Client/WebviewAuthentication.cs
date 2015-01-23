@@ -16,16 +16,19 @@ using Microsoft.Phone.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Threading;
-#endif
-
-#if WP8
 using Windows.System;
-using Facebook.Client.Controls.WebDialog;
 #endif
 
 #if WINDOWS
 using Windows.Security.Authentication.Web;
 #endif
+
+#if WINDOWS_UNIVERSAL
+using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls.Primitives;
+#endif
+
+using Facebook.Client.Controls.WebDialog;
 
 namespace Facebook.Client
 {

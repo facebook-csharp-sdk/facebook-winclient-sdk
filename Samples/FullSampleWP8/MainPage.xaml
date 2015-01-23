@@ -53,7 +53,7 @@
                 <RowDefinition Height="27*"/>
             </Grid.RowDefinitions>
             <Button Content="Login via Internet Explorer" HorizontalAlignment="Center"  VerticalAlignment="Center" Click="Button_Click" Grid.Row="0"/>
-            <Button x:Name="loginViaWebView"  Content="Login via Webview" HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Center" Width="319" Click="ShowRequestWithBrowserButton_Click"/>
+            <Button x:Name="loginViaWebView"  Content="Login via Webview" HorizontalAlignment="Center"  Grid.Row="1" VerticalAlignment="Center" Width="319" Click="LoginViaWebView_OnClick"/>
             <Button x:Name="extendTokenButton"  Content="Extend Token" HorizontalAlignment="Center" Grid.Row="2" VerticalAlignment="Center" Width="322" Click="extendTokenButton_Click"/>
             <Button x:Name="graphCallButton" Content="Make Graph Call" HorizontalAlignment="Center"  Grid.Row="3" VerticalAlignment="Center" Width="322" Click="graphCallButton_Click"/>
             <Button x:Name="showDialogButton" Content="Show Requests dialog" HorizontalAlignment="Center"  Grid.Row="4" VerticalAlignment="Center" Width="322" Click="showDialogButton_Click"/>
