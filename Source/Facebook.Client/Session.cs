@@ -231,7 +231,7 @@ namespace Facebook.Client
 
 #if WP8 || WINDOWS_PHONE
 
-        public static void ShowAppRequetsDialogViaBrowser()
+        public static void ShowAppRequestDialogViaBrowser()
         {
             // TODO: Setup callback
             WebDialogUserControl.ShowAppRequestDialogViaBrowser();

@@ -87,7 +87,7 @@ namespace FullSampleWP8
 
         private void ShowRequestWithBrowserButton_Click(object sender, RoutedEventArgs e)
         {
-            Session.ShowAppRequetsDialogViaBrowser();
+            Session.ShowAppRequestDialogViaBrowser();
         }
 
 
