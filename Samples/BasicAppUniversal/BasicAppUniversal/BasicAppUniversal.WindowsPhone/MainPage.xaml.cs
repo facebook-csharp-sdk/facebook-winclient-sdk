@@ -108,5 +108,10 @@ namespace BasicAppUniversal
         {
             Frame.Navigate(typeof (ControlsTest));
         }
+
+        private void LoginViaWebViewButton_Click(object sender, RoutedEventArgs e)
+        {
+            Session.ActiveSession.LoginWithBehavior("email,public_profile,user_friends", FacebookLoginBehavior.LoginBehaviorWebViewOnly);
+        }
     }
 }

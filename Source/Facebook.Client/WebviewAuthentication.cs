@@ -98,56 +98,6 @@ namespace Facebook.Client
             {
                 throw new NotImplementedException("This method does not support authentication options other than 'None'.");
             }
-
-            //bool delegateToUI = false;
-            //PhoneApplicationFrame rootFrame = null;
-
-            //// Trying to do this in current thread. If not possible, try do to on UI thread.
-            //try
-            //{
-            //    rootFrame = Application.Current.RootVisual as PhoneApplicationFrame;
-
-            //    if (rootFrame == null)
-            //    {
-            //        throw new InvalidOperationException();
-            //    }
-            //}
-            //catch (InvalidOperationException)
-            //{
-            //    delegateToUI = true;
-            //}
-
-            //WebviewAuthentication.StartUri = startUri;
-            //WebviewAuthentication.EndUri = endUri;
-            //WebviewAuthentication.AuthenticationInProgress = true;
-
-            //// Navigate to the login page.
-            //if (!delegateToUI)
-            //{
-            //    rootFrame.Navigate(new Uri("/Facebook.Client;component/loginpage.xaml", UriKind.Relative));
-            //}
-            //else
-            //{
-            //    Deployment.Current.Dispatcher.BeginInvoke(() =>
-            //    {
-            //        rootFrame = Application.Current.RootVisual as PhoneApplicationFrame;
-
-            //        if (rootFrame == null)
-            //        {
-            //            return;
-            //        }
-
-            //        rootFrame.Navigate(new Uri("/Facebook.Client;component/loginpage.xaml", UriKind.Relative));
-            //    });
-            //}
-
-            //Task<WebAuthenticationResult> task = Task<WebAuthenticationResult>.Factory.StartNew(() =>
-            //{
-            //    authenticateFinishedEvent.WaitOne();
-            //    return new WebAuthenticationResult(responseData, responseStatus, responseErrorDetail);
-            //});
-
-            //return task;
             Popup dialogPopup = new Popup();
 
             var webDialog = new WebDialogUserControl();

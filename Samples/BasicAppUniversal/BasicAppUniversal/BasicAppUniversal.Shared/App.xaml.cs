@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
+using Windows.UI.Popups;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -44,9 +47,46 @@ namespace BasicAppUniversal
         {
             base.OnActivated(args);
             var protocolArgs = args as ProtocolActivatedEventArgs;
+            Session.OnFacebookAuthenticationFinished += OnFacebookAuthenticationFinished;
             LifecycleHelper.FacebookAuthenticationReceived(protocolArgs);
         }
 
+        // this whole showdialog below is to avoid the race condition where one message dialog is being killed
+        // but the second one comes up before the first one is gone and the framework throws an "UnauthorizedAccessException"
+        // solution from: http://stackoverflow.com/questions/13813065/winrt-messagedialog-showasync-will-throw-unauthorizedaccessexception-in-my-cus
+        Task ShowDialog(AccessTokenData session)
+        {
+            CoreDispatcher dispatcher = Windows.ApplicationModel.Core.CoreApplication.MainView.CoreWindow.Dispatcher;
+            Func<object, Task<bool>> action = null;
+            action = async (o) =>
+            {
+                try
+                {
+                    if (dispatcher.HasThreadAccess)
+                        await new MessageDialog("Authentication via Webview succeeded. Expiry date: " + session.Expires.ToString()).ShowAsync();
+                    else
+                    {
+                        dispatcher.RunAsync(CoreDispatcherPriority.Normal,
+                        () => action(o));
+                    }
+                    return true;
+                }
+                catch (UnauthorizedAccessException)
+                {
+                    if (action != null)
+                    {
+                        Task.Delay(500).ContinueWith(async t => await action(o));
+                    }
+                }
+                return false;
+            };
+            return action(null);
+        }
+
+        async private void OnFacebookAuthenticationFinished(AccessTokenData session)
+        {
+            ShowDialog(session);
+        }
         /// <summary>
         /// Invoked when the application is launched normally by the end user.  Other entry points
         /// will be used when the application is launched to open a specific file, to display
