@@ -46,6 +46,18 @@ namespace Facebook.Client.Controls.WebDialog
                     ParentControlPopup.IsOpen = false;
                 }
 
+                if (!args.Uri.Fragment.Contains("access_token"))
+                {
+                    // this callback is in return for the dialog, so just cancel it.
+
+                    if (OnDialogFinished != null)
+                    {
+                        OnDialogFinished(WebDialogResult.WebDialogResultDialogCompleted);
+                    }
+
+                    return;
+                }
+
                 try
                 {
                     var client = new FacebookClient();
@@ -148,7 +160,14 @@ namespace Facebook.Client.Controls.WebDialog
 #if WINDOWS || WINDOWS_UNIVERSAL
             LifecycleHelper.OnDialogDismissed = null;
             LifecycleHelper.OnDialogDismissed += DismissDialogWhenDone;
-                        
+    
+#endif
+        
+#if WINDOWS
+            dialogWebBrowser.Navigate(new Uri(String.Format("https://facebook.com/dialog/apprequests?display=popup&app_id={0}&message=YOUR_MESSAGE_HERE!&redirect_uri=https://www.facebook.com/connect/login_success.html", task.Result), UriKind.Absolute));
+#endif
+
+#if WINDOWS_PHONE
             dialogWebBrowser.Navigate(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/apprequests?access_token={0}&redirect_uri=fb{2}%3A%2F%2Fsuccess&app_id={1}&message=YOUR_MESSAGE_HERE&display=touch", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result, task.Result)));
 #endif
 #if WP8
@@ -158,12 +177,15 @@ namespace Facebook.Client.Controls.WebDialog
 
         }
 
-        public static void ShowAppRequestDialogViaBrowser()
+
+        internal static void ShowAppRequestDialogViaBrowser()
         {
             var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
             task.Wait();
             Launcher.LaunchUriAsync(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/apprequests?access_token={0}&redirect_uri=fb{2}%3A%2F%2Fsuccess&app_id={1}&message=YOUR_MESSAGE_HERE&display=touch", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result, task.Result)));
         }
+
+
         public void ShowFeedDialog()
         {
 #if WINDOWS || WINDOWS_UNIVERSAL
@@ -172,9 +194,16 @@ namespace Facebook.Client.Controls.WebDialog
 #endif
             var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
             task.Wait();
+
+#if WINDOWS
+            dialogWebBrowser.Navigate(new Uri(String.Format("https://facebook.com/dialog/feed?display=popup&app_id={0}&message=YOUR_MESSAGE_HERE!&redirect_uri=https://www.facebook.com/connect/login_success.html", task.Result), UriKind.Absolute));
+#endif
+
 #if WP8
             dialogWebBrowser.Navigate(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/feed?access_token={0}&redirect_uri=fbconnect%3A%2F%2Fsuccess&app_id={1}&display=touch", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result)));
-#else
+#endif
+
+#if WINDOWS_PHONE
             dialogWebBrowser.Navigate(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/feed?access_token={0}&redirect_uri=fb{2}%3A%2F%2Fsuccess&app_id={1}&display=touch", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result, task.Result)));
 
 #endif

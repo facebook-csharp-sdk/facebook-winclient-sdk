@@ -33,7 +33,8 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 #endif
-
+using Windows.UI.Xaml;
+using Facebook.Client.Controls.WebDialog;
 #if NETFX_CORE
 using Windows.Security.Authentication.Web;
 #endif
@@ -229,13 +230,15 @@ namespace Facebook.Client
 //        }
 //#endif
 
-#if WP8 || WINDOWS_PHONE
 
+
+#if !WINDOWS
         public static void ShowAppRequestDialogViaBrowser()
         {
             // TODO: Setup callback
             WebDialogUserControl.ShowAppRequestDialogViaBrowser();
         }
+#endif
 
         public static void ShowAppRequestsDialog(WebDialogFinishedDelegate callback)
         {
@@ -260,6 +263,14 @@ namespace Facebook.Client
             dialogPopup.Height = Window.Current.Bounds.Height - 40;
             dialogPopup.Width = Window.Current.Bounds.Width;
 #endif
+
+#if WINDOWS
+            dialogPopup.Height = 700;
+            dialogPopup.Width = 600;
+            webDialog.HorizontalAlignment = HorizontalAlignment.Center;
+            webDialog.VerticalAlignment = VerticalAlignment.Center;
+#endif
+
             webDialog.Height = dialogPopup.Height;
             webDialog.Width = dialogPopup.Width;
 
@@ -293,6 +304,14 @@ namespace Facebook.Client
             dialogPopup.Width = Window.Current.Bounds.Width;
 #endif
 
+#if WINDOWS
+            dialogPopup.Height = 700;
+            dialogPopup.Width = 600;
+            webDialog.HorizontalAlignment = HorizontalAlignment.Center;
+            webDialog.VerticalAlignment = VerticalAlignment.Center;
+#endif
+
+
             webDialog.Height = dialogPopup.Height;
             webDialog.Width = dialogPopup.Width;
 
@@ -303,7 +322,7 @@ namespace Facebook.Client
             dialogPopup.IsOpen = true;
         }
 
-#endif
+
         internal async Task<AccessTokenData> LoginAsync(FacebookLoginBehavior loginBehavior)
         {
             return await LoginAsync(null, false, loginBehavior);

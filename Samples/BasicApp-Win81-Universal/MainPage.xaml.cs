@@ -34,11 +34,13 @@ namespace BasicApp_Win81_Universal
 
         private void showDialogButton_Click(object sender, RoutedEventArgs e)
         {
+            //Session.ShowAppRequestsDialog(null);
+            Session.ShowFeedDialog();
         }
 
         private void loginViaWebviewButton_Click(object sender, RoutedEventArgs e)
         {
-            Session.ActiveSession.LoginWithBehavior("email,public_profile,user_friends", FacebookLoginBehavior.LoginBehaviorWebViewOnly);
+           Session.ActiveSession.LoginWithBehavior("email,public_profile,user_friends", FacebookLoginBehavior.LoginBehaviorWebViewOnly);
         }
     }
 }
