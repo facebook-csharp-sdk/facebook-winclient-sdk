@@ -85,7 +85,7 @@ namespace BasicAppUniversal
 
         private void ShowRequestWithBrowserButton_Click(object sender, RoutedEventArgs e)
         {
-            WebDialogUserControl.ShowAppRequestDialogViaBrowser();
+            Session.ShowAppRequestDialogViaBrowser();
         }
     
         /// <summary>

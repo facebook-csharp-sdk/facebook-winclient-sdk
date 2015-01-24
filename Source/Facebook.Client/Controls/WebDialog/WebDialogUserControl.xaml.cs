@@ -19,6 +19,9 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml;
 #endif
 
+#if WINDOWS
+using Windows.UI.Xaml.Navigation;
+#endif
 namespace Facebook.Client.Controls.WebDialog
 {
 
@@ -31,13 +34,26 @@ namespace Facebook.Client.Controls.WebDialog
 #if WP8
             dialogWebBrowser.Navigating += DialogWebBrowserOnNavigating;
 #endif
-#if WINDOWS
+#if WINDOWS_UNIVERSAL && !WINDOWS80
             dialogWebBrowser.NavigationStarting += dialogWebBrowser_NavigationStarting;
+#endif
+
+#if WINDOWS80
+            dialogWebBrowser.LoadCompleted += DialogWebBrowserOnLoadCompleted;
 #endif
         }
 
-#if WINDOWS
+
+
+
+
+#if !WP8
+#if WINDOWS_UNIVERSAL && !WINDOWS80
         async void dialogWebBrowser_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+#endif
+#if WINDOWS80
+        async private void DialogWebBrowserOnLoadCompleted(object sender, NavigationEventArgs args)
+#endif
         {
             if (args.Uri.ToString().StartsWith("https://www.facebook.com/connect/login_success.html"))
             {

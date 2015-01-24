@@ -33,7 +33,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 #endif
-using Windows.UI.Xaml;
+
 using Facebook.Client.Controls.WebDialog;
 #if NETFX_CORE
 using Windows.Security.Authentication.Web;
@@ -45,6 +45,7 @@ using Facebook.Client.Controls.WebDialog;
 #endif
 
 #if WINDOWS_UNIVERSAL
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 #endif
 

@@ -33,20 +33,22 @@
                 throw new ArgumentNullException("user");
             }
 
-            this.Id = user.id;
-            this.Name = user.name;
-            this.UserName = user.username;
-            this.FirstName = user.first_name;
-            this.MiddleName = user.middle_name;
-            this.LastName = user.last_name;
-            this.Birthday = user.birthday;
-            dynamic location = user.location;
+            var tmpUser = user as IDictionary<string, object>;
+            //TODO: (sanjeevd) Runtimebinder exception here. Way too many of them.
+            this.Id = user["id"];
+            this.Name = user["name"];
+            this.UserName = user["username"];
+            this.FirstName = user["first_name"];
+            this.MiddleName = user["middle_name"];
+            this.LastName = user["last_name"];
+            this.Birthday = user["birthday"];
+            dynamic location = user["location"];
             this.Location = (location != null) ? new GraphLocation(location) : null;
-            this.Link = user.link;
-            var picture = user.picture;
+            this.Link = user["link"];
+            var picture = user["picture"];
             if (picture != null)
             {
-                Uri.TryCreate(picture.data.url, UriKind.Absolute, out this.profilePictureUrl);
+                Uri.TryCreate(picture["data"]["url"], UriKind.Absolute, out this.profilePictureUrl);
             }
         }
 

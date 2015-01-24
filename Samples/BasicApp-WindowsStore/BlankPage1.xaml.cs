@@ -32,5 +32,10 @@ namespace BasicApp
         {
             Session.ActiveSession.LoginWithBehavior("email,public_profile,user_friends", FacebookLoginBehavior.LoginBehaviorWebViewOnly);
         }
+
+        private void showDialogButton_Click(object sender, RoutedEventArgs e)
+        {
+            Session.ShowAppRequestsDialog(null);
+        }
     }
 }
