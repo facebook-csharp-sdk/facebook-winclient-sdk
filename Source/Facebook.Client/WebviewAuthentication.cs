@@ -119,6 +119,13 @@ namespace Facebook.Client
             dialogPopup.Height = Window.Current.Bounds.Height - 40;
             dialogPopup.Width = Window.Current.Bounds.Width;
 #endif
+
+#if WINDOWS
+            dialogPopup.Height = 700;
+            dialogPopup.Width = 600;
+            webDialog.HorizontalAlignment = HorizontalAlignment.Center;
+            webDialog.VerticalAlignment = VerticalAlignment.Center;
+#endif
             webDialog.Height = dialogPopup.Height;
             webDialog.Width = dialogPopup.Width;
 

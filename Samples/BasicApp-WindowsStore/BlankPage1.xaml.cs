@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Page item template is documented at http://go.microsoft.com/fwlink/?LinkId=234238
+using Facebook.Client;
 
 namespace BasicApp
 {
@@ -25,6 +26,11 @@ namespace BasicApp
         public BlankPage1()
         {
             this.InitializeComponent();
+        }
+
+        private void loginViaWebview_Click(object sender, RoutedEventArgs e)
+        {
+            Session.ActiveSession.LoginWithBehavior("email,public_profile,user_friends", FacebookLoginBehavior.LoginBehaviorWebViewOnly);
         }
     }
 }

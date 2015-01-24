@@ -420,36 +420,18 @@ namespace Facebook.Client
                 case FacebookLoginBehavior.LoginBehaviorWebViewOnly:
                 {
                     String appId = await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId");
+
+#if WP8 || WINDOWS_PHONE
                     Uri uri =
                         new Uri(
                             String.Format(
                                 "https://m.facebook.com/v2.1/dialog/oauth?redirect_uri={0}%3A%2F%2Fauthorize&display=touch&state=%7B%220is_active_session%22%3A1%2C%22is_open_session%22%3A1%2C%22com.facebook.sdk_client_state%22%3A1%2C%223_method%22%3A%22browser_auth%22%7D&scope={2}&type=user_agent&client_id={1}&sdk=ios",
                                 String.Format("fb{0}", appId), appId, permissions), UriKind.Absolute);
+#else
+                    Uri uri = await GetLoginUrl(permissions);
 
+#endif
                     WebviewAuthentication.AuthenticateAsync(WebAuthenticationOptions.None, uri, null);
-                    //try
-                    //{
-                    //    // TODO: What to do here? LoginAsync returns inproc. Login with IE returns out of proc?
-                    //    var result = await LoginAsync(permissions, FacebookLoginBehavior.LoginBehaviorWebViewOnly);
-                    //    // when the results are available, launch the event handler
-                    //    if (OnFacebookAuthenticationFinished != null)
-                    //    {
-                    //        OnFacebookAuthenticationFinished(result);
-                    //    }
-
-                    //    if (OnSessionStateChanged != null)
-                    //    {
-                    //        OnSessionStateChanged(LoginStatus.LoggedIn);
-                    //    }
-                    //}
-                    //catch (FacebookOAuthException e)
-                    //{
-                    //    if (OnSessionStateChanged != null)
-                    //    {
-                    //        OnSessionStateChanged(LoginStatus.LoggedOut);
-                    //    }
-                    //}
-
                     break;
                 }
                 case FacebookLoginBehavior.LoginBehaviorWebAuthenticationBroker:

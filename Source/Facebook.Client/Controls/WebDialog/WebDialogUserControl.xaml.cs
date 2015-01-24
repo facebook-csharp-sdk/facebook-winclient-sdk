@@ -31,7 +31,61 @@ namespace Facebook.Client.Controls.WebDialog
 #if WP8
             dialogWebBrowser.Navigating += DialogWebBrowserOnNavigating;
 #endif
+#if WINDOWS
+            dialogWebBrowser.NavigationStarting += dialogWebBrowser_NavigationStarting;
+#endif
         }
+
+#if WINDOWS
+        async void dialogWebBrowser_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+        {
+            if (args.Uri.ToString().StartsWith("https://www.facebook.com/connect/login_success.html"))
+            {
+                if (ParentControlPopup != null)
+                {
+                    ParentControlPopup.IsOpen = false;
+                }
+
+                try
+                {
+                    var client = new FacebookClient();
+                    var authResult = client.ParseOAuthCallbackUrl(args.Uri);
+
+                    client = new FacebookClient(authResult.AccessToken);
+                    var parameters = new Dictionary<string, object>();
+                    parameters["fields"] = "id";
+
+                    var result = await client.GetTaskAsync("me", parameters);
+                    var dict = (IDictionary<string, object>)result;
+
+                    var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
+                    task.Wait();
+
+                    Session.ActiveSession.CurrentAccessTokenData = new AccessTokenData
+                    {
+                        AccessToken = authResult.AccessToken,
+                        Expires = authResult.Expires,
+                        FacebookId = (string)dict["id"],
+                        AppId = task.Result
+                    };
+
+                    if (Session.OnFacebookAuthenticationFinished != null)
+                    {
+                        Session.OnFacebookAuthenticationFinished(Session.ActiveSession.CurrentAccessTokenData);
+                    }
+
+                    if (Session.OnSessionStateChanged != null)
+                    {
+                        Session.OnSessionStateChanged(LoginStatus.LoggedIn);
+                    }
+                }
+                catch (Facebook.FacebookOAuthException exc)
+                {
+                    // TODO: (sanjeevd) catch appropriately
+                }
+            }
+        }
+#endif
 
 #if WP8
         private void DialogWebBrowserOnNavigating(object sender, NavigatingEventArgs navigatingEventArgs)

@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
 // The Blank Application template is documented at http://go.microsoft.com/fwlink/?LinkId=234227
+using Facebook.Client;
 
 namespace BasicApp_Win81_Universal
 {
@@ -87,6 +88,15 @@ namespace BasicApp_Win81_Universal
             }
             // Ensure the current window is active
             Window.Current.Activate();
+        }
+
+
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            base.OnActivated(args);
+
+            var protocolArgs = args as ProtocolActivatedEventArgs;
+            LifecycleHelper.FacebookAuthenticationReceived(protocolArgs);
         }
 
         /// <summary>
