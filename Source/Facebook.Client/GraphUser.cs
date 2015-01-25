@@ -35,20 +35,24 @@
 
             var tmpUser = user as IDictionary<string, object>;
             //TODO: (sanjeevd) Runtimebinder exception here. Way too many of them.
-            this.Id = user["id"];
-            this.Name = user["name"];
-            this.UserName = user["username"];
-            this.FirstName = user["first_name"];
-            this.MiddleName = user["middle_name"];
-            this.LastName = user["last_name"];
-            this.Birthday = user["birthday"];
-            dynamic location = user["location"];
-            this.Location = (location != null) ? new GraphLocation(location) : null;
-            this.Link = user["link"];
-            var picture = user["picture"];
+            this.Id = tmpUser.ContainsKey("id")? (string)tmpUser["id"]:String.Empty;
+            this.Name = tmpUser.ContainsKey("name")? (string)tmpUser["name"]:String.Empty;// user["name"];
+            this.UserName = tmpUser.ContainsKey("username") ? (string)tmpUser["username"] : String.Empty; //user["username"];
+            this.FirstName = tmpUser.ContainsKey("first_name") ? (string)tmpUser["first_name"] : String.Empty; //user["first_name"];
+            this.MiddleName = tmpUser.ContainsKey("middle_name") ? (string)tmpUser["middle_name"] : String.Empty; //user["middle_name"];
+            this.LastName = tmpUser.ContainsKey("last_name") ? (string)tmpUser["last_name"] : String.Empty; //user["last_name"];
+            this.Birthday = tmpUser.ContainsKey("birthday") ? (string)tmpUser["birthday"] : String.Empty; //user["birthday"];
+            dynamic location = tmpUser.ContainsKey("location") ? (string)tmpUser["location"] : String.Empty; //user["location"];
+            this.Location = !String.IsNullOrEmpty(location) ? new GraphLocation(location) : null;
+            this.Link = tmpUser.ContainsKey("link") ? (string)tmpUser["link"] : String.Empty;// user["link"];
+            var picture = tmpUser.ContainsKey("picture") ? user["picture"] : null; //user["picture"];
             if (picture != null)
             {
-                Uri.TryCreate(picture["data"]["url"], UriKind.Absolute, out this.profilePictureUrl);
+                if (picture["data"] != null)
+                {
+                    if(!String.IsNullOrEmpty(picture["data"]["url"]))
+                    Uri.TryCreate(picture["data"]["url"], UriKind.Absolute, out this.profilePictureUrl);
+                }
             }
         }
 

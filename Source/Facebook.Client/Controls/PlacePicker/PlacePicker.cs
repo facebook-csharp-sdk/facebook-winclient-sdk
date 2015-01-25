@@ -357,13 +357,16 @@
                 }
 
                 dynamic placesTaskResult = await facebookClient.GetTaskAsync("/search", parameters);
-                var data = (IEnumerable<dynamic>)placesTaskResult.data;
-                foreach (var item in data)
+                if (placesTaskResult != null && (placesTaskResult as IDictionary<string, object>).ContainsKey("data"))
                 {
-                    var place = new GraphPlace(item);
-                    if (this.OnDataItemRetrieved(new DataItemRetrievedEventArgs<GraphPlace>(place), e => e.Exclude))
+                    var data = (IEnumerable<dynamic>) (placesTaskResult as IDictionary<string, object>)["data"];//placesTaskResult.data;
+                    foreach (var item in data)
                     {
-                        this.Items.Add(place);
+                        var place = new GraphPlace(item);
+                        if (this.OnDataItemRetrieved(new DataItemRetrievedEventArgs<GraphPlace>(place), e => e.Exclude))
+                        {
+                            this.Items.Add(place);
+                        }
                     }
                 }
             }

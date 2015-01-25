@@ -33,14 +33,19 @@
                 throw new ArgumentNullException("place");
             }
 
-            this.Id = place.id;
-            this.Name = place.name;
-            dynamic location = place.location;
+            var tmpPlace = place as IDictionary<string, object>;
+            this.Id = tmpPlace.ContainsKey("id") ? (string)tmpPlace["id"]: String.Empty;
+            this.Name = tmpPlace.ContainsKey("name") ?  (string)tmpPlace["name"] : String.Empty;// place.name;
+            dynamic location = tmpPlace.ContainsKey("location") ? place["location"] : null;//place.location;
             this.Location = (location != null) ? new GraphLocation(location) : null;
-            var picture = place.picture;
+            var picture = tmpPlace.ContainsKey("picture") ? place["picture"] : null; //place.picture;
             if (picture != null)
             {
-                Uri.TryCreate(picture.data.url, UriKind.Absolute, out this.pictureUrl);
+                if (picture["data"] != null)
+                {
+                    if (!String.IsNullOrEmpty(picture["data"]["url"]))
+                        Uri.TryCreate(picture["data"]["url"], UriKind.Absolute, out this.pictureUrl);
+                }
             }
         }
 
