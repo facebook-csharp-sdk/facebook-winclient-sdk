@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Windows.System;
@@ -162,7 +163,7 @@ namespace Facebook.Client.Controls.WebDialog
 
         internal Popup ParentControlPopup { get; set; } 
 
-        public void ShowAppRequestsDialog(WebDialogFinishedDelegate callback)
+        public void ShowAppRequestsDialog(WebDialogFinishedDelegate callback, string message, List<string> idList)
         {
             if (callback != null)
             {
@@ -178,13 +179,21 @@ namespace Facebook.Client.Controls.WebDialog
             LifecycleHelper.OnDialogDismissed += DismissDialogWhenDone;
     
 #endif
-        
+            var idBuilder = new StringBuilder("&to=");
+            if (idList != null)
+            {
+                foreach (var id in idList)
+                {
+                    idBuilder.Append(id+",");
+                }
+            }
+            //idBuilder.Length > 4? idBuilder.ToString() : String.Empty;
 #if WINDOWS
-            dialogWebBrowser.Navigate(new Uri(String.Format("https://facebook.com/dialog/apprequests?display=popup&app_id={0}&message=YOUR_MESSAGE_HERE!&redirect_uri=https://www.facebook.com/connect/login_success.html", task.Result), UriKind.Absolute));
+            dialogWebBrowser.Navigate(new Uri(String.Format("https://facebook.com/dialog/apprequests?display=popup&app_id={0}&message={1}&redirect_uri=https://www.facebook.com/connect/login_success.html{2}", task.Result, message, idBuilder.Length > 4? idBuilder.ToString() : String.Empty), UriKind.Absolute));
 #endif
 
 #if WINDOWS_PHONE
-            dialogWebBrowser.Navigate(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/apprequests?access_token={0}&redirect_uri=fb{2}%3A%2F%2Fsuccess&app_id={1}&message=YOUR_MESSAGE_HERE&display=touch", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result, task.Result)));
+            dialogWebBrowser.Navigate(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/apprequests?access_token={0}&redirect_uri=fb{2}%3A%2F%2Fsuccess&app_id={1}&message={3}&display=touch{4}", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result, task.Result, message, idBuilder.Length > 4 ? idBuilder.ToString() : String.Empty)));
 #endif
 #if WP8
 

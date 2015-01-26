@@ -241,7 +241,7 @@ namespace Facebook.Client
         }
 #endif
 
-        public static void ShowAppRequestsDialog(WebDialogFinishedDelegate callback)
+        public static void ShowAppRequestsDialog(WebDialogFinishedDelegate callback, String message="Select your friends", List<string> appIdList=null)
         {
             Popup dialogPopup = new Popup();
 
@@ -277,7 +277,7 @@ namespace Facebook.Client
             webDialog.Width = dialogPopup.Width;
 
 
-            webDialog.ShowAppRequestsDialog(callback);
+            webDialog.ShowAppRequestsDialog(callback, message, appIdList);
 
             // Open the popup.
             dialogPopup.IsOpen = true;
