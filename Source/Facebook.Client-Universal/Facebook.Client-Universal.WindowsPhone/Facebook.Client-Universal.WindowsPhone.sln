@@ -17,9 +17,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BrowserSSOAndDialogs", "..\..\..\Samples\BasicAppUniversal\BasicAppUniversal\BasicAppUniversal.WindowsPhone\BrowserSSOAndDialogs.csproj", "{84542693-00E9-4727-859D-F22160FDA759}"
 EndProject
 Global
-	GlobalSection(SharedMSBuildProjectFiles) = preSolution
-		..\..\..\Samples\BasicAppUniversal\BasicAppUniversal\BasicAppUniversal.Shared\BasicAppUniversal.Shared.projitems*{84542693-00e9-4727-859d-f22160fda759}*SharedItemsImports = 4
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Debug|ARM = Debug|ARM
