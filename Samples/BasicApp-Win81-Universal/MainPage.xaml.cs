@@ -32,9 +32,14 @@ namespace BasicApp_Win81_Universal
         }
 
 
+        private void showRequestsDialogButton_Click(object sender, RoutedEventArgs e)
+        {
+            Session.ShowAppRequestsDialog(null);
+            //Session.ShowFeedDialog();
+        }
+
         private void showDialogButton_Click(object sender, RoutedEventArgs e)
         {
-            //Session.ShowAppRequestsDialog(null);
             Session.ShowFeedDialog();
         }
 

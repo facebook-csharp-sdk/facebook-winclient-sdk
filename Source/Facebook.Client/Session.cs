@@ -250,9 +250,11 @@ namespace Facebook.Client
             webDialog.ParentControlPopup = dialogPopup;
             dialogPopup.Child = webDialog;
 
+#if WP8 || WINDOWS_PHONE
             // Set where the popup will show up on the screen.
             dialogPopup.VerticalOffset = 40;
             dialogPopup.HorizontalOffset = 0;
+#endif
 
 
 #if WP8
@@ -266,11 +268,10 @@ namespace Facebook.Client
 #endif
 
 #if WINDOWS
-            dialogPopup.Height = 700;
-            dialogPopup.Width = 600;
-            dialogPopup.HorizontalOffset = (Window.Current.Bounds.Width - dialogPopup.Width) / 2;
-            dialogPopup.VerticalOffset = (Window.Current.Bounds.Height - dialogPopup.Height) / 2;
+            dialogPopup.Height = Window.Current.Bounds.Height;
+            dialogPopup.Width = Window.Current.Bounds.Width;
 #endif
+
 
             webDialog.Height = dialogPopup.Height;
             webDialog.Width = dialogPopup.Width;
@@ -293,9 +294,11 @@ namespace Facebook.Client
             webDialog.ParentControlPopup = dialogPopup;
             dialogPopup.Child = webDialog;
 
+#if WP8 || WINDOWS_PHONE
             // Set where the popup will show up on the screen.
             dialogPopup.VerticalOffset = 40;
             dialogPopup.HorizontalOffset = 0;
+#endif
 
 #if WP8
             dialogPopup.Height = Application.Current.Host.Content.ActualHeight - 40;
@@ -308,11 +311,8 @@ namespace Facebook.Client
 #endif
 
 #if WINDOWS
-            dialogPopup.Height = 700;
-            dialogPopup.Width = 600;
-
-            dialogPopup.HorizontalOffset = (Window.Current.Bounds.Width - dialogPopup.Width) / 2;
-            dialogPopup.VerticalOffset = (Window.Current.Bounds.Height - dialogPopup.Height) / 2;
+            dialogPopup.Height = Window.Current.Bounds.Height;
+            dialogPopup.Width = Window.Current.Bounds.Width;
 #endif
 
 

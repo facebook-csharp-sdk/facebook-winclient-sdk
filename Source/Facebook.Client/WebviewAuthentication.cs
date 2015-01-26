@@ -105,10 +105,11 @@ namespace Facebook.Client
             webDialog.ParentControlPopup = dialogPopup;
             dialogPopup.Child = webDialog;
 
+#if WP8 || WINDOWS_PHONE
             // Set where the popup will show up on the screen.
             dialogPopup.VerticalOffset = 40;
             dialogPopup.HorizontalOffset = 0;
-
+#endif
 
 #if WP8
             dialogPopup.Height = Application.Current.Host.Content.ActualHeight - 40;
@@ -121,11 +122,11 @@ namespace Facebook.Client
 #endif
 
 #if WINDOWS
-            dialogPopup.Height = 700;
-            dialogPopup.Width = 600;
-            webDialog.HorizontalAlignment = HorizontalAlignment.Center;
-            webDialog.VerticalAlignment = VerticalAlignment.Center;
+            dialogPopup.Height = Window.Current.Bounds.Height;
+            dialogPopup.Width = Window.Current.Bounds.Width;
 #endif
+
+
             webDialog.Height = dialogPopup.Height;
             webDialog.Width = dialogPopup.Width;
 

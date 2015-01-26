@@ -14,8 +14,9 @@
         <Controls:FriendPicker HorizontalAlignment="Left" Margin="86,54,0,0" VerticalAlignment="Top" Height="598" Width="245"/>
         <Controls:PlacePicker HorizontalAlignment="Left" Margin="388,54,0,0" VerticalAlignment="Top" Height="284" Width="254"/>
         <Controls:ProfilePicture HorizontalAlignment="right" Margin="0,0,10,10" VerticalAlignment="Top"/>
-        <Button x:Name="showDialogButton" Content="ShowDialog" HorizontalAlignment="Left" Margin="910,0,0,47" VerticalAlignment="Bottom" Click="showDialogButton_Click"/>
-        <Button x:Name="loginViaWebviewButton" Content="Login via Webview" HorizontalAlignment="Left" Margin="660,683,0,0" VerticalAlignment="Top" Click="loginViaWebviewButton_Click"/>
+        <Button x:Name="showRequestsDialogButton" Content="Show requestes Dialog" HorizontalAlignment="Left" Margin="740,0,0,37" VerticalAlignment="Bottom" Click="showRequestsDialogButton_Click"/>
+        <Button x:Name="showDialogButton" Content="Show Feed Dialog" HorizontalAlignment="Left" Margin="910,0,0,47" VerticalAlignment="Bottom" Click="showDialogButton_Click"/>
+        <Button x:Name="loginViaWebviewButton" Content="Login via Webview" HorizontalAlignment="Left" Margin="192,683,0,0" VerticalAlignment="Top" Click="loginViaWebviewButton_Click"/>
 
 
     </Grid>
