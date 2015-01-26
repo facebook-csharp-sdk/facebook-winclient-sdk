@@ -268,8 +268,8 @@ namespace Facebook.Client
 #if WINDOWS
             dialogPopup.Height = 700;
             dialogPopup.Width = 600;
-            webDialog.HorizontalAlignment = HorizontalAlignment.Center;
-            webDialog.VerticalAlignment = VerticalAlignment.Center;
+            dialogPopup.HorizontalOffset = (Window.Current.Bounds.Width - dialogPopup.Width) / 2;
+            dialogPopup.VerticalOffset = (Window.Current.Bounds.Height - dialogPopup.Height) / 2;
 #endif
 
             webDialog.Height = dialogPopup.Height;
@@ -285,6 +285,8 @@ namespace Facebook.Client
         public static void ShowFeedDialog()
         {
             Popup dialogPopup = new Popup();
+
+            //dialogPopup.Loaded += dialogPopup_Loaded;
 
             var webDialog = new WebDialogUserControl();
 
@@ -308,8 +310,9 @@ namespace Facebook.Client
 #if WINDOWS
             dialogPopup.Height = 700;
             dialogPopup.Width = 600;
-            webDialog.HorizontalAlignment = HorizontalAlignment.Center;
-            webDialog.VerticalAlignment = VerticalAlignment.Center;
+
+            dialogPopup.HorizontalOffset = (Window.Current.Bounds.Width - dialogPopup.Width) / 2;
+            dialogPopup.VerticalOffset = (Window.Current.Bounds.Height - dialogPopup.Height) / 2;
 #endif
 
 
@@ -322,7 +325,6 @@ namespace Facebook.Client
             // Open the popup.
             dialogPopup.IsOpen = true;
         }
-
 
         internal async Task<AccessTokenData> LoginAsync(FacebookLoginBehavior loginBehavior)
         {
