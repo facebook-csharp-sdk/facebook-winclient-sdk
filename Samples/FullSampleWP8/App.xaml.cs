@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Resources;
+using System.ServiceModel.Channels;
 using System.Windows;
 using System.Windows.Markup;
 using System.Windows.Navigation;
@@ -56,6 +57,8 @@ namespace FullSampleWP8
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
 
+            Session.OnFacebookAuthenticationFinished += OnFacebookAuthenticationFinished;
+
             RootFrame.UriMapper = new FacebookUriMapper();
         }
 
@@ -93,6 +96,10 @@ namespace FullSampleWP8
             }
         }
 
+        private void OnFacebookAuthenticationFinished(AccessTokenData session)
+        {
+            MessageBox.Show("Facebook authentication succeeded. Expiry date: " + session.Expires);
+        }
         // Code to execute on Unhandled Exceptions
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {

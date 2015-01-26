@@ -24,8 +24,7 @@
         <Controls:LoginButton 
                 x:Name="loginButton" 
                 Margin="0,580,10,10"
-                HorizontalAlignment="Right" 
-                ApplicationId="540541885996234" 
+                HorizontalAlignment="Right"
                  />
         
     </Grid>

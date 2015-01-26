@@ -136,8 +136,32 @@
         /// </summary>
         public static readonly DependencyProperty PermissionsProperty =
             DependencyProperty.Register("Permissions", typeof(string), typeof(LoginButton), new PropertyMetadata(LoginButton.DefaultPermissions));
-        
+
         #endregion Permissions
+
+        #region LoginBehavior
+
+        /// <summary>
+        /// Gets or sets the permissions to request.
+        /// </summary>
+        public FacebookLoginBehavior LoginBehavior
+        {
+            get { return (FacebookLoginBehavior)GetValue(LoginBehaviorProperty); }
+            set { this.SetValue(LoginBehaviorProperty, value); }
+        }
+
+        /// <summary>
+        /// Identifies the Permissions dependency property.
+        /// </summary>
+        public static readonly DependencyProperty LoginBehaviorProperty =
+            DependencyProperty.Register("LoginBehavior", typeof(FacebookLoginBehavior), typeof(LoginButton), 
+#if WINDOWS
+            new PropertyMetadata(FacebookLoginBehavior.LoginBehaviorWebViewOnly));
+#else
+            new PropertyMetadata(FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly));
+#endif
+
+        #endregion LoginBehavior
 
         #region FetchUserInfo
 
@@ -298,17 +322,8 @@
             {
                 this.SessionStateChanged.RaiseEvent(this, new SessionStateChangedEventArgs(FacebookSessionState.Opening));
 
-#if WINDOWS
-                 Session.ActiveSession.LoginWithBehavior(permissions ?? this.Permissions,
-                        FacebookLoginBehavior.LoginBehaviorWebAuthenticationBroker);
-
-#endif
-
-#if WP8 || WINDOWS_PHONE
-
                 Session.ActiveSession.LoginWithBehavior(permissions ?? this.Permissions,
-                        FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly);
-#endif
+                        this.LoginBehavior);
             }
             catch (ArgumentNullException error)
             {

@@ -22,7 +22,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>..\..\Bin\Debug\win8\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UNIVERSAL;WINDOWS</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NETFX_CORE;WINDOWS_UNIVERSAL;WINDOWS;WINDOWS80</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\Bin\Debug\win8\Facebook.Client.xml</DocumentationFile>
@@ -31,7 +31,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>..\..\Bin\Release\win8\</OutputPath>
-    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UNIVERSAL;WINDOWS</DefineConstants>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UNIVERSAL;WINDOWS;WINDOWS80</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DocumentationFile>..\..\Bin\Release\win8\Facebook.Client.xml</DocumentationFile>
@@ -208,6 +208,10 @@
     <Compile Include="..\Facebook.Client\Controls\ProfilePicture\ProfilePicture.cs">
       <Link>Controls\ProfilePicture\ProfilePicture.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\Controls\WebDialog\WebDialogUserControl.xaml.cs">
+      <Link>Controls\WebDialog\WebDialogUserControl.xaml.cs</Link>
+      <DependentUpon>WebDialogUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="..\Facebook.Client\FacebookAppLinkResolver.cs">
       <Link>FacebookAppLinkResolver.cs</Link>
     </Compile>
@@ -232,11 +236,17 @@
     <Compile Include="..\Facebook.Client\GraphUser.cs">
       <Link>GraphUser.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\LifecycleHelper.cs">
+      <Link>LifecycleHelper.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\Session.cs">
       <Link>Session.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\Universal\Controls\FriendPicker\FriendPicker.cs">
       <Link>Controls\FriendPicker\FriendPicker.cs</Link>
+    </Compile>
+    <Compile Include="..\Facebook.Client\WebviewAuthentication.cs">
+      <Link>WebviewAuthentication.cs</Link>
     </Compile>
     <Compile Include="Controls\Converters\PickerSelectionModeConverter.cs" />
     <Compile Include="Controls\Converters\SizeToGridCellConverter.cs" />
@@ -270,6 +280,14 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
+    <Page Include="Controls\WebDialog\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\WebDialog\WebDialogUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="FacebookDialogPage.xaml">
       <SubType>Designer</SubType>

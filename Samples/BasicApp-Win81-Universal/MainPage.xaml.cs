@@ -28,24 +28,26 @@ namespace BasicApp_Win81_Universal
         {
             this.InitializeComponent();
 
-            this.dialogWebView.NavigationStarting += dialogWebView_NavigationStarting;
 
         }
 
-        void dialogWebView_NavigationStarting(WebView sender, WebViewNavigationStartingEventArgs args)
+
+        private void showRequestsDialogButton_Click(object sender, RoutedEventArgs e)
         {
-            if (args.Uri.ToString().StartsWith("https://pratapgarh.com"))
-            {
-                dialogWebView.Visibility = Visibility.Collapsed;
-            }
+            List<string> friendsList = new List<String>();
+            friendsList.Add("9074");
+            friendsList.Add("535949260");
+            Session.ShowAppRequestsDialog(null, "What's up", null);
         }
-
-        
 
         private void showDialogButton_Click(object sender, RoutedEventArgs e)
         {
-            this.dialogWebView.Visibility = Visibility.Visible;
-            this.dialogWebView.Navigate(new Uri("https://facebook.com/dialog/apprequests?display=popup&app_id=540541885996234&message=YOUR_MESSAGE_HERE!&redirect_uri=https://pratapgarh.com&access_token=" + Session.ActiveSession.CurrentAccessTokenData.AccessToken, UriKind.Absolute));
+            Session.ShowFeedDialog();
+        }
+
+        private void loginViaWebviewButton_Click(object sender, RoutedEventArgs e)
+        {
+           Session.ActiveSession.LoginWithBehavior("email,public_profile,user_friends", FacebookLoginBehavior.LoginBehaviorWebViewOnly);
         }
     }
 }

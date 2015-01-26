@@ -122,9 +122,11 @@ namespace BasicApp
         protected override void OnActivated(IActivatedEventArgs args)
         {
             base.OnActivated(args);
+
             var protocolArgs = args as ProtocolActivatedEventArgs;
             LifecycleHelper.FacebookAuthenticationReceived(protocolArgs);
         }
+
 
 
         /// <summary>

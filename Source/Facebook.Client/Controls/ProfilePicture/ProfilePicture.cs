@@ -194,7 +194,6 @@ namespace Facebook.Client.Controls
         {
             string profilePictureUrl;
             const string GraphApiUrl = "https://graph.facebook.com";
-
             if (this.CropMode == CropMode.Square)
             {
                 var size = Math.Max(this.Height, this.Width);
@@ -217,10 +216,11 @@ namespace Facebook.Client.Controls
                                         this.Height);
             }
 
-            if (!string.IsNullOrEmpty(this.AccessToken))
-            {
-                profilePictureUrl += "&access_token=" + this.AccessToken;
-            }
+            // Access Token is not needed for profile picture
+            //if (!string.IsNullOrEmpty(this.AccessToken))
+            //{
+            //    profilePictureUrl += "&access_token=" + this.AccessToken;
+            //}
 
             return profilePictureUrl;
         }

@@ -34,6 +34,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 #endif
 
+using Facebook.Client.Controls.WebDialog;
 #if NETFX_CORE
 using Windows.Security.Authentication.Web;
 #endif
@@ -44,6 +45,7 @@ using Facebook.Client.Controls.WebDialog;
 #endif
 
 #if WINDOWS_UNIVERSAL
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 #endif
 
@@ -128,6 +130,8 @@ namespace Facebook.Client
         }
         public bool LoginInProgress { get; set; }
 
+        internal string RedirectPageOnSuccess = "MainPage.xaml";
+
 
         private AccessTokenData _currentAccessTokenData = null;
         private bool firstRun = true;
@@ -154,6 +158,20 @@ namespace Facebook.Client
                     }
 
                     firstRun = false;
+                }
+
+                if (_currentAccessTokenData != null)
+                {
+                    if (!String.IsNullOrEmpty(_currentAccessTokenData.AccessToken)
+                        && _currentAccessTokenData.Expires < DateTime.UtcNow)
+                    {
+                        _currentAccessTokenData.AccessToken = String.Empty;
+                        _currentAccessTokenData.CurrentPermissions = new List<string>();
+                        _currentAccessTokenData.Expires = DateTime.MinValue;
+                        _currentAccessTokenData.FacebookId = String.Empty;
+                        _currentAccessTokenData.Issued = DateTime.MinValue;
+
+                    }
                 }
 
                 return _currentAccessTokenData;
@@ -213,8 +231,17 @@ namespace Facebook.Client
 //        }
 //#endif
 
-#if WP8 || WINDOWS_PHONE
-        public static void ShowAppRequestsDialog(WebDialogFinishedDelegate callback)
+
+
+#if !WINDOWS
+        public static void ShowAppRequestDialogViaBrowser()
+        {
+            // TODO: Setup callback
+            WebDialogUserControl.ShowAppRequestDialogViaBrowser();
+        }
+#endif
+
+        public static void ShowAppRequestsDialog(WebDialogFinishedDelegate callback, String message="Select your friends", List<string> appIdList=null)
         {
             Popup dialogPopup = new Popup();
 
@@ -223,9 +250,11 @@ namespace Facebook.Client
             webDialog.ParentControlPopup = dialogPopup;
             dialogPopup.Child = webDialog;
 
+#if WP8 || WINDOWS_PHONE
             // Set where the popup will show up on the screen.
             dialogPopup.VerticalOffset = 40;
             dialogPopup.HorizontalOffset = 0;
+#endif
 
 
 #if WP8
@@ -237,11 +266,18 @@ namespace Facebook.Client
             dialogPopup.Height = Window.Current.Bounds.Height - 40;
             dialogPopup.Width = Window.Current.Bounds.Width;
 #endif
+
+#if WINDOWS
+            dialogPopup.Height = Window.Current.Bounds.Height;
+            dialogPopup.Width = Window.Current.Bounds.Width;
+#endif
+
+
             webDialog.Height = dialogPopup.Height;
             webDialog.Width = dialogPopup.Width;
 
 
-            webDialog.ShowAppRequestsDialog(callback);
+            webDialog.ShowAppRequestsDialog(callback, message, appIdList);
 
             // Open the popup.
             dialogPopup.IsOpen = true;
@@ -251,14 +287,18 @@ namespace Facebook.Client
         {
             Popup dialogPopup = new Popup();
 
+            //dialogPopup.Loaded += dialogPopup_Loaded;
+
             var webDialog = new WebDialogUserControl();
 
             webDialog.ParentControlPopup = dialogPopup;
             dialogPopup.Child = webDialog;
 
+#if WP8 || WINDOWS_PHONE
             // Set where the popup will show up on the screen.
             dialogPopup.VerticalOffset = 40;
             dialogPopup.HorizontalOffset = 0;
+#endif
 
 #if WP8
             dialogPopup.Height = Application.Current.Host.Content.ActualHeight - 40;
@@ -269,6 +309,12 @@ namespace Facebook.Client
             dialogPopup.Height = Window.Current.Bounds.Height - 40;
             dialogPopup.Width = Window.Current.Bounds.Width;
 #endif
+
+#if WINDOWS
+            dialogPopup.Height = Window.Current.Bounds.Height;
+            dialogPopup.Width = Window.Current.Bounds.Width;
+#endif
+
 
             webDialog.Height = dialogPopup.Height;
             webDialog.Width = dialogPopup.Width;
@@ -280,21 +326,17 @@ namespace Facebook.Client
             dialogPopup.IsOpen = true;
         }
 
-#endif
-        [ObsoleteAttribute("This method is obsolete and will be removed. Use the LoginWithBehavior method", false)]
-        internal async Task<AccessTokenData> LoginAsync()
+        internal async Task<AccessTokenData> LoginAsync(FacebookLoginBehavior loginBehavior)
         {
-            return await LoginAsync(null, false);
+            return await LoginAsync(null, false, loginBehavior);
         }
 
-        [ObsoleteAttribute("This method is obsolete and will be removed. Use the LoginWithBehavior method", false)]
-        internal async Task<AccessTokenData> LoginAsync(string permissions)
+        internal async Task<AccessTokenData> LoginAsync(string permissions, FacebookLoginBehavior loginBehavior)
         {
-            return await LoginAsync(permissions, false);
+            return await LoginAsync(permissions, false, loginBehavior);
         }
 
-        [ObsoleteAttribute("This method is obsolete and will be removed. Use the LoginWithBehavior method", false)]
-        internal async Task<AccessTokenData> LoginAsync(string permissions, bool force)
+        internal async Task<AccessTokenData> LoginAsync(string permissions, bool force, FacebookLoginBehavior loginBehavior)
         {
             if (this.LoginInProgress)
             {
@@ -307,8 +349,13 @@ namespace Facebook.Client
                 var session = AccessTokenDataCacheProvider.Current.GetSessionData();
                 if (session == null)
                 {
+#if WINDOWS
                     // Authenticate
-                    var authResult = await PromptOAuthDialog(permissions, WebAuthenticationOptions.None);
+                    var authResult = await PromptOAuthDialog(permissions, WebAuthenticationOptions.None, loginBehavior);
+
+#else
+                    var authResult = await PromptOAuthDialog(permissions, WebAuthenticationOptions.None, loginBehavior);
+#endif
 
                     FacebookClient client = new FacebookClient(authResult.AccessToken);
                     var parameters = new Dictionary<string, object>();
@@ -340,7 +387,13 @@ namespace Facebook.Client
                     // if the access token is expired.
                     if (force || newPermissions || session.Expires <= DateTime.UtcNow)
                     {
-                        var authResult = await PromptOAuthDialog(permissions, WebAuthenticationOptions.None);
+#if WINDOWS
+                    // Authenticate
+                    var authResult = await PromptOAuthDialog(permissions, WebAuthenticationOptions.None, loginBehavior);
+
+#else
+                        var authResult = await PromptOAuthDialog(permissions, WebAuthenticationOptions.None, loginBehavior);
+#endif
                         if (authResult != null)
                         {
                             session.AccessToken = authResult.AccessToken;
@@ -372,9 +425,10 @@ namespace Facebook.Client
         {
             switch (behavior)
             {
-#if (WP8 || WINDOWS_PHONE)
                 case FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly:
                 {
+#if (WP8 || WINDOWS_PHONE)
+
                     String appId = await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId");
                     Uri uri =
                         new Uri(
@@ -384,33 +438,73 @@ namespace Facebook.Client
                     
                     Launcher.LaunchUriAsync(uri);
                     break;
-                }
+                
+#else
+                    throw new NotImplementedException("Internet explorer based login is not available on Windows");
 #endif
-                case FacebookLoginBehavior.LoginBehaviorWebAuthenticationBroker:
+                }
                 case FacebookLoginBehavior.LoginBehaviorWebViewOnly:
                 {
-                    // TODO: What to do here? LoginAsync returns inproc. Login with IE returns out of proc?
-                    var result = await LoginAsync(permissions);
-                    
-                    // when the results are available, launch the event handler
-                    if (OnFacebookAuthenticationFinished != null)
+                    String appId = await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId");
+
+#if WP8 || WINDOWS_PHONE
+                    Uri uri =
+                        new Uri(
+                            String.Format(
+                                "https://m.facebook.com/v2.1/dialog/oauth?redirect_uri={0}%3A%2F%2Fauthorize&display=touch&state=%7B%220is_active_session%22%3A1%2C%22is_open_session%22%3A1%2C%22com.facebook.sdk_client_state%22%3A1%2C%223_method%22%3A%22browser_auth%22%7D&scope={2}&type=user_agent&client_id={1}&sdk=ios",
+                                String.Format("fb{0}", appId), appId, permissions), UriKind.Absolute);
+#else
+                    Uri uri = await GetLoginUrl(permissions);
+
+#endif
+                    WebviewAuthentication.AuthenticateAsync(WebAuthenticationOptions.None, uri, null);
+                    break;
+                }
+                case FacebookLoginBehavior.LoginBehaviorWebAuthenticationBroker:
+#if WINDOWS
+                {
+                    try
                     {
-                        OnFacebookAuthenticationFinished(result);
+                        // TODO: What to do here? LoginAsync returns inproc. Login with IE returns out of proc?
+                        var result = await LoginAsync(permissions, FacebookLoginBehavior.LoginBehaviorWebAuthenticationBroker);
+                        // when the results are available, launch the event handler
+                        if (OnFacebookAuthenticationFinished != null)
+                        {
+                            OnFacebookAuthenticationFinished(result);
+                        }
+
+                        if (OnSessionStateChanged != null)
+                        {
+                            OnSessionStateChanged(LoginStatus.LoggedIn);
+                        }
+                    }
+                    catch (FacebookOAuthException e)
+                    {
+                        if (OnSessionStateChanged != null)
+                        {
+                            OnSessionStateChanged(LoginStatus.LoggedOut);
+                        }
                     }
 
-                    if (OnSessionStateChanged != null)
-                    {
-                        OnSessionStateChanged(LoginStatus.LoggedIn);
-                    }
                     break;
                 }
-#if WP8 || WINDOWS_PHONE
+#else
+                {
+                    throw new NotImplementedException("WebviewAuthentication is not implemented on Windows Phone");
+                }
+#endif// WINDOWS
+
                 case FacebookLoginBehavior.LoginBehaviorApplicationOnly:
                 {
+#if WP8 || WINDOWS_PHONE
+
                     LoginWithApp(permissions);
                     break;
-                }
+                
+#else
+                    throw new NotImplementedException("Login via app is not available on Windows");
 #endif
+                }
             }
         }
 
@@ -511,25 +605,36 @@ namespace Facebook.Client
             }
         }
 
-        private async Task<FacebookOAuthResult> PromptOAuthDialog(string permissions, WebAuthenticationOptions options)
+        private async Task<FacebookOAuthResult> PromptOAuthDialog(string permissions, WebAuthenticationOptions options, FacebookLoginBehavior loginBehavior)
         {
-            // Use WebAuthenticationBroker to launch server side OAuth flow
+#if !WINDOWS
+            if (loginBehavior != FacebookLoginBehavior.LoginBehaviorWebViewOnly)
+            {
+                throw new NotImplementedException("Following login behavior is not supported on Windows Phone: " + loginBehavior.ToString());
+            }
+#endif
+            // Use WebviewAuthentication to launch server side OAuth flow
 
             Uri startUri = await this.GetLoginUrl(permissions);
             Uri endUri = new Uri("https://www.facebook.com/connect/login_success.html");
 
-            var result = await WebAuthenticationBroker.AuthenticateAsync(options, startUri, endUri);
-
-
-            if (result.ResponseStatus == WebAuthenticationStatus.ErrorHttp)
+            WebAuthenticationResult result = null;
+#if WINDOWS
+            if (loginBehavior == FacebookLoginBehavior.LoginBehaviorWebAuthenticationBroker)
             {
-                throw new InvalidOperationException();
-            }
-            else if (result.ResponseStatus == WebAuthenticationStatus.UserCancel)
-            {
-                throw new InvalidOperationException();
-            }
+                result = await WebAuthenticationBroker.AuthenticateAsync(options, startUri, endUri);
 
+                if (result.ResponseStatus == WebAuthenticationStatus.ErrorHttp)
+                {
+                    throw new HttpRequestException("An Http error happened. Error Code: " +
+                                                   result.ResponseStatus.ToString());
+                }
+                else if (result.ResponseStatus == WebAuthenticationStatus.UserCancel)
+                {
+                    throw new FacebookOAuthException("Facebook.Client: User cancelled login in WebAuthBroker");
+                }
+            }
+#endif
             var client = new FacebookClient();
             var authResult = client.ParseOAuthCallbackUrl(new Uri(result.ResponseData));
             return authResult;

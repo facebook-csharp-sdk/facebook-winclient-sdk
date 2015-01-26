@@ -13,6 +13,9 @@ namespace PhoneApp2
         // Constructor
         public MainPage()
         {
+
+
+
             this.InitializeComponent();
 
             this.Loaded += MainPage_Loaded;

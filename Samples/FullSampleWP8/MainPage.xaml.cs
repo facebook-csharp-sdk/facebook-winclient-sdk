@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.ServiceModel.Channels;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -38,14 +39,15 @@ namespace FullSampleWP8
             //        "https://m.facebook.com/v1.0/dialog/oauth?redirect_uri=fb540541885996234%3A%2F%2Fauthorize&display=touch&state=%7B%220is_active_session%22%3A1%2C%22is_open_session%22%3A1%2C%22com.facebook.sdk_client_state%22%3A1%2C%223_method%22%3A%22browser_auth%22%7D&scope=email%2Cbasic_info&type=user_agent&client_id=540541885996234&ret=login&sdk=ios&ext=1413580961&hash=Aeb0Q3uVJ6pgMh4C&refsrc=https%3A%2F%2Fm.facebook.com%2Flogin.php&refid=9&_rdr",
             //        UriKind.RelativeOrAbsolute);
             //Launcher.LaunchUriAsync(uri);
-            var client = new Session("540541885996234");
-            client.LoginWithBehavior("email,public_profile,user_friends", FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly);
+            //var client = new Session("540541885996234");
+            Session.ActiveSession.LoginWithBehavior("email,public_profile,user_friends", FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly);
         }
 
         async private void extendTokenButton_Click(object sender, RoutedEventArgs e)
         {
            await Session.CheckAndExtendTokenIfNeeded();
-
+            MessageBox.Show("Token extended. New expiry at: " +
+                            Session.ActiveSession.CurrentAccessTokenData.Expires.ToString());
         }
 
         async private void graphCallButton_Click(object sender, RoutedEventArgs e)
@@ -53,6 +55,9 @@ namespace FullSampleWP8
             FacebookClient fb = new FacebookClient(Session.ActiveSession.CurrentAccessTokenData.AccessToken);
 
             dynamic friendsTaskResult = await fb.GetTaskAsync("/me/friends");
+
+            MessageBox.Show("Graph Request for /me/friends: " +
+                friendsTaskResult.ToString());
         }
 
         private void showDialogButton_Click(object sender, RoutedEventArgs e)
@@ -82,7 +87,13 @@ namespace FullSampleWP8
 
         private void ShowRequestWithBrowserButton_Click(object sender, RoutedEventArgs e)
         {
-            WebDialogUserControl.ShowAppRequestDialogViaBrowser();
+            Session.ShowAppRequestDialogViaBrowser();
+        }
+
+
+        private void LoginViaWebView_OnClick(object sender, RoutedEventArgs e)
+        {
+            Session.ActiveSession.LoginWithBehavior("email,public_profile,user_friends", FacebookLoginBehavior.LoginBehaviorWebViewOnly);
         }
     }
 }

@@ -10,10 +10,12 @@
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
 
-        <Controls:FriendPicker HorizontalAlignment="Left" VerticalAlignment="Top" Height="545" Width="459"/>
+        <Controls:FriendPicker HorizontalAlignment="Left" VerticalAlignment="Top" Height="414" Width="459"/>
         <Controls:PlacePicker HorizontalAlignment="Right"  VerticalAlignment="Top" Width="676"/>
         <Controls:ProfilePicture HorizontalAlignment="Left"  VerticalAlignment="Bottom"/>
         <Controls:LoginButton HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+        <Button x:Name="loginViaWebview" Content="Login via Webview" HorizontalAlignment="Left" Margin="850,718,0,0" VerticalAlignment="Top" Click="loginViaWebview_Click"/>
+        <Button  x:Name="showDialogButton" Content="Show Dialog" HorizontalAlignment="Left" Margin="510,718,0,0" VerticalAlignment="Top" Click="showDialogButton_Click"/>
 
     </Grid>
 </Page>

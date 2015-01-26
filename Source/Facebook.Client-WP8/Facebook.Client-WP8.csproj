@@ -182,6 +182,10 @@
     <Compile Include="..\Facebook.Client\Controls\ProfilePicture\ProfilePicture.cs">
       <Link>Controls\ProfilePicture\ProfilePicture.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\Controls\WebDialog\WebDialogUserControl.xaml.cs">
+      <Link>Controls\WebDialog\WebDialogUserControl.xaml.cs</Link>
+      <DependentUpon>WebDialogUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="..\Facebook.Client\FacebookAppLinkResolver.cs">
       <Link>FacebookAppLinkResolver.cs</Link>
     </Compile>
@@ -203,8 +207,8 @@
     <Compile Include="..\Facebook.Client\GraphUser.cs">
       <Link>GraphUser.cs</Link>
     </Compile>
-    <Compile Include="..\Facebook.Client\PhoneWebAuthentication.cs">
-      <Link>PhoneWebAuthentication.cs</Link>
+    <Compile Include="..\Facebook.Client\LifecycleHelper.cs">
+      <Link>LifecycleHelper.cs</Link>
     </Compile>
     <Compile Include="..\Facebook.Client\LoginPage.xaml.cs">
       <Link>LoginPage.xaml.cs</Link>
@@ -219,14 +223,18 @@
     <Compile Include="..\Facebook.Client\Universal\Controls\FriendPicker\FriendPicker.cs">
       <Link>Controls\FriendPicker\FriendPicker.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\WebviewAuthentication.cs">
+      <Link>WebviewAuthentication.cs</Link>
+    </Compile>
     <Compile Include="AppAuthenticationHelper.cs" />
     <Compile Include="Controls\Converters\ImageSourceUriConverter.cs" />
     <Compile Include="Controls\Picker\Picker.cs" />
-    <Compile Include="Controls\WebDialog\WebDialogUserControl.xaml.cs">
-      <DependentUpon>WebDialogUserControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="FacebookUriMapper.cs" />
-    <Compile Include="Resources\AppResources.Designer.cs" />
+    <Compile Include="Resources\AppResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppResources.resx</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Page Include="..\Facebook.Client\LoginPage.xaml">

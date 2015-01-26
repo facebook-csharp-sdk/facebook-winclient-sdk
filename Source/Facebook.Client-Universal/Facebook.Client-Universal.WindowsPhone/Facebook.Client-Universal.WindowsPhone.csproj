@@ -183,6 +183,10 @@
     <Compile Include="..\..\Facebook.Client\Controls\ProfilePicture\ProfilePicture.cs">
       <Link>Controls\ProfilePicture\ProfilePicture.cs</Link>
     </Compile>
+    <Compile Include="..\..\Facebook.Client\Controls\WebDialog\WebDialogUserControl.xaml.cs">
+      <Link>Controls\WebDialog\WebDialogUserControl.xaml.cs</Link>
+      <DependentUpon>WebDialogUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="..\..\Facebook.Client\FacebookAppLinkResolver.cs">
       <Link>FacebookAppLinkResolver.cs</Link>
     </Compile>
@@ -234,8 +238,8 @@
     <Compile Include="..\..\Facebook.Client\Universal\Controls\Picker\Picker.cs">
       <Link>Controls\Picker\Picker.cs</Link>
     </Compile>
-    <Compile Include="Controls\WebDialog\WebDialogUserControl.xaml.cs">
-      <DependentUpon>WebDialogUserControl.xaml</DependentUpon>
+    <Compile Include="..\..\Facebook.Client\WebviewAuthentication.cs">
+      <Link>WebviewAuthentication.cs</Link>
     </Compile>
     <Compile Include="FacebookDialogPage.xaml.cs">
       <DependentUpon>FacebookDialogPage.xaml</DependentUpon>

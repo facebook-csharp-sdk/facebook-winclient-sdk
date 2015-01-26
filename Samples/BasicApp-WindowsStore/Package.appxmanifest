@@ -21,6 +21,11 @@
         <DefaultTile ShowName="logoOnly" />
         <SplashScreen Image="Assets\SplashScreen.png" />
       </VisualElements>
+      <Extensions>
+        <Extension Category="windows.protocol">
+          <Protocol Name="fb540541885996234" />
+        </Extension>
+      </Extensions>
     </Application>
   </Applications>
   <Capabilities>

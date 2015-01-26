@@ -207,6 +207,10 @@
     <Compile Include="..\..\Facebook.Client\Controls\ProfilePicture\ProfilePicture.cs">
       <Link>Controls\ProfilePicture\ProfilePicture.cs</Link>
     </Compile>
+    <Compile Include="..\..\Facebook.Client\Controls\WebDialog\WebDialogUserControl.xaml.cs">
+      <Link>Controls\WebDialog\WebDialogUserControl.xaml.cs</Link>
+      <DependentUpon>WebDialogUserControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="..\..\Facebook.Client\FacebookAppLinkResolver.cs">
       <Link>FacebookAppLinkResolver.cs</Link>
     </Compile>
@@ -258,6 +262,9 @@
     <Compile Include="..\..\Facebook.Client\Universal\Controls\Picker\Picker.cs">
       <Link>Controls\Picker\Picker.cs</Link>
     </Compile>
+    <Compile Include="..\..\Facebook.Client\WebviewAuthentication.cs">
+      <Link>WebviewAuthentication.cs</Link>
+    </Compile>
     <Compile Include="FacebookDialogPage.xaml.cs">
       <DependentUpon>FacebookDialogPage.xaml</DependentUpon>
     </Compile>
@@ -287,6 +294,14 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Controls\ProfilePicture\ProfilePicture.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\WebDialog\Styles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Controls\WebDialog\WebDialogUserControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

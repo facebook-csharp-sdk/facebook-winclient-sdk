@@ -24,6 +24,9 @@ namespace Facebook.Client
                 {
                     var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
                     task.Wait();
+                    
+
+
                     session.AppId = task.Result;
                     Session.ActiveSession.CurrentAccessTokenData = session;
 
@@ -43,8 +46,27 @@ namespace Facebook.Client
             {
 
             }
-            
-            return new Uri("/Page1.xaml", UriKind.Relative);
+
+            if (uri.ToString().StartsWith("/Protocol"))
+            {
+                // Read which page to redirect to when redirecting from the Facebook authentication.
+                var RedirectPageNameTask =
+                    Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("RedirectPage", "Name"));
+                RedirectPageNameTask.Wait();
+                Session.ActiveSession.RedirectPageOnSuccess = String.IsNullOrEmpty(RedirectPageNameTask.Result)
+                    ? "MainPage.xaml"
+                    : RedirectPageNameTask.Result;
+
+                return new Uri("/" + Session.ActiveSession.RedirectPageOnSuccess, UriKind.Relative);
+            }
+            else
+            {
+                var RedirectPageNameTask =
+                Task.Run(async () => await AppAuthenticationHelper.GetFilteredManifestAppAttributeValue("DefaultTask", "NavigationPage", String.Empty));
+                RedirectPageNameTask.Wait();
+
+                return new Uri("/" + RedirectPageNameTask.Result, UriKind.Relative);
+            }
         }
     }
 }
