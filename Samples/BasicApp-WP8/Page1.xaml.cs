@@ -15,6 +15,7 @@ namespace PhoneApp2
         public Page1()
         {
             InitializeComponent();
+            
         }
     }
 }

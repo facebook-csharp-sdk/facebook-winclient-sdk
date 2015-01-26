@@ -425,9 +425,10 @@ namespace Facebook.Client
         {
             switch (behavior)
             {
-#if (WP8 || WINDOWS_PHONE)
                 case FacebookLoginBehavior.LoginBehaviorMobileInternetExplorerOnly:
                 {
+#if (WP8 || WINDOWS_PHONE)
+
                     String appId = await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId");
                     Uri uri =
                         new Uri(
@@ -437,8 +438,11 @@ namespace Facebook.Client
                     
                     Launcher.LaunchUriAsync(uri);
                     break;
-                }
+                
+#else
+                    throw new NotImplementedException("Internet explorer based login is not available on Windows");
 #endif
+                }
                 case FacebookLoginBehavior.LoginBehaviorWebViewOnly:
                 {
                     String appId = await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId");
@@ -490,13 +494,17 @@ namespace Facebook.Client
                 }
 #endif// WINDOWS
 
-#if WP8 || WINDOWS_PHONE
                 case FacebookLoginBehavior.LoginBehaviorApplicationOnly:
                 {
+#if WP8 || WINDOWS_PHONE
+
                     LoginWithApp(permissions);
                     break;
-                }
+                
+#else
+                    throw new NotImplementedException("Login via app is not available on Windows");
 #endif
+                }
             }
         }
 
