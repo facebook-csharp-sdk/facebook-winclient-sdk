@@ -21,11 +21,12 @@
             <controls:FriendPicker 
             x:Name="MyFriendPicker"
             HorizontalAlignment="Left" Margin="22,24,0,0" VerticalAlignment="Top" Height="332" Width="433"/>
-            <controls:LoginButton HorizontalAlignment="Right" Margin="250,573,0,0" VerticalAlignment="Bottom" Height="57" LoginBehavior="LoginBehaviorMobileInternetExplorerOnly" />
+            <controls:LoginButton HorizontalAlignment="Right" Margin="250,573,0,0" VerticalAlignment="Bottom" Height="57" LoginBehavior="LoginBehaviorWebViewOnly" />
             <controls:PlacePicker
             x:Name="MyPlacePicker"
             HorizontalAlignment="Left" Margin="22,361,0,0" VerticalAlignment="Top" Height="330" Width="357"/>
             <controls:ProfilePicture HorizontalAlignment="Left" Margin="41,553,0,0" VerticalAlignment="Bottom"/>
+            <Button x:Name="testButton" Content="testButton" HorizontalAlignment="Left" Margin="128,696,0,0" VerticalAlignment="Top" Height="72" Click="testButton_Click"/>
 
         </Grid>
     </Grid>

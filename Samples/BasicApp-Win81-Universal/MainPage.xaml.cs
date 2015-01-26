@@ -37,7 +37,7 @@ namespace BasicApp_Win81_Universal
             List<string> friendsList = new List<String>();
             friendsList.Add("9074");
             friendsList.Add("535949260");
-            Session.ShowAppRequestsDialog(null, "What's up", friendsList);
+            Session.ShowAppRequestsDialog(null, "What's up", null);
         }
 
         private void showDialogButton_Click(object sender, RoutedEventArgs e)

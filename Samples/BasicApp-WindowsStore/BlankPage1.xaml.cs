@@ -38,7 +38,7 @@ namespace BasicApp
             List<string> friendsList = new List<String>();
             friendsList.Add("9074");
             friendsList.Add("535949260");
-            Session.ShowAppRequestsDialog(null, "What's up", friendsList);
+            Session.ShowAppRequestsDialog(null, "What's up", null);
         }
     }
 }

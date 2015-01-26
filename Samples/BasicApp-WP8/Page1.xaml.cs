@@ -5,6 +5,7 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using Facebook.Client;
 using Microsoft.Phone.Controls;
 using Microsoft.Phone.Shell;
 
@@ -16,6 +17,11 @@ namespace PhoneApp2
         {
             InitializeComponent();
             
+        }
+
+        private void testButton_Click(object sender, RoutedEventArgs e)
+        {
+            var x = Session.ActiveSession.CurrentAccessTokenData;
         }
     }
 }
