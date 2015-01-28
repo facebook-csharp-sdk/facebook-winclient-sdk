@@ -6,7 +6,7 @@
     using System.Globalization;
     using System.Reflection;
 #endif
-#if WINDOWS_PHONE
+#if WP8
     using System;
     using System.Collections.Generic;
     using System.Globalization;
@@ -40,7 +40,7 @@
             var libraryName = typeof(PlacePicker).GetTypeInfo().Assembly.GetName().Name;
             var blankProfilePictureUrl = string.Format(CultureInfo.InvariantCulture, "ms-appx:///{0}/Images/{1}", libraryName, BlankProfilePictureSquare);
 #endif
-#if WINDOWS_PHONE
+#if WP8
             var blankProfilePictureUrl = string.Format(CultureInfo.InvariantCulture, "/Images/{0}", BlankProfilePictureSquare);
 #endif
 

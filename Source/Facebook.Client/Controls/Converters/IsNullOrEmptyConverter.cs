@@ -5,7 +5,7 @@
     using System.Globalization;
     using Windows.UI.Xaml.Data;
 #endif
-#if WINDOWS_PHONE
+#if WP8
     using System;
     using System.Globalization;
     using System.Windows.Data;
@@ -27,7 +27,7 @@
         /// <returns>True if the value is null or empty.</returns>
         public object Convert(object value, Type targetType, object parameter, string language)
 #endif
-#if WINDOWS_PHONE
+#if WP8
         /// <summary>
         /// Scales the value by multiplying by a given factor.
         /// </summary>
@@ -64,7 +64,7 @@
         /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
 #endif
-#if WINDOWS_PHONE
+#if WP8
         /// <summary>
         /// Not implemented.
         /// </summary>

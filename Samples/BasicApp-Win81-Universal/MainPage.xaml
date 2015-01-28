@@ -1,0 +1,23 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BasicApp_Win81_Universal"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Controls="using:Facebook.Client.Controls"
+    x:Class="BasicApp_Win81_Universal.MainPage"
+    mc:Ignorable="d">
+
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Controls:LoginButton HorizontalAlignment="Left" Margin="1092,668,0,0" VerticalAlignment="Top"/>
+
+        <Controls:FriendPicker HorizontalAlignment="Left" Margin="86,54,0,0" VerticalAlignment="Top" Height="598" Width="245"/>
+        <Controls:PlacePicker HorizontalAlignment="Left" Margin="388,54,0,0" VerticalAlignment="Top" Height="284" Width="254"/>
+        <Controls:ProfilePicture HorizontalAlignment="right" Margin="0,0,10,10" VerticalAlignment="Top"/>
+        <Button x:Name="showRequestsDialogButton" Content="Show requestes Dialog" HorizontalAlignment="Left" Margin="592,0,0,47" VerticalAlignment="Bottom" Click="showRequestsDialogButton_Click"/>
+        <Button x:Name="showDialogButton" Content="Show Feed Dialog" HorizontalAlignment="Left" Margin="910,0,0,47" VerticalAlignment="Bottom" Click="showDialogButton_Click"/>
+        <Button x:Name="loginViaWebviewButton" Content="Login via Webview" HorizontalAlignment="Left" Margin="192,683,0,0" VerticalAlignment="Top" Click="loginViaWebviewButton_Click"/>
+
+
+    </Grid>
+</Page>

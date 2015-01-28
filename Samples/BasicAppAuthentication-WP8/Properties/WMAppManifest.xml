@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Deployment xmlns="http://schemas.microsoft.com/windowsphone/2012/deployment" AppPlatformVersion="8.0">
   <DefaultLanguage xmlns="" code="en-US" />
-  <App xmlns="" ProductID="{4CE6AB44-B7F9-4424-82DE-17535B713CDE}" Title="Basic App Authentication" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="BasicAppAuthentication author" Description="Sample description" Publisher="BasicAppAuthentication" PublisherID="{43245dd5-84d8-4cde-837a-a19a4a2e3914}">
+  <App xmlns="" ProductID="{62b06929-9061-4d91-a37c-7b98a264a19a}" Title="Basic App Authentication" RuntimeType="Silverlight" Version="1.0.0.0" Genre="apps.normal" Author="BasicAppAuthentication author" Description="Sample description" Publisher="BasicAppAuthentication" PublisherID="{43245dd5-84d8-4cde-837a-a19a4a2e3914}">
     <IconPath IsRelative="true" IsResource="false">Assets\ApplicationIcon.png</IconPath>
     <Capabilities>
       <Capability Name="ID_CAP_NETWORKING" />
@@ -34,7 +34,7 @@
       </PrimaryToken>
     </Tokens>
     <Extensions>
-      <Protocol Name="msft-4ce6ab44b7f9442482de17535b713cde" NavUriFragment="encodedLaunchUri=%s" TaskID="_default" />
+      <Protocol Name="msft-62b0692990614d91a37c7b98a264a19a" NavUriFragment="encodedLaunchUri=%s" TaskID="_default" />
     </Extensions>
     <ScreenResolutions>
       <ScreenResolution Name="ID_RESOLUTION_WVGA" />

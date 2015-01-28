@@ -51,6 +51,14 @@
                 //// and consume battery power when the user is not using the phone.
                 PhoneApplicationService.Current.UserIdleDetectionMode = IdleDetectionMode.Disabled;
             }
+
+            Session.OnFacebookAuthenticationFinished += OnFacebookAuthenticationFinished;
+            RootFrame.UriMapper = new FacebookUriMapper();
+        }
+
+        private void OnFacebookAuthenticationFinished(AccessTokenData session)
+        {
+            // here the authentication succeeded callback will be received.
         }
 
         /// <summary>

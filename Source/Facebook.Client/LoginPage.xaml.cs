@@ -45,7 +45,7 @@ namespace Facebook.Client
 
             // Make sure that there is an authentication operation in progress.
             // If not, we'll navigate back to the previous page.
-            if (!WebAuthenticationBroker.AuthenticationInProgress)
+            if (!WebviewAuthentication.AuthenticationInProgress)
             {
                 this.NavigationService.GoBack();
             }
@@ -56,7 +56,7 @@ namespace Facebook.Client
                 authenticationFinished = false;
 
                 // Point the browser control to the authentication start page.
-                browserControl.Source = WebAuthenticationBroker.StartUri;
+                browserControl.Source = WebviewAuthentication.StartUri;
             }
         }
 
@@ -73,12 +73,12 @@ namespace Facebook.Client
             // finished, then we need to inform the authentication broker of the results.
             // We don't want to stop the operation prematurely, such as when navigating to
             // the start screen.
-            if (WebAuthenticationBroker.AuthenticationInProgress && authenticationFinished)
+            if (WebviewAuthentication.AuthenticationInProgress && authenticationFinished)
             {
                 authenticationStarted = false;
                 authenticationFinished = false;
 
-                WebAuthenticationBroker.OnAuthenticationFinished(responseData, responseStatus, responseErrorDetail);
+                WebviewAuthentication.OnAuthenticationFinished(responseData, responseStatus, responseErrorDetail);
             }
         }
 
@@ -102,7 +102,7 @@ namespace Facebook.Client
         private void BrowserControl_Navigating(object sender, NavigatingEventArgs e)
         {
             //Updated to test only Absolute path as parameters will always be different
-            if (e.Uri.AbsolutePath == WebAuthenticationBroker.EndUri.AbsolutePath)
+            if (e.Uri.AbsolutePath == WebviewAuthentication.EndUri.AbsolutePath)
             {
                 responseData = e.Uri.ToString();
                 responseStatus = WebAuthenticationStatus.Success;

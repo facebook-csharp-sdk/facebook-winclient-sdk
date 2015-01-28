@@ -5,7 +5,7 @@
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Data;
 #endif
-#if WINDOWS_PHONE
+#if WP8
     using System;
     using System.Globalization;
     using System.Windows;
@@ -33,7 +33,7 @@
         /// <returns>A Visibility constant.</returns>
         public object Convert(object value, Type targetType, object parameter, string language)
 #endif
-#if WINDOWS_PHONE
+#if WP8
         /// <summary>
         /// Converts a boolean value to a Visibility constant.
         /// </summary>
@@ -60,7 +60,7 @@
         /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
 #endif
-#if WINDOWS_PHONE
+#if WP8
         /// <summary>
         /// Not implemented.
         /// </summary>

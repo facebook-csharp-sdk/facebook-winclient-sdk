@@ -4,7 +4,7 @@
     using System;
     using Windows.UI;
 #endif
-#if WINDOWS_PHONE
+#if WP8
     using System;
     using System.Windows.Media;
 #endif

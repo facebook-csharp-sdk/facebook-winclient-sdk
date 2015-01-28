@@ -27,7 +27,8 @@ namespace BasicAppAuthentication
         /// <summary>
         ///     The facebook app id (this is the ID given by facebook in the developer portal for your app)
         /// </summary>
-        private const string AppId = "675854675761202";
+        private const string AppId = "540541885996234";
+        //public const string AppId = "186169374816846";
 
         #endregion
 
@@ -182,8 +183,10 @@ namespace BasicAppAuthentication
         /// </param>
         private void LogoutClick(object sender, RoutedEventArgs e)
         {
-            SessionStorage.Remove();
-            this.CurrentUser = null;
+            //SessionStorage.Remove();
+            //this.CurrentUser = null;
+            //var session = SessionStorage.Load();
+            NavigationService.Navigate(new Uri("/Dialog.xaml", UriKind.RelativeOrAbsolute));
         }
 
         /// <summary>

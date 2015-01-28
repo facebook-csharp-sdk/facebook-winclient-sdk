@@ -1,0 +1,21 @@
+﻿<Page
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:BasicApp"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Controls="using:Facebook.Client.Controls"
+    x:Class="BasicApp.BlankPage1"
+    mc:Ignorable="d">
+
+    <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
+
+        <Controls:FriendPicker HorizontalAlignment="Left" VerticalAlignment="Top" Height="414" Width="459"/>
+        <Controls:PlacePicker HorizontalAlignment="Right"  VerticalAlignment="Top" Width="676"/>
+        <Controls:ProfilePicture HorizontalAlignment="Left"  VerticalAlignment="Bottom"/>
+        <Controls:LoginButton HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+        <Button x:Name="loginViaWebview" Content="Login via Webview" HorizontalAlignment="Left" Margin="850,718,0,0" VerticalAlignment="Top" Click="loginViaWebview_Click"/>
+        <Button  x:Name="showDialogButton" Content="Show Dialog" HorizontalAlignment="Left" Margin="510,718,0,0" VerticalAlignment="Top" Click="showDialogButton_Click"/>
+
+    </Grid>
+</Page>

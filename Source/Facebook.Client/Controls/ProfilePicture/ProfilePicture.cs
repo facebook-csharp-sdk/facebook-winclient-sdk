@@ -1,4 +1,6 @@
-﻿namespace Facebook.Client.Controls
+﻿using System.Threading.Tasks;
+
+namespace Facebook.Client.Controls
 {
 #if NETFX_CORE
     using System;
@@ -9,7 +11,7 @@
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Media;
 #endif
-#if WINDOWS_PHONE
+#if WP8
     using System;
     using System.Globalization;
     using System.Windows;
@@ -49,8 +51,42 @@
         public ProfilePicture()
         {
             this.DefaultStyleKey = typeof(ProfilePicture);
+
+            this.Loaded += ProfilePicture_Loaded;
         }
 
+        async void ProfilePicture_Loaded(object sender, RoutedEventArgs e)
+        {
+            Session.OnSessionStateChanged += UpdateFacebookId;
+
+            if (!String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
+            {
+                await PreloadUserInformation();
+                this.LoadPicture();
+            }
+        }
+
+        async private void UpdateFacebookId(LoginStatus status)
+        {
+            if (status == LoginStatus.LoggedIn)
+            {
+                await PreloadUserInformation();
+            }
+
+            this.LoadPicture();
+        }
+
+        internal async Task PreloadUserInformation()
+        {
+            if (!String.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AccessToken))
+            {
+                FacebookClient client = new FacebookClient(Session.ActiveSession.CurrentAccessTokenData.AccessToken);
+                dynamic result = await client.GetTaskAsync("me");
+                
+                Session.ActiveSession.CurrentAccessTokenData.FacebookId = (new GraphUser(result)).Id;
+                AccessTokenDataCacheProvider.Current.SaveSessionData(Session.ActiveSession.CurrentAccessTokenData);
+            }
+        }
         #region AccessToken
         
         /// <summary>
@@ -70,32 +106,6 @@
         
         #endregion AccessToken
         
-        #region ProfileId
-
-        /// <summary>
-        /// The Facebook ID of the user, place or object for which a picture should be fetched and displayed.
-        /// </summary>
-        /// <remarks>
-        /// The control displays a blank profile (silhouette) picture if this property is null or empty.
-        /// </remarks>
-        public string ProfileId
-        {
-            get { return (string)GetValue(ProfileIdProperty); }
-            set { this.SetValue(ProfileIdProperty, value); }
-        }
-
-        /// <summary>
-        /// Identifies the ProfileId dependency property.
-        /// </summary>
-        public static readonly DependencyProperty ProfileIdProperty =
-            DependencyProperty.Register("ProfileId", typeof(string), typeof(ProfilePicture), new PropertyMetadata(ProfilePicture.DefaultProfileId, OnProfileIdPropertyChanged));
-
-        private static void OnProfileIdPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            ((ProfilePicture)d).LoadPicture();
-        }
-
-        #endregion ProfileId
 
         #region CropMode
         
@@ -137,7 +147,7 @@
 #if NETFX_CORE
         protected override void OnApplyTemplate()
 #endif
-#if WINDOWS_PHONE
+#if WP8
         public override void OnApplyTemplate()
 #endif
         {
@@ -160,11 +170,11 @@
             return base.ArrangeOverride(finalSize);
         }
 
-        private void LoadPicture()
+        async private void LoadPicture()
         {
             string profilePictureUrl;
 
-            if (string.IsNullOrEmpty(this.ProfileId))
+            if (string.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.FacebookId))
             {
                 profilePictureUrl = ProfilePicture.GetBlankProfilePictureUrl(this.CropMode == CropMode.Square);
             }
@@ -184,7 +194,6 @@
         {
             string profilePictureUrl;
             const string GraphApiUrl = "https://graph.facebook.com";
-
             if (this.CropMode == CropMode.Square)
             {
                 var size = Math.Max(this.Height, this.Width);
@@ -192,7 +201,7 @@
                                         CultureInfo.InvariantCulture,
                                         "{0}/{1}/picture?width={2}&height={3}",
                                         GraphApiUrl,
-                                        this.ProfileId,
+                                        Session.ActiveSession.CurrentAccessTokenData.FacebookId,
                                         size,
                                         size);
             }
@@ -202,15 +211,16 @@
                                         CultureInfo.InvariantCulture,
                                         "{0}/{1}/picture?width={2}&height={3}",
                                         GraphApiUrl,
-                                        this.ProfileId,
+                                        Session.ActiveSession.CurrentAccessTokenData.FacebookId,
                                         this.Width,
                                         this.Height);
             }
 
-            if (!string.IsNullOrEmpty(this.AccessToken))
-            {
-                profilePictureUrl += "&access_token=" + this.AccessToken;
-            }
+            // Access Token is not needed for profile picture
+            //if (!string.IsNullOrEmpty(this.AccessToken))
+            //{
+            //    profilePictureUrl += "&access_token=" + this.AccessToken;
+            //}
 
             return profilePictureUrl;
         }
@@ -229,7 +239,7 @@
 
             return string.Format(CultureInfo.InvariantCulture, "ms-appx:///{0}/Images/{1}", libraryName, imageName);
 #endif
-#if WINDOWS_PHONE
+#if WP8
             return string.Format(CultureInfo.InvariantCulture, "/Images/{0}", imageName);
 #endif
         }

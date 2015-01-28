@@ -30,13 +30,14 @@
                 throw new ArgumentNullException("location");
             }
 
-            this.Street = location.street;
-            this.City = location.name;
-            this.State = location.state;
-            this.Zip = location.zip;
-            this.Country = location.country;
-            this.Latitude = location.latitude ?? 0.0;
-            this.Longitude = location.longitude ?? 0.0;
+            var tmpLocation = location as IDictionary<string, object>;
+            this.Street = tmpLocation.ContainsKey("street") ? (string)tmpLocation["street"] : string.Empty; //location.street;
+            this.City = tmpLocation.ContainsKey("name") ? (string)tmpLocation["name"] : string.Empty; //location.name;
+            this.State = tmpLocation.ContainsKey("state") ? (string)tmpLocation["state"] : string.Empty; //location.state;
+            this.Zip = tmpLocation.ContainsKey("zip") ? (string)tmpLocation["zip"] : string.Empty; //location.zip;
+            this.Country = tmpLocation.ContainsKey("country") ? (string)tmpLocation["country"] : string.Empty; //location.country;
+            this.Latitude = tmpLocation.ContainsKey("latitude") ? (double)tmpLocation["latitude"] : 0.0; //location.latitude ?? 0.0;
+            this.Longitude = tmpLocation.ContainsKey("longitude") ? (double)tmpLocation["longitude"] : 0.0; //location.longitude ?? 0.0;
         }
 
         /// <summary>
