@@ -156,8 +156,7 @@
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Facebook">
-      <HintPath>packages\Facebook.6.8.0\lib\win8\Facebook.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\..\Source\packages\Facebook.7.0.1-alpha\lib\win8\Facebook.dll</HintPath>
     </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">

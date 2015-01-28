@@ -290,16 +290,14 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
-    <Reference Include="Facebook">
-      <HintPath>packages\Facebook.6.6.0\lib\portable-win81+wpa81\Facebook.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Images\fb_blank_place_profile_square.png" />
     <Content Include="Images\fb_blank_profile_portrait.png" />
     <Content Include="Images\fb_blank_profile_square.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Facebook">
+      <HintPath>packages\Facebook.7.0.1-alpha\lib\portable-win81+wpa81\Facebook.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

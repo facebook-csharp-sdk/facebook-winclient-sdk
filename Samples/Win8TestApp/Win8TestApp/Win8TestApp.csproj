@@ -137,7 +137,7 @@
   <ItemGroup>
     <Reference Include="Facebook, Version=6.0.10.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>packages\Facebook.6.6.0\lib\win81\Facebook.dll</HintPath>
+      <HintPath>$(SolutionDir)packages\Facebook.6.6.0\lib\win81\Facebook.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -159,3 +159,4 @@
   </Target>
   -->
 </Project>
+

@@ -143,9 +143,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Facebook, Version=6.0.10.0, Culture=neutral, PublicKeyToken=58cb4f2111d1e6de, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Source\Facebook.Client-Universal\Facebook.Client-Universal.Windows\packages\Facebook.6.6.0\lib\win8\Facebook.dll</HintPath>
+    <Reference Include="Facebook">
+      <HintPath>..\..\Source\Facebook.Client-Universal\Facebook.Client-Universal.Windows\packages\Facebook.7.0.1-alpha\lib\win8\Facebook.dll</HintPath>
     </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">

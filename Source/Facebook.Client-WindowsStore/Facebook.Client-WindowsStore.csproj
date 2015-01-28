@@ -311,16 +311,16 @@
     <Content Include="Images\fb_blank_profile_square.png" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Facebook">
-      <HintPath>..\packages\Facebook.6.6.0\lib\win8\Facebook.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <EmbeddedResource Include="..\Facebook.Client-WP8\Resources\AppResources.resx">
       <Link>Resources\AppResources.resx</Link>
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>AppResources1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Facebook">
+      <HintPath>..\packages\Facebook.7.0.1-alpha\lib\win8\Facebook.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '11.0' ">
     <VisualStudioVersion>11.0</VisualStudioVersion>

@@ -12,8 +12,6 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{4C865A30-0E20-4943-AA04-8308363E7B60}"
 	ProjectSection(SolutionItems) = preProject
 		.nuget\NuGet.Config = .nuget\NuGet.Config
-		.nuget\NuGet.exe = .nuget\NuGet.exe
-		.nuget\NuGet.targets = .nuget\NuGet.targets
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebook.Client-Universal.WindowsPhone", "..\..\Source\Facebook.Client-Universal\Facebook.Client-Universal.WindowsPhone\Facebook.Client-Universal.WindowsPhone.csproj", "{76FB752F-8AB8-41BC-A188-CF66B4D42940}"
@@ -95,3 +93,4 @@ Global
 		{84542693-00E9-4727-859D-F22160FDA759} = {DC1F2757-F82E-4A9A-ABA4-07A12FF97621}
 	EndGlobalSection
 EndGlobal
+

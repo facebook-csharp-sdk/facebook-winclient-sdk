@@ -125,11 +125,6 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="Facebook">
-      <HintPath>packages\Facebook.6.6.0\lib\portable-win81+wpa81\Facebook.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -137,6 +132,11 @@
       <Project>{76fb752f-8ab8-41bc-a188-cf66b4d42940}</Project>
       <Name>Facebook.Client-Universal.WindowsPhone</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Facebook">
+      <HintPath>..\..\Source\Facebook.Client-Universal\Facebook.Client-Universal.WindowsPhone\packages\Facebook.7.0.1-alpha\lib\portable-win81+wpa81\Facebook.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>
