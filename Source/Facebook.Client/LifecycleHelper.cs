@@ -26,6 +26,7 @@ namespace Facebook.Client
             }
 
             // If this invocation is because of a dialog dismissal, dismiss the dialog
+            // TODO: (sanjeevd) Fire the event handler when the dialog is done - via the browser
             if (OnDialogDismissed != null)
             {
                 OnDialogDismissed(protocolArgs.Uri);
