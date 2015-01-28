@@ -210,7 +210,9 @@ namespace Facebook.Client
 
         internal void LoginWithApp(string permissions, string state)
         {
-            AppAuthenticationHelper.AuthenticateWithApp(AppId, permissions, state);
+            var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
+            task.Wait();
+            AppAuthenticationHelper.AuthenticateWithApp(task.Result, permissions, state);
         }
 #endif
 
@@ -236,7 +238,7 @@ namespace Facebook.Client
 #if !WINDOWS
         public static void ShowAppRequestDialogViaBrowser()
         {
-            // TODO: Setup callback
+            // TODO: Setup callback and message
             WebDialogUserControl.ShowAppRequestDialogViaBrowser();
         }
 #endif

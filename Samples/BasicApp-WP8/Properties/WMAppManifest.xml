@@ -39,6 +39,7 @@
     </Tokens>
     <Extensions>
         <Protocol Name="fb540541885996234" NavUriFragment="encodedLaunchUri=%s" TaskID="_default" />
+        <Protocol Name="msft-bb9e84111d8d4d3fa83d038fca9e7e6d" NavUriFragment="encodedLaunchUri=%s" TaskID="_default" />
     </Extensions>
     <ScreenResolutions>
       <ScreenResolution Name="ID_RESOLUTION_WVGA" />
