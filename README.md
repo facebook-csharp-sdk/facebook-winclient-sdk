@@ -5,12 +5,12 @@ The Facebook C# SDK for Windows & Windows Phone helps .NET developers build Wind
 
 ## NuGet
 
-    Install-Package Facebook.Client -pre
+    Install-Package Facebook.Client
 
 *Binaries for Facebook C# SDK for Windows & Windows Phone are only distributed via nuget. For those using older versions of Visual Studio that does not support NuGet Package Manager, please download the [command line version of NuGet.exe](http://nuget.codeplex.com/releases/view/58939) and run the following
 command.*
 
-    nuget install Facebook.Client -pre
+    nuget install Facebook.Client
     
 If you would like to get an older version of the the binaries please use the following command.
 
