@@ -59,14 +59,9 @@ namespace Facebook.Client
 
                 return new Uri("/" + Session.ActiveSession.RedirectPageOnSuccess, UriKind.Relative);
             }
-            else
-            {
-                var RedirectPageNameTask =
-                Task.Run(async () => await AppAuthenticationHelper.GetFilteredManifestAppAttributeValue("DefaultTask", "NavigationPage", String.Empty));
-                RedirectPageNameTask.Wait();
 
-                return new Uri("/" + RedirectPageNameTask.Result, UriKind.Relative);
-            }
+            // Otherwise perform normal launch.
+            return uri;
         }
     }
 }
