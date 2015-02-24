@@ -236,17 +236,31 @@ namespace Facebook.Client
 
 
 #if !WINDOWS
-        public static void ShowAppRequestDialogViaBrowser()
+        public static void ShowAppRequestDialogViaBrowser(string message, string title, List<string> idList=null)
         {
             // TODO: Setup callback and message
-            WebDialogUserControl.ShowAppRequestDialogViaBrowser();
+            WebDialogUserControl.ShowAppRequestDialogViaBrowser(message, title, idList);
+        }
+
+        public static void ShowFeedDialogViaBrowser(string toId = "", string link = "", string linkName = "", string linkCaption = "", string linkDescription = "", string picture = "")
+        {
+            WebDialogUserControl.ShowFeedDialogViaBrowser(toId, link, linkName, linkCaption, linkDescription, picture);
         }
 #endif
+        private static Popup dialogPopup = new Popup();
 
-        public static void ShowAppRequestsDialog(WebDialogFinishedDelegate callback, String message="Select your friends", List<string> appIdList=null)
+        public static bool IsDialogOpen
         {
-            Popup dialogPopup = new Popup();
+            get { return dialogPopup.IsOpen; }
+        }
 
+        public static void CloseWebDialog()
+        {
+            dialogPopup.IsOpen = false;
+        }
+
+        public static void ShowAppRequestsDialog(WebDialogFinishedDelegate callback, String message="Select your friends", String title="", List<string> appIdList=null)
+        {
             var webDialog = new WebDialogUserControl();
             
             webDialog.ParentControlPopup = dialogPopup;
@@ -279,16 +293,14 @@ namespace Facebook.Client
             webDialog.Width = dialogPopup.Width;
 
 
-            webDialog.ShowAppRequestsDialog(callback, message, appIdList);
+            webDialog.ShowAppRequestsDialog(callback, message, title, appIdList);
 
             // Open the popup.
             dialogPopup.IsOpen = true;
         }
 
-        public static void ShowFeedDialog()
+        public static void ShowFeedDialog(string toId = "",string link = "",string linkName = "",string linkCaption = "",string linkDescription = "",string picture = "")
         {
-            Popup dialogPopup = new Popup();
-
             //dialogPopup.Loaded += dialogPopup_Loaded;
 
             var webDialog = new WebDialogUserControl();
@@ -322,7 +334,7 @@ namespace Facebook.Client
             webDialog.Width = dialogPopup.Width;
 
 
-            webDialog.ShowFeedDialog();
+            webDialog.ShowFeedDialog(toId, link, linkName, linkCaption, linkDescription, picture);
 
             // Open the popup.
             dialogPopup.IsOpen = true;
