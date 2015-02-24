@@ -7,5 +7,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("Facebook SDK for Windows & Windows Phone")]
 [assembly: AssemblyCopyright("Copyright (c) 2011, The Outercurve Foundation.")]
 [assembly: ComVisible(false)]
-[assembly: AssemblyVersion("0.9.1")]
-[assembly: AssemblyFileVersion("0.9.1-alpha")]
+[assembly: AssemblyVersion("1.0.0")]
+[assembly: AssemblyFileVersion("1.0.1")]

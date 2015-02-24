@@ -10,7 +10,7 @@
         <language>en-US</language>
         <licenseUrl>https://github.com/facebook-csharp-sdk/facebook-winclient-sdk/master/LICENSE.txt</licenseUrl>
         <projectUrl>https://github.com/facebook-csharp-sdk/facebook-winclient-sdk</projectUrl>
-        <iconUrl>http://csharpsdk.org/assets/img/logo75x75.png</iconUrl>
+	<iconUrl>http://facebooksdk.net/assets/img/logo75x75.png</iconUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <tags>Facebook fb</tags>
         <dependencies>
