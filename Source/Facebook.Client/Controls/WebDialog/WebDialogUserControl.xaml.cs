@@ -203,7 +203,7 @@ namespace Facebook.Client.Controls.WebDialog
         }
 
 
-        internal static void ShowAppRequestDialogViaBrowser(string message, string title, List<string> idList)
+        internal static void ShowAppRequestDialogViaBrowser(string message, string title, List<string> idList, string data)
         {
             var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
             task.Wait();
@@ -216,15 +216,15 @@ namespace Facebook.Client.Controls.WebDialog
                     idBuilder.Append(id + ",");
                 }
             }
-            
-            Launcher.LaunchUriAsync(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/apprequests?access_token={0}&redirect_uri=fb{2}%3A%2F%2Fsuccess&app_id={1}&message={2}&display=touch{3}&title={4}", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result, task.Result, idBuilder.Length > 4 ? idBuilder.ToString() : String.Empty, title)));
+
+            Launcher.LaunchUriAsync(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/apprequests?access_token={0}&redirect_uri={2}&app_id={1}&message={5}&display=touch{3}&title={4}&data={6}", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result, Session.AppRequestRedirectUri, idBuilder.Length > 4 ? idBuilder.ToString() : String.Empty, title, message, data)));
         }
 
         internal static void ShowFeedDialogViaBrowser(string toId = "", string link = "", string linkName = "", string linkCaption = "", string linkDescription = "", string picture = "")
         {
             var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
             task.Wait();
-            Launcher.LaunchUriAsync(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/feed?access_token={0}&redirect_uri=fb{2}%3A%2F%2Fsuccess&app_id={1}&display=touch&to={3}&link={4}&name={5}&caption={6}&description={7}&picture={8}", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result, task.Result, toId, link, linkName, linkCaption, linkDescription, picture)));
+            Launcher.LaunchUriAsync(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/feed?access_token={0}&redirect_uri={2}&app_id={1}&display=touch&to={3}&link={4}&name={5}&caption={6}&description={7}&picture={8}", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result, Session.FeedRedirectUri, toId, link, linkName, linkCaption, linkDescription, picture)));
         }
 
 
