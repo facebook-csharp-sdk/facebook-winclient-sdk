@@ -42,16 +42,16 @@
             this.MiddleName = tmpUser.ContainsKey("middle_name") ? (string)tmpUser["middle_name"] : String.Empty; //user["middle_name"];
             this.LastName = tmpUser.ContainsKey("last_name") ? (string)tmpUser["last_name"] : String.Empty; //user["last_name"];
             this.Birthday = tmpUser.ContainsKey("birthday") ? (string)tmpUser["birthday"] : String.Empty; //user["birthday"];
-            dynamic location = tmpUser.ContainsKey("location") ? (string)tmpUser["location"] : String.Empty; //user["location"];
-            this.Location = !String.IsNullOrEmpty(location) ? new GraphLocation(location) : null;
+            var location = tmpUser.ContainsKey("location") ? (IDictionary<string, object>)tmpUser["location"] : null; //user["location"];
+            this.Location = location != null ? new GraphLocation(location) : null;
             this.Link = tmpUser.ContainsKey("link") ? (string)tmpUser["link"] : String.Empty;// user["link"];
             var picture = tmpUser.ContainsKey("picture") ? user["picture"] : null; //user["picture"];
             if (picture != null)
             {
                 if (picture["data"] != null)
                 {
-                    if(!String.IsNullOrEmpty(picture["data"]["url"]))
-                    Uri.TryCreate(picture["data"]["url"], UriKind.Absolute, out this.profilePictureUrl);
+                    if (!String.IsNullOrEmpty(picture["data"]["url"]))
+                        Uri.TryCreate(picture["data"]["url"], UriKind.Absolute, out this.profilePictureUrl);
                 }
             }
         }
