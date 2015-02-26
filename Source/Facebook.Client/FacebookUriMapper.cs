@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Navigation;
 using System.Net;
-using Microsoft.Phone.Controls;
+#if WP8
+using System.Windows.Navigation;
+#endif
 
 namespace Facebook.Client
 {
+#if WP8
     public class FacebookUriMapper : UriMapperBase
+#else
+    public class FacebookUriMapper
+#endif
     {
         private enum FacebookUriType
         {
@@ -19,7 +21,11 @@ namespace Facebook.Client
             Feed
         }
 
+#if WP8
         public override Uri MapUri(Uri uri)
+#else
+        public Uri MapUri(Uri uri)
+#endif
         {
             var tempUri = uri.ToString();
             FacebookUriType uriType = FacebookUriType.Login;
@@ -44,7 +50,7 @@ namespace Facebook.Client
                 try
                 {
                     AccessTokenData session = new AccessTokenData();
-                    session.ParseQueryString(HttpUtility.UrlDecode(uri.ToString()));
+                    session.ParseQueryString(WebUtility.UrlDecode(uri.ToString()));
                     if (!String.IsNullOrEmpty(session.AccessToken))
                     {
                         var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));

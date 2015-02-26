@@ -195,6 +195,9 @@
     <Compile Include="..\Facebook.Client\FacebookSessionIsolatedStorageCacheProvider.cs">
       <Link>FacebookSessionIsolatedStorageCacheProvider.cs</Link>
     </Compile>
+    <Compile Include="..\Facebook.Client\FacebookUriMapper.cs">
+      <Link>FacebookUriMapper.cs</Link>
+    </Compile>
     <Compile Include="..\Facebook.Client\GraphLocation.cs">
       <Link>GraphLocation.cs</Link>
     </Compile>
@@ -229,7 +232,6 @@
     <Compile Include="AppAuthenticationHelper.cs" />
     <Compile Include="Controls\Converters\ImageSourceUriConverter.cs" />
     <Compile Include="Controls\Picker\Picker.cs" />
-    <Compile Include="FacebookUriMapper.cs" />
     <Compile Include="Resources\AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

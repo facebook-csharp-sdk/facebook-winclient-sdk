@@ -198,6 +198,9 @@
     <Compile Include="..\..\Facebook.Client\FacebookSessionLocalSettingsCacheProvider.cs">
       <Link>FacebookSessionLocalSettingsCacheProvider.cs</Link>
     </Compile>
+    <Compile Include="..\..\Facebook.Client\FacebookUriMapper.cs">
+      <Link>FacebookUriMapper.cs</Link>
+    </Compile>
     <Compile Include="..\..\Facebook.Client\GraphLocation.cs">
       <Link>GraphLocation.cs</Link>
     </Compile>
