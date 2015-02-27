@@ -90,12 +90,20 @@ namespace Facebook.Client
     }
 
     public delegate void FacebookAuthenticationDelegate(AccessTokenData session);
+    public delegate void FacebookDelegate(FBResult result);
 
     public delegate void WebDialogFinishedDelegate(WebDialogResult result);
 
     public delegate void DismissDialogDelegate(Uri uri);
 
     internal delegate void SessionStateChanged(LoginStatus status);
+
+    public class FBResult
+    {
+        public string Error { get; set; }
+        public string Text { get; set; }
+        public JsonObject Json { get; set; }
+    }
 
     public class Session
     {
@@ -119,6 +127,9 @@ namespace Facebook.Client
         public static Session ActiveSession = new Session();
 
         public static FacebookAuthenticationDelegate OnFacebookAuthenticationFinished;
+        public static FacebookDelegate OnFacebookAppRequestFinished;
+        public static FacebookDelegate OnFacebookFeedFinished;
+
         internal static SessionStateChanged OnSessionStateChanged;
 
         /// <summary>
@@ -128,6 +139,19 @@ namespace Facebook.Client
         {
             get { return Session.ActiveSession.CurrentAccessTokenData.AppId; }
         }
+
+        public static string LoginRedirectUri
+        {
+            get
+            {
+                var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
+                task.Wait();
+                return string.Format("fb{0}%3A%2F%2Fauthorize", task.Result);
+            }
+        }
+        public static string AppRequestRedirectUri { get { return string.Format("fb{0}%3A%2F%2Fapprequest", AppId); } }
+        public static string FeedRedirectUri { get { return string.Format("fb{0}%3A%2F%2Ffeed", AppId); } }
+
         public bool LoginInProgress { get; set; }
 
         internal string RedirectPageOnSuccess = "MainPage.xaml";
@@ -236,17 +260,30 @@ namespace Facebook.Client
 
 
 #if !WINDOWS
-        public static void ShowAppRequestDialogViaBrowser()
+        public static void ShowAppRequestDialogViaBrowser(string message, string title = "", List<string> idList=null, string data = "")
         {
-            // TODO: Setup callback and message
-            WebDialogUserControl.ShowAppRequestDialogViaBrowser();
+            WebDialogUserControl.ShowAppRequestDialogViaBrowser(message, title, idList, data);
+        }
+
+        public static void ShowFeedDialogViaBrowser(string toId = "", string link = "", string linkName = "", string linkCaption = "", string linkDescription = "", string picture = "")
+        {
+            WebDialogUserControl.ShowFeedDialogViaBrowser(toId, link, linkName, linkCaption, linkDescription, picture);
         }
 #endif
+        private static Popup dialogPopup = new Popup();
 
-        public static void ShowAppRequestsDialog(WebDialogFinishedDelegate callback, String message="Select your friends", List<string> appIdList=null)
+        public static bool IsDialogOpen
         {
-            Popup dialogPopup = new Popup();
+            get { return dialogPopup.IsOpen; }
+        }
 
+        public static void CloseWebDialog()
+        {
+            dialogPopup.IsOpen = false;
+        }
+
+        public static void ShowAppRequestsDialog(WebDialogFinishedDelegate callback, String message="Select your friends", String title="", List<string> appIdList=null)
+        {
             var webDialog = new WebDialogUserControl();
             
             webDialog.ParentControlPopup = dialogPopup;
@@ -279,16 +316,14 @@ namespace Facebook.Client
             webDialog.Width = dialogPopup.Width;
 
 
-            webDialog.ShowAppRequestsDialog(callback, message, appIdList);
+            webDialog.ShowAppRequestsDialog(callback, message, title, appIdList);
 
             // Open the popup.
             dialogPopup.IsOpen = true;
         }
 
-        public static void ShowFeedDialog()
+        public static void ShowFeedDialog(string toId = "",string link = "",string linkName = "",string linkCaption = "",string linkDescription = "",string picture = "")
         {
-            Popup dialogPopup = new Popup();
-
             //dialogPopup.Loaded += dialogPopup_Loaded;
 
             var webDialog = new WebDialogUserControl();
@@ -322,7 +357,7 @@ namespace Facebook.Client
             webDialog.Width = dialogPopup.Width;
 
 
-            webDialog.ShowFeedDialog();
+            webDialog.ShowFeedDialog(toId, link, linkName, linkCaption, linkDescription, picture);
 
             // Open the popup.
             dialogPopup.IsOpen = true;
@@ -435,8 +470,8 @@ namespace Facebook.Client
                     Uri uri =
                         new Uri(
                             String.Format(
-                                "https://m.facebook.com/v2.1/dialog/oauth?redirect_uri={0}%3A%2F%2Fauthorize&display=touch&state=%7B%220is_active_session%22%3A1%2C%22is_open_session%22%3A1%2C%22com.facebook.sdk_client_state%22%3A1%2C%223_method%22%3A%22browser_auth%22%7D&scope={2}&type=user_agent&client_id={1}&sdk=ios",
-                                String.Format("fb{0}", appId), appId, permissions), UriKind.Absolute);
+                                "https://m.facebook.com/v2.1/dialog/oauth?redirect_uri={0}&display=touch&state=%7B%220is_active_session%22%3A1%2C%22is_open_session%22%3A1%2C%22com.facebook.sdk_client_state%22%3A1%2C%223_method%22%3A%22browser_auth%22%7D&scope={2}&type=user_agent&client_id={1}&sdk=ios",
+                                LoginRedirectUri, appId, permissions), UriKind.Absolute);
                     
                     Launcher.LaunchUriAsync(uri);
                     break;

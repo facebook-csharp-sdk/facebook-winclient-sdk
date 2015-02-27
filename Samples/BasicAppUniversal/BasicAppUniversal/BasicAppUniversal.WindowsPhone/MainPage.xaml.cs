@@ -63,7 +63,7 @@ namespace BasicAppUniversal
             List<string> friendsList = new List<String>();
             friendsList.Add("9074");
             friendsList.Add("535949260");
-            Session.ShowAppRequestsDialog(null, "What's up", friendsList);
+            Session.ShowAppRequestsDialog(null, "What's up", "random title", friendsList);
         }
 
         // Sample code for building a localized ApplicationBar
@@ -88,7 +88,10 @@ namespace BasicAppUniversal
 
         private void ShowRequestWithBrowserButton_Click(object sender, RoutedEventArgs e)
         {
-            Session.ShowAppRequestDialogViaBrowser();
+            List<string> friendsList = new List<String>();
+            friendsList.Add("9074");
+            friendsList.Add("535949260");
+            Session.ShowAppRequestDialogViaBrowser("What's up", "random title", friendsList);
         }
     
         /// <summary>
