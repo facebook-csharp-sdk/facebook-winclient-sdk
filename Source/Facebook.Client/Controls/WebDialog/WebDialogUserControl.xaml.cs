@@ -260,9 +260,9 @@ namespace Facebook.Client.Controls.WebDialog
                 ParentControlPopup.IsOpen = false;
             }
 
-            if (OnDialogFinished != null)
+            if (Session.OnFacebookAuthenticationFinished != null)
             {
-                OnDialogFinished(WebDialogResult.WebDialogResultDialogNotCompleted);
+                Session.OnFacebookAuthenticationFinished(null);
             }
         }
 
