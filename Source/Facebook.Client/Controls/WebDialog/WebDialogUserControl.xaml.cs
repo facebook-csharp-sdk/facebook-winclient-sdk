@@ -259,6 +259,11 @@ namespace Facebook.Client.Controls.WebDialog
             {
                 ParentControlPopup.IsOpen = false;
             }
+
+            if (OnDialogFinished != null)
+            {
+                OnDialogFinished(WebDialogResult.WebDialogResultDialogNotCompleted);
+            }
         }
 
         public void LoginViaWebview(Uri startUri)
