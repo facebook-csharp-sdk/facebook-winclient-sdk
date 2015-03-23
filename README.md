@@ -17,7 +17,7 @@ If you would like to get an older version of the the binaries please use the fol
     nuget install Facebook.Client -v 0.1.1
     
 ## Documentation
-You can find the documentation for this project at [http://facebooksdk.net](http://faceboosdk.net).
+You can find the documentation for this project at [http://facebooksdk.net](http://facebooksdk.net).
 
 ## Running the Samples
 The SDK comes with quite a few samples. Specifically, the samples cover Login/Dialogs/Native Controls and Open Graph.
