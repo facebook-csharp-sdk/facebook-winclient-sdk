@@ -53,10 +53,7 @@ namespace Facebook.Client
                     session.ParseQueryString(WebUtility.UrlDecode(uri.ToString()));
                     if (!String.IsNullOrEmpty(session.AccessToken))
                     {
-                        var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
-                        task.Wait();
-
-                        session.AppId = task.Result;
+                        session.AppId = Session.AppId;
                         Session.ActiveSession.CurrentAccessTokenData = session;
 
                         // trigger the event handler with the session
@@ -204,12 +201,9 @@ namespace Facebook.Client
             if (uri.ToString().StartsWith("/Protocol"))
             {
                 // Read which page to redirect to when redirecting from the Facebook authentication.
-                var RedirectPageNameTask =
-                    Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("RedirectPage", "Name"));
-                RedirectPageNameTask.Wait();
-                Session.ActiveSession.RedirectPageOnSuccess = String.IsNullOrEmpty(RedirectPageNameTask.Result)
+                Session.ActiveSession.RedirectPageOnSuccess = String.IsNullOrEmpty(Session.AppId)
                     ? "MainPage.xaml"
-                    : RedirectPageNameTask.Result;
+                    : Session.AppId;
 
                 return new Uri("/" + Session.ActiveSession.RedirectPageOnSuccess, UriKind.Relative);
             }
