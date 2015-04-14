@@ -40,9 +40,7 @@ namespace Facebook.Client
                 tokenData.ParseQueryString(Facebook.HttpHelper.UrlDecode(protocolArgs.Uri.ToString()));
                 if (!String.IsNullOrEmpty(tokenData.AccessToken))
                 {
-                    var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
-                    task.Wait();
-                    tokenData.AppId = task.Result;
+                    tokenData.AppId = Session.AppId;
                     Session.ActiveSession.CurrentAccessTokenData = tokenData;
 
                     // trigger the event handler with the session

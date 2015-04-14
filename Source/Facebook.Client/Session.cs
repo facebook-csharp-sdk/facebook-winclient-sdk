@@ -112,8 +112,7 @@ namespace Facebook.Client
             // Initialize the ActiveSession etc. right here
         }
 
-        [ObsoleteAttribute("This method is obsolete and will be removed. Supply the App ID in the FacebookConfig.xml.", false)]
-        internal Session(string appId)
+        public Session(string appId)
         {
             if (String.IsNullOrEmpty(appId))
             {
@@ -133,20 +132,33 @@ namespace Facebook.Client
         internal static SessionStateChanged OnSessionStateChanged;
 
         /// <summary>
-        /// Facebook AppId. This is if for some reason, you want to override the value supplied in the FacebookConfig.xml
+        /// Facebook AppId, obtained from FacebookConfig.xml if it exist.
         /// </summary>
         public static string AppId
         {
-            get { return Session.ActiveSession.CurrentAccessTokenData.AppId; }
+            get
+            {
+
+                if (string.IsNullOrEmpty(Session.ActiveSession.CurrentAccessTokenData.AppId))
+                {
+                    var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
+                    task.Wait();
+                    Session.ActiveSession.CurrentAccessTokenData.AppId = task.Result;
+                }
+
+                return Session.ActiveSession.CurrentAccessTokenData.AppId;
+            }
+            set
+            {
+                Session.ActiveSession.CurrentAccessTokenData.AppId = value;
+            }
         }
 
         public static string LoginRedirectUri
         {
             get
             {
-                var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
-                task.Wait();
-                return string.Format("fb{0}%3A%2F%2Fauthorize", task.Result);
+                return string.Format("fb{0}%3A%2F%2Fauthorize", AppId);
             }
         }
         public static string AppRequestRedirectUri { get { return string.Format("fb{0}%3A%2F%2Fapprequest", AppId); } }
@@ -234,9 +246,7 @@ namespace Facebook.Client
 
         internal void LoginWithApp(string permissions, string state)
         {
-            var task = Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId"));
-            task.Wait();
-            AppAuthenticationHelper.AuthenticateWithApp(task.Result, permissions, state);
+            AppAuthenticationHelper.AuthenticateWithApp(Session.AppId, permissions, state);
         }
 #endif
 
@@ -466,7 +476,7 @@ namespace Facebook.Client
                 {
 #if (WP8 || WINDOWS_PHONE)
 
-                    String appId = await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId");
+                    String appId = Session.AppId;
                     Uri uri =
                         new Uri(
                             String.Format(
@@ -482,7 +492,7 @@ namespace Facebook.Client
                 }
                 case FacebookLoginBehavior.LoginBehaviorWebViewOnly:
                 {
-                    String appId = await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId");
+                    String appId = Session.AppId;
 
 #if WP8 || WINDOWS_PHONE
                     Uri uri =
@@ -569,7 +579,7 @@ namespace Facebook.Client
                 var request = new HttpRequestMessage();
 
                 var mfdc = new MultipartFormDataContent();
-                var _appId = await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId");
+                var _appId = Session.AppId;
 
                 mfdc.Add(new StringContent(_appId), name: "batch_app_id");
 
@@ -681,7 +691,7 @@ namespace Facebook.Client
         {
             var parameters = new Dictionary<string, object>();
 
-            String appId = await AppAuthenticationHelper.GetFacebookConfigValue("Facebook", "AppId");
+            String appId = Session.AppId;
             parameters["client_id"] = appId;
             parameters["redirect_uri"] = "https://www.facebook.com/connect/login_success.html";
             parameters["response_type"] = "token";
