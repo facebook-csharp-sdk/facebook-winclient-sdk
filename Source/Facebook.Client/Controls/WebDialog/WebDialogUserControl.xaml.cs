@@ -188,7 +188,7 @@ namespace Facebook.Client.Controls.WebDialog
 
 #if WP8
 
-            dialogWebBrowser.Navigate(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/apprequests?access_token={0}&redirect_uri=fbconnect%3A%2F%2Fsuccess&app_id={1}&message={2}&display=touch{3}&title={4}", Session.ActiveSession.CurrentAccessTokenData.AccessToken, task.Result, message, idBuilder.Length > 4 ? idBuilder.ToString() : String.Empty, title)));
+            dialogWebBrowser.Navigate(new Uri(String.Format("https://m.facebook.com/v2.1/dialog/apprequests?access_token={0}&redirect_uri=fbconnect%3A%2F%2Fsuccess&app_id={1}&message={2}&display=touch{3}&title={4}", Session.ActiveSession.CurrentAccessTokenData.AccessToken, Session.AppId, message, idBuilder.Length > 4 ? idBuilder.ToString() : String.Empty, title)));
 #endif
         }
 
