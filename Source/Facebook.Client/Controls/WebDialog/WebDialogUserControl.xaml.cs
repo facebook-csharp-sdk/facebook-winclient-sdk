@@ -242,6 +242,11 @@ namespace Facebook.Client.Controls.WebDialog
             {
                 ParentControlPopup.IsOpen = false;
             }
+
+            if (Session.OnFacebookAuthenticationFinished != null)
+            {
+                Session.OnFacebookAuthenticationFinished(null);
+            }
         }
 
         public void LoginViaWebview(Uri startUri)
