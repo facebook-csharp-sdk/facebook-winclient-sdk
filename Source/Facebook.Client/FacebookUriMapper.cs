@@ -201,9 +201,12 @@ namespace Facebook.Client
             if (uri.ToString().StartsWith("/Protocol"))
             {
                 // Read which page to redirect to when redirecting from the Facebook authentication.
-                Session.ActiveSession.RedirectPageOnSuccess = String.IsNullOrEmpty(Session.AppId)
+                var RedirectPageNameTask =
+                    Task.Run(async () => await AppAuthenticationHelper.GetFacebookConfigValue("RedirectPage", "Name"));
+                RedirectPageNameTask.Wait();
+                Session.ActiveSession.RedirectPageOnSuccess = String.IsNullOrEmpty(RedirectPageNameTask.Result)
                     ? "MainPage.xaml"
-                    : Session.AppId;
+                    : RedirectPageNameTask.Result;
 
                 return new Uri("/" + Session.ActiveSession.RedirectPageOnSuccess, UriKind.Relative);
             }
